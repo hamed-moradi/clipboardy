@@ -2,4 +2,22 @@
 # This .gitignore file was automatically created by Microsoft(R) Visual Studio.
 ################################################################################
 
-/.vs/WebApi/v16
+/.vs
+
+/Assets/Assets.Model/obj
+/Assets/Assets.Model/bin
+
+/Assets/Assets.Utility/obj
+/Assets/Assets.Utility/bin
+
+/Core/Core.Application/obj
+/Core/Core.Application/bin
+
+/Core/Core.Domain/obj
+/Core/Core.Domain/bin
+
+/Presentation/Presentation.WebApi/obj
+/Presentation/Presentation.WebApi/bin
+
+/Test/Test.Common/obj
+/Test/Test.Common/bin
