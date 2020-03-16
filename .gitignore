@@ -18,6 +18,7 @@
 
 /Presentation/Presentation.WebApi/obj
 /Presentation/Presentation.WebApi/bin
+/Presentation/Presentation.WebApi/logs
 
 /Test/Test.Common/obj
 /Test/Test.Common/bin

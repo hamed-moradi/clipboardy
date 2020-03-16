@@ -6,13 +6,14 @@ namespace Core.Domain.Entities {
 
     [Table("ContentType")]
     public partial class ContentType: BaseEntity {
-        [Required, MaxLength(64)]
+
+        [Required, MaxLength(128)]
         public string Name { get; set; }
 
         [Required, MaxLength(16)]
         public string Extension { get; set; }
 
-        [Required]
+        [Required, MaxLength(256)]
         public string MIMEType { get; set; }
     }
 

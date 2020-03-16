@@ -3,8 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 using Assets.Model.Settings;
-using Assets.Utility;
-using Core.Application;
+using Assets.Utility.Infrastructure;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Hosting;
@@ -13,12 +12,12 @@ namespace Presentation.WebApi.Controllers {
     public class HomeController: BaseController {
         #region ctor
         private readonly AppSetting _appSetting;
-        private readonly ICompressionHandler _compressionHandler;
+        private readonly CompressionHandler _compressionHandler;
         private readonly IWebHostEnvironment _webHostEnvironment;
 
         public HomeController(
             AppSetting appSetting,
-            ICompressionHandler compressionHandler,
+            CompressionHandler compressionHandler,
             IWebHostEnvironment webHostEnvironment) {
 
             _appSetting = appSetting;

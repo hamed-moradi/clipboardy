@@ -41,7 +41,7 @@ namespace Assets.Model.Base {
     }
 
     public class BaseViewModel {
-        public HttpStatusCode Status { get; set; }
+        public HttpStatusCode Status { get; set; } = HttpStatusCode.BadRequest;
         public string Message { get; set; }
         public object Data { get; set; }
         public int? TotalPages { get; set; }

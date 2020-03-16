@@ -41,7 +41,7 @@ namespace Presentation.WebApi {
             Core.Domain.ModuleInjector.Inject(services, appSettings);
             Core.Application.ModuleInjector.Inject(services);
             Presentation.WebApi.ModuleInjector.Inject(services, appSettings);
-
+            
             // service locator
             services.AddSingleton(new ServiceLocator(services));
 

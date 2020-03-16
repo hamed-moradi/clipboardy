@@ -7,9 +7,16 @@ using System.Data;
 using System.Globalization;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Text.RegularExpressions;
 
 namespace Assets.Utility.Extension {
     public static class General {
+        #region string
+        public static bool IsPhoneNumber(this string number) {
+            return Regex.Match(number, @"^(\+[0-9]{9})$").Success;
+        }
+        #endregion
+
         #region number
         public static byte ToByte(this Enum val) {
             return Convert.ToByte(val);

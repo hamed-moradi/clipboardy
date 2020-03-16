@@ -1,6 +1,7 @@
 ﻿using Assets.Model;
 using Assets.Model.Base;
 using Assets.Utility;
+using Assets.Utility.Infrastructure;
 using Core.Application;
 using Microsoft.AspNetCore.Mvc.Filters;
 using System;
@@ -11,12 +12,12 @@ using System.Threading.Tasks;
 namespace Presentation.WebApi.FilterAttributes {
     public class ArgumentBinderFilter: ActionFilterAttribute {
         #region ctor
-        protected readonly ICompressionHandler _compressionHandler;
+        protected readonly CompressionHandler _compressionHandler;
         public bool FillValues { get; set; } = false;
         public bool ThrowException { get; set; } = false;
 
         public ArgumentBinderFilter() {
-            _compressionHandler = ServiceLocator.Current.GetInstance<ICompressionHandler>();
+            _compressionHandler = ServiceLocator.Current.GetInstance<CompressionHandler>();
         }
         #endregion
 

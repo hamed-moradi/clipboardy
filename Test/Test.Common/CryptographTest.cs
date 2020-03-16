@@ -1,6 +1,7 @@
 ﻿using Assets.Model.Base;
 using Assets.Model.Binding;
 using Assets.Utility;
+using Assets.Utility.Infrastructure;
 using Core.Domain.Entities;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
@@ -14,10 +15,10 @@ namespace Test.Common {
     [TestClass]
     public class CryptographTest {
         #region ctor
-        private readonly ICryptograph _cryptograph;
+        private readonly Cryptograph _cryptograph;
 
         public CryptographTest() {
-            _cryptograph = ServiceLocator.Current.GetInstance<ICryptograph>();
+            _cryptograph = ServiceLocator.Current.GetInstance<Cryptograph>();
         }
         #endregion
 

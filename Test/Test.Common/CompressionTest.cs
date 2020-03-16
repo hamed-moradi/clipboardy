@@ -1,14 +1,15 @@
 ﻿using Assets.Utility;
+using Assets.Utility.Infrastructure;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Test.Common {
     [TestClass]
     public class CompressionTest {
         #region ctor
-        private readonly ICompressionHandler _compressionHandler;
+        private readonly CompressionHandler _compressionHandler;
 
         public CompressionTest() {
-            _compressionHandler = ServiceLocator.Current.GetInstance<ICompressionHandler>();
+            _compressionHandler = ServiceLocator.Current.GetInstance<CompressionHandler>();
         }
         #endregion
 

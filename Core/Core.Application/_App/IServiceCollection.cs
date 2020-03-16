@@ -65,5 +65,18 @@ namespace Core.Application {
         Task<int> SaveAsync();
     }
 
-    public interface IContentTypeService: IGenericService<ContentType> { }
+    public interface IAccountService: IGenericService<Account> {
+        Task<BaseViewModel> Signup(SignupBindingModel signupModel);
+        Task<BaseViewModel> Signin(SigninBindingModel signinModel);
+    }
+
+    public interface IAccountDeviceService: IGenericService<AccountDevice> { }
+
+    public interface IAccountProfileService: IGenericService<AccountProfile> { }
+
+    public interface IClipboardService: IGenericService<Clipboard> { }
+
+    public interface IContentTypeService: IGenericService<ContentType> {
+        Task BulkInsertAsync(List<ContentType> contentTypes);
+    }
 }
