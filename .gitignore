@@ -22,3 +22,7 @@
 
 /Test/Test.Common/obj
 /Test/Test.Common/bin
+
+/Database/Database.MsSql/obj
+/Database/Database.MsSql/Import Schema Logs
+/Database/Database.MsSql/bin
