@@ -25,9 +25,9 @@ namespace Presentation.WebApi.Controllers {
         }
 
         [ApiExplorerSettings(IgnoreApi = true)]
-        public IActionResult BadRequest(string message = null) {
+        public IActionResult BadRequest(HttpStatusCode status = HttpStatusCode.BadRequest, string message = null) {
             message= message ?? "Bad Request";
-            return Json(new BaseViewModel { Status = HttpStatusCode.BadRequest, Message = message });
+            return Json(new BaseViewModel { Status = status, Message = message });
         }
 
         [ApiExplorerSettings(IgnoreApi = true)]

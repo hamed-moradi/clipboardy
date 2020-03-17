@@ -12,5 +12,12 @@ namespace Core.Domain {
         public DbSet<AccountProfile> AccountProfiles { get; set; }
         public DbSet<Clipboard> Clipboard { get; set; }
         public DbSet<ContentType> ContentTypes { get; set; }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder) {
+            //modelBuilder.Entity<AccountDevice>().HasOne(o => o.Account);
+            //modelBuilder.Entity<AccountProfile>().HasOne(o => o.Account);
+            //modelBuilder.Entity<Clipboard>().HasOne(o => o.AccountDevice);
+            base.OnModelCreating(modelBuilder);
+        }
     }
 }

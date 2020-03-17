@@ -19,6 +19,7 @@ namespace Core.Domain.Entities {
 
         public DateTime? LastSignedinAt { get; set; }
 
+        [Required]
         public DateTime? CreatedAt { get; set; }
 
         [Required]

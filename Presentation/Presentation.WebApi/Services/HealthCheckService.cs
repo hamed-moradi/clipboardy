@@ -26,12 +26,12 @@ namespace Presentation.WebApi.Services {
                 return false;
             }
 
-            if(string.IsNullOrWhiteSpace(_appSetting.Custom?.PrivateKey)) {
+            if(string.IsNullOrWhiteSpace(_appSetting.Encryption?.PrivateKey)) {
                 Log.Error("PrivateKey is not defined.");
                 return false;
             }
 
-            if(string.IsNullOrWhiteSpace(_appSetting.Custom?.PublicKey)) {
+            if(string.IsNullOrWhiteSpace(_appSetting.Encryption?.PublicKey)) {
                 Log.Error("PublicKey is not defined.");
                 return false;
             }

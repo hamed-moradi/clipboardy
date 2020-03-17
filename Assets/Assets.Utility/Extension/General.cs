@@ -13,7 +13,7 @@ namespace Assets.Utility.Extension {
     public static class General {
         #region string
         public static bool IsPhoneNumber(this string number) {
-            return Regex.Match(number, @"^(\+[0-9]{9})$").Success;
+            return Regex.Match(number, "^[+][0-9]{12}$").Success;// || Regex.Match(number, "^[0][0-9]{10}$").Success;
         }
         #endregion
 

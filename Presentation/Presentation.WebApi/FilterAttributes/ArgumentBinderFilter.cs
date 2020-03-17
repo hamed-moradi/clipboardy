@@ -12,12 +12,12 @@ using System.Threading.Tasks;
 namespace Presentation.WebApi.FilterAttributes {
     public class ArgumentBinderFilter: ActionFilterAttribute {
         #region ctor
-        protected readonly CompressionHandler _compressionHandler;
-        public bool FillValues { get; set; } = false;
+        protected readonly IAccountDeviceService _accountDeviceService;
         public bool ThrowException { get; set; } = false;
+        public bool FillValues { get; set; } = false;
 
         public ArgumentBinderFilter() {
-            _compressionHandler = ServiceLocator.Current.GetInstance<CompressionHandler>();
+            _accountDeviceService = ServiceLocator.Current.GetInstance<IAccountDeviceService>();
         }
         #endregion
 
@@ -31,20 +31,24 @@ namespace Presentation.WebApi.FilterAttributes {
                                 case "token":
                                     var token = context.HttpContext.Request.Headers.FirstOrDefault(f => f.Key.ToLower().Equals("token"));
                                     if(token.Value.Any()) {
-                                        var headerToken = _compressionHandler.Decompress(token.Value[0]);
+                                        var headerToken = token.Value[0];
                                         item.SetValue(param.Value, headerToken);
-                                        if(FillValues) {
-                                            var client = new { Id = 1 };
-                                            if(client != null) {
-                                                param.Value.GetType().GetProperties()
-                                                    .FirstOrDefault(f => f.Name.ToLower().Equals("clientconnectionid"))
-                                                    .SetValue(param.Value, client.Id);
+
+                                        if(ThrowException) {
+                                            var device = _accountDeviceService.First(f => f.Token.Equals(headerToken));
+                                            if(device == null) {
+                                                throw new ArgumentException("Invalid token",
+                                                    new Exception { Source = GlobalVariables.SystemGeneratedMessage });
                                             }
-                                            else {
-                                                if(ThrowException) {
-                                                    throw new ArgumentException("Invalid token",
-                                                        new Exception { Source = GlobalVariables.SystemGeneratedMessage });
-                                                }
+                                            if(device.StatusId != Status.Active) {
+                                                throw new MemberAccessException("You're not an active user, Please confirm your Email or Phone number.",
+                                                    new Exception { Source = GlobalVariables.SystemGeneratedMessage });
+                                            }
+
+                                            if(FillValues) {
+                                                param.Value.GetType().GetProperties()
+                                                    .FirstOrDefault(f => f.Name.ToLower().Equals("accountid"))
+                                                    .SetValue(param.Value, device.AccountId);
                                             }
                                         }
                                     }

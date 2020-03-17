@@ -49,10 +49,8 @@ namespace Assets.Model.Base {
     }
 
     public class HeaderBindingModel: IBaseBindingModel {
-        public int? ClientConnectionId { get; set; }
         public string Token { get; set; }
-        public int? CompanyId { get; set; }
-        public Guid? CenterId { get; set; }
+        public int? AccountId { get; set; }
     }
 
 }

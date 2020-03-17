@@ -11,18 +11,21 @@ namespace Core.Domain.Entities {
         [Required]
         public int? AccountId { get; set; }
 
-        [Required, MaxLength(128)]
+        [MaxLength(128)]
         public string Email { get; set; }
 
         [Required]
         public bool? ConfirmedEmail { get; set; }
 
-        [Required, MaxLength(16)]
+        [MaxLength(16)]
         public string Phone { get; set; }
 
         [Required]
         public bool? ConfirmedPhone { get; set; }
 
+        public string ForgotPasswordToken { get; set; }
+
+        [Required]
         public DateTime? CreatedAt { get; set; }
 
         [Required]
@@ -31,6 +34,6 @@ namespace Core.Domain.Entities {
 
     public partial class AccountProfile {
         [ForeignKey(nameof(AccountId))]
-        public Account Account { get; set; }
+        public virtual Account Account { get; set; }
     }
 }

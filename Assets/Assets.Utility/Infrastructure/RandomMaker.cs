@@ -9,5 +9,10 @@ namespace Assets.Utility.Infrastructure {
             var no = rnd.Next(min, max);
             return no.ToString();
         }
+
+        public string NewToken() {
+            var guid = Encoding.UTF8.GetBytes(Guid.NewGuid().ToString());
+            return Convert.ToBase64String(guid);
+        }
     }
 }

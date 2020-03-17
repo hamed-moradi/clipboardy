@@ -2,7 +2,7 @@
 namespace Assets.Model.Settings {
     public class AppSetting {
         public Authentication Authentication { get; set; }
-        public Encryption Custom { get; set; }
+        public Encryption Encryption { get; set; }
         public SignalR SignalR { get; set; }
         public ConnectionString ConnectionStrings { get; set; }
     }

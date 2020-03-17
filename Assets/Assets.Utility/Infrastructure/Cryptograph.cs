@@ -50,8 +50,8 @@ namespace Assets.Utility.Infrastructure {
             try {
                 byte[] encrypted;
                 using(var aesAlg = Aes.Create()) {
-                    var salt = Encoding.ASCII.GetBytes(_appSetting.Custom.PrivateKey);
-                    var key = new Rfc2898DeriveBytes(_appSetting.Custom.PublicKey, salt);
+                    var salt = Encoding.ASCII.GetBytes(_appSetting.Encryption.PrivateKey);
+                    var key = new Rfc2898DeriveBytes(_appSetting.Encryption.PublicKey, salt);
                     aesAlg.Key = key.GetBytes(aesAlg.KeySize / 8);
                     aesAlg.IV = key.GetBytes(aesAlg.BlockSize / 8);
 
@@ -81,8 +81,8 @@ namespace Assets.Utility.Infrastructure {
             try {
                 string plaintext = null;
                 using(var aesAlg = Aes.Create()) {
-                    var salt = Encoding.ASCII.GetBytes(_appSetting.Custom.PrivateKey);
-                    var key = new Rfc2898DeriveBytes(_appSetting.Custom.PublicKey, salt);
+                    var salt = Encoding.ASCII.GetBytes(_appSetting.Encryption.PrivateKey);
+                    var key = new Rfc2898DeriveBytes(_appSetting.Encryption.PublicKey, salt);
                     aesAlg.Key = key.GetBytes(aesAlg.KeySize / 8);
                     aesAlg.IV = key.GetBytes(aesAlg.BlockSize / 8);
 
@@ -113,8 +113,8 @@ namespace Assets.Utility.Infrastructure {
         public byte[] RijndaelEncrypt(string plainText) {
             byte[] encrypted;
             using(var myRijndael = new RijndaelManaged()) {
-                var salt = Encoding.ASCII.GetBytes(_appSetting.Custom.PrivateKey);
-                var key = new Rfc2898DeriveBytes(_appSetting.Custom.PublicKey, salt);
+                var salt = Encoding.ASCII.GetBytes(_appSetting.Encryption.PrivateKey);
+                var key = new Rfc2898DeriveBytes(_appSetting.Encryption.PublicKey, salt);
                 myRijndael.Key = key.GetBytes(myRijndael.KeySize / 8);
                 myRijndael.IV = key.GetBytes(myRijndael.BlockSize / 8);
 
@@ -139,8 +139,8 @@ namespace Assets.Utility.Infrastructure {
         public string RijndaelDecrypt(byte[] cipherText) {
             string plaintext = null;
             using(var myRijndael = new RijndaelManaged()) {
-                var salt = Encoding.ASCII.GetBytes(_appSetting.Custom.PrivateKey);
-                var key = new Rfc2898DeriveBytes(_appSetting.Custom.PublicKey, salt);
+                var salt = Encoding.ASCII.GetBytes(_appSetting.Encryption.PrivateKey);
+                var key = new Rfc2898DeriveBytes(_appSetting.Encryption.PublicKey, salt);
                 myRijndael.Key = key.GetBytes(myRijndael.KeySize / 8);
                 myRijndael.IV = key.GetBytes(myRijndael.BlockSize / 8);
 
