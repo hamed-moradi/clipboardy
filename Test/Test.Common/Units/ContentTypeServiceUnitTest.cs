@@ -9,7 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 
-namespace Common.Units {
+namespace Test.Common.Units {
     [TestClass]
     public class ContentTypeServiceUnitTest {
         #region ctor

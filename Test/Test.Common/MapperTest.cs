@@ -20,13 +20,15 @@ namespace Test.Common {
         #endregion
 
         [TestMethod, TestCategory("Mapper"), TestCategory("BindingModelToEntity")]
-        public void ModelToEntity() {
-            //var entity = _mapper.Map<UpdateState>(new UpdateStateBindingModel {
-            //    Description = "",
-            //    StatusId = UpdateStatus.Requested
-            //});
+        public void BindingModelToEntity() {
+            var bindedmodel = new ClipboardGetBindingModel {
+                TypeId = 10,
+                Content = "cnt",
+                CreatedAt = null
+            };
+            var entity = _mapper.Map<Clipboard>(bindedmodel);
 
-            //Assert.IsTrue(entity.StatusId.Equals(UpdateStatus.Requested));
+            Assert.IsTrue(entity.TypeId.Equals(bindedmodel.TypeId));
         }
 
         [TestMethod, TestCategory("Mapper"), TestCategory("EntityToModelView")]

@@ -1,4 +1,4 @@
-﻿using Assets.Model.Settings;
+﻿using Assets.Model.Common;
 using Core.Domain;
 using Serilog;
 using System;
@@ -11,9 +11,9 @@ namespace Presentation.WebApi.Services {
     public class HealthCkeckService: IHealthCkeckService {
         #region ctor
         private readonly AppSetting _appSetting;
-        private readonly MsSqlDbContext _dbContext;
+        private readonly MsSQLDbContext _dbContext;
 
-        public HealthCkeckService(AppSetting appSetting, MsSqlDbContext dbContext) {
+        public HealthCkeckService(AppSetting appSetting, MsSQLDbContext dbContext) {
             _appSetting = appSetting;
             _dbContext = dbContext;
         }

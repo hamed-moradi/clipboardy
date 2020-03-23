@@ -7,6 +7,7 @@ using AutoMapper;
 using Core.Domain;
 using Core.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,16 +19,16 @@ namespace Core.Application {
     public class GenericService<TEntity>: PredicateMaker<TEntity>, IGenericService<TEntity> where TEntity : BaseEntity {
         #region ctor
         private readonly IMapper _mapper;
-        private readonly MsSqlDbContext _dbContext;
+        private readonly MsSQLDbContext _dbContext;
         private readonly PropertyMapper _propertyMapper;
 
         public GenericService(
-            MsSqlDbContext dbContext = null,
+            MsSQLDbContext dbContext = null,
             IMapper mapper = null,
             PropertyMapper propertyMapper = null) : base() {
 
             var serviceLocator = ServiceLocator.Current;
-            _dbContext = dbContext ?? serviceLocator.GetInstance<MsSqlDbContext>();
+            _dbContext = dbContext ?? serviceLocator.GetInstance<MsSQLDbContext>();
             _mapper = mapper ?? serviceLocator.GetInstance<IMapper>();
             _propertyMapper = propertyMapper ?? serviceLocator.GetInstance<PropertyMapper>();
         }
@@ -266,9 +267,9 @@ namespace Core.Application {
         /// </summary>
         /// <param name="entity">The entity</param>
         /// <returns>Paged list of TEntity</returns>
-        public List<TEntity> GetPaging(TEntity entity, bool tracking = true) {
-            var query = GenerateQuery(entity, tracking: tracking, pagingSupport: true);
-            return query.ToList();
+        public (List<TEntity> Result, long TotalCount, long TotalPage) GetPaging(TEntity entity, QuerySetting guerysetting, bool tracking = true) {
+            var query = GenerateQuery(out var totalCount, out var totalPage, guerysetting, entity, tracking: tracking);
+            return (query.ToList(), totalCount, totalPage);
         }
 
         /// <summary>
@@ -276,9 +277,9 @@ namespace Core.Application {
         /// </summary>
         /// <param name="predicate">The predicate query</param>
         /// <returns>Paged list of TEntity</returns>
-        public List<TEntity> GetPaging(Expression<Func<TEntity, bool>> predicate, bool tracking = true) {
-            var query = GenerateQuery(predicate, tracking: tracking, pagingSupport: true);
-            return query.ToList();
+        public (List<TEntity> Result, long TotalCount, long TotalPage) GetPaging(Expression<Func<TEntity, bool>> predicate, QuerySetting querysetting, bool tracking = true) {
+            var query = GenerateQuery(out var totalCount, out var totalPage, querysetting, predicate, tracking: tracking);
+            return (query.ToList(), totalCount, totalPage);
         }
 
         /// <summary>
@@ -286,9 +287,9 @@ namespace Core.Application {
         /// </summary>
         /// <param name="model">The model</param>
         /// <returns>Paged list of TModel</returns>
-        public List<TModel> GetPaging<TModel>(TEntity model, bool tracking = true) where TModel : BaseModel {
-            var query = GenerateQuery<TModel>(model, tracking: tracking, pagingSupport: true);
-            return query.ToList();
+        public (List<TModel> Result, long TotalCount, long TotalPage) GetPaging<TModel>(TEntity model, QuerySetting guerysetting, bool tracking = true) where TModel : BaseModel {
+            var query = GenerateQuery<TModel>(out var totalCount, out var totalPage, guerysetting, model, tracking: tracking);
+            return (query.ToList(), totalCount, totalPage);
         }
 
         /// <summary>
@@ -296,9 +297,9 @@ namespace Core.Application {
         /// </summary>
         /// <param name="predicate">The predicate query</param>
         /// <returns>Paged list of TModel</returns>
-        public List<TModel> GetPaging<TModel>(Expression<Func<TEntity, bool>> predicate, bool tracking = true) where TModel : BaseModel {
-            var query = GenerateQuery<TModel>(predicate, tracking: tracking, pagingSupport: true);
-            return query.ToList();
+        public (List<TModel> Result, long TotalCount, long TotalPage) GetPaging<TModel>(Expression<Func<TEntity, bool>> predicate, QuerySetting querysetting, bool tracking = true) where TModel : BaseModel {
+            var query = GenerateQuery<TModel>(out var totalCount, out var totalPage, querysetting, predicate, tracking: tracking);
+            return (query.ToList(), totalCount, totalPage);
         }
 
         /// <summary>
@@ -306,9 +307,9 @@ namespace Core.Application {
         /// </summary>
         /// <param name="entity">The entity</param>
         /// <returns>Paged list of TEntity</returns>
-        public async Task<List<TEntity>> GetPagingAsync(TEntity model, bool tracking = true) {
-            var query = GenerateQuery(model, tracking: tracking, pagingSupport: true);
-            return await query.ToListAsync();
+        public async Task<(List<TEntity> Result, long TotalCount, long TotalPage)> GetPagingAsync(TEntity model, QuerySetting guerysetting, bool tracking = true) {
+            var query = GenerateQuery(out var totalCount, out var totalPage, guerysetting, model, tracking: tracking);
+            return (await query.ToListAsync(), totalCount, totalPage);
         }
 
         /// <summary>
@@ -316,9 +317,9 @@ namespace Core.Application {
         /// </summary>
         /// <param name="predicate">The predicate query</param>
         /// <returns>Paged list of TEntity</returns>
-        public async Task<List<TEntity>> GetPagingAsync(Expression<Func<TEntity, bool>> predicate, bool tracking = true) {
-            var query = GenerateQuery(predicate, tracking: tracking, pagingSupport: true);
-            return await query.ToListAsync();
+        public async Task<(List<TEntity> Result, long TotalCount, long TotalPage)> GetPagingAsync(Expression<Func<TEntity, bool>> predicate, QuerySetting querysetting, bool tracking = true) {
+            var query = GenerateQuery(out var totalCount, out var totalPage, querysetting, predicate, tracking: tracking);
+            return (await query.ToListAsync(), totalCount, totalPage);
         }
 
         /// /// <summary>
@@ -326,9 +327,9 @@ namespace Core.Application {
         /// </summary>
         /// <param name="model">The model</param>
         /// <returns>Paged list of TModel</returns>
-        public async Task<List<TModel>> GetPagingAsync<TModel>(TEntity model, bool tracking = true) where TModel : BaseModel {
-            var query = GenerateQuery<TModel>(model, tracking: tracking, pagingSupport: true);
-            return await query.ToListAsync();
+        public async Task<(List<TModel> Result, long TotalCount, long TotalPage)> GetPagingAsync<TModel>(TEntity model, QuerySetting guerysetting, bool tracking = true) where TModel : BaseModel {
+            var query = GenerateQuery<TModel>(out var totalCount, out var totalPage, guerysetting, model, tracking: tracking);
+            return (await query.ToListAsync(), totalCount, totalPage);
         }
 
         /// <summary>
@@ -336,9 +337,9 @@ namespace Core.Application {
         /// </summary>
         /// <param name="predicate">The predicate query</param>
         /// <returns>Paged list of TModel</returns>
-        public async Task<List<TModel>> GetPagingAsync<TModel>(Expression<Func<TEntity, bool>> predicate, bool tracking = true) where TModel : BaseModel {
-            var query = GenerateQuery<TModel>(predicate, tracking: tracking, pagingSupport: true);
-            return await query.ToListAsync();
+        public async Task<(List<TModel> Result, long TotalCount, long TotalPage)> GetPagingAsync<TModel>(Expression<Func<TEntity, bool>> predicate, QuerySetting querysetting, bool tracking = true) where TModel : BaseModel {
+            var query = GenerateQuery<TModel>(out var totalCount, out var totalPage, querysetting, predicate, tracking: tracking);
+            return (await query.ToListAsync(), totalCount, totalPage);
         }
 
 
@@ -348,9 +349,16 @@ namespace Core.Application {
         /// <param name="entity">The entity</param>
         /// <returns>The inserted record</returns>
         public TEntity Add(TEntity entity) {
-            var newItem = Entity.Add(entity);
-            Save();
-            return newItem.Entity;
+            return SaveAndReturn(Entity.Add(entity));
+        }
+
+        /// <summary>
+        /// Insert new record
+        /// </summary>
+        /// <param name="entity">The entity</param>
+        /// <returns>The inserted record</returns>
+        public TModel Add<TModel>(TEntity entity) where TModel : BaseModel {
+            return _mapper.Map<TModel>(SaveAndReturn(Entity.Add(entity)));
         }
 
         /// <summary>
@@ -359,9 +367,16 @@ namespace Core.Application {
         /// <param name="entity">The entity</param>
         /// <returns>The inserted record</returns>
         public async Task<TEntity> AddAsync(TEntity entity) {
-            var newItem = await Entity.AddAsync(entity);
-            await _dbContext.SaveChangesAsync();
-            return newItem.Entity;
+            return await SaveAndReturnAsync(await Entity.AddAsync(entity));
+        }
+
+        /// <summary>
+        /// Insert new record asychrony
+        /// </summary>
+        /// <param name="entity">The entity</param>
+        /// <returns>The inserted record</returns>
+        public async Task<TModel> AddAsync<TModel>(TEntity entity) where TModel : BaseModel {
+            return _mapper.Map<TModel>(await SaveAndReturnAsync(await Entity.AddAsync(entity)));
         }
 
         /// <summary>
@@ -373,16 +388,14 @@ namespace Core.Application {
         public TEntity Update(TEntity entity, bool needToFetch = true) {
             var tracked = entity;
             if(needToFetch) {
-                tracked = First(entity.Id, force: true);
+                tracked = First(entity.Id.Value, force: true);
                 _propertyMapper.Bind(entity, tracked);
             }
 
             while(true) {
                 try {
-                    var updatedItem = Entity.Update(tracked);
                     // Attempt to save changes to the database
-                    Save();
-                    return updatedItem.Entity;
+                    return SaveAndReturn(Entity.Update(tracked));
                 }
                 catch(DbUpdateConcurrencyException ex) {
                     foreach(var entry in ex.Entries) {
@@ -418,16 +431,13 @@ namespace Core.Application {
         public async Task<TEntity> UpdateAsync(TEntity entity, bool needToFetch = true) {
             var tracked = entity;
             if(needToFetch) {
-                tracked = await FirstAsync(entity.Id, force: true);
+                tracked = await FirstAsync(entity.Id.Value, force: true);
                 _propertyMapper.Bind(entity, tracked);
             }
-            
+
             while(true) {
                 try {
-                    var updatedItem = Entity.Update(tracked);
-                    // Attempt to save changes to the database
-                    await SaveAsync();
-                    return updatedItem.Entity;
+                    return await SaveAndReturnAsync(Entity.Update(tracked));
                 }
                 catch(DbUpdateConcurrencyException ex) {
                     foreach(var entry in ex.Entries) {
@@ -441,7 +451,6 @@ namespace Core.Application {
                                 proposedValues[property] = proposedValue;
                             }
 
-                            // Refresh original values to bypass next concurrency check
                             entry.OriginalValues.SetValues(databaseValues);
                         }
                         else {
@@ -455,98 +464,93 @@ namespace Core.Application {
         }
 
         public bool Remove(long id) {
-            First(id, true);
-            var entity = First(id, true);
-            entity.Status = Status.Deleted.ToByte();
-            var modifiedItem = Entity.Update(entity);
-            Save();
-            return modifiedItem.State == EntityState.Modified;
-        }
-
-        public bool Remove(TEntity entity) {
-            First(entity.Id, true);
-            entity.Status = Status.Deleted.ToByte();
-            var modifiedItem = Entity.Update(entity);
-            Save();
-            return modifiedItem.State == EntityState.Modified;
+            return Remove(First(id, force: true));
         }
 
         public bool Remove<TModel>(TModel viewModel) where TModel : BaseModel {
-            var model = First(viewModel.Id, true);
-            model.Status = Status.Deleted.ToByte();
-            var modifiedItem = Entity.Update(model);
-            Save();
-            return modifiedItem.State == EntityState.Modified;
+            return Remove(First(viewModel.Id.Value, force: true));
+        }
+
+        public bool Remove(TEntity entity) {
+            entity.StatusId = Status.Deleted;
+            return SaveAndGetState(Entity.Update(entity)) == EntityState.Modified;
         }
 
         public bool Remove(Expression<Func<TEntity, bool>> predicate) {
             var entities = All(predicate);
-            entities.ForEach(e => e.Status = Status.Deleted.ToByte());
-            return Save() == 1;
+            entities.ForEach(e => e.StatusId = Status.Deleted);
+            return SaveAll() == 1;
         }
 
         public async Task<bool> RemoveAsync(long id) {
-            First(id, true);
-            var entity = First(id, true);
-            entity.Status = Status.Deleted.ToByte();
-            var modifiedItem = Entity.Update(entity);
-            await SaveAsync();
-            return modifiedItem.State == EntityState.Modified;
-        }
-
-        public async Task<bool> RemoveAsync(TEntity entity) {
-            await FirstAsync(entity.Id, true);
-            entity.Status = Status.Deleted.ToByte();
-            var modifiedItem = Entity.Update(entity);
-            await _dbContext.SaveChangesAsync();
-            return modifiedItem.State == EntityState.Modified;
+            return await RemoveAsync(await FirstAsync(id, force: true));
         }
 
         public async Task<bool> RemoveAsync<TModel>(TModel viewModel) where TModel : BaseModel {
-            var model = await FirstAsync(viewModel.Id, true);
-            model.Status = Status.Deleted.ToByte();
-            var modifiedItem = Entity.Update(model);
-            await SaveAsync();
-            return modifiedItem.State == EntityState.Modified;
+            return await RemoveAsync(await FirstAsync(viewModel.Id.Value, force: true));
+
+        }
+
+        public async Task<bool> RemoveAsync(TEntity entity) {
+            entity.StatusId = Status.Deleted;
+            return await SaveAndGetStateAsync(Entity.Update(entity)) == EntityState.Modified;
         }
 
         public async Task<bool> RemoveAsync(Expression<Func<TEntity, bool>> predicate) {
             var entities = All(predicate);
-            entities.ForEach(e => e.Status = Status.Deleted.ToByte());
-            return await SaveAsync() == 1;
+            entities.ForEach(e => e.StatusId = Status.Deleted);
+            return await SaveAllAsync() == 1;
         }
 
         public bool Delete(long id) {
-            var entity = First(id, true);
-            var result = Entity.Remove(entity);
-            Save();
-            return result.State == EntityState.Deleted;
+            return Delete(First(id, force: true));
         }
 
         public bool Delete(TEntity entity) {
-            var result = Entity.Remove(entity);
-            Save();
-            return result.State == EntityState.Deleted;
+            return SaveAndGetState(Entity.Remove(entity)) == EntityState.Deleted;
         }
 
         public async Task<bool> DeleteAsync(long id) {
-            var entity = First(id, true);
-            var result = Entity.Remove(entity);
-            await SaveAsync();
-            return result.State == EntityState.Deleted;
+            return await DeleteAsync(First(id, force: true));
         }
 
         public async Task<bool> DeleteAsync(TEntity entity) {
-            var result = Entity.Remove(entity);
-            await SaveAsync();
-            return result.State == EntityState.Deleted;
+            return await SaveAndGetStateAsync(Entity.Remove(entity)) == EntityState.Deleted;
         }
 
-        public int Save() {
+        public int Save(EntityEntry entry) {
+            return entry.Context.SaveChanges();
+        }
+
+        public EntityState SaveAndGetState(EntityEntry entry) {
+            entry.Context.SaveChanges();
+            return entry.State;
+        }
+
+        public TEntity SaveAndReturn(EntityEntry entry) {
+            entry.Context.SaveChanges();
+            return (TEntity)entry.Entity;
+        }
+
+        public int SaveAll() {
             return _dbContext.SaveChanges();
         }
 
-        public async Task<int> SaveAsync() {
+        public async Task<int> SaveAsync(EntityEntry entry) {
+            return await entry.Context.SaveChangesAsync();
+        }
+
+        public async Task<EntityState> SaveAndGetStateAsync(EntityEntry entry) {
+            await entry.Context.SaveChangesAsync();
+            return entry.State;
+        }
+
+        public async Task<TEntity> SaveAndReturnAsync(EntityEntry entry) {
+            await entry.Context.SaveChangesAsync();
+            return (TEntity)entry.Entity;
+        }
+
+        public async Task<int> SaveAllAsync() {
             return await _dbContext.SaveChangesAsync();
         }
     }

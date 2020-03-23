@@ -6,18 +6,18 @@ using System.Threading.Tasks;
 namespace Core.Application.Services {
     public class ContentTypeService: GenericService<ContentType>, IContentTypeService {
         #region
-        private readonly MsSqlDbContext _msSqlDbContext;
+        private readonly MsSQLDbContext _msSQLDbContext;
 
-        public ContentTypeService(MsSqlDbContext msSqlDbContext) {
-            _msSqlDbContext = msSqlDbContext;
+        public ContentTypeService(MsSQLDbContext msSQLDbContext) {
+            _msSQLDbContext = msSQLDbContext;
         }
         #endregion
 
         public async Task BulkInsertAsync(List<ContentType> contentTypes) {
             contentTypes.ForEach(item => {
-                _msSqlDbContext.Add(item);
+                _msSQLDbContext.Add(item);
             });
-            await _msSqlDbContext.SaveChangesAsync();
+            await _msSQLDbContext.SaveChangesAsync();
         }
     }
 }

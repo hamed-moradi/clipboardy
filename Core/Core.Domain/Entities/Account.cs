@@ -19,11 +19,10 @@ namespace Core.Domain.Entities {
 
         public DateTime? LastSignedinAt { get; set; }
 
-        [Required]
         public DateTime? CreatedAt { get; set; }
 
         [Required]
-        public Status? StatusId { get; set; }
+        public new Status? StatusId { get; set; }
     }
 
     public partial class Account { }

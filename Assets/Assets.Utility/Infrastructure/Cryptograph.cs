@@ -1,4 +1,4 @@
-﻿using Assets.Model.Settings;
+﻿using Assets.Model.Common;
 using Serilog;
 using System;
 using System.IO;
@@ -16,7 +16,20 @@ namespace Assets.Utility.Infrastructure {
         }
         #endregion
 
-        public string Encrypt(string password) {
+        public string Md5(string plainText) {
+            if(string.IsNullOrWhiteSpace(plainText))
+                return null;
+            var md5 = MD5.Create();
+            var inputBytes = Encoding.ASCII.GetBytes(plainText);
+            var hash = md5.ComputeHash(inputBytes);
+            var sb = new StringBuilder();
+            foreach(var t in hash) {
+                sb.Append(t.ToString("x2"));
+            }
+            return sb.ToString();
+        }
+
+        public string RNG(string password) {
             byte[] salt;
             new RNGCryptoServiceProvider().GetBytes(salt = new byte[16]);
 

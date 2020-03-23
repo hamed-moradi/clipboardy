@@ -6,10 +6,10 @@ using System.Threading.Tasks;
 namespace Core.Application.Services {
     public class ClipboardService: GenericService<Clipboard>, IClipboardService {
         #region
-        private readonly MsSqlDbContext _msSqlDbContext;
+        private readonly MsSQLDbContext _msSQLDbContext;
 
-        public ClipboardService(MsSqlDbContext msSqlDbContext) {
-            _msSqlDbContext = msSqlDbContext;
+        public ClipboardService(MsSQLDbContext msSQLDbContext) {
+            _msSQLDbContext = msSQLDbContext;
         }
         #endregion
     }

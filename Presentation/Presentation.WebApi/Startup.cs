@@ -1,5 +1,5 @@
 using System.Reflection;
-using Assets.Model.Settings;
+using Assets.Model.Common;
 using Assets.Utility;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -11,22 +11,35 @@ using Presentation.WebApi.Infrastructure;
 using Presentation.WebApi.Services;
 using Serilog;
 using AutoMapper;
-using System;
+using Microsoft.AspNetCore.Localization;
+using Assets.Resource;
+using Microsoft.AspNetCore.Authentication.Google;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication;
+using Core.Domain.Entities;
+using Microsoft.AspNetCore.Identity;
+using Assets.Model.Base;
 
 namespace Presentation.WebApi {
     public class Startup {
         #region ctor
         private readonly IConfiguration _configuration;
-        private readonly string _appVersion;
         private readonly string _allowedSpecificOrigins = "_myAllowSpecificOrigins";
         public Startup(IConfiguration configuration) {
             _configuration = configuration;
-            _appVersion = Assembly.GetExecutingAssembly().GetName().Version.ToString();
         }
         #endregion
 
         public void ConfigureServices(IServiceCollection services) {
-            Log.Debug($"SendReceiveWebApi {_appVersion} getting ready...");
+            Log.Debug($"SendReceiveWebApi {BaseViewModel.Version} getting ready...");
+
+            // config localization
+            services.AddLocalization(options => options.ResourcesPath = "Assets/Assets.Resource/Tables");
+            services.Configure<RequestLocalizationOptions>(options => {
+                options.DefaultRequestCulture = new RequestCulture("en-US");
+                options.SupportedCultures = SupportedCulture.List;
+                options.SupportedUICultures = SupportedCulture.List;
+            });
 
             // app setting
             services.Configure<AppSetting>(config => _configuration.Bind(config));
@@ -41,9 +54,6 @@ namespace Presentation.WebApi {
             Core.Domain.ModuleInjector.Inject(services, appSettings);
             Core.Application.ModuleInjector.Inject(services);
             Presentation.WebApi.ModuleInjector.Inject(services, appSettings);
-            
-            // service locator
-            services.AddSingleton(new ServiceLocator(services));
 
             // add mvc routing
             services.AddControllers(configure => {
@@ -58,11 +68,41 @@ namespace Presentation.WebApi {
                 });
             });
 
-            services.AddAuthentication()
+            services.AddAuthentication(options => {
+                options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = GoogleDefaults.AuthenticationScheme;
+            })
+                .AddCookie()
                 .AddGoogle(options => {
+                    // Provide the Google Client Id
                     options.ClientId = appSettings.Authentication.Google.ClientId;
+                    // Provide the Google Client Secret
                     options.ClientSecret = appSettings.Authentication.Google.ClientSecret;
+
+                    //options.ClaimActions.MapJsonKey("urn:google:picture", "picture", "url");
+                    //options.ClaimActions.MapJsonKey("urn:google:locale", "locale", "string");
+                    //options.SaveTokens = true;
                 });
+
+            // add identity for signin manager
+
+            //services.AddIdentityCore<Account>();
+            //services.AddScoped<SignInManager<Account>>();
+            //services.AddHttpContextAccessor();
+
+            //services.AddIdentityCore<IdentityUser>();
+
+            //services.AddIdentityCore<IdentityUser>()
+            //    .AddRoles<IdentityRole>();
+
+            //services.AddIdentity<IdentityUser, IdentityRole>(options => {
+            //    options.User.RequireUniqueEmail = false;
+            //})
+            //    .AddDefaultTokenProviders();
+
+
+            // service locator
+            services.AddSingleton(new ServiceLocator(services));
         }
 
         public void Configure(
@@ -79,9 +119,13 @@ namespace Presentation.WebApi {
             }
 
             if(healthCheck.Analyze()) {
+                appBuilder.UseRequestLocalization();
                 appBuilder.UseCors(_allowedSpecificOrigins);
-                appBuilder.UseHttpsRedirection();
                 appBuilder.UseRouting();
+                appBuilder.UseHttpsRedirection();
+
+                appBuilder.UseAuthentication();
+                appBuilder.UseAuthorization();
                 appBuilder.UseEndpoints(endpoints => {
                     endpoints.MapControllers();
                 });

@@ -1,15 +1,7 @@
-﻿using Assets.Model.Base;
-using Assets.Model.Binding;
-using Assets.Utility;
-using Assets.Utility.Extension;
-using Core.Domain.Entities;
+﻿using Assets.Utility.Extension;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Text.RegularExpressions;
 
-namespace Test.Common {
+namespace Test.Common.Utility {
     [TestClass]
     public class ExtensionTest {
         #region ctor

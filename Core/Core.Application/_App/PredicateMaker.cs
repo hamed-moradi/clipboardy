@@ -5,6 +5,7 @@ using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using Core.Domain;
 using Core.Domain.Entities;
+using FastMember;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -15,42 +16,54 @@ using System.Text;
 
 namespace Core.Application {
     public interface IPredicateMaker<TEntity> where TEntity : IBaseEntity {
-        IQueryable<TEntity> GenerateQuery(Expression<Func<TEntity, bool>> predicate = null, bool tracking = true, bool pagingSupport = false);
-        IQueryable<TModel> GenerateQuery<TModel>(Expression<Func<TEntity, bool>> predicate = null, bool tracking = true, bool pagingSupport = false) where TModel : BaseModel;
-        IQueryable<TEntity> GenerateQuery(TEntity model, bool tracking = true, bool pagingSupport = false);
-        IQueryable<TModel> GenerateQuery<TModel>(TEntity model, bool tracking = true, bool pagingSupport = false) where TModel : BaseModel;
+        IQueryable<TEntity> GenerateQuery(Expression<Func<TEntity, bool>> predicate = null, bool tracking = true);
+        IQueryable<TEntity> GenerateQuery(out long totalCount, out long totalPage, QuerySetting querysettings, Expression<Func<TEntity, bool>> predicate = null, bool tracking = true);
+        IQueryable<TModel> GenerateQuery<TModel>(Expression<Func<TEntity, bool>> predicate = null, bool tracking = true) where TModel : BaseModel;
+        IQueryable<TModel> GenerateQuery<TModel>(out long totalCount, out long totalPage, QuerySetting querysettings, Expression<Func<TEntity, bool>> predicate = null, bool tracking = true) where TModel : BaseModel;
+        IQueryable<TEntity> GenerateQuery(TEntity model, bool tracking = true);
+        IQueryable<TEntity> GenerateQuery(out long totalCount, out long totalPage, QuerySetting querysettings, TEntity model, bool tracking = true);
+        IQueryable<TModel> GenerateQuery<TModel>(TEntity model, bool tracking = true) where TModel : BaseModel;
+        IQueryable<TModel> GenerateQuery<TModel>(out long totalCount, out long totalPage, QuerySetting querysettings, TEntity model, bool tracking = true) where TModel : BaseModel;
     }
 
     public class PredicateMaker<TEntity>: IPredicateMaker<TEntity> where TEntity : BaseEntity {
         #region ctor
         private readonly IMapper _mapper;
-        private readonly MsSqlDbContext _dbContext;
+        private readonly MsSQLDbContext _dbContext;
         public DbSet<TEntity> Entity { get { return _dbContext.Set<TEntity>(); } }
 
-        protected internal PredicateMaker(MsSqlDbContext dbContext = null, IMapper mapper = null) {
-            _dbContext = dbContext ?? ServiceLocator.Current.GetInstance<MsSqlDbContext>();
+        protected internal PredicateMaker(MsSQLDbContext dbContext = null, IMapper mapper = null) {
+            _dbContext = dbContext ?? ServiceLocator.Current.GetInstance<MsSQLDbContext>();
             _mapper = mapper ?? ServiceLocator.Current.GetInstance<IMapper>();
         }
         #endregion
 
-        public IQueryable<TEntity> GenerateQuery(Expression<Func<TEntity, bool>> predicate = null, bool tracking = true, bool pagingSupport = false) {
+        public IQueryable<TEntity> GenerateQuery(Expression<Func<TEntity, bool>> predicate = null, bool tracking = true) {
             var entity = tracking ? Entity : Entity.AsNoTracking();
             var query = predicate is null ? entity : entity.Where(predicate);
-            if(pagingSupport) {
-                predicate.Body.GetType().GetProperty("TotalCount").SetValue(predicate, query.Count()); // it doesn't work
-                var orderBy = (string)predicate.Body.GetType().GetProperty("OrderBy").GetValue(predicate);
-                var orderAsc = (bool)predicate.Body.GetType().GetProperty("Order").GetValue(predicate);
-                var skip = (int)predicate.Body.GetType().GetProperty("Skip").GetValue(predicate);
-                var take = (int)predicate.Body.GetType().GetProperty("Take").GetValue(predicate);
-                query = query.OrderByField(orderBy, orderAsc).Skip(skip).Take(take);
-            }
             return query;
         }
-        public IQueryable<TModel> GenerateQuery<TModel>(Expression<Func<TEntity, bool>> predicate = null, bool tracking = true, bool pagingSupport = false)
-            where TModel : BaseModel {
-            return GenerateQuery(predicate, tracking, pagingSupport).ProjectTo<TModel>(_mapper.ConfigurationProvider);
+
+        public IQueryable<TEntity> GenerateQuery(out long totalCount, out long totalPage, QuerySetting querysettings, Expression<Func<TEntity, bool>> predicate = null, bool tracking = true) {
+            var entity = tracking ? Entity : Entity.AsNoTracking();
+            var query = predicate is null ? entity : entity.Where(predicate);
+            totalCount = query.Count();
+            totalPage = totalCount > 0 ? totalCount >= querysettings.Take ? (long)Math.Ceiling((decimal)(totalCount / querysettings.Take)) : 1 : 0;
+            query = query.OrderByField(querysettings.OrderBy, querysettings.OrderAscending).Skip(querysettings.Skip).Take(querysettings.Take);
+            return query;
         }
-        public IQueryable<TEntity> GenerateQuery(TEntity model, bool tracking = true, bool pagingSupport = false) {
+
+        public IQueryable<TModel> GenerateQuery<TModel>(Expression<Func<TEntity, bool>> predicate = null, bool tracking = true)
+            where TModel : BaseModel {
+            return GenerateQuery(predicate, tracking).ProjectTo<TModel>(_mapper.ConfigurationProvider);
+        }
+
+        public IQueryable<TModel> GenerateQuery<TModel>(out long totalCount, out long totalPage, QuerySetting querysettings, Expression<Func<TEntity, bool>> predicate = null, bool tracking = true)
+            where TModel : BaseModel {
+            return GenerateQuery(out totalCount, out totalPage, querysettings, predicate, tracking).ProjectTo<TModel>(_mapper.ConfigurationProvider);
+        }
+
+        public IQueryable<TEntity> GenerateQuery(TEntity model, bool tracking = true) {
             var query = GenerateQuery(tracking: tracking);
             var properties = model.GetType().GetProperties().Where(item
                 => !Attribute.IsDefined(item, typeof(NotMappedAttribute))
@@ -62,16 +75,26 @@ namespace Core.Application {
                     query = query.Where(w => w.GetType().GetProperty(key).GetValue(model) == value);
                 }
             }
-            if(pagingSupport) {
-                model.TotalCount = query.Count();
-                query = query.OrderByField(model.OrderBy, model.OrderAscending)
-                    .Skip(model.Skip).Take(model.Take);
-            }
             return query;
         }
-        public IQueryable<TModel> GenerateQuery<TModel>(TEntity model, bool tracking = true, bool pagingSupport = false)
+
+        public IQueryable<TEntity> GenerateQuery(out long totalCount, out long totalPage, QuerySetting querysettings, TEntity model, bool tracking = true) {
+            var query = GenerateQuery(model, tracking: tracking);
+            totalCount = query.Count();
+            totalPage = totalCount > 0 ? totalCount >= querysettings.Take ? (long)Math.Ceiling((decimal)(totalCount / querysettings.Take)) : 1 : 0;
+            query = query.OrderByField(querysettings.OrderBy, querysettings.OrderAscending)
+                .Skip(querysettings.Skip).Take(querysettings.Take);
+            return query;
+        }
+
+        public IQueryable<TModel> GenerateQuery<TModel>(TEntity model, bool tracking = true)
             where TModel : BaseModel {
-            return GenerateQuery(model, tracking, pagingSupport).ProjectTo<TModel>(_mapper.ConfigurationProvider);
+            return GenerateQuery(model, tracking).ProjectTo<TModel>(_mapper.ConfigurationProvider);
+        }
+
+        public IQueryable<TModel> GenerateQuery<TModel>(out long totalCount, out long totalPage, QuerySetting querysettings, TEntity model, bool tracking = true)
+            where TModel : BaseModel {
+            return GenerateQuery(out totalCount, out totalPage, querysettings, model, tracking).ProjectTo<TModel>(_mapper.ConfigurationProvider);
         }
     }
 }

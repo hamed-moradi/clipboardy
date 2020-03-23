@@ -7,7 +7,7 @@ using System;
 using System.Linq;
 
 namespace Presentation.WebApi.FilterAttributes {
-    public class SecurityFilter: ActionFilterAttribute {
+    public class SecurityAttribute: ActionFilterAttribute {
 
         #region Private
         private void KeywordChecker(ActionExecutingContext filterContext, string text) {

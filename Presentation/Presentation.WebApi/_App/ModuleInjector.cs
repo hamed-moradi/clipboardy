@@ -1,4 +1,4 @@
-﻿using Assets.Model.Settings;
+﻿using Assets.Model.Common;
 using Microsoft.Extensions.DependencyInjection;
 using Presentation.WebApi.Infrastructure;
 using Presentation.WebApi.Services;

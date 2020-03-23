@@ -15,10 +15,12 @@ namespace Core.Domain.Entities {
         public int? TypeId { get; set; }
 
         [Required]
-        public byte[] Content { get; set; }
+        public string Content { get; set; }
+
+        public DateTime? CreatedAt { get; set; }
 
         [Required]
-        public Status? StatusId { get; set; }
+        public new Status? StatusId { get; set; }
     }
 
     public partial class Clipboard {

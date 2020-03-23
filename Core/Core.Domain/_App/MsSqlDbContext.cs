@@ -2,9 +2,9 @@
 using Microsoft.EntityFrameworkCore;
 
 namespace Core.Domain {
-    public class MsSqlDbContext: DbContext {
+    public class MsSQLDbContext: DbContext {
         #region ctor
-        public MsSqlDbContext(DbContextOptions contextOptions) : base(contextOptions) { }
+        public MsSQLDbContext(DbContextOptions contextOptions) : base(contextOptions) { }
         #endregion
 
         public DbSet<Account> Accounts { get; set; }

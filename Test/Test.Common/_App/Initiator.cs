@@ -1,4 +1,4 @@
-﻿using Assets.Model.Settings;
+﻿using Assets.Model.Common;
 using AutoMapper;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;

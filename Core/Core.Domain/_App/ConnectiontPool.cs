@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Data;
 using Assets.Model.Base;
-using Assets.Model.Settings;
+using Assets.Model.Common;
 using Microsoft.Data.SqlClient;
 
 namespace Core.Domain {

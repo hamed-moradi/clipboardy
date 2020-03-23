@@ -1,12 +1,5 @@
-﻿using Assets.Model.Base;
-using Assets.Model.View;
-using Assets.Utility.Infrastructure;
-using Core.Domain.Entities;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace Test.Common {
     [TestClass]

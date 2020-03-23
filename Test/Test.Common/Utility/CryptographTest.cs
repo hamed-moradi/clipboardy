@@ -1,17 +1,12 @@
-﻿using Assets.Model.Base;
-using Assets.Model.Binding;
-using Assets.Utility;
+﻿using Assets.Utility;
 using Assets.Utility.Infrastructure;
-using Core.Domain.Entities;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Security.Cryptography;
 using System.Text;
 
-namespace Test.Common {
+namespace Test.Common.Utility {
     [TestClass]
     public class CryptographTest {
         #region ctor

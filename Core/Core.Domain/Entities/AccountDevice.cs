@@ -26,11 +26,9 @@ namespace Core.Domain.Entities {
         [Required, MaxLength(64)]
         public string OS { get; set; }
 
-        [Required]
         public DateTime? CreatedAt { get; set; }
 
-        [Required]
-        public Status? StatusId { get; set; }
+        public new Status? StatusId { get; set; }
     }
 
     public partial class AccountDevice {

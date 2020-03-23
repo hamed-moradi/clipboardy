@@ -1,4 +1,5 @@
-﻿using Assets.Model.Base;
+﻿using Assets.Model;
+using Assets.Model.Base;
 using Assets.Model.Binding;
 using Assets.Utility.Extension;
 using Assets.Utility.Infrastructure;
@@ -16,18 +17,24 @@ using System.Threading.Tasks;
 namespace Core.Application.Services {
     public class AccountService: GenericService<Account>, IAccountService {
         #region
-        private readonly MsSqlDbContext _msSqlDbContext;
+        private readonly MsSQLDbContext _msSQLDbContext;
         private readonly RandomMaker _randomMaker;
         private readonly Cryptograph _cryptograph;
+        private readonly IAccountProfileService _accountProfileService;
+        private readonly IAccountDeviceService _accountDeviceService;
 
         public AccountService(
-            MsSqlDbContext msSqlDbContext,
+            MsSQLDbContext msSQLDbContext,
             RandomMaker randomMaker,
-            Cryptograph cryptograph) {
+            Cryptograph cryptograph,
+            IAccountProfileService accountProfileService,
+            IAccountDeviceService accountDeviceService) {
 
-            _msSqlDbContext = msSqlDbContext;
+            _msSQLDbContext = msSQLDbContext;
             _randomMaker = randomMaker;
             _cryptograph = cryptograph;
+            _accountProfileService = accountProfileService;
+            _accountDeviceService = accountDeviceService;
         }
         #endregion
 
@@ -35,18 +42,18 @@ namespace Core.Application.Services {
             var response = new BaseViewModel();
 
             var username = _randomMaker.NewNumber();
-            var duplicated = await FirstAsync(f => f.Username.Equals(username));
+            var duplicated = await FirstAsync(f => f.Username == username);
             while(duplicated != null) {
                 username = _randomMaker.NewNumber();
-                duplicated = await FirstAsync(f => f.Username.Equals(username));
+                duplicated = await FirstAsync(f => f.Username == username);
             }
 
-            using(var dbcontext = await _msSqlDbContext.Database.BeginTransactionAsync()) {
+            using(var dbcontext = await _msSQLDbContext.Database.BeginTransactionAsync()) {
                 try {
                     var now = DateTime.UtcNow;
 
-                    var account = await _msSqlDbContext.Accounts.AddAsync(new Account {
-                        Password = _cryptograph.Encrypt(signupModel.Password),
+                    var account = await _msSQLDbContext.Accounts.AddAsync(new Account {
+                        Password = _cryptograph.RNG(signupModel.Password),
                         ProviderId = AccountProvider.Clipboard,
                         Username = username,
                         CreatedAt = now,
@@ -55,7 +62,7 @@ namespace Core.Application.Services {
                     await account.Context.SaveChangesAsync();
 
                     var token = _randomMaker.NewToken();
-                    var accountDevice = await _msSqlDbContext.AccountDevices.AddAsync(new AccountDevice {
+                    await _accountDeviceService.AddAsync(new AccountDevice {
                         AccountId = account.Entity.Id,
                         DeviceId = signupModel.DeviceId,
                         DeviceName = signupModel.DeviceName,
@@ -65,9 +72,8 @@ namespace Core.Application.Services {
                         CreatedAt = now,
                         StatusId = Status.Active
                     });
-                    await accountDevice.Context.SaveChangesAsync();
 
-                    var accountProfile = await _msSqlDbContext.AccountProfiles.AddAsync(new AccountProfile {
+                    await _accountProfileService.AddAsync(new AccountProfile {
                         AccountId = account.Entity.Id,
                         Email = signupModel.Email,
                         ConfirmedEmail = false,
@@ -76,7 +82,6 @@ namespace Core.Application.Services {
                         CreatedAt = now,
                         StatusId = Status.Active
                     });
-                    await accountProfile.Context.SaveChangesAsync();
 
                     await dbcontext.CommitAsync();
                     response.Status = HttpStatusCode.OK;
@@ -99,14 +104,14 @@ namespace Core.Application.Services {
             AccountProfile accountProfile = null;
 
             if(signinModel.Username.IsPhoneNumber()) {
-                accountProfile = await _msSqlDbContext.AccountProfiles.FirstOrDefaultAsync(f =>
-                    f.Phone.Equals(signinModel.Username)
-                    && f.StatusId.Equals(Status.Active));
+                accountProfile = await _msSQLDbContext.AccountProfiles.FirstOrDefaultAsync(f =>
+                    f.Phone == signinModel.Username
+                    && f.StatusId == Status.Active);
             }
             else if(new EmailAddressAttribute().IsValid(signinModel.Username)) {
-                accountProfile = await _msSqlDbContext.AccountProfiles.FirstOrDefaultAsync(f =>
-                    f.Email.ToLower().Equals(signinModel.Username.ToLower())
-                    && f.StatusId.Equals(Status.Active));
+                accountProfile = await _msSQLDbContext.AccountProfiles.FirstOrDefaultAsync(f =>
+                    f.Email.ToLower() == signinModel.Username.ToLower()
+                    && f.StatusId == Status.Active);
             }
             else {
                 response.Message = $"Username is not valid or its not in '{Status.Active}' state.";
@@ -120,25 +125,25 @@ namespace Core.Application.Services {
 
             var now = DateTime.UtcNow;
             var token = _randomMaker.NewToken();
-            var account = await FirstAsync(f => f.Id.Equals(accountProfile.AccountId) && f.StatusId.Equals(Status.Active));
+            var account = await FirstAsync(f => f.Id == accountProfile.AccountId && f.StatusId == Status.Active);
             // todo: check the account
 
-            using(var dbcontext = await _msSqlDbContext.Database.BeginTransactionAsync()) {
+            using(var dbcontext = await _msSQLDbContext.Database.BeginTransactionAsync()) {
                 try {
                     // check password
                     if(_cryptograph.IsEqual(signinModel.Password, account.Password)) {
-                        var accountDevice = await _msSqlDbContext.AccountDevices.FirstOrDefaultAsync(f => f.AccountId.Equals(account.Id));
+
+                        var accountDevice = await _accountDeviceService.FirstAsync(f => f.AccountId == account.Id && f.DeviceId == signinModel.DeviceId);
                         // todo: check the accountDevice
 
-                        if(accountDevice.DeviceId.Equals(signinModel.DeviceId)) {
+                        if(accountDevice != null) {
                             // set new token
                             accountDevice.Token = token;
-                            var changedAccountDevice = _msSqlDbContext.AccountDevices.Update(accountDevice);
-                            await changedAccountDevice.Context.SaveChangesAsync();
+                            await _accountDeviceService.UpdateAsync(accountDevice);
                         }
                         else {
                             // create new device for account
-                            var newAccountDevice = await _msSqlDbContext.AccountDevices.AddAsync(new AccountDevice {
+                            await _accountDeviceService.AddAsync(new AccountDevice {
                                 AccountId = account.Id,
                                 DeviceId = signinModel.DeviceId,
                                 DeviceName = signinModel.DeviceName,
@@ -148,7 +153,6 @@ namespace Core.Application.Services {
                                 CreatedAt = now,
                                 StatusId = Status.Active
                             });
-                            await newAccountDevice.Context.SaveChangesAsync();
                         }
                     }
                     else {
@@ -156,21 +160,23 @@ namespace Core.Application.Services {
                         return response;
                     }
 
-
-                    // clean forgot password requests
-                    var accountProfiles = _msSqlDbContext.AccountProfiles.Where(w => w.AccountId.Equals(account.Id));
-                    await accountProfiles.ForEachAsync(e => e.ForgotPasswordToken = null);
-                    _msSqlDbContext.AccountProfiles.UpdateRange(accountProfiles);
+                    // clean forgot password tokens
+                    var accountProfilesUpdated = await _accountProfileService.CleanForgotPasswordTokensAsync(account.Id.Value);
+                    if(!accountProfilesUpdated) {
+                        Log.Error($"Can't update 'ForgotPasswordTokens' to NULL for AccountId={account.Id}");
+                        await dbcontext.RollbackAsync();
+                    }
 
                     // set last signed in at
                     account.LastSignedinAt = now;
-                    var changedAccount = _msSqlDbContext.Accounts.Update(account);
+                    var changedAccount = _msSQLDbContext.Accounts.Update(account);
                     await changedAccount.Context.SaveChangesAsync();
+
+                    await dbcontext.CommitAsync();
                 }
                 catch(Exception ex) {
-                    var errmsg = "Something went wrong.";
-                    Log.Error(ex, errmsg);
-                    response.Message = errmsg;
+                    Log.Error(ex, ex.Source);
+                    response.Message = GlobalVariables.UnknownError;
                     response.Status = HttpStatusCode.InternalServerError;
                     await dbcontext.RollbackAsync();
                 }

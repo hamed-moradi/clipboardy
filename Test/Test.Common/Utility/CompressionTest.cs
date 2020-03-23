@@ -2,7 +2,7 @@
 using Assets.Utility.Infrastructure;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace Test.Common {
+namespace Test.Common.Utility {
     [TestClass]
     public class CompressionTest {
         #region ctor

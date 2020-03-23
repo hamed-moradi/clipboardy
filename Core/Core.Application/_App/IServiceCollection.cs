@@ -2,6 +2,7 @@
 using Assets.Model.Binding;
 using Assets.Model.View;
 using Core.Domain.Entities;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
@@ -29,18 +30,20 @@ namespace Core.Application {
         Task<TModel> FirstAsync<TModel>(int id, bool tracking = true, bool force = false) where TModel : BaseModel;
         Task<TModel> FirstAsync<TModel>(Expression<Func<TEntity, bool>> predicate, bool tracking = true) where TModel : BaseModel;
 
-        List<TEntity> GetPaging(TEntity entity, bool tracking = true);
-        List<TEntity> GetPaging(Expression<Func<TEntity, bool>> predicate, bool tracking = true);
-        List<TModel> GetPaging<TModel>(TEntity entity, bool tracking = true) where TModel : BaseModel;
-        List<TModel> GetPaging<TModel>(Expression<Func<TEntity, bool>> predicate, bool tracking = true) where TModel : BaseModel;
+        (List<TEntity> Result, long TotalCount, long TotalPage) GetPaging(TEntity entity, QuerySetting querysetting, bool tracking = true);
+        (List<TEntity> Result, long TotalCount, long TotalPage) GetPaging(Expression<Func<TEntity, bool>> predicate, QuerySetting querysetting, bool tracking = true);
+        (List<TModel> Result, long TotalCount, long TotalPage) GetPaging<TModel>(TEntity entity, QuerySetting querysetting, bool tracking = true) where TModel : BaseModel;
+        (List<TModel> Result, long TotalCount, long TotalPage) GetPaging<TModel>(Expression<Func<TEntity, bool>> predicate, QuerySetting querysetting, bool tracking = true) where TModel : BaseModel;
 
-        Task<List<TEntity>> GetPagingAsync(TEntity entity, bool tracking = true);
-        Task<List<TEntity>> GetPagingAsync(Expression<Func<TEntity, bool>> predicate, bool tracking = true);
-        Task<List<TModel>> GetPagingAsync<TModel>(TEntity entity, bool tracking = true) where TModel : BaseModel;
-        Task<List<TModel>> GetPagingAsync<TModel>(Expression<Func<TEntity, bool>> predicate, bool tracking = true) where TModel : BaseModel;
+        Task<(List<TEntity> Result, long TotalCount, long TotalPage)> GetPagingAsync(TEntity entity, QuerySetting querysetting, bool tracking = true);
+        Task<(List<TEntity> Result, long TotalCount, long TotalPage)> GetPagingAsync(Expression<Func<TEntity, bool>> predicate, QuerySetting querysetting, bool tracking = true);
+        Task<(List<TModel> Result, long TotalCount, long TotalPage)> GetPagingAsync<TModel>(TEntity entity, QuerySetting querysetting, bool tracking = true) where TModel : BaseModel;
+        Task<(List<TModel> Result, long TotalCount, long TotalPage)> GetPagingAsync<TModel>(Expression<Func<TEntity, bool>> predicate, QuerySetting querysetting, bool tracking = true) where TModel : BaseModel;
 
         TEntity Add(TEntity entity);
+        TModel Add<TModel>(TEntity entity) where TModel : BaseModel;
         Task<TEntity> AddAsync(TEntity entity);
+        Task<TModel> AddAsync<TModel>(TEntity entity) where TModel : BaseModel;
 
         TEntity Update(TEntity entity, bool needToFetch = true);
         Task<TEntity> UpdateAsync(TEntity entity, bool needToFetch = true);
@@ -61,8 +64,8 @@ namespace Core.Application {
         Task<bool> DeleteAsync(long id);
         Task<bool> DeleteAsync(TEntity entity);
 
-        int Save();
-        Task<int> SaveAsync();
+        int SaveAll();
+        Task<int> SaveAllAsync();
     }
 
     public interface IAccountService: IGenericService<Account> {
@@ -72,7 +75,9 @@ namespace Core.Application {
 
     public interface IAccountDeviceService: IGenericService<AccountDevice> { }
 
-    public interface IAccountProfileService: IGenericService<AccountProfile> { }
+    public interface IAccountProfileService: IGenericService<AccountProfile> {
+        Task<bool> CleanForgotPasswordTokensAsync(int accountId);
+    }
 
     public interface IClipboardService: IGenericService<Clipboard> { }
 
