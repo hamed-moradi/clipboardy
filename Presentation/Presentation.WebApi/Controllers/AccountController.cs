@@ -22,6 +22,7 @@ using Presentation.WebApi.FilterAttributes;
 using Serilog;
 
 namespace Presentation.WebApi.Controllers {
+    [Route("api/[controller]")]
     public class AccountController: BaseController {
         #region ctor
         private readonly IAccountService _accountService;
@@ -174,7 +175,7 @@ namespace Presentation.WebApi.Controllers {
                     return BadRequest(message: "Defined New Password does not match with Confirmed one.");
                 }
 
-                var account = await _accountService.FirstAsync(collection.Account.Id).ConfigureAwait(true);
+                var account = await _accountService.FirstAsync(collection.AccountHeader.Id).ConfigureAwait(true);
                 // todo: check account
                 if(_cryptograph.IsEqual(collection.Password, account.Password)) {
                     account.Password = _cryptograph.RNG(collection.NewPassword);
@@ -331,45 +332,29 @@ namespace Presentation.WebApi.Controllers {
         #region external authentication
 
         [HttpGet, AllowAnonymous, Route("externalsignin")]
-        public async Task<IActionResult> ExternalSigninAsync([FromQuery]string provider = "Google", string returnUrl = null) {
-            //$"{protocol}://{Request.Host}/{Url.Action(nameof(this.GetYoutubeAuthenticationToken)).TrimStart('/')}";
-
-            // Request a redirect to the external login provider.
-            //var redirectUrl = "/api/account/externalsignincallback";
-            var redirectUrl = Url.Action("externalsignincallback", "account", new { ReturnUrl = returnUrl });
-
-            //var properties = _signInManager.ConfigureExternalAuthenticationProperties(provider, redirectUrl);
-            var properties = new AuthenticationProperties {
-                RedirectUri=redirectUrl
-            };
-
-            await Task.CompletedTask.ConfigureAwait(false);
+        public IActionResult ExternalSigninAsync([FromQuery]string provider = "Google") {
             return new ChallengeResult(provider);
         }
 
         [HttpGet, AllowAnonymous, Route("externalsigninfailure")]
-        public async Task<IActionResult> ExternalSigninFailureAsync([FromQuery]string authScheme = "Google") {
-            var msg = $"Failed to signin to '{authScheme}'";
+        public async Task<IActionResult> ExternalSigninFailureAsync([FromQuery]string provider = "Google") {
+            var msg = $"Failed to signin to '{provider}'";
             await Task.CompletedTask.ConfigureAwait(false);
             return InternalServerError(message: msg);
         }
 
-        [HttpGet, AllowAnonymous, Route("signin-google")]
-        public async Task<IActionResult> GoogleSigninCallbackAsync() {
-            try {
-                var authResult = await HttpContext.AuthenticateAsync().ConfigureAwait(true);
-                var authProperties = authResult.Properties.Items;
+        [HttpGet, AllowAnonymous, Route("test")]
+        public async Task<IActionResult> Test() {
+            var authResult = await HttpContext.AuthenticateAsync().ConfigureAwait(true);
+            var authProperties = authResult.Properties.Items;
 
-                return Ok();
-            }
-            catch(Exception ex) {
-                Log.Error(ex, ex.Source);
-                return InternalServerError(message: _localizer[ResourceMessage.SomethingWentWrong]);
-            }
+            int.Parse("a");
+
+            return Ok();
         }
 
         [HttpGet, AllowAnonymous, Route("externalsignincallback")]
-        public async Task<IActionResult> ExternalSigninCallbackAsync() {
+        public async Task<IActionResult> ExternalSigninCallbackAsync(string returnUrl) {
             try {
 
                 var authResult = await HttpContext.AuthenticateAsync().ConfigureAwait(true);
@@ -424,7 +409,7 @@ namespace Presentation.WebApi.Controllers {
         [HttpPost, AllowAnonymous, Route("externalsigninconfirmation")]
         public async Task<IActionResult> ExternalSigninConfirmationAsync() {
             try {
-                
+
 
                 return Ok();
             }

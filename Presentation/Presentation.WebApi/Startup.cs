@@ -1,4 +1,3 @@
-using System.Reflection;
 using Assets.Model.Common;
 using Assets.Utility;
 using Microsoft.AspNetCore.Builder;
@@ -68,8 +67,11 @@ namespace Presentation.WebApi {
                 });
             });
 
+            // add external authentication
             services.AddAuthentication(options => {
                 options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+                options.DefaultSignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+                options.DefaultAuthenticateScheme = CookieAuthenticationDefaults.AuthenticationScheme;
                 options.DefaultChallengeScheme = GoogleDefaults.AuthenticationScheme;
             })
                 .AddCookie()
@@ -79,11 +81,26 @@ namespace Presentation.WebApi {
                     // Provide the Google Client Secret
                     options.ClientSecret = appSettings.Authentication.Google.ClientSecret;
 
+                    options.CallbackPath = "/api/account/externalsignincallback";
+
+                    //options.Events.OnRedirectToIdentityProvider = redirectContext =>
+                    //{
+                    //    if(redirectContext.Request.Path.StartsWithSegments("/api")) {
+                    //        if(redirectContext.Response.StatusCode == (int)HttpStatusCode.OK) {
+                    //            redirectContext.ProtocolMessage.State = options.StateDataFormat.Protect(redirectContext.Properties);
+                    //            redirectContext.Response.StatusCode = (int)HttpStatusCode.Unauthorized;
+                    //            redirectContext.Response.Headers["Location"] = redirectContext.ProtocolMessage.CreateAuthenticationRequestUrl();
+                    //        }
+                    //        redirectContext.HandleResponse();
+                    //    }
+                    //    return Task.CompletedTask;
+                    //};
+
                     //options.ClaimActions.MapJsonKey("urn:google:picture", "picture", "url");
                     //options.ClaimActions.MapJsonKey("urn:google:locale", "locale", "string");
                     //options.SaveTokens = true;
-                });
-
+                })
+            ;
             // add identity for signin manager
 
             //services.AddIdentityCore<Account>();
@@ -99,7 +116,6 @@ namespace Presentation.WebApi {
             //    options.User.RequireUniqueEmail = false;
             //})
             //    .AddDefaultTokenProviders();
-
 
             // service locator
             services.AddSingleton(new ServiceLocator(services));

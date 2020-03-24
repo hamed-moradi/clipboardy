@@ -1,10 +1,7 @@
 ﻿using Assets.Model.Base;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Assets.Model.Common {
-    public class AccountHeader {
+    public class AccountHeader: IBaseBindingModel {
         public int Id { get; set; }
         public int DeviceId { get; set; }
         public int ProfileId { get; set; }

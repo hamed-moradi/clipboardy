@@ -12,6 +12,7 @@ using Presentation.WebApi.FilterAttributes;
 using Serilog;
 
 namespace Presentation.WebApi.Controllers {
+    [Route("api/[controller]")]
     public class ClipboardController: BaseController {
         #region ctor
         private readonly IClipboardService _clipboardService;
@@ -40,9 +41,21 @@ namespace Presentation.WebApi.Controllers {
         public async Task<IActionResult> Add([FromBody]ClipboardAddBindingModel collection) {
             try {
                 var model = _mapper.Map<Clipboard>(collection);
-                model.DeviceId = collection.Account.DeviceId;
-                var clipboard = await _clipboardService.AddAsync<ClipboardViewModel>(model).ConfigureAwait(true);
-                return Ok(data: clipboard);
+                model.DeviceId = collection.AccountHeader.DeviceId;
+
+                var duplicated = await _clipboardService.FirstAsync(
+                    f => f.AccountId == collection.AccountHeader.Id
+                    && f.Content == model.Content).ConfigureAwait(true);
+
+                if(duplicated != null) {
+                    duplicated.Priority = DateTime.Now;
+                    await _clipboardService.UpdateAsync(duplicated).ConfigureAwait(false);
+                }
+                else {
+                    await _clipboardService.AddAsync<ClipboardViewModel>(model).ConfigureAwait(true);
+                }
+
+                return Ok();
             }
             catch(Exception ex) {
                 Log.Error(ex, ex.Source);

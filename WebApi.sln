@@ -24,6 +24,9 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Presentation.WebApi", "Presentation\Presentation.WebApi\Presentation.WebApi.csproj", "{05897208-4E3B-42C4-AF3A-1933D50695A4}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Documentation", "Documentation", "{E129B67A-E8BB-4A06-951A-1F3B0BA4CAB8}"
+	ProjectSection(SolutionItems) = preProject
+		VersionHistory.md = VersionHistory.md
+	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Database", "Database", "{E9C1C956-D4B3-4318-9CFB-87A269793300}"
 EndProject

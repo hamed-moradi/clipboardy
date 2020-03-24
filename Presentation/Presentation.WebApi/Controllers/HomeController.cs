@@ -30,7 +30,7 @@ namespace Presentation.WebApi.Controllers {
         public async Task<IActionResult> AllTokens() {
             if(_webHostEnvironment.IsDevelopment()) {
                 var result = new List<dynamic>();
-                
+
                 return Ok(data: result);
             }
             return BadRequest();
@@ -40,6 +40,11 @@ namespace Presentation.WebApi.Controllers {
         public IActionResult GetServerPatternAsync() {
             var srvpat = Convert.ToBase64String(Encoding.UTF8.GetBytes(_appSetting.SignalR.ServerPattern));
             return Ok(data: srvpat);
+        }
+
+        [HttpGet, Route("index")]
+        public IActionResult Index() {
+            return View();
         }
     }
 }

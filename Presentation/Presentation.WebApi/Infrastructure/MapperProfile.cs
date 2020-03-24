@@ -23,6 +23,7 @@ namespace Presentation.WebApi.Infrastructure {
                 .ForMember(dst => dst.DeviceId, opt => opt.Ignore())
                 .ForMember(dst => dst.TypeId, opt => opt.MapFrom(src => 34))
                 .ForMember(dst => dst.StatusId, opt => opt.MapFrom(src => Status.Active))
+                .ForMember(dst => dst.Priority, opt => opt.MapFrom(src => DateTime.Now))
                 .ForMember(dst => dst.CreatedAt, opt => opt.MapFrom(src => DateTime.Now))
                 .ForMember(dst => dst.Content, opt => opt.MapFrom(src => Convert.ToBase64String(Encoding.UTF8.GetBytes(src.Content))));
 

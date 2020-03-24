@@ -1,8 +1,6 @@
 ﻿using Assets.Model.Base;
 using Assets.Model.Binding;
-using Assets.Model.View;
 using Core.Domain.Entities;
-using Microsoft.EntityFrameworkCore.ChangeTracking;
 using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;

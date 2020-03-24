@@ -16,6 +16,9 @@
 /Core/Core.Domain/obj
 /Core/Core.Domain/bin
 
+/Database/Database.MsSql/obj
+/Database/Database.MsSql/bin
+
 /Presentation/Presentation.WebApi/obj
 /Presentation/Presentation.WebApi/bin
 /Presentation/Presentation.WebApi/logs

@@ -59,7 +59,7 @@ namespace Assets.Model.Base {
         public string DeviceName { get; set; }
         public string DeviceType { get; set; }
 
-        public AccountHeader Account { get; set; }
+        public AccountHeader AccountHeader { get; set; }
     }
 
     public class BaseBindingModel: HeaderBindingModel {

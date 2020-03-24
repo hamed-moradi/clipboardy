@@ -77,7 +77,7 @@ namespace Presentation.WebApi.FilterAttributes {
                             new Exception { Source = GlobalVariables.SystemGeneratedMessage });
                     }
 
-                    objectAccessor[nameof(HeaderBindingModel.Account)] = new AccountHeader {
+                    objectAccessor[nameof(HeaderBindingModel.AccountHeader)] = new AccountHeader {
                         Id = device.AccountId.Value,
                         DeviceId = device.Id.Value
                     };

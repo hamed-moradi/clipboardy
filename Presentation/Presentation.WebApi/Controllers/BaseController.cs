@@ -9,7 +9,7 @@ using Microsoft.Extensions.Localization;
 using Presentation.WebApi.FilterAttributes;
 
 namespace Presentation.WebApi.Controllers {
-    [Security, ApiController, Route("api/[controller]")]//, Authorize
+    [Security, ApiController, Route("[controller]")]//, Authorize
     public class BaseController: Controller {
         #region ctor
         protected readonly IMapper _mapper;
