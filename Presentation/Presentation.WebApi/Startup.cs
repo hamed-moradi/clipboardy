@@ -12,12 +12,14 @@ using Serilog;
 using AutoMapper;
 using Microsoft.AspNetCore.Localization;
 using Assets.Resource;
-using Microsoft.AspNetCore.Authentication.Google;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication.Google;
 using Microsoft.AspNetCore.Authentication;
 using Core.Domain.Entities;
 using Microsoft.AspNetCore.Identity;
 using Assets.Model.Base;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Authentication.MicrosoftAccount;
 
 namespace Presentation.WebApi {
     public class Startup {
@@ -68,54 +70,20 @@ namespace Presentation.WebApi {
             });
 
             // add external authentication
-            services.AddAuthentication(options => {
-                options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-                options.DefaultSignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-                options.DefaultAuthenticateScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-                options.DefaultChallengeScheme = GoogleDefaults.AuthenticationScheme;
-            })
-                .AddCookie()
-                .AddGoogle(options => {
-                    // Provide the Google Client Id
-                    options.ClientId = appSettings.Authentication.Google.ClientId;
-                    // Provide the Google Client Secret
-                    options.ClientSecret = appSettings.Authentication.Google.ClientSecret;
-
-                    options.CallbackPath = "/api/account/externalsignincallback";
-
-                    //options.Events.OnRedirectToIdentityProvider = redirectContext =>
-                    //{
-                    //    if(redirectContext.Request.Path.StartsWithSegments("/api")) {
-                    //        if(redirectContext.Response.StatusCode == (int)HttpStatusCode.OK) {
-                    //            redirectContext.ProtocolMessage.State = options.StateDataFormat.Protect(redirectContext.Properties);
-                    //            redirectContext.Response.StatusCode = (int)HttpStatusCode.Unauthorized;
-                    //            redirectContext.Response.Headers["Location"] = redirectContext.ProtocolMessage.CreateAuthenticationRequestUrl();
-                    //        }
-                    //        redirectContext.HandleResponse();
-                    //    }
-                    //    return Task.CompletedTask;
-                    //};
-
-                    //options.ClaimActions.MapJsonKey("urn:google:picture", "picture", "url");
-                    //options.ClaimActions.MapJsonKey("urn:google:locale", "locale", "string");
-                    //options.SaveTokens = true;
+            services
+                .AddAuthentication(options => {
+                    options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+                    options.DefaultChallengeScheme = GoogleDefaults.AuthenticationScheme;
                 })
-            ;
-            // add identity for signin manager
-
-            //services.AddIdentityCore<Account>();
-            //services.AddScoped<SignInManager<Account>>();
-            //services.AddHttpContextAccessor();
-
-            //services.AddIdentityCore<IdentityUser>();
-
-            //services.AddIdentityCore<IdentityUser>()
-            //    .AddRoles<IdentityRole>();
-
-            //services.AddIdentity<IdentityUser, IdentityRole>(options => {
-            //    options.User.RequireUniqueEmail = false;
-            //})
-            //    .AddDefaultTokenProviders();
+                .AddCookie()
+                .AddGoogle(GoogleDefaults.AuthenticationScheme, options => {
+                    options.ClientId = appSettings.Authentication.Google.ClientId;
+                    options.ClientSecret = appSettings.Authentication.Google.ClientSecret;
+                })
+                .AddMicrosoftAccount(MicrosoftAccountDefaults.AuthenticationScheme, options => {
+                    options.ClientId = appSettings.Authentication.Microsoft.ClientId;
+                    options.ClientSecret = appSettings.Authentication.Microsoft.ClientSecret;
+                });
 
             // service locator
             services.AddSingleton(new ServiceLocator(services));
@@ -137,11 +105,15 @@ namespace Presentation.WebApi {
             if(healthCheck.Analyze()) {
                 appBuilder.UseRequestLocalization();
                 appBuilder.UseCors(_allowedSpecificOrigins);
-                appBuilder.UseRouting();
+
                 appBuilder.UseHttpsRedirection();
+                appBuilder.UseCookiePolicy();
+
+                appBuilder.UseRouting();
 
                 appBuilder.UseAuthentication();
                 appBuilder.UseAuthorization();
+
                 appBuilder.UseEndpoints(endpoints => {
                     endpoints.MapControllers();
                 });

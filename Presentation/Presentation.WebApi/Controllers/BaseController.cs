@@ -9,7 +9,7 @@ using Microsoft.Extensions.Localization;
 using Presentation.WebApi.FilterAttributes;
 
 namespace Presentation.WebApi.Controllers {
-    [Security, ApiController, Route("[controller]")]//, Authorize
+    [Security, ApiController, Route("api/[controller]")]//, Authorize
     public class BaseController: Controller {
         #region ctor
         protected readonly IMapper _mapper;
@@ -25,19 +25,19 @@ namespace Presentation.WebApi.Controllers {
 
         [ApiExplorerSettings(IgnoreApi = true)]
         public IActionResult Ok(HttpStatusCode status = HttpStatusCode.OK, string message = null, object data = null, long? totalPages = null) {
-            message = message ?? _localizer[ResourceMessage.Ok];
+            message ??= _localizer[ResourceMessage.Ok];
             return Json(new BaseViewModel { Status = status, Message = message, Data = data, TotalPages = totalPages });
         }
 
         [ApiExplorerSettings(IgnoreApi = true)]
         public IActionResult BadRequest(HttpStatusCode status = HttpStatusCode.BadRequest, string message = null) {
-            message = message ?? _localizer[ResourceMessage.BadRequest];
+            message ??= _localizer[ResourceMessage.BadRequest];
             return Json(new BaseViewModel { Status = status, Message = message });
         }
 
         [ApiExplorerSettings(IgnoreApi = true)]
         public IActionResult InternalServerError(HttpStatusCode status = HttpStatusCode.InternalServerError, string message = null) {
-            message = message ?? _localizer[ResourceMessage.InternalServerError];
+            message ??= _localizer[ResourceMessage.InternalServerError];
             return Json(new BaseViewModel { Status = status, Message = message });
         }
     }

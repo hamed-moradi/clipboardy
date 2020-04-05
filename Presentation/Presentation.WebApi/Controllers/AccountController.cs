@@ -14,15 +14,12 @@ using Core.Application;
 using Core.Domain.Entities;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-//using Microsoft.Owin.Security;
 using Newtonsoft.Json;
 using Presentation.WebApi.FilterAttributes;
 using Serilog;
 
 namespace Presentation.WebApi.Controllers {
-    [Route("api/[controller]")]
     public class AccountController: BaseController {
         #region ctor
         private readonly IAccountService _accountService;
@@ -32,7 +29,6 @@ namespace Presentation.WebApi.Controllers {
         private readonly ContentBodyMaker _contentBodyMaker;
         private readonly IEmailService _emailService;
         private readonly ISMSService _smsService;
-        //private readonly SignInManager<Account> _signInManager;
 
         public AccountController(
             IAccountService accountService,
@@ -41,9 +37,7 @@ namespace Presentation.WebApi.Controllers {
             Cryptograph cryptograph,
             ContentBodyMaker contentBodyMaker,
             IEmailService emailService,
-            ISMSService smsService
-            //,SignInManager<Account> signInManager
-            ) {
+            ISMSService smsService) {
 
             _accountService = accountService;
             _accountProfileService = accountProfileService;
@@ -52,15 +46,6 @@ namespace Presentation.WebApi.Controllers {
             _contentBodyMaker = contentBodyMaker;
             _emailService = emailService;
             _smsService = smsService;
-            //_signInManager = signInManager;
-        }
-        #endregion
-
-        #region private
-        private Task<AuthenticateResult> AuthenticationManager {
-            get {
-                return HttpContext.AuthenticateAsync();
-            }
         }
         #endregion
 
@@ -328,97 +313,5 @@ namespace Presentation.WebApi.Controllers {
                 return InternalServerError(message: _localizer[ResourceMessage.SomethingWentWrong]);
             }
         }
-
-        #region external authentication
-
-        [HttpGet, AllowAnonymous, Route("externalsignin")]
-        public IActionResult ExternalSigninAsync([FromQuery]string provider = "Google") {
-            return new ChallengeResult(provider);
-        }
-
-        [HttpGet, AllowAnonymous, Route("externalsigninfailure")]
-        public async Task<IActionResult> ExternalSigninFailureAsync([FromQuery]string provider = "Google") {
-            var msg = $"Failed to signin to '{provider}'";
-            await Task.CompletedTask.ConfigureAwait(false);
-            return InternalServerError(message: msg);
-        }
-
-        [HttpGet, AllowAnonymous, Route("test")]
-        public async Task<IActionResult> Test() {
-            var authResult = await HttpContext.AuthenticateAsync().ConfigureAwait(true);
-            var authProperties = authResult.Properties.Items;
-
-            int.Parse("a");
-
-            return Ok();
-        }
-
-        [HttpGet, AllowAnonymous, Route("externalsignincallback")]
-        public async Task<IActionResult> ExternalSigninCallbackAsync(string returnUrl) {
-            try {
-
-                var authResult = await HttpContext.AuthenticateAsync().ConfigureAwait(true);
-                var authProperties = authResult.Properties.Items;
-
-                var auth = await HttpContext.AuthenticateAsync(IdentityConstants.ExternalScheme).ConfigureAwait(true);
-                var items = auth?.Properties?.Items;
-                if(auth?.Principal == null || items == null || !items.ContainsKey("LoginProviderKey")) { }
-
-                //var loginInfo = await SignInManager.GetExternalLoginInfoAsync();
-                //if(loginInfo == null) {
-                //    return RedirectToAction("signin");
-                //}
-
-                //var userRegister = ServiceHelper.Instance.LoginByExternalProvider("google", loginInfo.Email);
-
-                //try {
-                //    var webAddr = webServiceUrl + "LoginByExternalProvider";
-                //    var httpWebRequest = (HttpWebRequest)WebRequest.Create(webAddr);
-                //    httpWebRequest.ContentType = "application/json";
-                //    httpWebRequest.Method = "POST";
-                //    streamWriter = new StreamWriter(httpWebRequest.GetRequestStream());
-                //    var postData = "{\"request\":{\"Provider\":\"" + provider + "\",\"Email\":\"" + email + "\"}}";
-                //    streamWriter.Write(postData);
-                //    streamWriter.Flush();
-                //    var httpResponse = (HttpWebResponse)httpWebRequest.GetResponse();
-                //    var streamReader = new StreamReader(httpResponse.GetResponseStream());
-                //    var serviceResult = streamReader.ReadToEnd();
-                //    JObject jsonResult = JObject.Parse(serviceResult);
-                //    JObject value = (JObject)jsonResult["Result"];
-                //    return value.ToObject<UserLogin>();
-                //}
-                //catch(Exception ex) {
-                //    Logger.LogFile("RegisterByExternalProvider", $"Date:{DateTime.Now},Error:{ex.Message}");
-                //    return null;
-                //}
-
-                //if(userRegister == null || string.IsNullOrWhiteSpace(userRegister.Token)) {
-                //    return RedirectToAction("Error", "Home");
-                //}
-                //await SignInManager.SignInAsync(userRegister, isPersistent: false, rememberBrowser: false);
-                //return RedirectToLocal(returnUrl);
-
-                return Ok();
-            }
-            catch(Exception ex) {
-                Log.Error(ex, ex.Source);
-                return InternalServerError(message: _localizer[ResourceMessage.SomethingWentWrong]);
-            }
-        }
-
-        [HttpPost, AllowAnonymous, Route("externalsigninconfirmation")]
-        public async Task<IActionResult> ExternalSigninConfirmationAsync() {
-            try {
-
-
-                return Ok();
-            }
-            catch(Exception ex) {
-                Log.Error(ex, ex.Source);
-                return InternalServerError(message: _localizer[ResourceMessage.SomethingWentWrong]);
-            }
-        }
-
-        #endregion
     }
 }

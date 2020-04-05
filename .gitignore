@@ -29,6 +29,8 @@
 /Database/Database.MsSql/bin
 /Database/Database.MsSql/obj
 /Database/Database.MsSql/Import Schema Logs
+*.dbmdl
+*.jfm
 
 /Assets/Assets.Resource/obj
 /Assets/Assets.Resource/bin
