@@ -41,6 +41,7 @@ namespace Assets.Resource {
         #region SignIn
         public const string InvalidSigninAttempt = nameof(InvalidSigninAttempt);
         public const string GoToStepTwo = nameof(GoToStepTwo);
+        public const string ExternalAuthenticationError = nameof(ExternalAuthenticationError);
         #endregion
 
         #endregion

@@ -24,6 +24,11 @@ namespace Presentation.WebApi.Controllers {
         #endregion
 
         [ApiExplorerSettings(IgnoreApi = true)]
+        public IActionResult Ok(BaseViewModel viewModel) {
+            return Json(viewModel);
+        }
+
+        [ApiExplorerSettings(IgnoreApi = true)]
         public IActionResult Ok(HttpStatusCode status = HttpStatusCode.OK, string message = null, object data = null, long? totalPages = null) {
             message ??= _localizer[ResourceMessage.Ok];
             return Json(new BaseViewModel { Status = status, Message = message, Data = data, TotalPages = totalPages });

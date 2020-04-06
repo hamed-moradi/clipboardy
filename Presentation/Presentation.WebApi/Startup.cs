@@ -20,6 +20,9 @@ using Microsoft.AspNetCore.Identity;
 using Assets.Model.Base;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Authentication.MicrosoftAccount;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace Presentation.WebApi {
     public class Startup {
@@ -73,7 +76,7 @@ namespace Presentation.WebApi {
             services
                 .AddAuthentication(options => {
                     options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-                    options.DefaultChallengeScheme = GoogleDefaults.AuthenticationScheme;
+                    //options.DefaultChallengeScheme = GoogleDefaults.AuthenticationScheme;
                 })
                 .AddCookie()
                 .AddGoogle(GoogleDefaults.AuthenticationScheme, options => {
@@ -100,14 +103,18 @@ namespace Presentation.WebApi {
             }
             else {
                 //appBuilder.UseExceptionHandler("/Home/ErrorHandler");
+                appBuilder.UseHsts();
             }
 
             if(healthCheck.Analyze()) {
-                appBuilder.UseRequestLocalization();
+                //appBuilder.UseRequestLocalization();
                 appBuilder.UseCors(_allowedSpecificOrigins);
 
                 appBuilder.UseHttpsRedirection();
-                appBuilder.UseCookiePolicy();
+                //appBuilder.UseStaticFiles();
+                appBuilder.UseCookiePolicy(new CookiePolicyOptions {
+                    //MinimumSameSitePolicy = SameSiteMode.Strict,
+                });
 
                 appBuilder.UseRouting();
 

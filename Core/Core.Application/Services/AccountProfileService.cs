@@ -1,7 +1,6 @@
 ﻿using Core.Domain;
 using Core.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace Core.Application.Services {
@@ -9,7 +8,9 @@ namespace Core.Application.Services {
         #region
         private readonly MsSQLDbContext _msSQLDbContext;
 
-        public AccountProfileService(MsSQLDbContext msSQLDbContext) {
+        public AccountProfileService(
+            MsSQLDbContext msSQLDbContext) {
+
             _msSQLDbContext = msSQLDbContext;
         }
         #endregion

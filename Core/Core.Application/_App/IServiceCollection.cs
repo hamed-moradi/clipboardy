@@ -68,7 +68,9 @@ namespace Core.Application {
 
     public interface IAccountService: IGenericService<Account> {
         Task<BaseViewModel> Signup(SignupBindingModel signupModel);
+        Task<BaseViewModel> ExternalSignup(ExternalUserBindingModel externalUser);
         Task<BaseViewModel> Signin(SigninBindingModel signinModel);
+        Task<BaseViewModel> ExternalSignin(ExternalUserBindingModel externalUser, AccountProfile accountProfile);
     }
 
     public interface IAccountDeviceService: IGenericService<AccountDevice> { }

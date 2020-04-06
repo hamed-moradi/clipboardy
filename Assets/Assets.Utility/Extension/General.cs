@@ -15,6 +15,21 @@ namespace Assets.Utility.Extension {
         public static bool IsPhoneNumber(this string number) {
             return Regex.Match(number, "^[+][0-9]{12}$").Success;// || Regex.Match(number, "^[0][0-9]{10}$").Success;
         }
+
+        public static AccountProvider ToProvider(this string provider) {
+            switch(provider.ToLower()) {
+                case "google":
+                    return AccountProvider.Google;
+                case "microsoft":
+                    return AccountProvider.Microsoft;
+                case "facebook":
+                    return AccountProvider.Facebook;
+                case "twitter":
+                    return AccountProvider.Twitter;
+                default:
+                    return AccountProvider.Clipboard;
+            }
+        }
         #endregion
 
         #region number

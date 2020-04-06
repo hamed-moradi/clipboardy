@@ -11,15 +11,29 @@ using Microsoft.AspNetCore.Mvc;
 using Serilog;
 using System.Web;
 using Microsoft.AspNetCore.Http;
+using Core.Application;
+using Assets.Model.Binding;
+using System.Collections.Generic;
+using FastMember;
+using Assets.Model;
+using Assets.Utility.Extension;
+using Assets.Model.Base;
+using System.Text;
+using Newtonsoft.Json;
 
 namespace Presentation.WebApi.Controllers {
     [Route("api/[controller]")]
     public class ExternalAuthenticationController: BaseController {
         #region ctor
+        private readonly IAccountService _accountService;
+        private readonly IAccountProfileService _accountProfileService;
 
         public ExternalAuthenticationController(
-            ) {
+            IAccountService accountService,
+            IAccountProfileService accountProfileService) {
 
+            _accountService = accountService;
+            _accountProfileService = accountProfileService;
         }
         #endregion
 
@@ -29,22 +43,59 @@ namespace Presentation.WebApi.Controllers {
                 return HttpContext.AuthenticateAsync();
             }
         }
+
+        private ExternalUserBindingModel GetExternalUser(IEnumerable<Claim> claims) {
+            var result = new ExternalUserBindingModel();
+            var objectAccessor = ObjectAccessor.Create(result);
+            foreach(var item in CustomClaimTypes.List) {
+                var claim = claims.FirstOrDefault(x => x.Type == item.Value);
+                objectAccessor[item.Key] = claim?.Value;
+                if(result.ProviderId == AccountProvider.Clipboard)
+                    result.ProviderId = claim.Issuer.ToProvider();
+            }
+            return result;
+        }
         #endregion
 
         [HttpGet, AllowAnonymous, Route("signin")]
-        public async Task<IActionResult> Signin([FromQuery]string provider = "Google", string returnUrl = null) {
-            var properties = new AuthenticationProperties {
-                RedirectUri = Url.Action("signincallback", "externalauthentication", new { returnUrl })
-                //RedirectUri = $"http://localhost:2020/api/externalauthentication/signincallback?returnUrl={returnUrl}"
+        public async Task<IActionResult> Signin([FromQuery]string provider = "Google") {
+            var requestheader = HttpContext.Request.Headers;
+            var headerbindingmodel =
+                //new BaseHeaderBindingModel {
+                //    DeviceId = requestheader.FirstOrDefault(f => f.Key.ToLower() == "deviceid").Value,
+                //    DeviceName = requestheader.FirstOrDefault(f => f.Key.ToLower() == "devicename").Value,
+                //    DeviceType = requestheader.FirstOrDefault(f => f.Key.ToLower() == "devicetype").Value
+                //}
+                new BaseHeaderBindingModel {
+                    DeviceId = "deviceid",
+                    DeviceName = "devicename",
+                    DeviceType = "devicetype"
+                };
+
+            var userdata = Convert.ToBase64String(Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(headerbindingmodel)));
+
+            var redirecturl = $"/api/externalauthentication/signincallback?userdata={userdata}";
+
+            var authprops = new AuthenticationProperties {
+                AllowRefresh = true,
+                ExpiresUtc = DateTimeOffset.UtcNow.AddDays(7),
+                IsPersistent = true,
+                RedirectUri = redirecturl
             };
 
-            return new ChallengeResult(provider, properties);
+            Response.Redirect(redirecturl);
+            await Response.CompleteAsync().ConfigureAwait(true);
 
-            //Context.GetOwinContext().Authentication.Challenge(authenticationProperties, provider);
-            //Response.StatusCode = 401;
-            //Response.End();
+            return Challenge(authprops, provider);
+        }
 
-            //return Challenge(properties);
+        [HttpPost, Route("signout")]
+        public async Task<IActionResult> Signout() {
+            Log.Debug($"User {User.Identity.Name} signed out at {DateTime.UtcNow}");
+
+            await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme).ConfigureAwait(false);
+
+            return RedirectToAction("index", "home");
         }
 
         [HttpGet, AllowAnonymous, Route("signinfailure")]
@@ -55,89 +106,57 @@ namespace Presentation.WebApi.Controllers {
         }
 
         [HttpGet, AllowAnonymous, Route("signincallback")]
-        public async Task<IActionResult> SigninCallbackAsync(string returnUrl = null, string remoteError = null) {
+        public async Task<IActionResult> SigninCallbackAsync(string userData = null, string remoteError = null) {
             try {
-                //var loginInfo = Context.GetOwinContext().Authentication.GetExternalLoginInfo();
+                if(string.IsNullOrWhiteSpace(userData)) {
+                    Log.Error("userData is not defined");
+                    return BadRequest(message: _localizer[ResourceMessage.DefectiveEntry]);
+                }
 
-                var request = HttpContext.Request;
-                //Here we can retrieve the claims
+                var headerbindingmodel = JsonConvert.DeserializeObject<BaseHeaderBindingModel>(Encoding.UTF8.GetString(Convert.FromBase64String(userData)));
+                if(headerbindingmodel == null
+                    || string.IsNullOrWhiteSpace(headerbindingmodel.DeviceId)
+                    || string.IsNullOrWhiteSpace(headerbindingmodel.DeviceName)
+                    || string.IsNullOrWhiteSpace(headerbindingmodel.DeviceType)) {
+
+                    Log.Error("userData is not valid");
+                    return BadRequest(message: _localizer[ResourceMessage.DefectiveEntry]);
+                }
+
                 // read external identity from the temporary cookie
-                //var authenticateResult = HttpContext.GetOwinContext().Authentication.AuthenticateAsync("ExternalCookie");
-                var result = await HttpContext.AuthenticateAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+                var result = await HttpContext.AuthenticateAsync(CookieAuthenticationDefaults.AuthenticationScheme).ConfigureAwait(true);
 
-                if(result.Succeeded != true) {
-                    throw new Exception("External authentication error");
+                if(!result.Succeeded) {
+                    Log.Error("External authentication failure");
+                    return InternalServerError(message: _localizer[ResourceMessage.ExternalAuthenticationError]);
                 }
 
                 // retrieve claims of the external user
-                var externalUser = result.Principal;
-                if(externalUser == null) {
-                    throw new Exception("External authentication error");
+                var claimPrincipal = result.Principal;
+                if(claimPrincipal == null) {
+                    Log.Error("External authentication user principal error");
+                    return InternalServerError(message: _localizer[ResourceMessage.ExternalAuthenticationError]);
                 }
 
-                // retrieve claims of the external user
-                var claims = externalUser.Claims.ToList();
-
-                // try to determine the unique id of the external user - the most common claim type for that are the sub claim and the NameIdentifier
-                // depending on the external provider, some other claim type might be used
-                //var userIdClaim = claims.FirstOrDefault(x => x.Type == JwtClaimTypes.Subject);
-                var userIdClaim = claims.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier);
-                if(userIdClaim == null) {
-                    throw new Exception("Unknown userid");
+                // transform claims list to model
+                var externalUser = GetExternalUser(claimPrincipal.Claims);
+                if(string.IsNullOrWhiteSpace(externalUser.Email)) {
+                    Log.Error("External authentication user email not found");
+                    return InternalServerError(message: _localizer[ResourceMessage.ExternalAuthenticationError]);
                 }
+                externalUser.DeviceId = headerbindingmodel.DeviceId;
+                externalUser.DeviceName = headerbindingmodel.DeviceName;
+                externalUser.DeviceType = headerbindingmodel.DeviceType;
 
-                var externalUserId = userIdClaim.Value;
-                var externalProvider = userIdClaim.Issuer;
-
-                // use externalProvider and externalUserId to find your user, or provision a new user
-
-                //return RedirectToAction("Privacy", "Home");
-
-
-                var result2 = HttpContext.AuthenticateAsync(CookieAuthenticationDefaults.AuthenticationScheme);
-
-                var authResult = await HttpContext.AuthenticateAsync().ConfigureAwait(true);
-                var authProperties = authResult.Properties.Items;
-
-                var auth = await HttpContext.AuthenticateAsync(IdentityConstants.ExternalScheme).ConfigureAwait(true);
-                var items = auth?.Properties?.Items;
-                if(auth?.Principal == null || items == null || !items.ContainsKey("LoginProviderKey")) { }
-
-                //var loginInfo = await SignInManager.GetExternalLoginInfoAsync();
-                //if(loginInfo == null) {
-                //    return RedirectToAction("signin");
-                //}
-
-                //var userRegister = ServiceHelper.Instance.LoginByExternalProvider("google", loginInfo.Email);
-
-                //try {
-                //    var webAddr = webServiceUrl + "LoginByExternalProvider";
-                //    var httpWebRequest = (HttpWebRequest)WebRequest.Create(webAddr);
-                //    httpWebRequest.ContentType = "application/json";
-                //    httpWebRequest.Method = "POST";
-                //    streamWriter = new StreamWriter(httpWebRequest.GetRequestStream());
-                //    var postData = "{\"request\":{\"Provider\":\"" + provider + "\",\"Email\":\"" + email + "\"}}";
-                //    streamWriter.Write(postData);
-                //    streamWriter.Flush();
-                //    var httpResponse = (HttpWebResponse)httpWebRequest.GetResponse();
-                //    var streamReader = new StreamReader(httpResponse.GetResponseStream());
-                //    var serviceResult = streamReader.ReadToEnd();
-                //    JObject jsonResult = JObject.Parse(serviceResult);
-                //    JObject value = (JObject)jsonResult["Result"];
-                //    return value.ToObject<UserLogin>();
-                //}
-                //catch(Exception ex) {
-                //    Logger.LogFile("RegisterByExternalProvider", $"Date:{DateTime.Now},Error:{ex.Message}");
-                //    return null;
-                //}
-
-                //if(userRegister == null || string.IsNullOrWhiteSpace(userRegister.Token)) {
-                //    return RedirectToAction("Error", "Home");
-                //}
-                //await SignInManager.SignInAsync(userRegister, isPersistent: false, rememberBrowser: false);
-                //return RedirectToLocal(returnUrl);
-
-                return Ok();
+                var accountprofile = await _accountProfileService.FirstAsync(f => f.Email == externalUser.Email).ConfigureAwait(true);
+                if(accountprofile == null) {
+                    Log.Debug($"User {User.Identity.Name} try to sign in for first time at {DateTime.UtcNow}");
+                    return Ok(_accountService.ExternalSignup(externalUser));
+                }
+                else {
+                    Log.Debug($"Account with Id={accountprofile.AccountId} try to sign in at {DateTime.UtcNow}");
+                    return Ok(_accountService.ExternalSignin(externalUser, accountprofile));
+                }
             }
             catch(Exception ex) {
                 Log.Error(ex, ex.Source);

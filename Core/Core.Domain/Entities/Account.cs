@@ -11,7 +11,7 @@ namespace Core.Domain.Entities {
         [Required, MaxLength(32)]
         public string Username { get; set; }
 
-        [Required, MaxLength(512)]
+        [MaxLength(512)]
         public string Password { get; set; }
 
         [Required]

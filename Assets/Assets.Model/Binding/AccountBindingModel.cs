@@ -10,8 +10,7 @@ namespace Assets.Model.Binding {
         public string ConfirmPassword { get; set; }
         public string DeviceId { get; set; }
         public string DeviceName { get; set; }
-        public string IMEI { get; set; }
-        public string OS { get; set; }
+        public string DeviceType { get; set; }
     }
 
     public class SigninBindingModel: IBaseBindingModel {
@@ -20,8 +19,7 @@ namespace Assets.Model.Binding {
         public bool RememberMe { get; set; }
         public string DeviceId { get; set; }
         public string DeviceName { get; set; }
-        public string IMEI { get; set; }
-        public string OS { get; set; }
+        public string DeviceType { get; set; }
     }
 
     public class ForgotPasswordBindingModel: IBaseBindingModel {

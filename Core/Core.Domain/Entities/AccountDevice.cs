@@ -20,11 +20,8 @@ namespace Core.Domain.Entities {
         [Required, MaxLength(128)]
         public string DeviceName { get; set; }
 
-        [Required, MaxLength(32)]
-        public string IMEI { get; set; }
-
-        [Required, MaxLength(64)]
-        public string OS { get; set; }
+        [Required, MaxLength(128)]
+        public string DeviceType { get; set; }
 
         public DateTime? CreatedAt { get; set; }
 

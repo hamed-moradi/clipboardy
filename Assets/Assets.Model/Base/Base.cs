@@ -53,12 +53,14 @@ namespace Assets.Model.Base {
         }
     }
 
-    public class HeaderBindingModel: IBaseBindingModel {
-        public string Token { get; set; }
+    public class BaseHeaderBindingModel: IBaseBindingModel {
         public string DeviceId { get; set; }
         public string DeviceName { get; set; }
         public string DeviceType { get; set; }
+    }
 
+    public class HeaderBindingModel: BaseHeaderBindingModel {
+        public string Token { get; set; }
         public AccountHeader AccountHeader { get; set; }
     }
 
@@ -67,7 +69,7 @@ namespace Assets.Model.Base {
         public bool OrderAscending { get; set; } = false;
         public int Skip { get; set; } = 0;
         public int Take { get; set; } = 10;
-        public QuerySetting QuerySetting { 
+        public QuerySetting QuerySetting {
             get {
                 return new QuerySetting { OrderBy = OrderBy, OrderAscending = OrderAscending, Skip = Skip, Take = Take };
             }

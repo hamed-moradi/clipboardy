@@ -2,6 +2,8 @@
 # This .gitignore file was automatically created by Microsoft(R) Visual Studio.
 ################################################################################
 
+*.dbmdl
+*.jfm
 /.vs
 
 /Assets/Assets.Model/obj
@@ -29,8 +31,6 @@
 /Database/Database.MsSql/bin
 /Database/Database.MsSql/obj
 /Database/Database.MsSql/Import Schema Logs
-*.dbmdl
-*.jfm
 
 /Assets/Assets.Resource/obj
 /Assets/Assets.Resource/bin
