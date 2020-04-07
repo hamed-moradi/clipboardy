@@ -282,8 +282,7 @@ namespace Core.Application.Services {
                             AccountId = account.Id,
                             DeviceId = externalUser.DeviceId,
                             DeviceName = externalUser.DeviceName,
-                            //IMEI = externalUser.IMEI,
-                            //OS = externalUser.OS,
+                            DeviceType = externalUser.DeviceType,
                             Token = token,
                             CreatedAt = now,
                             StatusId = Status.Active

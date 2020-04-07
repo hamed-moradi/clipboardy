@@ -59,21 +59,11 @@ namespace Presentation.WebApi.Controllers {
 
         [HttpGet, AllowAnonymous, Route("signin")]
         public async Task<IActionResult> Signin([FromQuery]string provider = "Google") {
-            var requestheader = HttpContext.Request.Headers;
-            var headerbindingmodel =
-                //new BaseHeaderBindingModel {
-                //    DeviceId = requestheader.FirstOrDefault(f => f.Key.ToLower() == "deviceid").Value,
-                //    DeviceName = requestheader.FirstOrDefault(f => f.Key.ToLower() == "devicename").Value,
-                //    DeviceType = requestheader.FirstOrDefault(f => f.Key.ToLower() == "devicetype").Value
-                //}
-                new BaseHeaderBindingModel {
-                    DeviceId = "deviceid",
-                    DeviceName = "devicename",
-                    DeviceType = "devicetype"
-                };
+            if(string.IsNullOrWhiteSpace(ContextHeader.DeviceId)) ContextHeader.DeviceId = "DeviceId";
+            if(string.IsNullOrWhiteSpace(ContextHeader.DeviceName)) ContextHeader.DeviceName = "DeviceName";
+            if(string.IsNullOrWhiteSpace(ContextHeader.DeviceType)) ContextHeader.DeviceType = "DeviceType";
 
-            var userdata = Convert.ToBase64String(Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(headerbindingmodel)));
-
+            var userdata = Convert.ToBase64String(Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(ContextHeader)));
             var redirecturl = $"/api/externalauthentication/signincallback?userdata={userdata}";
 
             var authprops = new AuthenticationProperties {

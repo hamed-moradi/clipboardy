@@ -23,6 +23,7 @@ using Microsoft.AspNetCore.Authentication.MicrosoftAccount;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using System;
 
 namespace Presentation.WebApi {
     public class Startup {
@@ -45,7 +46,7 @@ namespace Presentation.WebApi {
                 options.SupportedUICultures = SupportedCulture.List;
             });
 
-            // app setting
+            // app settings
             services.Configure<AppSetting>(config => _configuration.Bind(config));
             var appSettings = services.BuildServiceProvider().GetService<IOptionsSnapshot<AppSetting>>().Value;
             services.AddSingleton(sp => appSettings);

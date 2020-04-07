@@ -56,7 +56,7 @@ namespace Presentation.WebApi.Controllers {
             Log.Debug($"A User is trying to register with this data: {JsonConvert.SerializeObject(collection)}");
 
             if(string.IsNullOrEmpty(collection?.Username)) {
-                return BadRequest(message: "Please define your Email or CellPhone number.");
+                return BadRequest(message: _localizer[ResourceMessage.DefectiveEmailOrCellPhone]);
             }
             collection.Username = collection.Username.Trim();
 
@@ -65,18 +65,18 @@ namespace Presentation.WebApi.Controllers {
                     collection.Phone = collection.Username;
                     if(await _accountProfileService.FirstAsync(f => f.Phone == collection.Phone).ConfigureAwait(true) != null) {
                         return Ok(status: HttpStatusCode.NonAuthoritativeInformation,
-                            message: "This Phone number is already registered. If you forgot your Password try to use Forgat Password feature.");
+                            message: _localizer[ResourceMessage.CellPhoneAlreadyExists]);
                     }
                 }
                 else if(new EmailAddressAttribute().IsValid(collection.Username)) {
                     collection.Email = collection.Username;
                     if(await _accountProfileService.FirstAsync(f => f.Email == collection.Email).ConfigureAwait(true) != null) {
                         return Ok(status: HttpStatusCode.NonAuthoritativeInformation,
-                            message: "This Email is already registered. If you forgot your Password try to use Forgat Password feature.");
+                            message: _localizer[ResourceMessage.EmailAlreadyExists]);
                     }
                 }
                 else {
-                    return BadRequest(message: "Please define a correct Email or CellPhone number.");
+                    return BadRequest(message: _localizer[ResourceMessage.InvalidEmailOrCellPhone]);
                 }
 
                 if(string.IsNullOrEmpty(collection.Password) && string.IsNullOrEmpty(collection.ConfirmPassword)) {

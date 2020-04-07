@@ -1,6 +1,6 @@
-﻿using System.Collections.Generic;
-using System.Net;
+﻿using System.Net;
 using Assets.Model.Base;
+using Assets.Model.Common;
 using Assets.Resource;
 using Assets.Utility;
 using AutoMapper;
@@ -9,11 +9,12 @@ using Microsoft.Extensions.Localization;
 using Presentation.WebApi.FilterAttributes;
 
 namespace Presentation.WebApi.Controllers {
-    [Security, ApiController, Route("api/[controller]")]//, Authorize
+    [ContextHeader, Security, ApiController, Route("api/[controller]")]//, Authorize
     public class BaseController: Controller {
         #region ctor
         protected readonly IMapper _mapper;
         protected readonly IStringLocalizer<BaseController> _localizer;
+        protected ContextHeader ContextHeader { get { return (ContextHeader)HttpContext.Items[nameof(ContextHeader)]; } }
         protected string IP { get { return HttpContext.Connection.RemoteIpAddress.ToString(); } }
         protected string URL { get { return $"{HttpContext.Request.Scheme}://{HttpContext.Request.Host}{HttpContext.Request.Path}{HttpContext.Request.QueryString}"; } }
 
@@ -24,7 +25,7 @@ namespace Presentation.WebApi.Controllers {
         #endregion
 
         [ApiExplorerSettings(IgnoreApi = true)]
-        public IActionResult Ok(BaseViewModel viewModel) {
+        public IActionResult Raw(BaseViewModel viewModel) {
             return Json(viewModel);
         }
 

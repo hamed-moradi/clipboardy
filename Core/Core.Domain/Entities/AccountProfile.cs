@@ -33,7 +33,7 @@ namespace Core.Domain.Entities {
     }
 
     public partial class AccountProfile {
-        [ForeignKey(nameof(AccountId))]
-        public virtual Account Account { get; set; }
+        //[ForeignKey(nameof(AccountId))]
+        //public virtual Account Account { get; set; }
     }
 }

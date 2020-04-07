@@ -391,35 +391,22 @@ namespace Core.Application {
                 tracked = First(entity.Id.Value, force: true);
                 _propertyMapper.Bind(entity, tracked);
             }
+            return SaveAndReturn(Entity.Update(tracked));
+        }
 
-            while(true) {
-                try {
-                    // Attempt to save changes to the database
-                    return SaveAndReturn(Entity.Update(tracked));
-                }
-                catch(DbUpdateConcurrencyException ex) {
-                    foreach(var entry in ex.Entries) {
-                        if(entry.Entity is TEntity) {
-                            var proposedValues = entry.CurrentValues;
-                            var databaseValues = entry.GetDatabaseValues();
-
-                            foreach(var property in proposedValues.Properties) {
-                                var proposedValue = proposedValues[property];
-                                var databaseValue = databaseValues[property];
-                                proposedValues[property] = proposedValue;
-                            }
-
-                            // Refresh original values to bypass next concurrency check
-                            entry.OriginalValues.SetValues(databaseValues);
-                        }
-                        else {
-                            throw new NotSupportedException(
-                                "Don't know how to handle concurrency conflicts for "
-                                + entry.Metadata.Name);
-                        }
-                    }
-                }
+        /// <summary>
+        /// Update record
+        /// </summary>
+        /// <param name="entity">The entity</param>
+        /// <param name="needToFetch">Get entity before update</param>
+        /// <returns>The updated record</returns>
+        public TModel Update<TModel>(TEntity entity, bool needToFetch = true) where TModel : BaseModel {
+            var tracked = entity;
+            if(needToFetch) {
+                tracked = First(entity.Id.Value, force: true);
+                _propertyMapper.Bind(entity, tracked);
             }
+            return _mapper.Map<TModel>(SaveAndReturn(Entity.Update(tracked)));
         }
 
         /// <summary>
@@ -434,73 +421,80 @@ namespace Core.Application {
                 tracked = await FirstAsync(entity.Id.Value, force: true);
                 _propertyMapper.Bind(entity, tracked);
             }
+            return await SaveAndReturnAsync(Entity.Update(tracked));
+        }
 
-            while(true) {
-                try {
-                    return await SaveAndReturnAsync(Entity.Update(tracked));
-                }
-                catch(DbUpdateConcurrencyException ex) {
-                    foreach(var entry in ex.Entries) {
-                        if(entry.Entity is TEntity) {
-                            var proposedValues = entry.CurrentValues;
-                            var databaseValues = entry.GetDatabaseValues();
-
-                            foreach(var property in proposedValues.Properties) {
-                                var proposedValue = proposedValues[property];
-                                var databaseValue = databaseValues[property];
-                                proposedValues[property] = proposedValue;
-                            }
-
-                            entry.OriginalValues.SetValues(databaseValues);
-                        }
-                        else {
-                            throw new NotSupportedException(
-                                "Don't know how to handle concurrency conflicts for "
-                                + entry.Metadata.Name);
-                        }
-                    }
-                }
+        /// <summary>
+        /// Update record asynchrony
+        /// </summary>
+        /// <param name="entity">The entity</param>
+        /// <param name="needToFetch">Get entity before update</param>
+        /// <returns>The updated record</returns>
+        public async Task<TModel> UpdateAsync<TModel>(TEntity entity, bool needToFetch = true) where TModel : BaseModel {
+            var tracked = entity;
+            if(needToFetch) {
+                tracked = await FirstAsync(entity.Id.Value, force: true);
+                _propertyMapper.Bind(entity, tracked);
             }
+            return _mapper.Map<TModel>(await SaveAndReturnAsync(Entity.Update(tracked)));
         }
 
-        public bool Remove(long id) {
-            return Remove(First(id, force: true));
-        }
+        //public bool Remove(long id) {
+        //    return Remove(First(id, force: true));
+        //}
 
-        public bool Remove<TModel>(TModel viewModel) where TModel : BaseModel {
-            return Remove(First(viewModel.Id.Value, force: true));
-        }
+        //public bool Remove<TModel>(TModel viewModel) where TModel : BaseModel {
+        //    return Remove(First(viewModel.Id, force: true));
+        //}
 
-        public bool Remove(TEntity entity) {
-            entity.StatusId = Status.Deleted;
-            return SaveAndGetState(Entity.Update(entity)) == EntityState.Modified;
-        }
+        //public bool Remove(TEntity entity) {
+        //    var wrapped = ObjectAccessor.Create(entity);
+        //    if(wrapped["Status"] != null) {
+        //        wrapped["Status"] = Status.Deleted;
+        //        return SaveAndGetState(Entity.Update(entity)) == EntityState.Modified;
+        //    }
+        //    return false;
+        //}
 
-        public bool Remove(Expression<Func<TEntity, bool>> predicate) {
-            var entities = All(predicate);
-            entities.ForEach(e => e.StatusId = Status.Deleted);
-            return SaveAll() == 1;
-        }
+        //public bool Remove(Expression<Func<TEntity, bool>> predicate) {
+        //    var entities = All(predicate);
+        //    entities.ForEach(e => {
+        //        var wrapped = ObjectAccessor.Create(e);
+        //        if(wrapped["Status"] != null) {
+        //            wrapped["Status"] = Status.Deleted;
+        //        }
+        //    });
+        //    return SaveAll() == 1;
+        //}
 
-        public async Task<bool> RemoveAsync(long id) {
-            return await RemoveAsync(await FirstAsync(id, force: true));
-        }
+        //public async Task<bool> RemoveAsync(long id) {
+        //    return await RemoveAsync(await FirstAsync(id, force: true));
+        //}
 
-        public async Task<bool> RemoveAsync<TModel>(TModel viewModel) where TModel : BaseModel {
-            return await RemoveAsync(await FirstAsync(viewModel.Id.Value, force: true));
+        //public async Task<bool> RemoveAsync<TModel>(TModel viewModel) where TModel : BaseModel {
+        //    return await RemoveAsync(await FirstAsync(viewModel.Id, force: true));
 
-        }
+        //}
 
-        public async Task<bool> RemoveAsync(TEntity entity) {
-            entity.StatusId = Status.Deleted;
-            return await SaveAndGetStateAsync(Entity.Update(entity)) == EntityState.Modified;
-        }
+        //public async Task<bool> RemoveAsync(TEntity entity) {
+        //    var wrapped = ObjectAccessor.Create(entity);
+        //    if(wrapped["Status"] != null) {
+        //        wrapped["Status"] = Status.Deleted;
+        //        return await SaveAndGetStateAsync(Entity.Update(entity)) == EntityState.Modified;
+        //    }
+        //    return false;
+        //}
 
-        public async Task<bool> RemoveAsync(Expression<Func<TEntity, bool>> predicate) {
-            var entities = All(predicate);
-            entities.ForEach(e => e.StatusId = Status.Deleted);
-            return await SaveAllAsync() == 1;
-        }
+        //public async Task<bool> RemoveAsync(Expression<Func<TEntity, bool>> predicate) {
+        //    var entities = All(predicate);
+        //    entities.ForEach(e => {
+        //        var wrapped = ObjectAccessor.Create(e);
+        //        if(wrapped["Status"] != null) {
+        //            wrapped["Status"] = Status.Deleted;
+        //        }
+        //    });
+        //    return await SaveAllAsync() == 1;
+        //}
 
         public bool Delete(long id) {
             return Delete(First(id, force: true));
@@ -536,18 +530,96 @@ namespace Core.Application {
             return _dbContext.SaveChanges();
         }
 
-        public async Task<int> SaveAsync(EntityEntry entry) {
-            return await entry.Context.SaveChangesAsync();
+        public async Task<int> SaveAsync(EntityEntry entity) {
+            while(true) {
+                try {
+                    // Attempt to save changes to the database
+                    return await entity.Context.SaveChangesAsync();
+                }
+                catch(DbUpdateConcurrencyException ex) {
+                    foreach(var entry in ex.Entries) {
+                        if(entry.Entity is TEntity) {
+                            var proposedValues = entry.CurrentValues;
+                            var databaseValues = entry.GetDatabaseValues();
+
+                            foreach(var property in proposedValues.Properties) {
+                                var proposedValue = proposedValues[property];
+                                var databaseValue = databaseValues[property];
+                                proposedValues[property] = proposedValue;
+                            }
+
+                            // Refresh original values to bypass next concurrency check
+                            entry.OriginalValues.SetValues(databaseValues);
+                        }
+                        else {
+                            throw new NotSupportedException(
+                                "Don't know how to handle concurrency conflicts for "
+                                + entry.Metadata.Name);
+                        }
+                    }
+                }
+            }
         }
 
-        public async Task<EntityState> SaveAndGetStateAsync(EntityEntry entry) {
-            await entry.Context.SaveChangesAsync();
-            return entry.State;
+        public async Task<EntityState> SaveAndGetStateAsync(EntityEntry entity) {
+
+            while(true) {
+                try {
+                    await entity.Context.SaveChangesAsync();
+                    return entity.State;
+                }
+                catch(DbUpdateConcurrencyException ex) {
+                    foreach(var entry in ex.Entries) {
+                        if(entry.Entity is TEntity) {
+                            var proposedValues = entry.CurrentValues;
+                            var databaseValues = entry.GetDatabaseValues();
+
+                            foreach(var property in proposedValues.Properties) {
+                                var proposedValue = proposedValues[property];
+                                var databaseValue = databaseValues[property];
+                                proposedValues[property] = proposedValue;
+                            }
+
+                            entry.OriginalValues.SetValues(databaseValues);
+                        }
+                        else {
+                            throw new NotSupportedException(
+                                "Don't know how to handle concurrency conflicts for "
+                                + entry.Metadata.Name);
+                        }
+                    }
+                }
+            }
         }
 
-        public async Task<TEntity> SaveAndReturnAsync(EntityEntry entry) {
-            await entry.Context.SaveChangesAsync();
-            return (TEntity)entry.Entity;
+        public async Task<TEntity> SaveAndReturnAsync(EntityEntry entity) {
+            while(true) {
+                try {
+                    await entity.Context.SaveChangesAsync();
+                    return (TEntity)entity.Entity;
+                }
+                catch(DbUpdateConcurrencyException ex) {
+                    foreach(var entry in ex.Entries) {
+                        if(entry.Entity is TEntity) {
+                            var proposedValues = entry.CurrentValues;
+                            var databaseValues = entry.GetDatabaseValues();
+
+                            foreach(var property in proposedValues.Properties) {
+                                var proposedValue = proposedValues[property];
+                                var databaseValue = databaseValues[property];
+                                proposedValues[property] = proposedValue;
+                            }
+
+                            entry.OriginalValues.SetValues(databaseValues);
+                        }
+                        else {
+                            throw new NotSupportedException(
+                                "Don't know how to handle concurrency conflicts for "
+                                + entry.Metadata.Name);
+                        }
+                    }
+                }
+            }
         }
 
         public async Task<int> SaveAllAsync() {

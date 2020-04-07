@@ -44,6 +44,12 @@ namespace Presentation.WebApi.FilterAttributes {
             var deviceName = headerDeviceName.Value.ToString();
             var deviceType = headerDeviceType.Value.ToString();
 
+            context?.HttpContext.Items.Add(nameof(ContextHeader), new ContextHeader {
+                DeviceId = deviceId,
+                DeviceName = deviceName,
+                DeviceType = deviceType
+            });
+
             if((string.IsNullOrWhiteSpace(token)
                 || string.IsNullOrWhiteSpace(deviceId)
                 || string.IsNullOrWhiteSpace(deviceName)

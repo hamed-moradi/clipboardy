@@ -23,6 +23,7 @@ namespace Presentation.WebApi.Controllers {
 
         [HttpGet, ArgumentBinder, Route("get")]
         public async Task<IActionResult> Get([FromQuery]ClipboardGetBindingModel collection) {
+            var t = ContextHeader;
             try {
                 var model = _mapper.Map<Clipboard>(collection);
                 var clipboards = await _clipboardService.GetPagingAsync<ClipboardViewModel>(model, collection.QuerySetting).ConfigureAwait(true);

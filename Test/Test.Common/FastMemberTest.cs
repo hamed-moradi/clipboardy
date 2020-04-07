@@ -3,6 +3,7 @@ using Core.Domain.Entities;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Linq.Expressions;
 using System;
+using System.Linq;
 using Assets.Model.Base;
 
 namespace Test.Common {
@@ -27,8 +28,21 @@ namespace Test.Common {
             var wrapped = ObjectAccessor.Create(cb);
             var val = wrapped[propName];
             wrapped[propName] = (int)val + 1;
+            var ifexist = wrapped["Id"];
 
             Assert.IsTrue(cb.Id == 2);
+        }
+
+        [TestMethod, TestCategory("FastMember"), TestCategory("IfExist")]
+        public void IfExist() {
+            var cb = new Clipboard();
+            var propName = "Id2";
+
+            var accessor = TypeAccessor.Create(cb.GetType());
+            var ifexist1 = accessor[cb, propName];
+
+            var wrapped = ObjectAccessor.Create(cb);
+            var ifexist2 = wrapped[propName];
         }
 
         [TestMethod, TestCategory("FastMember"), TestCategory("ReflectExpression")]
@@ -40,7 +54,6 @@ namespace Test.Common {
             //var getVal = accessor[predicate, nameof(BaseEntity.TotalCount)];
 
             var wrapped = ObjectAccessor.Create(predicate.Body.Type);
-            //var val = wrapped[nameof(BaseEntity.TotalCount)];
 
             Assert.AreEqual(wrapped, typeof(BaseEntity));
         }

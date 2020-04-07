@@ -46,15 +46,15 @@ namespace Core.Application {
         TEntity Update(TEntity entity, bool needToFetch = true);
         Task<TEntity> UpdateAsync(TEntity entity, bool needToFetch = true);
 
-        bool Remove(long id);
-        bool Remove(TEntity entity);
-        bool Remove<TModel>(TModel viewModel) where TModel : BaseModel;
-        bool Remove(Expression<Func<TEntity, bool>> predicate);
+        //bool Remove(long id);
+        //bool Remove(TEntity entity);
+        //bool Remove<TModel>(TModel viewModel) where TModel : BaseModel;
+        //bool Remove(Expression<Func<TEntity, bool>> predicate);
 
-        Task<bool> RemoveAsync(long id);
-        Task<bool> RemoveAsync(TEntity entity);
-        Task<bool> RemoveAsync<TModel>(TModel viewModel) where TModel : BaseModel;
-        Task<bool> RemoveAsync(Expression<Func<TEntity, bool>> predicate);
+        //Task<bool> RemoveAsync(long id);
+        //Task<bool> RemoveAsync(TEntity entity);
+        //Task<bool> RemoveAsync<TModel>(TModel viewModel) where TModel : BaseModel;
+        //Task<bool> RemoveAsync(Expression<Func<TEntity, bool>> predicate);
 
         bool Delete(long id);
         bool Delete(TEntity entity);

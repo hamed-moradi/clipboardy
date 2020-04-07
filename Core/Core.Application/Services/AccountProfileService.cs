@@ -16,7 +16,7 @@ namespace Core.Application.Services {
         #endregion
 
         public async Task<bool> CleanForgotPasswordTokensAsync(int accountId) {
-            var query = $"UPDATE dbo.AccountProfile SET ForgotPasswordToken = NULL WHERE accountId = {accountId};";
+            var query = $"UPDATE dbo.AccountProfile SET ForgotPasswordToken = NULL WHERE AccountId = {accountId};";
             var result = await _msSQLDbContext.Database.ExecuteSqlRawAsync(query);
             if(result > 0)
                 return true;

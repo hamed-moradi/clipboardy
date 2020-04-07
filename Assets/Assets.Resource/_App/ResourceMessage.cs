@@ -36,6 +36,10 @@ namespace Assets.Resource {
         #region SignUp
         public const string DefectiveCellPhone = nameof(DefectiveCellPhone);
         public const string DefectiveEmail = nameof(DefectiveEmail);
+        public const string DefectiveEmailOrCellPhone = nameof(DefectiveEmailOrCellPhone);//"Please define your Email or CellPhone number."
+        public const string InvalidEmailOrCellPhone = nameof(InvalidEmailOrCellPhone);//"Please define a correct Email or CellPhone number."
+        public const string CellPhoneAlreadyExists = nameof(CellPhoneAlreadyExists);//"This Phone number is already registered. If you forgot your Password try to use Forgat Password feature."
+        public const string EmailAlreadyExists = nameof(EmailAlreadyExists);//"This Email is already registered. If you forgot your Password try to use Forgat Password feature."
         #endregion
 
         #region SignIn
