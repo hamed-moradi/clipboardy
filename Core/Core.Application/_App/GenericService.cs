@@ -8,6 +8,7 @@ using Core.Domain;
 using Core.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
+using Microsoft.EntityFrameworkCore.Storage;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,21 +20,28 @@ namespace Core.Application {
     public class GenericService<TEntity>: PredicateMaker<TEntity>, IGenericService<TEntity> where TEntity : BaseEntity {
         #region ctor
         private readonly IMapper _mapper;
-        private readonly MsSQLDbContext _dbContext;
+        private readonly MsSQLDbContext _msSQLDbContext;
         private readonly PropertyMapper _propertyMapper;
 
         public GenericService(
             MsSQLDbContext dbContext = null,
             IMapper mapper = null,
-            PropertyMapper propertyMapper = null) : base() {
+            PropertyMapper propertyMapper = null) : base(dbContext, mapper) {
 
             var serviceLocator = ServiceLocator.Current;
-            _dbContext = dbContext ?? serviceLocator.GetInstance<MsSQLDbContext>();
+            _msSQLDbContext = dbContext ?? serviceLocator.GetInstance<MsSQLDbContext>();
             _mapper = mapper ?? serviceLocator.GetInstance<IMapper>();
             _propertyMapper = propertyMapper ?? serviceLocator.GetInstance<PropertyMapper>();
         }
         #endregion
 
+        public MsSQLDbContext GetMsSQLDbContext(IDbContextTransaction transaction = null) {
+            if(transaction != null)
+                _msSQLDbContext.Database.UseTransaction(transaction.GetDbTransaction());
+            return _msSQLDbContext;
+        }
+
+        #region all
         /// <summary>
         /// Get top 1000 rows by predicate query
         /// </summary>
@@ -148,7 +156,9 @@ namespace Core.Application {
             }
             return await query.ToListAsync();
         }
+        #endregion
 
+        #region first
         /// <summary>
         /// Get single record by id
         /// </summary>
@@ -261,7 +271,9 @@ namespace Core.Application {
         public async Task<TModel> FirstAsync<TModel>(Expression<Func<TEntity, bool>> predicate, bool tracking = true) where TModel : BaseModel {
             return await GenerateQuery<TModel>(predicate, tracking: tracking).FirstOrDefaultAsync();
         }
+        #endregion
 
+        #region paging
         /// <summary>
         /// Get paged result by TEntity
         /// </summary>
@@ -341,8 +353,9 @@ namespace Core.Application {
             var query = GenerateQuery<TModel>(out var totalCount, out var totalPage, querysetting, predicate, tracking: tracking);
             return (await query.ToListAsync(), totalCount, totalPage);
         }
+        #endregion
 
-
+        #region add
         /// <summary>
         /// Insert new record
         /// </summary>
@@ -378,7 +391,9 @@ namespace Core.Application {
         public async Task<TModel> AddAsync<TModel>(TEntity entity) where TModel : BaseModel {
             return _mapper.Map<TModel>(await SaveAndReturnAsync(await Entity.AddAsync(entity)));
         }
+        #endregion
 
+        #region update
         /// <summary>
         /// Update record
         /// </summary>
@@ -438,6 +453,7 @@ namespace Core.Application {
             }
             return _mapper.Map<TModel>(await SaveAndReturnAsync(Entity.Update(tracked)));
         }
+        #endregion
 
         //public bool Remove(long id) {
         //    return Remove(First(id, force: true));
@@ -496,6 +512,7 @@ namespace Core.Application {
         //    return await SaveAllAsync() == 1;
         //}
 
+        #region delete
         public bool Delete(long id) {
             return Delete(First(id, force: true));
         }
@@ -511,7 +528,9 @@ namespace Core.Application {
         public async Task<bool> DeleteAsync(TEntity entity) {
             return await SaveAndGetStateAsync(Entity.Remove(entity)) == EntityState.Deleted;
         }
+        #endregion
 
+        #region save
         public int Save(EntityEntry entry) {
             return entry.Context.SaveChanges();
         }
@@ -526,8 +545,8 @@ namespace Core.Application {
             return (TEntity)entry.Entity;
         }
 
-        public int SaveAll() {
-            return _dbContext.SaveChanges();
+        public int SaveAll(IDbContextTransaction transaction = null) {
+            return GetMsSQLDbContext(transaction).SaveChanges();
         }
 
         public async Task<int> SaveAsync(EntityEntry entity) {
@@ -622,8 +641,9 @@ namespace Core.Application {
             }
         }
 
-        public async Task<int> SaveAllAsync() {
-            return await _dbContext.SaveChangesAsync();
+        public async Task<int> SaveAllAsync(IDbContextTransaction transaction = null) {
+            return await GetMsSQLDbContext(transaction).SaveChangesAsync();
         }
+        #endregion
     }
 }

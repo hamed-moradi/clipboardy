@@ -14,7 +14,8 @@ namespace Presentation.WebApi.Controllers {
         #region ctor
         protected readonly IMapper _mapper;
         protected readonly IStringLocalizer<BaseController> _localizer;
-        protected ContextHeader ContextHeader { get { return (ContextHeader)HttpContext.Items[nameof(ContextHeader)]; } }
+        protected HttpDeviceHeader HttpDeviceHeader { get { return (HttpDeviceHeader)HttpContext.Items[nameof(HttpDeviceHeader)]; } }
+        protected HttpAccountHeader HttpAccountHeader { get { return (HttpAccountHeader)HttpContext.Items[nameof(HttpAccountHeader)]; } }
         protected string IP { get { return HttpContext.Connection.RemoteIpAddress.ToString(); } }
         protected string URL { get { return $"{HttpContext.Request.Scheme}://{HttpContext.Request.Host}{HttpContext.Request.Path}{HttpContext.Request.QueryString}"; } }
 

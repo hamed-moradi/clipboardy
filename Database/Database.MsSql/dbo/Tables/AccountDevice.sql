@@ -4,8 +4,7 @@
     [Token]      VARCHAR (128) NOT NULL,
     [DeviceId]   VARCHAR (128) NOT NULL,
     [DeviceName] VARCHAR (128) NOT NULL,
-    [IMEI]       VARCHAR (32)  NULL,
-    [OS]         VARCHAR (64)  NOT NULL,
+    [DeviceType] VARCHAR (128) NOT NULL,
     [CreatedAt]  DATETIME      CONSTRAINT [DF_AccountDevice_CreatedAt] DEFAULT (getdate()) NOT NULL,
     [StatusId]   INT           CONSTRAINT [DF_AccountDevice_StatusId] DEFAULT ((0)) NOT NULL,
     CONSTRAINT [PK_AccountDevice] PRIMARY KEY CLUSTERED ([Id] ASC),
@@ -14,4 +13,6 @@
     CONSTRAINT [IX_AccountDevice_DeviceId] UNIQUE NONCLUSTERED ([DeviceId] ASC),
     CONSTRAINT [IX_AccountDevice_Token] UNIQUE NONCLUSTERED ([Token] ASC)
 );
+
+
 

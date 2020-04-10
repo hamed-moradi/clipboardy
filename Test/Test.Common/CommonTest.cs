@@ -1,5 +1,8 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json;
+using System;
+using Test.Common.Namespace1;
+//using Test.Common.Namespace2;
 
 namespace Test.Common {
     [TestClass]
@@ -23,5 +26,18 @@ namespace Test.Common {
         public void PropertyMapper() {
             
         }
+
+        [TestMethod, TestCategory("Common"), TestCategory("Namespace")]
+        public void Namespace() {
+            Console.WriteLine(new Me());
+        }
     }
+}
+
+namespace Test.Common.Namespace1 {
+    public class Me { }
+}
+
+namespace Test.Common.Namespace2 {
+    public class Me { }
 }

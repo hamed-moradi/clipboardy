@@ -7,6 +7,7 @@ namespace Core.Application {
         public static void Inject(IServiceCollection services, AppSetting appSetting = null) {
             services.AddSingleton(typeof(PredicateMaker<>));
             services.AddSingleton(typeof(IGenericService<>), typeof(GenericService<>));
+            services.AddSingleton(typeof(IStoredProcedureService<,>), typeof(StoredProcedureService<,>));
             services.AddScoped<IAccountService, AccountService>();
             services.AddScoped<IAccountDeviceService, AccountDeviceService>();
             services.AddScoped<IAccountProfileService, AccountProfileService>();

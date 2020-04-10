@@ -20,6 +20,9 @@ using Assets.Utility.Extension;
 using Assets.Model.Base;
 using System.Text;
 using Newtonsoft.Json;
+using Presentation.WebApi.FilterAttributes;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Hosting;
 
 namespace Presentation.WebApi.Controllers {
     [Route("api/[controller]")]
@@ -27,23 +30,20 @@ namespace Presentation.WebApi.Controllers {
         #region ctor
         private readonly IAccountService _accountService;
         private readonly IAccountProfileService _accountProfileService;
+        private readonly IWebHostEnvironment _webHostEnvironment;
 
         public ExternalAuthenticationController(
             IAccountService accountService,
-            IAccountProfileService accountProfileService) {
+            IAccountProfileService accountProfileService,
+            IWebHostEnvironment webHostEnvironment) {
 
             _accountService = accountService;
             _accountProfileService = accountProfileService;
+            _webHostEnvironment = webHostEnvironment;
         }
         #endregion
 
         #region private
-        private Task<AuthenticateResult> AuthenticationManager {
-            get {
-                return HttpContext.AuthenticateAsync();
-            }
-        }
-
         private ExternalUserBindingModel GetExternalUser(IEnumerable<Claim> claims) {
             var result = new ExternalUserBindingModel();
             var objectAccessor = ObjectAccessor.Create(result);
@@ -57,13 +57,15 @@ namespace Presentation.WebApi.Controllers {
         }
         #endregion
 
-        [HttpGet, AllowAnonymous, Route("signin")]
+        [HttpGet("signin"), AllowAnonymous, ArgumentBinder(HttpAccountHeader = false)]
         public async Task<IActionResult> Signin([FromQuery]string provider = "Google") {
-            if(string.IsNullOrWhiteSpace(ContextHeader.DeviceId)) ContextHeader.DeviceId = "DeviceId";
-            if(string.IsNullOrWhiteSpace(ContextHeader.DeviceName)) ContextHeader.DeviceName = "DeviceName";
-            if(string.IsNullOrWhiteSpace(ContextHeader.DeviceType)) ContextHeader.DeviceType = "DeviceType";
+            if(_webHostEnvironment.IsDevelopment()) {
+                if(string.IsNullOrWhiteSpace(HttpDeviceHeader.DeviceId)) HttpDeviceHeader.DeviceId = "DeviceId";
+                if(string.IsNullOrWhiteSpace(HttpDeviceHeader.DeviceName)) HttpDeviceHeader.DeviceName = "DeviceName";
+                if(string.IsNullOrWhiteSpace(HttpDeviceHeader.DeviceType)) HttpDeviceHeader.DeviceType = "DeviceType";
+            }
 
-            var userdata = Convert.ToBase64String(Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(ContextHeader)));
+            var userdata = Convert.ToBase64String(Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(HttpDeviceHeader)));
             var redirecturl = $"/api/externalauthentication/signincallback?userdata={userdata}";
 
             var authprops = new AuthenticationProperties {

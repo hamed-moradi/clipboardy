@@ -1,4 +1,4 @@
-﻿CREATE TABLE [dbo].[AppException] (
+﻿CREATE TABLE [serilog].[AppException] (
     [Id]              INT            IDENTITY (1, 1) NOT NULL,
     [Message]         NVARCHAR (MAX) NULL,
     [MessageTemplate] NVARCHAR (MAX) NULL,

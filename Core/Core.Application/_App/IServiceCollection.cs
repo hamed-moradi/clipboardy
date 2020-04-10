@@ -1,6 +1,10 @@
 ﻿using Assets.Model.Base;
 using Assets.Model.Binding;
+using Assets.Model.StoredProcResult;
+using Core.Domain;
 using Core.Domain.Entities;
+using Core.Domain.StoredProcSchema;
+using Microsoft.EntityFrameworkCore.Storage;
 using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
@@ -8,6 +12,8 @@ using System.Threading.Tasks;
 
 namespace Core.Application {
     public interface IGenericService<TEntity>: IPredicateMaker<TEntity> where TEntity : BaseEntity {
+        MsSQLDbContext GetMsSQLDbContext(IDbContextTransaction transaction = null);
+
         List<TEntity> All(Expression<Func<TEntity, bool>> predicate = null, bool tracking = true, int retrieveLimit = 1000);
         List<TModel> All<TModel>(Expression<Func<TEntity, bool>> predicate = null, bool tracking = true, int retrieveLimit = 1000) where TModel : BaseModel;
         List<TEntity> All(TEntity entity, bool tracking = true, int retrieveLimit = 1000);
@@ -62,11 +68,13 @@ namespace Core.Application {
         Task<bool> DeleteAsync(long id);
         Task<bool> DeleteAsync(TEntity entity);
 
-        int SaveAll();
-        Task<int> SaveAllAsync();
+        int SaveAll(IDbContextTransaction transaction = null);
+        Task<int> SaveAllAsync(IDbContextTransaction transaction = null);
     }
 
     public interface IAccountService: IGenericService<Account> {
+        AccountAuthenticateResult Authenticate(AccountAuthenticateSchema schema);
+        Task<AccountAuthenticateResult> AuthenticateAsync(AccountAuthenticateSchema schema);
         Task<BaseViewModel> Signup(SignupBindingModel signupModel);
         Task<BaseViewModel> ExternalSignup(ExternalUserBindingModel externalUser);
         Task<BaseViewModel> Signin(SigninBindingModel signinModel);
@@ -76,7 +84,7 @@ namespace Core.Application {
     public interface IAccountDeviceService: IGenericService<AccountDevice> { }
 
     public interface IAccountProfileService: IGenericService<AccountProfile> {
-        Task<bool> CleanForgotPasswordTokensAsync(int accountId);
+        Task<bool> CleanForgotPasswordTokensAsync(int accountId, IDbContextTransaction transaction = null);
     }
 
     public interface IClipboardService: IGenericService<Clipboard> { }

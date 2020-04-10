@@ -51,8 +51,11 @@ namespace Presentation.WebApi.Controllers {
 
         [HttpPost, AllowAnonymous, Route("signup")]
         public async Task<IActionResult> SignupAsync([FromBody]SignupBindingModel collection) {
-            // Captcha
+            // todo: Captcha
 
+            if(collection == null) {
+                return BadRequest(message: _localizer[ResourceMessage.DefectiveEntry]);
+            }
             Log.Debug($"A User is trying to register with this data: {JsonConvert.SerializeObject(collection)}");
 
             if(string.IsNullOrEmpty(collection?.Username)) {
@@ -114,12 +117,15 @@ namespace Presentation.WebApi.Controllers {
         public async Task<IActionResult> SigninAsync([FromBody]SigninBindingModel collection) {
             Log.Debug($"A User is trying to signing in with this data: {JsonConvert.SerializeObject(collection)}");
 
-            if(string.IsNullOrEmpty(collection.Username) || string.IsNullOrEmpty(collection.Password)) {
-                return BadRequest(message: "Please define your Username and Password.");
+            if(string.IsNullOrEmpty(collection?.Username) || string.IsNullOrEmpty(collection?.Password)) {
+                return BadRequest(message: _localizer[ResourceMessage.DefectiveUsernameOrPassword]);
             }
 
-            if(string.IsNullOrEmpty(collection.DeviceId) || string.IsNullOrEmpty(collection.DeviceName)) {
-                return BadRequest(message: "You're trying to signing in through the wrong way! buddy.");
+            if(string.IsNullOrEmpty(HttpDeviceHeader.DeviceId) ||
+                string.IsNullOrEmpty(HttpDeviceHeader.DeviceName) ||
+                string.IsNullOrEmpty(HttpDeviceHeader.DeviceType)) {
+
+                return BadRequest(message: _localizer[ResourceMessage.EmptyHeader]);
             }
 
             try {

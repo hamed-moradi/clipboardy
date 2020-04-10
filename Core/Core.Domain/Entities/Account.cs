@@ -22,7 +22,7 @@ namespace Core.Domain.Entities {
         public DateTime? CreatedAt { get; set; }
 
         [Required]
-        public new Status? StatusId { get; set; }
+        public Status? StatusId { get; set; }
     }
 
     public partial class Account { }

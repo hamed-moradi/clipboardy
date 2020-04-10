@@ -6,10 +6,10 @@ using System.Threading.Tasks;
 namespace Core.Application.Services {
     public class AccountDeviceService: GenericService<AccountDevice>, IAccountDeviceService {
         #region
-        private readonly MsSQLDbContext _msSQLDbContext;
 
-        public AccountDeviceService(MsSQLDbContext msSQLDbContext) {
-            _msSQLDbContext = msSQLDbContext;
+        public AccountDeviceService(
+            MsSQLDbContext msSQLDbContext) : base(dbContext: msSQLDbContext) {
+
         }
         #endregion
     }

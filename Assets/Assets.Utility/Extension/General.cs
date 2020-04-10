@@ -1,4 +1,5 @@
-﻿using Assets.Model.Base;
+﻿using Assets.Model;
+using Assets.Model.Base;
 using AutoMapper;
 using System;
 using System.Collections.Generic;
@@ -159,6 +160,25 @@ namespace Assets.Utility.Extension {
                 [typeof(DateTime?)] = DbType.DateTime,
                 [typeof(DateTimeOffset?)] = DbType.DateTimeOffset,
             }[type];
+        }
+        public static string GetSchemaName(this IStoredProcSchema baseSchema) {
+            // Read from model name (default)
+            var name = baseSchema.GetType().Name;
+
+            // Read from "EntityName" property (get by id model)
+            var props = baseSchema.GetType().GetProperties().FirstOrDefault(prop => prop.Name == "EntityName");
+            if(props != null) {
+                name = props.GetValue(baseSchema, null).ToString();
+            }
+            else {
+                // Read from schema attribute
+                var attrs = baseSchema.GetType().GetCustomAttributes(true);
+                foreach(var attr in attrs) {
+                    if(attr is StoredProcedureAttribute schema && !string.IsNullOrWhiteSpace(schema.Name))
+                        name = schema.Name;
+                }
+            }
+            return name;
         }
         #endregion
     }

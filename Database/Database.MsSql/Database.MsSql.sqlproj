@@ -61,6 +61,10 @@
     <Folder Include="Properties" />
     <Folder Include="dbo\" />
     <Folder Include="dbo\Tables\" />
+    <Folder Include="serilog\" />
+    <Folder Include="serilog\Tables\" />
+    <Folder Include="dbo\Stored Procedures\" />
+    <Folder Include="Security\" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="dbo\Tables\GeneralStatus.sql" />
@@ -70,6 +74,8 @@
     <Build Include="dbo\Tables\Account.sql" />
     <Build Include="dbo\Tables\ContentType.sql" />
     <Build Include="dbo\Tables\AccountProfile.sql" />
-    <Build Include="dbo\Tables\AppException.sql" />
+    <Build Include="serilog\Tables\AppException.sql" />
+    <Build Include="dbo\Stored Procedures\webapi_account_authenticate.sql" />
+    <Build Include="Security\serilog.sql" />
   </ItemGroup>
 </Project>

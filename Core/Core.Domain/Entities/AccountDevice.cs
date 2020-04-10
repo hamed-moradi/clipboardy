@@ -25,11 +25,11 @@ namespace Core.Domain.Entities {
 
         public DateTime? CreatedAt { get; set; }
 
-        public new Status? StatusId { get; set; }
+        public Status? StatusId { get; set; }
     }
 
     public partial class AccountDevice {
-        [ForeignKey(nameof(AccountId))]
-        public Account Account { get; set; }
+        //[ForeignKey(nameof(AccountId))]
+        //public Account Account { get; set; }
     }
 }

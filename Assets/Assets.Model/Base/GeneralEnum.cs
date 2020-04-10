@@ -1,5 +1,6 @@
 ﻿namespace Assets.Model.Base {
 
+
     public enum Status {
         Inactive = 0,
         Active = 10,

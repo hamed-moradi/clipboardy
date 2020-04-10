@@ -13,7 +13,6 @@ namespace Assets.Resource {
         public const string TokenNotFound = nameof(TokenNotFound);
         public const string DeviceIdNotFound = nameof(DeviceIdNotFound);
         public const string DeviceIsNotActive = nameof(DeviceIsNotActive);
-        public const string UserIsNotActive = nameof(UserIsNotActive);
         public const string PhoneIsNotVerified = nameof(PhoneIsNotVerified);
         public const string ConnectionError = nameof(ConnectionError);
         public const string UnexpectedError = nameof(UnexpectedError);
@@ -29,9 +28,15 @@ namespace Assets.Resource {
         public const string WrongVerificationCode = nameof(WrongVerificationCode);
         public const string AccessDenied = nameof(AccessDenied);
         public const string UnofficialRequest = nameof(UnofficialRequest);
+        public const string EmptyHeader = nameof(EmptyHeader);//"You're trying to signing in through the wrong way! buddy."
         #endregion
 
         #region Account
+
+        #region authentication
+        public const string UserNotFound = nameof(UserNotFound);
+        public const string UserIsNotActive = nameof(UserIsNotActive);
+        #endregion
 
         #region SignUp
         public const string DefectiveCellPhone = nameof(DefectiveCellPhone);
@@ -43,6 +48,7 @@ namespace Assets.Resource {
         #endregion
 
         #region SignIn
+        public const string DefectiveUsernameOrPassword = nameof(DefectiveUsernameOrPassword);//"Please define your Username and Password."
         public const string InvalidSigninAttempt = nameof(InvalidSigninAttempt);
         public const string GoToStepTwo = nameof(GoToStepTwo);
         public const string ExternalAuthenticationError = nameof(ExternalAuthenticationError);

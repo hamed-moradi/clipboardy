@@ -1,15 +1,43 @@
 ﻿using Assets.Model.Common;
 using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 using System.Net;
 using System.Reflection;
-using System.Text;
 
 namespace Assets.Model.Base {
-    public interface IBaseEntity { }
+    public interface IEntity { }
+    public interface IStoredProcSchema { }
+    public interface IStoredProcResult { }
 
+    public class PagingSchema: IStoredProcSchema {
+        [InputParameter]
+        public string @OrderBy { get; set; }
+
+        [InputParameter]
+        public string @Order { get; set; }
+
+        [InputParameter]
+        public int? @Skip { get; set; }
+
+        [InputParameter]
+        public int? @Take { get; set; }
+
+        [HelperParameter]
+        public long TotalCount { get; set; }
+
+        [HelperParameter]
+        public int TotalPages { get { return (int)Math.Ceiling((decimal)TotalCount / Take.Value); } }
+    }
+
+    public class PagingOption {
+        public string OrderBy { get; set; } = "Id";
+        public string Order { get; set; } = "DESC";
+        public int Skip { get; set; } = 0;
+        public int Take { get; set; } = 10;
+    }
+
+    #region old
+    public interface IBaseEntity { }
     public interface IBaseModel { }
 
     public interface IBaseBindingModel: IBaseModel { }
@@ -19,9 +47,6 @@ namespace Assets.Model.Base {
     public class BaseEntity: IBaseEntity {
         [Key]
         public virtual int? Id { get; set; }
-
-        [NotMapped]
-        public virtual Status? StatusId { get; set; }
     }
 
     public class QuerySetting: IBaseEntity {
@@ -75,4 +100,5 @@ namespace Assets.Model.Base {
             }
         }
     }
+    #endregion
 }

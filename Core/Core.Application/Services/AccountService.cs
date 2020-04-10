@@ -1,11 +1,14 @@
 ﻿using Assets.Model;
 using Assets.Model.Base;
 using Assets.Model.Binding;
+using Assets.Model.StoredProcResult;
 using Assets.Utility.Extension;
 using Assets.Utility.Infrastructure;
 using Core.Domain;
 using Core.Domain.Entities;
+using Core.Domain.StoredProcSchema;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Storage;
 using Serilog;
 using System;
 using System.Collections.Generic;
@@ -17,26 +20,40 @@ using System.Threading.Tasks;
 namespace Core.Application.Services {
     public class AccountService: GenericService<Account>, IAccountService {
         #region
-        private readonly MsSQLDbContext _msSQLDbContext;
+        private readonly IStoredProcedureService<AccountAuthenticateResult, AccountAuthenticateSchema> _accountAuthenticator;
+
         private readonly RandomMaker _randomMaker;
         private readonly Cryptograph _cryptograph;
         private readonly IAccountProfileService _accountProfileService;
         private readonly IAccountDeviceService _accountDeviceService;
 
         public AccountService(
+            IStoredProcedureService<AccountAuthenticateResult, AccountAuthenticateSchema> accountAuthenticator,
+
             MsSQLDbContext msSQLDbContext,
             RandomMaker randomMaker,
             Cryptograph cryptograph,
             IAccountProfileService accountProfileService,
-            IAccountDeviceService accountDeviceService) {
+            IAccountDeviceService accountDeviceService) : base(dbContext: msSQLDbContext) {
 
-            _msSQLDbContext = msSQLDbContext;
+            _accountAuthenticator = accountAuthenticator;
+
             _randomMaker = randomMaker;
             _cryptograph = cryptograph;
             _accountProfileService = accountProfileService;
             _accountDeviceService = accountDeviceService;
         }
         #endregion
+
+        public AccountAuthenticateResult Authenticate(AccountAuthenticateSchema schema) {
+            var result = _accountAuthenticator.ExecuteFirstOrDefault(schema);
+            return result;
+        }
+
+        public async Task<AccountAuthenticateResult> AuthenticateAsync(AccountAuthenticateSchema schema) {
+            var result = await _accountAuthenticator.ExecuteFirstOrDefaultAsync(schema);
+            return result;
+        }
 
         public async Task<BaseViewModel> Signup(SignupBindingModel signupModel) {
             var response = new BaseViewModel();
@@ -48,7 +65,7 @@ namespace Core.Application.Services {
                 duplicated = await FirstAsync(f => f.Username == username);
             }
 
-            using(var dbcontext = await _msSQLDbContext.Database.BeginTransactionAsync()) {
+            using(var transaction = await GetMsSQLDbContext().Database.BeginTransactionAsync()) {
                 try {
                     var now = DateTime.UtcNow;
 
@@ -81,7 +98,7 @@ namespace Core.Application.Services {
                         StatusId = Status.Active
                     });
 
-                    await dbcontext.CommitAsync();
+                    await transaction.CommitAsync();
                     response.Status = HttpStatusCode.OK;
                     response.Data = token;
                 }
@@ -90,7 +107,7 @@ namespace Core.Application.Services {
                     Log.Error(ex, errmsg);
                     response.Message = errmsg;
                     response.Status = HttpStatusCode.InternalServerError;
-                    await dbcontext.RollbackAsync();
+                    await transaction.RollbackAsync();
                 }
             }
 
@@ -113,10 +130,10 @@ namespace Core.Application.Services {
                 duplicated = await FirstAsync(f => f.Username == username);
             }
 
-            using(var dbcontext = await _msSQLDbContext.Database.BeginTransactionAsync()) {
+            using(var transaction = await GetMsSQLDbContext().Database.BeginTransactionAsync()) {
                 try {
                     var now = DateTime.UtcNow;
-                    
+
                     var account = await AddAsync(new Account {
                         ProviderId = externalUser.ProviderId,
                         Username = username,
@@ -144,7 +161,7 @@ namespace Core.Application.Services {
                         StatusId = Status.Active
                     });
 
-                    await dbcontext.CommitAsync();
+                    await transaction.CommitAsync();
                     response.Status = HttpStatusCode.OK;
                     response.Data = token;
                 }
@@ -153,7 +170,7 @@ namespace Core.Application.Services {
                     Log.Error(ex, errmsg);
                     response.Message = errmsg;
                     response.Status = HttpStatusCode.InternalServerError;
-                    await dbcontext.RollbackAsync();
+                    await transaction.RollbackAsync();
                 }
             }
 
@@ -165,12 +182,12 @@ namespace Core.Application.Services {
             AccountProfile accountProfile = null;
 
             if(signinModel.Username.IsPhoneNumber()) {
-                accountProfile = await _msSQLDbContext.AccountProfiles.FirstOrDefaultAsync(f =>
+                accountProfile = await GetMsSQLDbContext().AccountProfiles.FirstOrDefaultAsync(f =>
                     f.Phone == signinModel.Username
                     && f.StatusId == Status.Active);
             }
             else if(new EmailAddressAttribute().IsValid(signinModel.Username)) {
-                accountProfile = await _msSQLDbContext.AccountProfiles.FirstOrDefaultAsync(f =>
+                accountProfile = await GetMsSQLDbContext().AccountProfiles.FirstOrDefaultAsync(f =>
                     f.Email.ToLower() == signinModel.Username.ToLower()
                     && f.StatusId == Status.Active);
             }
@@ -189,7 +206,7 @@ namespace Core.Application.Services {
             var account = await FirstAsync(f => f.Id == accountProfile.AccountId && f.StatusId == Status.Active);
             // todo: check the account
 
-            using(var dbcontext = await _msSQLDbContext.Database.BeginTransactionAsync()) {
+            using(var transaction = await GetMsSQLDbContext().Database.BeginTransactionAsync()) {
                 try {
                     // check password
                     if(_cryptograph.IsEqual(signinModel.Password, account.Password)) {
@@ -224,21 +241,21 @@ namespace Core.Application.Services {
                     var accountProfilesUpdated = await _accountProfileService.CleanForgotPasswordTokensAsync(account.Id.Value);
                     if(!accountProfilesUpdated) {
                         Log.Error($"Can't update 'ForgotPasswordTokens' to NULL for AccountId={account.Id}");
-                        await dbcontext.RollbackAsync();
+                        await transaction.RollbackAsync();
                     }
 
                     // set last signed in at
                     account.LastSignedinAt = now;
-                    var changedAccount = _msSQLDbContext.Accounts.Update(account);
+                    var changedAccount = GetMsSQLDbContext().Accounts.Update(account);
                     await changedAccount.Context.SaveChangesAsync();
 
-                    await dbcontext.CommitAsync();
+                    await transaction.CommitAsync();
                 }
                 catch(Exception ex) {
                     Log.Error(ex, ex.Source);
                     response.Message = GlobalVariables.UnknownError;
                     response.Status = HttpStatusCode.InternalServerError;
-                    await dbcontext.RollbackAsync();
+                    await transaction.RollbackAsync();
                 }
             }
 
@@ -264,17 +281,15 @@ namespace Core.Application.Services {
             var token = _randomMaker.NewToken();
             var account = await FirstAsync(f => f.Id == accountProfile.AccountId && f.StatusId == Status.Active);
             // todo: check the account
-
-            using(var dbcontext = await _msSQLDbContext.Database.BeginTransactionAsync()) {
+            using(var transaction = await GetMsSQLDbContext().Database.BeginTransactionAsync()) {
                 try {
-
                     var accountDevice = await _accountDeviceService.FirstAsync(f => f.AccountId == account.Id && f.DeviceId == externalUser.DeviceId);
                     // todo: check the accountDevice
 
                     if(accountDevice != null) {
                         // set a new token
                         accountDevice.Token = token;
-                        await _accountDeviceService.UpdateAsync(accountDevice);
+                        await _accountDeviceService.UpdateAsync(accountDevice, false);
                     }
                     else {
                         // create new device for account
@@ -290,24 +305,24 @@ namespace Core.Application.Services {
                     }
 
                     // clean forgot password tokens
-                    var accountProfilesUpdated = await _accountProfileService.CleanForgotPasswordTokensAsync(account.Id.Value);
+                    var accountProfilesUpdated = await _accountProfileService.CleanForgotPasswordTokensAsync(account.Id.Value, transaction);
                     if(!accountProfilesUpdated) {
                         Log.Error($"Can't update 'ForgotPasswordTokens' to NULL for AccountId={account.Id}");
-                        await dbcontext.RollbackAsync();
+                        await transaction.RollbackAsync();
                     }
 
                     // set last signed in at
                     account.LastSignedinAt = now;
-                    var changedAccount = _msSQLDbContext.Accounts.Update(account);
+                    var changedAccount = GetMsSQLDbContext().Accounts.Update(account);
                     await changedAccount.Context.SaveChangesAsync();
 
-                    await dbcontext.CommitAsync();
+                    await transaction.CommitAsync();
                 }
                 catch(Exception ex) {
                     Log.Error(ex, ex.Source);
                     response.Message = GlobalVariables.UnknownError;
                     response.Status = HttpStatusCode.InternalServerError;
-                    await dbcontext.RollbackAsync();
+                    await transaction.RollbackAsync();
                 }
             }
 
