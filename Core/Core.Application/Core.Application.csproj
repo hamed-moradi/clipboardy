@@ -18,6 +18,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\Assets\Assets.Resource\Assets.Resource.csproj" />
     <ProjectReference Include="..\..\Assets\Assets.Utility\Assets.Utility.csproj" />
     <ProjectReference Include="..\Core.Domain\Core.Domain.csproj" />
   </ItemGroup>

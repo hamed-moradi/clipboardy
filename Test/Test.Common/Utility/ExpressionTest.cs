@@ -1,11 +1,8 @@
-﻿using Assets.Utility;
-using Assets.Utility.Infrastructure;
-using Core.Domain.Entities;
+﻿using Core.Domain.Entities;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
-using System.Data.Entity.Core.Objects;
-using System.Linq;
 using System.Linq.Expressions;
+using System.Reflection;
 
 namespace Test.Common.Utility {
     [TestClass]
@@ -16,12 +13,30 @@ namespace Test.Common.Utility {
         }
         #endregion
 
-        [TestMethod, TestCategory("Expression"), TestCategory("ToSQLQuery")]
-        public void ToSQLQuery() {
-            Expression<Func<Clipboard, bool>> predicate = p => p.Id == 0;
+        public static string GetPropertyName<T>(Expression<Func<T, object>> property) {
+            LambdaExpression lambda = property;
+            MemberExpression memberExpression;
 
-            //string sql = ((ObjectQuery)predicate).ToTraceString();
-            //var tsql=predicate.toTraceString()
+            if(lambda.Body is UnaryExpression) {
+                UnaryExpression unaryExpression = (UnaryExpression)(lambda.Body);
+                memberExpression = (MemberExpression)(unaryExpression.Operand);
+            }
+            else {
+                memberExpression = (MemberExpression)(lambda.Body);
+            }
+
+            return ((PropertyInfo)memberExpression.Member).Name;
+        }
+
+        [TestMethod, TestCategory("Expression"), TestCategory("ToModel")]
+        public void ToToModel() {
+            //var name = GetPropertyName<Clipboard>(p => p.Id == 0);
+
+            Expression<Func<Clipboard, bool>> expression = p => p.Id == 0 && p.Content.Contains("") && p.CreatedAt <= DateTime.Now;
+            var body = expression.Body;
+
+            //Expression<Func<Clipboard>> expression2 = e=>new Clipboard();
+            //var body2 = (MemberExpression)expression2.Body;
         }
     }
 }

@@ -5,6 +5,8 @@ using System.Text;
 
 namespace Assets.Model.StoredProcResult {
     public class ClipboardResult: IStoredProcResult {
-
+        public string Content { get; set; }
+        public int TypeId { get; set; }
+        public DateTime CreatedAt { get; set; }
     }
 }

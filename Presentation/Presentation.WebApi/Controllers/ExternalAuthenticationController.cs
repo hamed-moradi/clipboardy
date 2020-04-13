@@ -23,6 +23,8 @@ using Newtonsoft.Json;
 using Presentation.WebApi.FilterAttributes;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
+using Core.Domain.StoredProcSchema;
+using Assets.Model.Common;
 
 namespace Presentation.WebApi.Controllers {
     [Route("api/[controller]")]
@@ -105,7 +107,7 @@ namespace Presentation.WebApi.Controllers {
                     return BadRequest(message: _localizer[ResourceMessage.DefectiveEntry]);
                 }
 
-                var headerbindingmodel = JsonConvert.DeserializeObject<BaseHeaderBindingModel>(Encoding.UTF8.GetString(Convert.FromBase64String(userData)));
+                var headerbindingmodel = JsonConvert.DeserializeObject<HttpDeviceHeader>(Encoding.UTF8.GetString(Convert.FromBase64String(userData)));
                 if(headerbindingmodel == null
                     || string.IsNullOrWhiteSpace(headerbindingmodel.DeviceId)
                     || string.IsNullOrWhiteSpace(headerbindingmodel.DeviceName)
@@ -116,38 +118,56 @@ namespace Presentation.WebApi.Controllers {
                 }
 
                 // read external identity from the temporary cookie
-                var result = await HttpContext.AuthenticateAsync(CookieAuthenticationDefaults.AuthenticationScheme).ConfigureAwait(true);
+                var authenticationResult = await HttpContext.AuthenticateAsync(CookieAuthenticationDefaults.AuthenticationScheme).ConfigureAwait(true);
 
-                if(!result.Succeeded) {
-                    Log.Error("External authentication failure");
-                    return InternalServerError(message: _localizer[ResourceMessage.ExternalAuthenticationError]);
+                if(!authenticationResult.Succeeded) {
+                    Log.Error("External authentication failed");
+                    return InternalServerError(message: _localizer[ResourceMessage.ExternalAuthenticationFailed]);
                 }
 
                 // retrieve claims of the external user
-                var claimPrincipal = result.Principal;
+                var claimPrincipal = authenticationResult.Principal;
                 if(claimPrincipal == null) {
                     Log.Error("External authentication user principal error");
-                    return InternalServerError(message: _localizer[ResourceMessage.ExternalAuthenticationError]);
+                    return InternalServerError(message: _localizer[ResourceMessage.ExternalAuthenticationUserError]);
                 }
 
                 // transform claims list to model
                 var externalUser = GetExternalUser(claimPrincipal.Claims);
+
                 if(string.IsNullOrWhiteSpace(externalUser.Email)) {
                     Log.Error("External authentication user email not found");
-                    return InternalServerError(message: _localizer[ResourceMessage.ExternalAuthenticationError]);
+                    return InternalServerError(message: _localizer[ResourceMessage.ExternalAuthenticationEmailError]);
                 }
+
+                if(externalUser.ProviderId == AccountProvider.Clipboard) {
+                    Log.Error("External signup with unknown ProviderId");
+                    return InternalServerError(message: _localizer[ResourceMessage.ExternalAuthenticationWithUnknownProvider]);
+                }
+
                 externalUser.DeviceId = headerbindingmodel.DeviceId;
                 externalUser.DeviceName = headerbindingmodel.DeviceName;
                 externalUser.DeviceType = headerbindingmodel.DeviceType;
 
-                var accountprofile = await _accountProfileService.FirstAsync(f => f.Email == externalUser.Email).ConfigureAwait(true);
+                var accountprofile = await _accountProfileService.FirstAsync(new AccountProfileGetFirstSchema {
+                    TypeId = AccountProfileType.Email,
+                    LinkedId = externalUser.Email
+                }).ConfigureAwait(true);
                 if(accountprofile == null) {
                     Log.Debug($"User {User.Identity.Name} try to sign in for first time at {DateTime.UtcNow}");
-                    return Ok(_accountService.ExternalSignup(externalUser));
+                    return Ok(_accountService.ExternalSignupAsync(externalUser));
                 }
                 else {
                     Log.Debug($"Account with Id={accountprofile.AccountId} try to sign in at {DateTime.UtcNow}");
-                    return Ok(_accountService.ExternalSignin(externalUser, accountprofile));
+                    var result = await _accountService.ExternalSigninAsync(externalUser, accountprofile).ConfigureAwait(false);
+                    switch(result.Code) {
+                        case 200:
+                            return Ok(result.Data);
+                        case 500:
+                            return InternalServerError(message: _localizer[result.Message]);
+                        default:
+                            return BadRequest(_localizer[result.Message]);
+                    }
                 }
             }
             catch(Exception ex) {

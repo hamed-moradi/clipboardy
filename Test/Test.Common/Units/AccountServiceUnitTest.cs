@@ -1,5 +1,6 @@
 using Assets.Utility;
 using Core.Application;
+using Core.Domain.StoredProcSchema;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 
@@ -16,9 +17,11 @@ namespace Test.Common.Units {
 
         [TestMethod, TestCategory("AccountService"), TestCategory("ChangeLastSignedinAt")]
         public void ChangeLastSignedinAt() {
-            var account = _accountService.First(5);
-            account.LastSignedinAt = DateTime.Now;
-            _accountService.Update(account, needToFetch: false);
+            var account = _accountService.FirstAsync(new AccountGetFirstSchema { Id = 3 }).GetAwaiter().GetResult();
+            _accountService.UpdateAsync(new AccountUpdateSchema {
+                Id = account.Id.Value,
+                LastSignedinAt = DateTime.Now
+            });
         }
     }
 }

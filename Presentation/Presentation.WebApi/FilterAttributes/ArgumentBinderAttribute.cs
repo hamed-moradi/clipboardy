@@ -17,6 +17,7 @@ namespace Presentation.WebApi.FilterAttributes {
         private readonly IStringLocalizer _localizer;
         private readonly IAccountService _accountService;
         public bool HttpAccountHeader { get; set; } = true;
+        public bool SupportPaging { get; set; } = false;
 
         public ArgumentBinderAttribute() {
             _localizer = ServiceLocator.Current.GetInstance<IStringLocalizer>();
@@ -25,19 +26,18 @@ namespace Presentation.WebApi.FilterAttributes {
         #endregion
 
         public override void OnActionExecuting(ActionExecutingContext context) {
-            var token = (context?.HttpContext.Request.Headers.FirstOrDefault(f =>
-                f.Key?.ToLower(CultureInfo.CurrentCulture) == nameof(HeaderBindingModel.Token).ToLower(CultureInfo.CurrentCulture)
-            ).Value).Value.ToString();
+            // get device infos
             var deviceId = (context?.HttpContext.Request.Headers.FirstOrDefault(f =>
-                f.Key?.ToLower(CultureInfo.CurrentCulture) == nameof(HeaderBindingModel.DeviceId).ToLower(CultureInfo.CurrentCulture)
+                f.Key?.ToLower(CultureInfo.CurrentCulture) == nameof(HttpDeviceHeader.DeviceId).ToLower(CultureInfo.CurrentCulture)
             ).Value).Value.ToString();
             var deviceName = (context?.HttpContext.Request.Headers.FirstOrDefault(f =>
-                f.Key?.ToLower(CultureInfo.CurrentCulture) == nameof(HeaderBindingModel.DeviceName).ToLower(CultureInfo.CurrentCulture)
+                f.Key?.ToLower(CultureInfo.CurrentCulture) == nameof(HttpDeviceHeader.DeviceName).ToLower(CultureInfo.CurrentCulture)
             ).Value).Value.ToString();
             var deviceType = (context?.HttpContext.Request.Headers.FirstOrDefault(f =>
-                f.Key?.ToLower(CultureInfo.CurrentCulture) == nameof(HeaderBindingModel.DeviceType).ToLower(CultureInfo.CurrentCulture)
+                f.Key?.ToLower(CultureInfo.CurrentCulture) == nameof(HttpDeviceHeader.DeviceType).ToLower(CultureInfo.CurrentCulture)
             ).Value).Value.ToString();
 
+            // set device info in defined object for easy access
             context?.HttpContext.Items.Add(nameof(HttpDeviceHeader), new HttpDeviceHeader {
                 DeviceId = deviceId,
                 DeviceName = deviceName,
@@ -45,8 +45,12 @@ namespace Presentation.WebApi.FilterAttributes {
             });
 
             if(HttpAccountHeader) {
+                // get token
+                var token = (context?.HttpContext.Request.Headers.FirstOrDefault(f => f.Key.ToLower() == "token").Value).Value.ToString();
+
+                // find user account based on token
                 var schema = new AccountAuthenticateSchema { Token = token };
-                var result = _accountService.Authenticate(schema);
+                var result = _accountService.AuthenticateAsync(schema).GetAwaiter().GetResult();
                 switch(schema.StatusCode) {
                     case HttpStatusCode.NotFound:
                         throw new Exception(_localizer[ResourceMessage.UserNotFound]);

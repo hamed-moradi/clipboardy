@@ -15,11 +15,13 @@ namespace Assets.Utility.Infrastructure {
         void SetOutputValues<T>(T model, DynamicParameters parameters) where T : IStoredProcSchema;
         void SetReturnValue<T>(T model, DynamicParameters parameters) where T : IStoredProcSchema;
     }
+
     public interface IParameterHandler<T> where T : IStoredProcSchema {
         DynamicParameters MakeParameters();
         void SetOutputValues(DynamicParameters parameters);
         void SetReturnValue(DynamicParameters parameters);
     }
+
     public class ParameterHandler: IParameterHandler {
         public DynamicParameters MakeParameters<T>(T schema) where T : IStoredProcSchema {
             var parameters = new DynamicParameters();
@@ -161,6 +163,7 @@ namespace Assets.Utility.Infrastructure {
             }
         }
     }
+
     public class ParameterHandler<T>: IParameterHandler<T> where T : IStoredProcSchema {
         #region Constructor
         private readonly Type _type;

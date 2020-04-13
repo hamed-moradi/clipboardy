@@ -1,38 +1,34 @@
-﻿using Core.Domain;
-using Core.Domain.Entities;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Storage;
-using System.Threading.Tasks;
-using Dapper;
-using System.Data;
+﻿using System.Threading.Tasks;
+using Assets.Model.StoredProcResult;
+using Core.Domain.StoredProcSchema;
 
 namespace Core.Application.Services {
-    public class AccountProfileService: GenericService<AccountProfile>, IAccountProfileService {
+    public class AccountProfileService: IAccountProfileService {
         #region
-        private readonly IDbConnection _connpool;
+        private readonly IStoredProcedureService _storedProcedure;
 
         public AccountProfileService(
-            ConnectionPool connpool,
-            MsSQLDbContext msSQLDbContext) : base(dbContext: msSQLDbContext) {
+            IStoredProcedureService storedProcedure) {
 
-            _connpool = connpool.DbConnection;
+            _storedProcedure = storedProcedure;
         }
         #endregion
 
-        public async Task<bool> CleanForgotPasswordTokensAsync(int accountId) {
-            var query = $"UPDATE dbo.AccountProfile SET ForgotPasswordToken = NULL WHERE AccountId = {accountId};";
-            var result = await _connpool.ExecuteAsync(query);
-            if(result > 0)
-                return true;
-            return false;
+        public async Task<AccountProfileResult> FirstAsync(AccountProfileGetFirstSchema accountProfile) {
+            var result = await _storedProcedure.QueryFirstAsync<AccountProfileGetFirstSchema, AccountProfileResult>(accountProfile);
+            return result;
         }
 
-        public async Task<bool> CleanForgotPasswordTokensAsync(int accountId, IDbContextTransaction transaction = null) {
-            var query = $"UPDATE dbo.AccountProfile SET ForgotPasswordToken = NULL WHERE AccountId = {accountId};";
-            var result = await GetMsSQLDbContext(transaction).Database.ExecuteSqlRawAsync(query);
-            if(result > 0)
-                return true;
-            return false;
+        public async Task AddAsync(AccountProfileAddSchema accountProfile) {
+            await _storedProcedure.ExecuteAsync(accountProfile);
+        }
+
+        public async Task UpdateAsync(AccountProfileUpdateSchema accountProfile) {
+            await _storedProcedure.ExecuteAsync(accountProfile);
+        }
+
+        public async Task CleanForgotPasswordTokensAsync(AccountProfileCleanTokensSchema accountProfile) {
+            await _storedProcedure.ExecuteAsync(accountProfile);
         }
     }
 }

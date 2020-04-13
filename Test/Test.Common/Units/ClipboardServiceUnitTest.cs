@@ -5,6 +5,7 @@ using Assets.Utility;
 using AutoMapper;
 using Core.Application;
 using Core.Domain.Entities;
+using Core.Domain.StoredProcSchema;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json;
 using System;
@@ -27,34 +28,38 @@ namespace Test.Common.Units {
 
         [TestMethod, TestCategory("Clipboard"), TestCategory("GetPagingByEntity")]
         public void GetPagingByEntity() {
-            var result = _clipboardService.GetPaging(new Clipboard(), new QuerySetting());
+            var query = new ClipboardGetPagingSchema { };
+            var result = _clipboardService.PagingAsync(query);
             Assert.IsTrue(result.Result.Any());
-            Assert.IsTrue(result.TotalCount > 0);
-            Assert.IsTrue(result.TotalPage > 0);
+            Assert.IsTrue(query.TotalCount > 0);
+            Assert.IsTrue(query.TotalPages > 0);
         }
 
         [TestMethod, TestCategory("Clipboard"), TestCategory("GetPagingByPredicate")]
         public void GetPagingByPredicate() {
-            var result = _clipboardService.GetPaging(p => p.Id == 1, new QuerySetting());
+            var query = new ClipboardGetPagingSchema { };
+            var result = _clipboardService.PagingAsync(query);
             Assert.IsTrue(result.Result.Any());
-            Assert.IsTrue(result.TotalCount > 0);
-            Assert.IsTrue(result.TotalPage > 0);
+            Assert.IsTrue(query.TotalCount > 0);
+            Assert.IsTrue(query.TotalPages > 0);
         }
 
         [TestMethod, TestCategory("Clipboard"), TestCategory("GetPagingModelByEntity")]
         public void GetPagingModelByEntity() {
-            var result = _clipboardService.GetPaging<ClipboardViewModel>(new Clipboard(), new QuerySetting());
+            var query = new ClipboardGetPagingSchema { };
+            var result = _clipboardService.PagingAsync(query);
             Assert.IsTrue(result.Result.Any());
-            Assert.IsTrue(result.TotalCount > 0);
-            Assert.IsTrue(result.TotalPage > 0);
+            Assert.IsTrue(query.TotalCount > 0);
+            Assert.IsTrue(query.TotalPages > 0);
         }
 
         [TestMethod, TestCategory("Clipboard"), TestCategory("GetPagingModelByPredicate")]
         public void GetPagingModelByPredicate() {
-            var result = _clipboardService.GetPaging<ClipboardViewModel>(p => p.Id == 1, new QuerySetting());
+            var query = new ClipboardGetPagingSchema { };
+            var result = _clipboardService.PagingAsync(query);
             Assert.IsTrue(result.Result.Any());
-            Assert.IsTrue(result.TotalCount > 0);
-            Assert.IsTrue(result.TotalPage > 0);
+            Assert.IsTrue(query.TotalCount > 0);
+            Assert.IsTrue(query.TotalPages > 0);
         }
     }
 }

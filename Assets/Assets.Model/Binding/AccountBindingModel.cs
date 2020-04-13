@@ -26,7 +26,7 @@ namespace Assets.Model.Binding {
         public string Username { get; set; }
     }
 
-    public class ChangePasswordBindingModel: HeaderBindingModel {
+    public class ChangePasswordBindingModel {
         public string Password { get; set; }
         public string NewPassword { get; set; }
         public string ConfirmPassword { get; set; }

@@ -2,8 +2,10 @@
 using System.Threading.Tasks;
 using Assets.Model.Binding;
 using Assets.Model.View;
+using Assets.Resource;
 using Core.Application;
 using Core.Domain.Entities;
+using Core.Domain.StoredProcSchema;
 using Microsoft.AspNetCore.Mvc;
 using Presentation.WebApi.FilterAttributes;
 using Serilog;
@@ -24,9 +26,9 @@ namespace Presentation.WebApi.Controllers {
         [HttpGet, ArgumentBinder, Route("get")]
         public async Task<IActionResult> Get([FromQuery]ClipboardGetBindingModel collection) {
             try {
-                var model = _mapper.Map<Clipboard>(collection);
-                var (Result, TotalCount, TotalPage) = await _clipboardService.GetPagingAsync<ClipboardViewModel>(model, collection?.QuerySetting).ConfigureAwait(true);
-                return Ok(data: Result, totalPages: TotalPage);
+                var query = _mapper.Map<ClipboardGetPagingSchema>(collection);
+                var result = await _clipboardService.PagingAsync(query).ConfigureAwait(true);
+                return Ok(data: result, totalPages: query.TotalPages);
             }
             catch(Exception ex) {
                 Log.Error(ex, ex.Source);
@@ -37,22 +39,20 @@ namespace Presentation.WebApi.Controllers {
         [HttpPost, ArgumentBinder, Route("add")]
         public async Task<IActionResult> Add([FromBody]ClipboardAddBindingModel collection) {
             try {
-                var model = _mapper.Map<Clipboard>(collection);
-                model.DeviceId = collection?.AccountHeader.DeviceId;
+                var model = _mapper.Map<ClipboardAddSchema>(collection);
 
-                var duplicated = await _clipboardService.FirstAsync(
-                    f => f.AccountId == collection.AccountHeader.Id
-                    && f.Content == model.Content).ConfigureAwait(true);
+                var query = new ClipboardGetFirstSchema {
+                    AccountId = HttpAccountHeader.Id,
+                    Content = model.Content
+                };
+                var duplicated = await _clipboardService.FirstAsync(query).ConfigureAwait(true);
 
-                if(duplicated != null) {
-                    duplicated.Priority = DateTime.Now;
-                    await _clipboardService.UpdateAsync(duplicated).ConfigureAwait(false);
-                }
-                else {
-                    await _clipboardService.AddAsync<ClipboardViewModel>(model).ConfigureAwait(true);
+                if(duplicated == null) {
+                    await _clipboardService.AddAsync(model).ConfigureAwait(true);
+                    return Ok();
                 }
 
-                return Ok();
+                return BadRequest(_localizer[ResourceMessage.DuplicatedValueFound]);
             }
             catch(Exception ex) {
                 Log.Error(ex, ex.Source);

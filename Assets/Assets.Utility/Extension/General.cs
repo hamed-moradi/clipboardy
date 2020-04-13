@@ -37,6 +37,10 @@ namespace Assets.Utility.Extension {
         public static byte ToByte(this Enum val) {
             return Convert.ToByte(val);
         }
+
+        public static int ToInt(this Enum val) {
+            return Convert.ToInt32(val);
+        }
         #endregion
 
         #region mapper

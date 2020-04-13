@@ -5,6 +5,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Assets.Model\Assets.Model.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Compile Update="Tables\en-US.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>

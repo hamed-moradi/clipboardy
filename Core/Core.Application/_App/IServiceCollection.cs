@@ -1,6 +1,7 @@
 ﻿using Assets.Model.Base;
 using Assets.Model.Binding;
 using Assets.Model.StoredProcResult;
+using Assets.Resource;
 using Core.Domain;
 using Core.Domain.Entities;
 using Core.Domain.StoredProcSchema;
@@ -72,24 +73,37 @@ namespace Core.Application {
         Task<int> SaveAllAsync(IDbContextTransaction transaction = null);
     }
 
-    public interface IAccountService: IGenericService<Account> {
-        AccountAuthenticateResult Authenticate(AccountAuthenticateSchema schema);
+    public interface IAccountService {
         Task<AccountAuthenticateResult> AuthenticateAsync(AccountAuthenticateSchema schema);
-        Task<BaseViewModel> Signup(SignupBindingModel signupModel);
-        Task<BaseViewModel> ExternalSignup(ExternalUserBindingModel externalUser);
-        Task<BaseViewModel> Signin(SigninBindingModel signinModel);
-        Task<BaseViewModel> ExternalSignin(ExternalUserBindingModel externalUser, AccountProfile accountProfile);
+        Task<AccountResult> FirstAsync(AccountGetFirstSchema account);
+        Task AddAsync(AccountAddSchema account);
+        Task UpdateAsync(AccountUpdateSchema account);
+        Task<IServiceResult> SignupAsync(SignupBindingModel signupModel);
+        Task<IServiceResult> ExternalSignupAsync(ExternalUserBindingModel externalUser);
+        Task<IServiceResult> SigninAsync(SigninBindingModel signinModel);
+        Task<IServiceResult> ExternalSigninAsync(ExternalUserBindingModel externalUser, AccountProfileResult accountProfile);
     }
 
-    public interface IAccountDeviceService: IGenericService<AccountDevice> { }
-
-    public interface IAccountProfileService: IGenericService<AccountProfile> {
-        Task<bool> CleanForgotPasswordTokensAsync(int accountId, IDbContextTransaction transaction = null);
+    public interface IAccountDeviceService {
+        Task<AccountDeviceResult> FirstAsync(AccountDeviceGetFirstSchema accountDevice);
+        Task AddAsync(AccountDeviceAddSchema accountDevice);
+        Task UpdateAsync(AccountDeviceUpdateSchema accountDevice);
     }
 
-    public interface IClipboardService: IGenericService<Clipboard> { }
-
-    public interface IContentTypeService: IGenericService<ContentType> {
-        Task BulkInsertAsync(List<ContentType> contentTypes);
+    public interface IAccountProfileService {
+        Task<AccountProfileResult> FirstAsync(AccountProfileGetFirstSchema accountProfile);
+        Task AddAsync(AccountProfileAddSchema accountProfile);
+        Task UpdateAsync(AccountProfileUpdateSchema accountProfile);
+        Task CleanForgotPasswordTokensAsync(AccountProfileCleanTokensSchema accountProfile);
     }
+
+    public interface IClipboardService {
+        Task<ClipboardResult> FirstAsync(ClipboardGetFirstSchema clipboard);
+        Task<IEnumerable<ClipboardResult>> PagingAsync(ClipboardGetPagingSchema clipboard);
+        Task AddAsync(ClipboardAddSchema clipboard);
+    }
+
+    //public interface IContentTypeService: IGenericService<ContentType> {
+    //    Task BulkInsertAsync(List<ContentType> contentTypes);
+    //}
 }

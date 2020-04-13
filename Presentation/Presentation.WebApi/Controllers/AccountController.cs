@@ -3,6 +3,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Net;
 using System.Text;
 using System.Threading.Tasks;
+using Assets.Model.Base;
 using Assets.Model.Binding;
 using Assets.Model.Common;
 using Assets.Model.View;
@@ -11,7 +12,7 @@ using Assets.Utility;
 using Assets.Utility.Extension;
 using Assets.Utility.Infrastructure;
 using Core.Application;
-using Core.Domain.Entities;
+using Core.Domain.StoredProcSchema;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -66,14 +67,14 @@ namespace Presentation.WebApi.Controllers {
             try {
                 if(collection.Username.IsPhoneNumber()) {
                     collection.Phone = collection.Username;
-                    if(await _accountProfileService.FirstAsync(f => f.Phone == collection.Phone).ConfigureAwait(true) != null) {
+                    if(await _accountProfileService.FirstAsync(new AccountProfileGetFirstSchema { LinkedId = collection.Phone }).ConfigureAwait(true) != null) {
                         return Ok(status: HttpStatusCode.NonAuthoritativeInformation,
                             message: _localizer[ResourceMessage.CellPhoneAlreadyExists]);
                     }
                 }
                 else if(new EmailAddressAttribute().IsValid(collection.Username)) {
                     collection.Email = collection.Username;
-                    if(await _accountProfileService.FirstAsync(f => f.Email == collection.Email).ConfigureAwait(true) != null) {
+                    if(await _accountProfileService.FirstAsync(new AccountProfileGetFirstSchema { LinkedId = collection.Email }).ConfigureAwait(true) != null) {
                         return Ok(status: HttpStatusCode.NonAuthoritativeInformation,
                             message: _localizer[ResourceMessage.EmailAlreadyExists]);
                     }
@@ -83,25 +84,24 @@ namespace Presentation.WebApi.Controllers {
                 }
 
                 if(string.IsNullOrEmpty(collection.Password) && string.IsNullOrEmpty(collection.ConfirmPassword)) {
-                    return BadRequest(message: "Please define a Password.");
+                    return BadRequest(message: _localizer[ResourceMessage.DefectivePassword]);
                 }
 
                 if(collection.Password != collection.ConfirmPassword) {
-                    return BadRequest(message: "Defined Password is not match with repeated one.");
+                    return BadRequest(message: _localizer[ResourceMessage.PasswordsMissmatch]);
                 }
 
                 if(string.IsNullOrEmpty(collection.DeviceId) || string.IsNullOrEmpty(collection.DeviceName)) {
-                    // || string.IsNullOrEmpty(collection.IMEI) || string.IsNullOrEmpty(collection.OS)
-                    return BadRequest(message: "You're trying to register in the wrong way! buddy.");
+                    return BadRequest(message: _localizer[ResourceMessage.EmptyHeader]);
                 }
 
-                var result = await _accountService.Signup(collection);
-                switch(result.Status) {
-                    case HttpStatusCode.OK:
-                        return Ok(data: result.Data);
-                    case HttpStatusCode.BadRequest:
-                        return BadRequest(message: result.Message);
-                    case HttpStatusCode.InternalServerError:
+                var result = await _accountService.SignupAsync(collection).ConfigureAwait(true);
+                switch(result.Code) {
+                    case 200:
+                        return Ok(result.Data);
+                    case 400:
+                        return BadRequest(result.Message);
+                    case 500:
                     default:
                         return InternalServerError(message: result.Message);
                 }
@@ -129,14 +129,13 @@ namespace Presentation.WebApi.Controllers {
             }
 
             try {
-                var result = await _accountService.Signin(collection).ConfigureAwait(true);
-
-                switch(result.Status) {
-                    case HttpStatusCode.OK:
+                var result = await _accountService.SigninAsync(collection).ConfigureAwait(true);
+                switch(result.Code) {
+                    case 200:
                         return Ok(data: result.Data);
-                    case HttpStatusCode.BadRequest:
+                    case 400:
                         return BadRequest(message: result.Message);
-                    case HttpStatusCode.InternalServerError:
+                    case 500:
                     default:
                         return InternalServerError(message: result.Message);
                 }
@@ -159,22 +158,31 @@ namespace Presentation.WebApi.Controllers {
 
             try {
                 if(string.IsNullOrEmpty(collection?.Password) || string.IsNullOrEmpty(collection.NewPassword) || string.IsNullOrEmpty(collection.ConfirmPassword)) {
-                    return BadRequest(message: "Please define Passwords.");
+                    return BadRequest(message: _localizer[ResourceMessage.DefectivePassword]);
                 }
 
                 if(collection.NewPassword != collection.ConfirmPassword) {
-                    return BadRequest(message: "Defined New Password does not match with Confirmed one.");
+                    return BadRequest(message: _localizer[ResourceMessage.PasswordsMissmatch]);
                 }
 
-                var account = await _accountService.FirstAsync(collection.AccountHeader.Id).ConfigureAwait(true);
-                // todo: check account
+                var account = await _accountService.FirstAsync(new AccountGetFirstSchema {
+                    Id = HttpAccountHeader.Id
+                }).ConfigureAwait(true);
+
+                if(account == null) {
+                    return BadRequest(_localizer[ResourceMessage.UserNotFound]);
+                }
+
                 if(_cryptograph.IsEqual(collection.Password, account.Password)) {
-                    account.Password = _cryptograph.RNG(collection.NewPassword);
-                    await _accountService.UpdateAsync(account, needToFetch: false).ConfigureAwait(false);
-                    return Ok(message: "Password is changed successfully.");
+                    await _accountService.UpdateAsync(new AccountUpdateSchema {
+                        Id = account.Id.Value,
+                        Password = _cryptograph.RNG(collection.NewPassword)
+                    }).ConfigureAwait(false);
+
+                    return Ok(message: _localizer[ResourceMessage.PasswordChanged]);
                 }
                 else {
-                    return BadRequest(status: HttpStatusCode.Unauthorized, message: "Wrong Password.");
+                    return BadRequest(status: HttpStatusCode.Unauthorized, message: _localizer[ResourceMessage.WrongPassword]);
                 }
             }
             catch(Exception ex) {
@@ -189,57 +197,70 @@ namespace Presentation.WebApi.Controllers {
 
             try {
                 if(string.IsNullOrEmpty(collection?.Username)) {
-                    return BadRequest(message: "Please define your Email or CellPhone number.");
+                    return BadRequest(message: _localizer[ResourceMessage.DefectiveEmailOrCellPhone]);
                 }
                 collection.Username = collection.Username.Trim();
 
                 if(string.IsNullOrEmpty(collection.NewPassword) && string.IsNullOrEmpty(collection.ConfirmPassword)) {
-                    return BadRequest(message: "Please define Passwords.");
+                    return BadRequest(message: _localizer[ResourceMessage.DefectivePassword]);
                 }
 
                 if(collection.NewPassword != collection.ConfirmPassword) {
-                    return BadRequest(message: "Defined NewPassword is not match with Confirmed one.");
+                    return BadRequest(message: _localizer[ResourceMessage.PasswordsMissmatch]);
                 }
 
                 if(string.IsNullOrWhiteSpace(collection.Token)) {
-                    return BadRequest(message: "You're trying to change your Password in the wrong way! buddy.");
+                    return BadRequest(message: _localizer[ResourceMessage.EmptyHeader]);
                 }
 
-                AccountProfile accountProfile = null;
+                var query = new AccountProfileGetFirstSchema { LinkedId = collection.Username };
                 if(collection.Username.IsPhoneNumber()) {
-                    accountProfile = await _accountProfileService.FirstAsync(f => f.Phone == collection.Username).ConfigureAwait(true);
-                    if(accountProfile == null) {
-                        return BadRequest(message: "This Phone number is not found.");
-                    }
+                    query.TypeId = AccountProfileType.Phone;
                 }
                 else if(new EmailAddressAttribute().IsValid(collection.Username)) {
-                    accountProfile = await _accountProfileService.FirstAsync(f => f.Email == collection.Username).ConfigureAwait(true);
-                    if(accountProfile == null) {
-                        return BadRequest(message: "This Email number is not found.");
-                    }
+                    query.TypeId = AccountProfileType.Email;
                 }
                 else {
-                    return BadRequest(message: "Please define a correct Email or CellPhone number.");
+                    return BadRequest(message: _localizer[ResourceMessage.BadEmailOrCellphone]);
+                }
+
+                var accountProfile = await _accountProfileService.FirstAsync(query).ConfigureAwait(true);
+                if(accountProfile == null) {
+                    if(query.TypeId == AccountProfileType.Phone)
+                        return BadRequest(message: _localizer[ResourceMessage.PhoneNotFound]);
+
+                    if(query.TypeId == AccountProfileType.Email)
+                        return BadRequest(message: _localizer[ResourceMessage.EmailNotFound]);
                 }
 
                 if(string.IsNullOrWhiteSpace(accountProfile.ForgotPasswordToken)) {
-                    return BadRequest(message: "You should request forgoten password first.");
+                    return BadRequest(message: _localizer[ResourceMessage.ChangingPasswordWithoutToken]);
                 }
 
-                var account = await _accountService.FirstAsync(accountProfile.AccountId.Value);
-                // todo: check account
+                var account = await _accountService.FirstAsync(new AccountGetFirstSchema {
+                    Id = accountProfile.AccountId.Value
+                }).ConfigureAwait(true);
+
+                if(account == null) {
+                    return BadRequest(_localizer[ResourceMessage.UserNotFound]);
+                }
+
                 if(accountProfile.ForgotPasswordToken == collection.Token) {
-                    accountProfile.ForgotPasswordToken = null;
-                    await _accountProfileService.UpdateAsync(accountProfile).ConfigureAwait(false);
+                    await _accountProfileService.UpdateAsync(new AccountProfileUpdateSchema {
+                        Id = accountProfile.Id.Value,
+                        ForgotPasswordToken = string.Empty
+                    }).ConfigureAwait(false);
 
-                    account.Password = _cryptograph.RNG(collection.NewPassword);
-                    await _accountService.UpdateAsync(account, needToFetch: false).ConfigureAwait(false);
+                    await _accountService.UpdateAsync(new AccountUpdateSchema {
+                        Id = account.Id.Value,
+                        Password = _cryptograph.RNG(collection.NewPassword)
+                    }).ConfigureAwait(false);
 
-                    return Ok(message: "Password is changed successfully.");
+                    return Ok(message: _localizer[ResourceMessage.PasswordChanged]);
                 }
                 else {
                     Log.Warning($"Account => {account}, AccountProfile => {accountProfile}, It tried to change its password with a wrong 'ForgotPasswordToken'");
-                    return BadRequest(status: HttpStatusCode.BadRequest, message: "Your request for changing the password is liked an abnormal activity and it's logged.");
+                    return BadRequest(status: HttpStatusCode.BadRequest, message: _localizer[ResourceMessage.ChangingPasswordWithWrongToken]);
                 }
             }
             catch(Exception ex) {
@@ -268,46 +289,49 @@ namespace Presentation.WebApi.Controllers {
             Log.Debug($"ForgotPassword => {JsonConvert.SerializeObject(collection)}");
 
             if(string.IsNullOrEmpty(collection?.Username)) {
-                return BadRequest(message: "Please define your Email or CellPhone number.");
+                return BadRequest(message: _localizer[ResourceMessage.DefectiveEmailOrCellPhone]);
             }
             collection.Username = collection.Username.Trim();
 
             try {
-                var itsphone = true;
-                AccountProfile accountProfile = null;
+                var query = new AccountProfileGetFirstSchema { LinkedId = collection.Username };
                 if(collection.Username.IsPhoneNumber()) {
-                    accountProfile = await _accountProfileService.FirstAsync(f => f.Phone == collection.Username).ConfigureAwait(true);
-                    if(accountProfile == null) {
-                        return BadRequest(message: "This Phone number is not found.");
-                    }
+                    query.TypeId = AccountProfileType.Phone;
                 }
                 else if(new EmailAddressAttribute().IsValid(collection.Username)) {
-                    itsphone = false;
-                    accountProfile = await _accountProfileService.FirstAsync(f => f.Email == collection.Username).ConfigureAwait(true);
-                    if(accountProfile == null) {
-                        return BadRequest(message: "This Email number is not found.");
-                    }
+                    query.TypeId = AccountProfileType.Email;
                 }
                 else {
-                    return BadRequest(message: "Please define a correct Email or CellPhone number.");
+                    return BadRequest(message: _localizer[ResourceMessage.BadEmailOrCellphone]);
+                }
+
+                var accountProfile = await _accountProfileService.FirstAsync(query).ConfigureAwait(true);
+                if(accountProfile == null) {
+                    if(query.TypeId == AccountProfileType.Phone)
+                        return BadRequest(message: _localizer[ResourceMessage.PhoneNotFound]);
+
+                    if(query.TypeId == AccountProfileType.Email)
+                        return BadRequest(message: _localizer[ResourceMessage.EmailNotFound]);
                 }
 
                 var token = _randomMaker.NewToken();
                 var username = Convert.ToBase64String(Encoding.UTF8.GetBytes(collection.Username));
                 var changepassurl = $"clipboardy.com/api/account/changepasswordrequested?username={username}&token={token}";
-                accountProfile.ForgotPasswordToken = token;
-                await _accountProfileService.UpdateAsync(accountProfile, needToFetch: false).ConfigureAwait(false);
+                await _accountProfileService.UpdateAsync(new AccountProfileUpdateSchema {
+                    Id = accountProfile.Id.Value,
+                    ForgotPasswordToken = string.Empty
+                }).ConfigureAwait(false);
 
-                if(itsphone) {
+                if(query.TypeId == AccountProfileType.Phone) {
                     await _smsService.SendAsync(new SMSModel {
-                        PhoneNo = accountProfile.Phone,
+                        PhoneNo = accountProfile.LinkedId,
                         TextBody = _contentBodyMaker.CommonSMSBody(changepassurl)
                     }).ConfigureAwait(false);
                 }
                 else {
                     await _emailService.SendAsync(new EmailModel {
-                        Name = accountProfile.Email,
-                        Address = accountProfile.Email,
+                        Name = accountProfile.LinkedId,
+                        Address = accountProfile.LinkedId,
                         Subject = _localizer[""],
                         TextBody = _contentBodyMaker.CommonEmailBody(changepassurl)
                     }).ConfigureAwait(false);

@@ -5,11 +5,16 @@ using System.Net;
 using System.Reflection;
 
 namespace Assets.Model.Base {
-    public interface IEntity { }
     public interface IStoredProcSchema { }
     public interface IStoredProcResult { }
+    public interface IBaseBindingModel { }
 
-    public class PagingSchema: IStoredProcSchema {
+    public class BaseSchema: IStoredProcSchema {
+        [OutputParameter]
+        public HttpStatusCode StatusCode { get; set; }
+    }
+
+    public class PagingSchema: BaseSchema {
         [InputParameter]
         public string @OrderBy { get; set; }
 
@@ -29,18 +34,53 @@ namespace Assets.Model.Base {
         public int TotalPages { get { return (int)Math.Ceiling((decimal)TotalCount / Take.Value); } }
     }
 
-    public class PagingOption {
+    public class PagingOption: IBaseBindingModel {
         public string OrderBy { get; set; } = "Id";
         public string Order { get; set; } = "DESC";
         public int Skip { get; set; } = 0;
         public int Take { get; set; } = 10;
     }
 
+    public class BaseViewModel: IBaseViewModel {
+        public HttpStatusCode Status { get; set; } = HttpStatusCode.BadRequest;
+        public string Message { get; set; }
+        public object Data { get; set; }
+        public long? TotalPages { get; set; }
+
+        private static string _version;
+        public static string Version {
+            get {
+                if(string.IsNullOrWhiteSpace(_version)) {
+                    _version = Assembly.GetEntryAssembly().GetName().Version.ToString();
+                }
+                return _version;
+            }
+        }
+    }
+
+    public interface IServiceResult {
+        int Code { get; set; }
+        string Message { get; set; }
+        object Data { get; set; }
+    }
+
+    public class ServiceResult: IServiceResult {
+        public int Code { get; set; }
+        public string Message { get; set; }
+        public object Data { get; set; }
+
+        public ServiceResult(int code, string message, object data = null) {
+            Code = code;
+            Message = message;
+            Data = data;
+        }
+    }
+
+
     #region old
     public interface IBaseEntity { }
     public interface IBaseModel { }
 
-    public interface IBaseBindingModel: IBaseModel { }
 
     public interface IBaseViewModel: IBaseModel { }
 
@@ -61,35 +101,7 @@ namespace Assets.Model.Base {
         //public int? TotalPages { get; set; }
     }
 
-    public class BaseViewModel: IBaseViewModel {
-        public HttpStatusCode Status { get; set; } = HttpStatusCode.BadRequest;
-        public string Message { get; set; }
-        public object Data { get; set; }
-        public long? TotalPages { get; set; }
-
-        private static string _version;
-        public static string Version {
-            get {
-                if(string.IsNullOrWhiteSpace(_version)) {
-                    _version = Assembly.GetEntryAssembly().GetName().Version.ToString();
-                }
-                return _version;
-            }
-        }
-    }
-
-    public class BaseHeaderBindingModel: IBaseBindingModel {
-        public string DeviceId { get; set; }
-        public string DeviceName { get; set; }
-        public string DeviceType { get; set; }
-    }
-
-    public class HeaderBindingModel: BaseHeaderBindingModel {
-        public string Token { get; set; }
-        public AccountHeader AccountHeader { get; set; }
-    }
-
-    public class BaseBindingModel: HeaderBindingModel {
+    public class BaseBindingModel: IBaseBindingModel {
         public string OrderBy { get; set; } = "Id";
         public bool OrderAscending { get; set; } = false;
         public int Skip { get; set; } = 0;
