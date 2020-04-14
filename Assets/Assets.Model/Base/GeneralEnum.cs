@@ -1,4 +1,10 @@
 ﻿namespace Assets.Model.Base {
+    public enum SQLPropType {
+        INT,
+        VARCHAR,
+        NVARCHAR,
+        BIT
+    }
 
     public enum Status {
         Inactive = 0,

@@ -11,11 +11,9 @@ namespace Presentation.WebApi.Services {
     public class HealthCkeckService: IHealthCkeckService {
         #region ctor
         private readonly AppSetting _appSetting;
-        private readonly MsSQLDbContext _dbContext;
 
-        public HealthCkeckService(AppSetting appSetting, MsSQLDbContext dbContext) {
+        public HealthCkeckService(AppSetting appSetting) {
             _appSetting = appSetting;
-            _dbContext = dbContext;
         }
         #endregion
 
@@ -38,20 +36,10 @@ namespace Presentation.WebApi.Services {
 
             return true;
         }
-
-        private bool CheckMsSqlDb() {
-            try {
-                return _dbContext.Database.CanConnect();
-            }
-            catch(Exception ex) {
-                Log.Error(ex, "Error on openning connection to MsSqldb.");
-                return false;
-            }
-        }
         #endregion
 
         public bool Analyze() {
-            return CheckConfig() && CheckMsSqlDb();
+            return CheckConfig();
         }
     }
 }

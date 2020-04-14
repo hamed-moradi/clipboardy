@@ -1,9 +1,9 @@
-﻿using Assets.Model.Base;
-using Assets.Model.Common;
+﻿using Assets.Model.Common;
 using Assets.Resource;
 using Assets.Utility;
+using Assets.Utility.Infrastructure;
 using Core.Application;
-using Core.Domain.StoredProcSchema;
+using Core.Domain.StoredProcedure.Schema;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.Extensions.Localization;
 using System;
@@ -17,7 +17,6 @@ namespace Presentation.WebApi.FilterAttributes {
         private readonly IStringLocalizer _localizer;
         private readonly IAccountService _accountService;
         public bool HttpAccountHeader { get; set; } = true;
-        public bool SupportPaging { get; set; } = false;
 
         public ArgumentBinderAttribute() {
             _localizer = ServiceLocator.Current.GetInstance<IStringLocalizer>();
@@ -53,9 +52,9 @@ namespace Presentation.WebApi.FilterAttributes {
                 var result = _accountService.AuthenticateAsync(schema).GetAwaiter().GetResult();
                 switch(schema.StatusCode) {
                     case HttpStatusCode.NotFound:
-                        throw new Exception(_localizer[ResourceMessage.UserNotFound]);
+                        throw new Exception(_localizer[DataTransferer.UserNotFound().Message]);
                     case HttpStatusCode.Unauthorized:
-                        throw new Exception(_localizer[ResourceMessage.UserIsNotActive]);
+                        throw new Exception(_localizer[DataTransferer.UserIsNotActive().Message]);
                     case HttpStatusCode.OK:
                         context?.HttpContext.Items.Add(nameof(HttpAccountHeader), new HttpAccountHeader {
                             Id = result.Id,

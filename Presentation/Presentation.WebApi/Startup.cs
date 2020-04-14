@@ -14,16 +14,8 @@ using Microsoft.AspNetCore.Localization;
 using Assets.Resource;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.Google;
-using Microsoft.AspNetCore.Authentication;
-using Core.Domain.Entities;
-using Microsoft.AspNetCore.Identity;
 using Assets.Model.Base;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Authentication.MicrosoftAccount;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using System;
 
 namespace Presentation.WebApi {
     public class Startup {

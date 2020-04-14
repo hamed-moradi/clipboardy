@@ -1,7 +1,5 @@
-﻿using Assets.Model.StoredProcResult;
-using Core.Domain;
-using Core.Domain.Entities;
-using Core.Domain.StoredProcSchema;
+﻿using Core.Domain.StoredProcedure.Result;
+using Core.Domain.StoredProcedure.Schema;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 

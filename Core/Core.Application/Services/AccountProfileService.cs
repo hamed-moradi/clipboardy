@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
-using Assets.Model.StoredProcResult;
-using Core.Domain.StoredProcSchema;
+using Core.Domain.StoredProcedure.Result;
+using Core.Domain.StoredProcedure.Schema;
 
 namespace Core.Application.Services {
     public class AccountProfileService: IAccountProfileService {

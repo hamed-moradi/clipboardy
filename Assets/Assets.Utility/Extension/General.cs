@@ -8,6 +8,7 @@ using System.Data;
 using System.Globalization;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Reflection;
 using System.Text.RegularExpressions;
 
 namespace Assets.Utility.Extension {
@@ -125,6 +126,7 @@ namespace Assets.Utility.Extension {
             }
             return dataTable;
         }
+
         public static DbType ToDbType(this Type type) {
             return new Dictionary<Type, DbType> {
                 //[typeof(System.Collections.IEnumerable)] = DbType.Object,
@@ -165,24 +167,48 @@ namespace Assets.Utility.Extension {
                 [typeof(DateTimeOffset?)] = DbType.DateTimeOffset,
             }[type];
         }
-        public static string GetSchemaName(this IStoredProcSchema baseSchema) {
-            // Read from model name (default)
+
+        public static (string Schema, string Name) GetStoredProcedureAttribute(this IStoredProcSchema baseSchema) {
+            var schema = "dbo";
             var name = baseSchema.GetType().Name;
 
-            // Read from "EntityName" property (get by id model)
-            var props = baseSchema.GetType().GetProperties().FirstOrDefault(prop => prop.Name == "EntityName");
-            if(props != null) {
-                name = props.GetValue(baseSchema, null).ToString();
+            var attr = (StoredProcedureAttribute)baseSchema.GetType()
+                .GetCustomAttributes(typeof(StoredProcedureAttribute), true).FirstOrDefault();
+
+            if(!string.IsNullOrWhiteSpace(attr.Schema))
+                schema = attr.Schema;
+
+            if(!string.IsNullOrWhiteSpace(attr.Name))
+                name = attr.Name;
+
+            return (schema, name);
+        }
+        public static string GetSQLType(this PropertyInfo propertyInfo, Type customAttribute) {
+            CustomParameterAttribute attr;
+            if(customAttribute == typeof(InputParameterAttribute)) {
+                attr = (InputParameterAttribute)propertyInfo.GetType()
+                    .GetCustomAttributes(typeof(InputParameterAttribute), true).FirstOrDefault();
             }
             else {
-                // Read from schema attribute
-                var attrs = baseSchema.GetType().GetCustomAttributes(true);
-                foreach(var attr in attrs) {
-                    if(attr is StoredProcedureAttribute schema && !string.IsNullOrWhiteSpace(schema.Name))
-                        name = schema.Name;
-                }
+                attr = (OutputParameterAttribute)propertyInfo.GetType()
+                    .GetCustomAttributes(typeof(OutputParameterAttribute), true).FirstOrDefault();
             }
-            return name;
+
+            var thetype = attr.Type.ToString();
+            switch(attr.Type) {
+                case SQLPropType.BIT:
+                case SQLPropType.INT:
+                    thetype += attr.IsNullable ? " = NULL" : string.Empty;
+                    break;
+                case SQLPropType.VARCHAR:
+                case SQLPropType.NVARCHAR:
+                    thetype += (attr.Length > 0 ? $"({attr.Length})" : "(MAX)") + (attr.IsNullable ? " = NULL" : string.Empty);
+                    break;
+                default:
+                    break;
+            }
+
+            return thetype;
         }
         #endregion
     }

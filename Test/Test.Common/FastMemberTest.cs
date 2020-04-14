@@ -1,10 +1,10 @@
 ﻿using FastMember;
-using Core.Domain.Entities;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Linq.Expressions;
 using System;
 using System.Linq;
 using Assets.Model.Base;
+using Assets.Model.Common;
 
 namespace Test.Common {
     [TestClass]
@@ -17,7 +17,7 @@ namespace Test.Common {
 
         [TestMethod, TestCategory("FastMember"), TestCategory("GetMethod")]
         public void GetMethod() {
-            var cb = new Clipboard();
+            var cb = new HttpDeviceHeader();
 
             var propName = "Id";
 
@@ -30,12 +30,12 @@ namespace Test.Common {
             wrapped[propName] = (int)val + 1;
             var ifexist = wrapped["Id"];
 
-            Assert.IsTrue(cb.Id == 2);
+            Assert.IsTrue(cb.DeviceId == "2");
         }
 
         [TestMethod, TestCategory("FastMember"), TestCategory("IfExist")]
         public void IfExist() {
-            var cb = new Clipboard();
+            var cb = new HttpDeviceHeader();
             var propName = "Id2";
 
             var accessor = TypeAccessor.Create(cb.GetType());

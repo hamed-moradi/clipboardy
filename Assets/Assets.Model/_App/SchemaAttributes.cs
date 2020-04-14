@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Assets.Model.Base;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -19,19 +20,32 @@ namespace Assets.Model {
         }
     }
 
-    public class InputParameterAttribute: Attribute {
+    public class CustomParameterAttribute: Attribute {
         public string Name { get; set; }
-        public InputParameterAttribute(string name = null) {
+        public SQLPropType Type { get; set; }
+        public int Length { get; set; }
+        public bool IsNullable { get; set; }
+
+        public CustomParameterAttribute(string name = null, SQLPropType type = SQLPropType.INT, int length = 0, bool isnull = true) {
             Name = name;
+            Type = type;
+            Length = length;
+            IsNullable = isnull;
         }
     }
 
-    public class OutputParameterAttribute: Attribute {
-        public string Name { get; set; }
-        public OutputParameterAttribute(string name = null) {
-            Name = name;
+    public class InputParameterAttribute: CustomParameterAttribute {
+        public InputParameterAttribute(string name = null, SQLPropType type = SQLPropType.INT, int length = 0, bool isnull = true)
+            : base(name, type, length, isnull) {
         }
     }
+
+    public class OutputParameterAttribute: CustomParameterAttribute {
+        public OutputParameterAttribute(string name = null, SQLPropType type = SQLPropType.INT, int length = 0, bool isnull = true)
+            : base(name, type, length, isnull) {
+        }
+    }
+
     public class ReturnParameterAttribute: Attribute { }
 
     public class ErrorAttribute: Attribute {

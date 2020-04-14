@@ -1,8 +1,6 @@
 using Assets.Model.Test;
 using Assets.Utility;
 using AutoMapper;
-using Core.Application;
-using Core.Domain.Entities;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json;
 using System;

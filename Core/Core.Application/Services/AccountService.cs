@@ -1,21 +1,14 @@
-﻿using Assets.Model;
-using Assets.Model.Base;
+﻿using Assets.Model.Base;
 using Assets.Model.Binding;
-using Assets.Model.StoredProcResult;
-using Assets.Resource;
+using Core.Domain.StoredProcedure.Result;
 using Assets.Utility.Extension;
 using Assets.Utility.Infrastructure;
 using Core.Domain;
-using Core.Domain.Entities;
-using Core.Domain.StoredProcSchema;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Storage;
+using Core.Domain.StoredProcedure.Schema;
 using Serilog;
 using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Data;
-using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 
@@ -110,7 +103,7 @@ namespace Core.Application.Services {
                     await _accountProfileService.AddAsync(accountProfile);
 
                     transaction.Commit();
-                    return ServiceResultHandler.Ok(token);
+                    return DataTransferer.Ok(token);
                 }
                 catch(Exception ex) {
                     var errmsg = "Something went wrong.";
@@ -163,7 +156,7 @@ namespace Core.Application.Services {
                     await _accountProfileService.AddAsync(accountProfile);
 
                     transaction.Commit();
-                    return ServiceResultHandler.Ok(token);
+                    return DataTransferer.Ok(token);
                 }
                 catch(Exception ex) {
                     var errmsg = "Something went wrong.";
@@ -191,15 +184,15 @@ namespace Core.Application.Services {
                         query.TypeId = AccountProfileType.Email;
                     }
                     else {
-                        return ServiceResultHandler.BadEmailOrCellphone();
+                        return DataTransferer.BadEmailOrCellphone();
                     }
 
                     var accountProfile = await _accountProfileService.FirstAsync(query).ConfigureAwait(true);
                     if(accountProfile == null) {
                         if(query.TypeId == AccountProfileType.Phone)
-                            return ServiceResultHandler.PhoneNotFound();
+                            return DataTransferer.PhoneNotFound();
                         else
-                            return ServiceResultHandler.EmailNotFound();
+                            return DataTransferer.EmailNotFound();
                     }
 
                     var account = await FirstAsync(new AccountGetFirstSchema {
@@ -208,7 +201,7 @@ namespace Core.Application.Services {
                     }).ConfigureAwait(true);
 
                     if(account == null)
-                        return ServiceResultHandler.UserIsNotActive();
+                        return DataTransferer.UserIsNotActive();
 
                     // check password
                     if(_cryptograph.IsEqual(signinModel.Password, account.Password)) {
@@ -240,7 +233,7 @@ namespace Core.Application.Services {
                         }
                     }
                     else {
-                        return ServiceResultHandler.WrongPassword();
+                        return DataTransferer.WrongPassword();
                     }
 
                     // clean forgot password tokens
@@ -259,12 +252,12 @@ namespace Core.Application.Services {
                     });
 
                     transaction.Commit();
-                    return ServiceResultHandler.Ok(token);
+                    return DataTransferer.Ok(token);
                 }
                 catch(Exception ex) {
                     Log.Error(ex, ex.Source);
                     transaction.Rollback();
-                    return ServiceResultHandler.InternalServerError();
+                    return DataTransferer.InternalServerError();
                 }
             }
         }
@@ -272,11 +265,11 @@ namespace Core.Application.Services {
         public async Task<IServiceResult> ExternalSigninAsync(ExternalUserBindingModel externalUser, AccountProfileResult accountProfile) {
 
             if(accountProfile == null && accountProfile.AccountId.HasValue) {
-                return ServiceResultHandler.DefectiveEntry();
+                return DataTransferer.DefectiveEntry();
             }
 
             if(accountProfile.StatusId != Status.Active) {
-                return ServiceResultHandler.UserIsNotActive();
+                return DataTransferer.UserIsNotActive();
             }
 
             var now = DateTime.UtcNow;
@@ -288,7 +281,7 @@ namespace Core.Application.Services {
             };
             var account = await FirstAsync(accountQuery);
             if(account == null)
-                return ServiceResultHandler.UserNotFound();
+                return DataTransferer.UserNotFound();
 
             // todo: check the account
             using(var transaction = _dbConnection.BeginTransaction()) {
@@ -299,7 +292,7 @@ namespace Core.Application.Services {
                     };
                     var accountDevice = await _accountDeviceService.FirstAsync(accountDeviceQuery);
                     if(accountDevice == null)
-                        return ServiceResultHandler.DeviceIdNotFound();
+                        return DataTransferer.DeviceIdNotFound();
 
                     if(accountDevice != null) {
                         // set a new token
@@ -330,7 +323,7 @@ namespace Core.Application.Services {
                     if(accountProfileCleanTokens.StatusCode != HttpStatusCode.OK) {
                         Log.Error($"Can't update 'ForgotPasswordTokens' to NULL for AccountId={account.Id}");
                         transaction.Rollback();
-                        return ServiceResultHandler.InternalServerError();
+                        return DataTransferer.InternalServerError();
                     }
 
                     // set last signed in at
@@ -343,12 +336,12 @@ namespace Core.Application.Services {
                         Log.Error($"Can't update 'LastSignedinAt' after a successfully signing in for AccountId={account.Id}");
 
                     transaction.Commit();
-                    return ServiceResultHandler.Ok(token);
+                    return DataTransferer.Ok(token);
                 }
                 catch(Exception ex) {
                     Log.Error(ex, ex.Source);
                     transaction.Rollback();
-                    return ServiceResultHandler.InternalServerError(ex);
+                    return DataTransferer.InternalServerError(ex);
                 }
             }
         }

@@ -22,25 +22,4 @@ namespace Core.Application {
         Task<Result> QueryFirstAsync<Result>(string procedure) where Result : IStoredProcResult;
         Task<Result> QueryFirstAsync<Schema, Result>(Schema model) where Result : IStoredProcResult where Schema : IStoredProcSchema;
     }
-
-    public interface IStoredProcedureService<Result, Schema>
-        where Result : IStoredProcResult
-        where Schema : IStoredProcSchema {
-
-        //Sync
-        void Execute(string procedure);
-        void Execute(Schema model);
-        IEnumerable<Result> Query(string procedure);
-        IEnumerable<Result> Query(Schema model);
-        Result QueryFirst(string procedure);
-        Result QueryFirst(Schema model);
-
-        //Async
-        Task ExecuteAsync(string procedure);
-        Task ExecuteAsync(Schema model);
-        Task<IEnumerable<Result>> QueryAsync(string procedure);
-        Task<IEnumerable<Result>> QueryAsync(Schema model);
-        Task<Result> QueryFirstAsync(string procedure);
-        Task<Result> QueryFirstAsync(Schema model);
-    }
 }

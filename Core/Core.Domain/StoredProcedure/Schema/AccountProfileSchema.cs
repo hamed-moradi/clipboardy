@@ -3,7 +3,7 @@ using Assets.Model.Base;
 using System;
 using System.Net;
 
-namespace Core.Domain.StoredProcSchema {
+namespace Core.Domain.StoredProcedure.Schema {
     [StoredProcedure("dbo", "webapi_accountProfile_getFirst")]
     public class AccountProfileGetFirstSchema: BaseSchema, IStoredProcSchema {
         [InputParameter]

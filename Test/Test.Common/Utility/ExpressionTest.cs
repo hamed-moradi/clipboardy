@@ -1,5 +1,4 @@
-﻿using Core.Domain.Entities;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Linq.Expressions;
 using System.Reflection;
@@ -31,9 +30,6 @@ namespace Test.Common.Utility {
         [TestMethod, TestCategory("Expression"), TestCategory("ToModel")]
         public void ToToModel() {
             //var name = GetPropertyName<Clipboard>(p => p.Id == 0);
-
-            Expression<Func<Clipboard, bool>> expression = p => p.Id == 0 && p.Content.Contains("") && p.CreatedAt <= DateTime.Now;
-            var body = expression.Body;
 
             //Expression<Func<Clipboard>> expression2 = e=>new Clipboard();
             //var body2 = (MemberExpression)expression2.Body;

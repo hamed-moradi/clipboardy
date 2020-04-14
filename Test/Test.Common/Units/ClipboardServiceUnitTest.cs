@@ -1,16 +1,8 @@
-using Assets.Model.Base;
-using Assets.Model.Test;
-using Assets.Model.View;
 using Assets.Utility;
 using AutoMapper;
 using Core.Application;
-using Core.Domain.Entities;
-using Core.Domain.StoredProcSchema;
+using Core.Domain.StoredProcedure.Schema;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 
 namespace Test.Common.Units {

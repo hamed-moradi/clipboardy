@@ -1,11 +1,10 @@
 ﻿using System;
 using System.Threading.Tasks;
 using Assets.Model.Binding;
-using Assets.Model.View;
 using Assets.Resource;
+using Assets.Utility.Infrastructure;
 using Core.Application;
-using Core.Domain.Entities;
-using Core.Domain.StoredProcSchema;
+using Core.Domain.StoredProcedure.Schema;
 using Microsoft.AspNetCore.Mvc;
 using Presentation.WebApi.FilterAttributes;
 using Serilog;
@@ -52,7 +51,7 @@ namespace Presentation.WebApi.Controllers {
                     return Ok();
                 }
 
-                return BadRequest(_localizer[ResourceMessage.DuplicatedValueFound]);
+                return BadRequest(_localizer[DataTransferer.DuplicatedValueFound().Message]);
             }
             catch(Exception ex) {
                 Log.Error(ex, ex.Source);

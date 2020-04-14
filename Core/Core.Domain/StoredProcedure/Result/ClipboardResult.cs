@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Assets.Model.StoredProcResult {
+namespace Core.Domain.StoredProcedure.Result {
     public class ClipboardResult: IStoredProcResult {
         public string Content { get; set; }
         public int TypeId { get; set; }

@@ -2,7 +2,6 @@
 using Assets.Model.Binding;
 using Assets.Utility;
 using AutoMapper;
-using Core.Domain.Entities;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections.Generic;
@@ -26,9 +25,6 @@ namespace Test.Common {
                 Content = "cnt",
                 CreatedAt = null
             };
-            var entity = _mapper.Map<Clipboard>(bindedmodel);
-
-            Assert.IsTrue(entity.TypeId.Equals(bindedmodel.TypeId));
         }
 
         [TestMethod, TestCategory("Mapper"), TestCategory("EntityToModelView")]

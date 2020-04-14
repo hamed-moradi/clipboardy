@@ -23,8 +23,9 @@ using Newtonsoft.Json;
 using Presentation.WebApi.FilterAttributes;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
-using Core.Domain.StoredProcSchema;
+using Core.Domain.StoredProcedure.Schema;
 using Assets.Model.Common;
+using Assets.Utility.Infrastructure;
 
 namespace Presentation.WebApi.Controllers {
     [Route("api/[controller]")]
@@ -104,7 +105,7 @@ namespace Presentation.WebApi.Controllers {
             try {
                 if(string.IsNullOrWhiteSpace(userData)) {
                     Log.Error("userData is not defined");
-                    return BadRequest(message: _localizer[ResourceMessage.DefectiveEntry]);
+                    return BadRequest(message: _localizer[DataTransferer.DefectiveEntry().Message]);
                 }
 
                 var headerbindingmodel = JsonConvert.DeserializeObject<HttpDeviceHeader>(Encoding.UTF8.GetString(Convert.FromBase64String(userData)));
@@ -114,7 +115,7 @@ namespace Presentation.WebApi.Controllers {
                     || string.IsNullOrWhiteSpace(headerbindingmodel.DeviceType)) {
 
                     Log.Error("userData is not valid");
-                    return BadRequest(message: _localizer[ResourceMessage.DefectiveEntry]);
+                    return BadRequest(message: _localizer[DataTransferer.DefectiveEntry().Message]);
                 }
 
                 // read external identity from the temporary cookie
@@ -122,14 +123,14 @@ namespace Presentation.WebApi.Controllers {
 
                 if(!authenticationResult.Succeeded) {
                     Log.Error("External authentication failed");
-                    return InternalServerError(message: _localizer[ResourceMessage.ExternalAuthenticationFailed]);
+                    return InternalServerError(message: _localizer[DataTransferer.ExternalAuthenticationFailed().Message]);
                 }
 
                 // retrieve claims of the external user
                 var claimPrincipal = authenticationResult.Principal;
                 if(claimPrincipal == null) {
                     Log.Error("External authentication user principal error");
-                    return InternalServerError(message: _localizer[ResourceMessage.ExternalAuthenticationUserError]);
+                    return InternalServerError(message: _localizer[DataTransferer.ExternalAuthenticationUserError().Message]);
                 }
 
                 // transform claims list to model
@@ -137,12 +138,12 @@ namespace Presentation.WebApi.Controllers {
 
                 if(string.IsNullOrWhiteSpace(externalUser.Email)) {
                     Log.Error("External authentication user email not found");
-                    return InternalServerError(message: _localizer[ResourceMessage.ExternalAuthenticationEmailError]);
+                    return InternalServerError(message: _localizer[DataTransferer.ExternalAuthenticationEmailError().Message]);
                 }
 
                 if(externalUser.ProviderId == AccountProvider.Clipboard) {
                     Log.Error("External signup with unknown ProviderId");
-                    return InternalServerError(message: _localizer[ResourceMessage.ExternalAuthenticationWithUnknownProvider]);
+                    return InternalServerError(message: _localizer[DataTransferer.ExternalAuthenticationWithUnknownProvider().Message]);
                 }
 
                 externalUser.DeviceId = headerbindingmodel.DeviceId;
@@ -172,7 +173,7 @@ namespace Presentation.WebApi.Controllers {
             }
             catch(Exception ex) {
                 Log.Error(ex, ex.Source);
-                return InternalServerError(message: _localizer[ResourceMessage.SomethingWentWrong]);
+                return InternalServerError(message: _localizer[DataTransferer.SomethingWentWrong().Message]);
             }
         }
 
@@ -185,7 +186,7 @@ namespace Presentation.WebApi.Controllers {
             }
             catch(Exception ex) {
                 Log.Error(ex, ex.Source);
-                return InternalServerError(message: _localizer[ResourceMessage.SomethingWentWrong]);
+                return InternalServerError(message: _localizer[DataTransferer.SomethingWentWrong().Message]);
             }
         }
     }

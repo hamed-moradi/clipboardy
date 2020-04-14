@@ -11,7 +11,7 @@ namespace Assets.Utility {
             services.AddScoped<ContentBodyMaker>();
             services.AddScoped<IEmailService, MailKitService>();
             services.AddScoped<ISMSService, ParsGreenSMSService>();
-            services.AddSingleton<PropertyMapper>();
+            services.AddSingleton<StoredProcedureHelper>();
             services.AddSingleton<IParameterHandler, ParameterHandler>();
             services.AddSingleton(typeof(IParameterHandler<>), typeof(ParameterHandler<>));
         }

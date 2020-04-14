@@ -1,7 +1,7 @@
 ﻿using Assets.Model.Base;
 using System;
 
-namespace Assets.Model.StoredProcResult {
+namespace Core.Domain.StoredProcedure.Result {
     public class AccountResult: IStoredProcResult {
         public int? Id { get; set; }
         public string Username { get; set; }

@@ -1,6 +1,6 @@
 using Assets.Utility;
 using Core.Application;
-using Core.Domain.StoredProcSchema;
+using Core.Domain.StoredProcedure.Schema;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 
