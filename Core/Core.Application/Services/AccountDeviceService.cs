@@ -19,8 +19,9 @@ namespace Core.Application.Services {
             return result;
         }
 
-        public async Task AddAsync(AccountDeviceAddSchema accountDevice) {
-            await _storedProcedure.ExecuteAsync(accountDevice);
+        public async Task<int> AddAsync(AccountDeviceAddSchema accountDevice) {
+            var result = await _storedProcedure.ExecuteScalarAsync<AccountDeviceAddSchema, int>(accountDevice);
+            return result;
         }
 
         public async Task UpdateAsync(AccountDeviceUpdateSchema accountDevice) {

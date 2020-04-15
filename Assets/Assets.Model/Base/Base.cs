@@ -10,8 +10,8 @@ namespace Assets.Model.Base {
     public interface IBaseBindingModel { }
 
     public class BaseSchema: IStoredProcSchema {
-        [OutputParameter]
-        public HttpStatusCode StatusCode { get; set; }
+        [ReturnParameter]
+        public int StatusCode { get; set; }
     }
 
     public class PagingSchema: BaseSchema {

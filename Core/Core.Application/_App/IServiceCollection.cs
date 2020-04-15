@@ -9,7 +9,7 @@ namespace Core.Application {
     public interface IAccountService {
         Task<AccountAuthenticateResult> AuthenticateAsync(AccountAuthenticateSchema schema);
         Task<AccountResult> FirstAsync(AccountGetFirstSchema account);
-        Task AddAsync(AccountAddSchema account);
+        Task<int> AddAsync(AccountAddSchema account);
         Task UpdateAsync(AccountUpdateSchema account);
         Task<IServiceResult> SignupAsync(SignupBindingModel signupModel);
         Task<IServiceResult> ExternalSignupAsync(ExternalUserBindingModel externalUser);
@@ -19,13 +19,13 @@ namespace Core.Application {
 
     public interface IAccountDeviceService {
         Task<AccountDeviceResult> FirstAsync(AccountDeviceGetFirstSchema accountDevice);
-        Task AddAsync(AccountDeviceAddSchema accountDevice);
+        Task<int> AddAsync(AccountDeviceAddSchema accountDevice);
         Task UpdateAsync(AccountDeviceUpdateSchema accountDevice);
     }
 
     public interface IAccountProfileService {
         Task<AccountProfileResult> FirstAsync(AccountProfileGetFirstSchema accountProfile);
-        Task AddAsync(AccountProfileAddSchema accountProfile);
+        Task<int> AddAsync(AccountProfileAddSchema accountProfile);
         Task UpdateAsync(AccountProfileUpdateSchema accountProfile);
         Task CleanForgotPasswordTokensAsync(AccountProfileCleanTokensSchema accountProfile);
     }

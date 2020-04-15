@@ -1,5 +1,6 @@
 ﻿using Assets.Model;
 using Assets.Model.Base;
+using Assets.Utility.Extension;
 using System;
 using System.Net;
 
@@ -22,18 +23,14 @@ namespace Core.Domain.StoredProcedure.Schema {
         public string DeviceType { get; set; }
 
         [InputParameter]
-        public Status? StatusId { get; set; }
+        public int? StatusId { get; set; }
     }
 
     [StoredProcedure("dbo", "webapi_accountDevice_get")]
     public class AccountDeviceGetSchema: AccountDeviceGetFirstSchema { }
 
     [StoredProcedure("dbo", "webapi_accountDevice_add")]
-    public class AccountDeviceAddSchema: BaseSchema, IStoredProcSchema {
-        [OutputParameter]
-        public int? Id { get; set; }
-
-        [InputParameter]
+    public class AccountDeviceAddSchema: BaseSchema, IStoredProcSchema {[InputParameter]
         public int? AccountId { get; set; }
 
         [InputParameter]
@@ -52,7 +49,7 @@ namespace Core.Domain.StoredProcedure.Schema {
         public DateTime CreatedAt { get; set; } = DateTime.Now;
 
         [InputParameter]
-        public Status? StatusId { get; set; } = Status.Pending;
+        public int? StatusId { get; set; } = Status.Pending.ToInt();
     }
 
     [StoredProcedure("dbo", "webapi_accountDevice_update")]
@@ -64,6 +61,6 @@ namespace Core.Domain.StoredProcedure.Schema {
         public string Token { get; set; }
 
         [InputParameter]
-        public Status? StatusId { get; set; }
+        public int? StatusId { get; set; }
     }
 }

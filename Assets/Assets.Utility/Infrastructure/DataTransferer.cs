@@ -34,7 +34,7 @@ namespace Assets.Utility.Infrastructure {
         public static IServiceResult RequestForVerificationCodeFirst(object data = null) { return new ServiceResult(0, nameof(RequestForVerificationCodeFirst), data); }
         public static IServiceResult VerificationCodeHasBeenExpired(object data = null) { return new ServiceResult(0, nameof(VerificationCodeHasBeenExpired), data); }
         public static IServiceResult WrongVerificationCode(object data = null) { return new ServiceResult(0, nameof(WrongVerificationCode), data); }
-        public static IServiceResult UserNotFound(object data = null) { return new ServiceResult(410, nameof(UserNotFound), data); }
+        public static IServiceResult UserNotFound(object data = null) { return new ServiceResult(404, nameof(UserNotFound), data); }
         public static IServiceResult PhoneNotFound(object data = null) { return new ServiceResult(0, nameof(PhoneNotFound), data); }//"This Phone number is not found."
         public static IServiceResult EmailNotFound(object data = null) { return new ServiceResult(0, nameof(EmailNotFound), data); }//"This Email is not found."
         public static IServiceResult BadEmailOrCellphone(object data = null) { return new ServiceResult(0, nameof(BadEmailOrCellphone), data); }//"Please define a correct Email or CellPhone number."

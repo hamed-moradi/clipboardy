@@ -2,7 +2,6 @@
 using Assets.Utility;
 using Assets.Utility.Extension;
 using Assets.Utility.Infrastructure;
-using AutoMapper;
 using Core.Domain;
 using Dapper;
 using System;
@@ -25,16 +24,40 @@ namespace Core.Application {
             _dbconn.Execute(procedure, commandType: CommandType.StoredProcedure);
         }
 
-        public void Execute<Schema>(Schema model) where Schema : IStoredProcSchema {
-            var parameterHandler = ServiceLocator.Current.GetInstance<IParameterHandler<Schema>>();
-            var parameters = parameterHandler.MakeParameters();
-            var (schema, name) = model.GetStoredProcedureAttribute();
-            _dbconn.Execute($"{schema}.{name}", parameters, commandType: CommandType.StoredProcedure);
-            parameterHandler.SetOutputValues(parameters);
-            parameterHandler.SetReturnValue(parameters);
+        public void Execute<Schema>(Schema model)
+            where Schema : IStoredProcSchema {
+
+            var parameterHandler = ServiceLocator.Current.GetInstance<IParameterHandler>();
+            var parameters = parameterHandler.MakeParameters(model);
+            _dbconn.Execute(model.GetStoredProcedureName(), parameters, commandType: CommandType.StoredProcedure);
+            parameterHandler.SetOutputValues(model, parameters);
+            parameterHandler.SetReturnValue(model, parameters);
         }
 
-        public IEnumerable<Result> Query<Result>(string procedure) where Result : IStoredProcResult {
+        public Result ExecuteScalar<Result>(string procedure)
+            where Result : IStoredProcResult {
+
+            var result = _dbconn.ExecuteScalar<Result>(procedure, commandType: CommandType.StoredProcedure);
+            return result;
+        }
+
+        public Result ExecuteScalar<Schema, Result>(Schema model)
+            where Schema : IStoredProcSchema {
+
+            if(typeof(Result) != typeof(bool) && typeof(Result) != typeof(int) && typeof(Result) != typeof(string)) {
+                throw new Exception("ExecuteScalarAsync is called with invalid Result data type.");
+            }
+            var parameterHandler = ServiceLocator.Current.GetInstance<IParameterHandler>();
+            var parameters = parameterHandler.MakeParameters(model);
+            var result = _dbconn.ExecuteScalar<Result>(model.GetStoredProcedureName(), parameters, commandType: CommandType.StoredProcedure);
+            parameterHandler.SetOutputValues(model, parameters);
+            parameterHandler.SetReturnValue(model, parameters);
+            return result;
+        }
+
+        public IEnumerable<Result> Query<Result>(string procedure)
+            where Result : IStoredProcResult {
+
             var result = _dbconn.Query<Result>(procedure, commandType: CommandType.StoredProcedure);
             return result;
         }
@@ -43,17 +66,18 @@ namespace Core.Application {
             where Result : IStoredProcResult
             where Schema : IStoredProcSchema {
 
-            var parameterHandler = ServiceLocator.Current.GetInstance<IParameterHandler<Schema>>();
-            var parameters = parameterHandler.MakeParameters();
-            var (schema, name) = model.GetStoredProcedureAttribute();
-            var result = _dbconn.Query<Result>($"{schema}.{name}", parameters, commandType: CommandType.StoredProcedure);
-            parameterHandler.SetOutputValues(parameters);
-            parameterHandler.SetReturnValue(parameters);
+            var parameterHandler = ServiceLocator.Current.GetInstance<IParameterHandler>();
+            var parameters = parameterHandler.MakeParameters(model);
+            var result = _dbconn.Query<Result>(model.GetStoredProcedureName(), parameters, commandType: CommandType.StoredProcedure);
+            parameterHandler.SetOutputValues(model, parameters);
+            parameterHandler.SetReturnValue(model, parameters);
             return result;
         }
 
-        public Result QueryFirst<Result>(string procedure) where Result : IStoredProcResult {
-            var result = _dbconn.QueryFirstOrDefault(procedure, commandType: CommandType.StoredProcedure);
+        public Result QueryFirst<Result>(string procedure)
+            where Result : IStoredProcResult {
+
+            var result = _dbconn.QueryFirstOrDefault<Result>(procedure, commandType: CommandType.StoredProcedure);
             return result;
         }
 
@@ -61,12 +85,11 @@ namespace Core.Application {
             where Result : IStoredProcResult
             where Schema : IStoredProcSchema {
 
-            var parameterHandler = ServiceLocator.Current.GetInstance<IParameterHandler<Schema>>();
-            var parameters = parameterHandler.MakeParameters();
-            var (schema, name) = model.GetStoredProcedureAttribute();
-            var result = _dbconn.QueryFirstOrDefault($"{schema}.{name}", parameters, commandType: CommandType.StoredProcedure);
-            parameterHandler.SetOutputValues(parameters);
-            parameterHandler.SetReturnValue(parameters);
+            var parameterHandler = ServiceLocator.Current.GetInstance<IParameterHandler>();
+            var parameters = parameterHandler.MakeParameters(model);
+            var result = _dbconn.QueryFirstOrDefault<Result>(model.GetStoredProcedureName(), parameters, commandType: CommandType.StoredProcedure);
+            parameterHandler.SetOutputValues(model, parameters);
+            parameterHandler.SetReturnValue(model, parameters);
             return result;
         }
 
@@ -75,15 +98,40 @@ namespace Core.Application {
             await _dbconn.ExecuteAsync(procedure, commandType: CommandType.StoredProcedure);
         }
 
-        public async Task ExecuteAsync<Schema>(Schema model) where Schema : IStoredProcSchema {
-            var parameterHandler = ServiceLocator.Current.GetInstance<IParameterHandler<Schema>>();
-            var parameters = parameterHandler.MakeParameters();
-            var (schema, name) = model.GetStoredProcedureAttribute();
-            await _dbconn.ExecuteAsync($"{schema}.{name}", parameters, commandType: CommandType.StoredProcedure);
-            parameterHandler.SetOutputValues(parameters);
+        public async Task ExecuteAsync<Schema>(Schema model)
+            where Schema : IStoredProcSchema {
+
+            var parameterHandler = ServiceLocator.Current.GetInstance<IParameterHandler>();
+            var parameters = parameterHandler.MakeParameters(model);
+            await _dbconn.ExecuteAsync(model.GetStoredProcedureName(), parameters, commandType: CommandType.StoredProcedure);
+            parameterHandler.SetOutputValues(model, parameters);
+            parameterHandler.SetReturnValue(model, parameters);
         }
 
-        public async Task<IEnumerable<Result>> QueryAsync<Result>(string procedure) where Result : IStoredProcResult {
+        public async Task<Result> ExecuteScalarAsync<Result>(string procedure)
+            where Result : IStoredProcResult {
+
+            var result = await _dbconn.ExecuteScalarAsync<Result>(procedure, commandType: CommandType.StoredProcedure);
+            return result;
+        }
+
+        public async Task<Result> ExecuteScalarAsync<Schema, Result>(Schema model)
+            where Schema : IStoredProcSchema {
+
+            if(typeof(Result) != typeof(bool) && typeof(Result) != typeof(int) && typeof(Result) != typeof(string)) {
+                throw new Exception("ExecuteScalarAsync is called with invalid Result data type.");
+            }
+            var parameterHandler = ServiceLocator.Current.GetInstance<IParameterHandler>();
+            var parameters = parameterHandler.MakeParameters(model);
+            var result = await _dbconn.ExecuteScalarAsync<Result>(model.GetStoredProcedureName(), parameters, commandType: CommandType.StoredProcedure);
+            parameterHandler.SetOutputValues(model, parameters);
+            parameterHandler.SetReturnValue(model, parameters);
+            return result;
+        }
+
+        public async Task<IEnumerable<Result>> QueryAsync<Result>(string procedure)
+            where Result : IStoredProcResult {
+
             var result = await _dbconn.QueryAsync<Result>(procedure, commandType: CommandType.StoredProcedure);
             return result;
         }
@@ -92,17 +140,18 @@ namespace Core.Application {
             where Result : IStoredProcResult
             where Schema : IStoredProcSchema {
 
-            var parameterHandler = ServiceLocator.Current.GetInstance<IParameterHandler<Schema>>();
-            var parameters = parameterHandler.MakeParameters();
-            var (schema, name) = model.GetStoredProcedureAttribute();
-            var result = await _dbconn.QueryAsync<Result>($"{schema}.{name}", parameters, commandType: CommandType.StoredProcedure);
-            parameterHandler.SetOutputValues(parameters);
-            parameterHandler.SetReturnValue(parameters);
+            var parameterHandler = ServiceLocator.Current.GetInstance<IParameterHandler>();
+            var parameters = parameterHandler.MakeParameters(model);
+            var result = await _dbconn.QueryAsync<Result>(model.GetStoredProcedureName(), parameters, commandType: CommandType.StoredProcedure);
+            parameterHandler.SetOutputValues(model, parameters);
+            parameterHandler.SetReturnValue(model, parameters);
             return result;
         }
 
-        public async Task<Result> QueryFirstAsync<Result>(string procedure) where Result : IStoredProcResult {
-            var result = await _dbconn.QueryFirstOrDefaultAsync(procedure, commandType: CommandType.StoredProcedure);
+        public async Task<Result> QueryFirstAsync<Result>(string procedure)
+            where Result : IStoredProcResult {
+
+            var result = await _dbconn.QueryFirstOrDefaultAsync<Result>(procedure, commandType: CommandType.StoredProcedure);
             return result;
         }
 
@@ -110,12 +159,11 @@ namespace Core.Application {
             where Result : IStoredProcResult
             where Schema : IStoredProcSchema {
 
-            var parameterHandler = ServiceLocator.Current.GetInstance<IParameterHandler<Schema>>();
-            var parameters = parameterHandler.MakeParameters();
-            var (schema, name) = model.GetStoredProcedureAttribute();
-            var result = await _dbconn.QueryFirstOrDefaultAsync($"{schema}.{name}", parameters, commandType: CommandType.StoredProcedure);
-            parameterHandler.SetOutputValues(parameters);
-            parameterHandler.SetReturnValue(parameters);
+            var parameterHandler = ServiceLocator.Current.GetInstance<IParameterHandler>();
+            var parameters = parameterHandler.MakeParameters(model);
+            var result = await _dbconn.QueryFirstOrDefaultAsync<Result>(model.GetStoredProcedureName(), parameters, commandType: CommandType.StoredProcedure);
+            parameterHandler.SetOutputValues(model, parameters);
+            parameterHandler.SetReturnValue(model, parameters);
             return result;
         }
     }

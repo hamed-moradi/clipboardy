@@ -168,7 +168,7 @@ namespace Assets.Utility.Extension {
             }[type];
         }
 
-        public static (string Schema, string Name) GetStoredProcedureAttribute(this IStoredProcSchema baseSchema) {
+        public static string GetStoredProcedureName(this IStoredProcSchema baseSchema) {
             var schema = "dbo";
             var name = baseSchema.GetType().Name;
 
@@ -181,8 +181,9 @@ namespace Assets.Utility.Extension {
             if(!string.IsNullOrWhiteSpace(attr.Name))
                 name = attr.Name;
 
-            return (schema, name);
+            return $"{schema}.{name}";
         }
+
         public static string GetSQLType(this PropertyInfo propertyInfo, Type customAttribute) {
             CustomParameterAttribute attr;
             if(customAttribute == typeof(InputParameterAttribute)) {

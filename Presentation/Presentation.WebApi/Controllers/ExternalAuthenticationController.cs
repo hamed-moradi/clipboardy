@@ -151,7 +151,7 @@ namespace Presentation.WebApi.Controllers {
                 externalUser.DeviceType = headerbindingmodel.DeviceType;
 
                 var accountprofile = await _accountProfileService.FirstAsync(new AccountProfileGetFirstSchema {
-                    TypeId = AccountProfileType.Email,
+                    TypeId = AccountProfileType.Email.ToInt(),
                     LinkedId = externalUser.Email
                 }).ConfigureAwait(true);
                 if(accountprofile == null) {

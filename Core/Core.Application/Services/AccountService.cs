@@ -11,6 +11,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Data;
 using System.Net;
 using System.Threading.Tasks;
+using System.Transactions;
 
 namespace Core.Application.Services {
     public class AccountService: IAccountService {
@@ -52,8 +53,9 @@ namespace Core.Application.Services {
             return result;
         }
 
-        public async Task AddAsync(AccountAddSchema account) {
-            await _storedProcedure.ExecuteAsync(account);
+        public async Task<int> AddAsync(AccountAddSchema account) {
+            var result = await _storedProcedure.ExecuteScalarAsync<AccountAddSchema, int>(account);
+            return result;
         }
 
         public async Task UpdateAsync(AccountUpdateSchema account) {
@@ -68,48 +70,47 @@ namespace Core.Application.Services {
                 duplicated = await FirstAsync(new AccountGetFirstSchema { Username = username });
             }
 
-            using(var transaction = _dbConnection.BeginTransaction()) {
+            using(var transaction = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled)) {
                 try {
                     var now = DateTime.UtcNow;
 
                     var account = new AccountAddSchema {
                         Password = _cryptograph.RNG(signupModel.Password),
-                        ProviderId = AccountProvider.Clipboard,
+                        ProviderId = AccountProvider.Clipboard.ToInt(),
                         Username = username,
                         CreatedAt = now,
-                        StatusId = Status.Active
+                        StatusId = Status.Active.ToInt()
                     };
-                    await AddAsync(account);
+                    var accountId = await AddAsync(account);
 
                     var token = _randomMaker.NewToken();
                     var accountDevice = new AccountDeviceAddSchema {
-                        AccountId = account.Id,
+                        AccountId = accountId,
                         DeviceId = signupModel.DeviceId,
                         DeviceName = signupModel.DeviceName,
                         DeviceType = signupModel.DeviceType,
                         Token = token,
                         CreatedAt = now,
-                        StatusId = Status.Active
+                        StatusId = Status.Active.ToInt()
                     };
                     await _accountDeviceService.AddAsync(accountDevice);
 
                     var accountProfile = new AccountProfileAddSchema {
-                        AccountId = account.Id.Value,
+                        AccountId = accountId,
                         LinkedId = string.IsNullOrWhiteSpace(signupModel.Email) ? signupModel.Phone : signupModel.Email,
-                        TypeId = string.IsNullOrWhiteSpace(signupModel.Email) ? AccountProfileType.Phone : AccountProfileType.Email,
+                        TypeId = string.IsNullOrWhiteSpace(signupModel.Email) ? AccountProfileType.Phone.ToInt() : AccountProfileType.Email.ToInt(),
                         CreatedAt = now,
-                        StatusId = Status.Active
+                        StatusId = Status.Active.ToInt()
                     };
                     await _accountProfileService.AddAsync(accountProfile);
 
-                    transaction.Commit();
+                    transaction.Complete();
                     return DataTransferer.Ok(token);
                 }
                 catch(Exception ex) {
                     var errmsg = "Something went wrong.";
                     Log.Error(ex, errmsg);
-                    transaction.Rollback();
-                    return null;
+                    return DataTransferer.InternalServerError(ex);
                 }
             }
         }
@@ -122,46 +123,45 @@ namespace Core.Application.Services {
                 duplicated = await FirstAsync(new AccountGetFirstSchema { Username = username });
             }
 
-            using(var transaction = _dbConnection.BeginTransaction()) {
+            using(var transaction = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled)) {
                 try {
                     var now = DateTime.UtcNow;
 
                     var account = new AccountAddSchema {
-                        ProviderId = externalUser.ProviderId,
+                        ProviderId = externalUser.ProviderId.ToInt(),
                         Username = username,
                         CreatedAt = now,
-                        StatusId = Status.Active
+                        StatusId = Status.Active.ToInt()
                     };
-                    await AddAsync(account);
+                    var accountId = await AddAsync(account);
 
                     var token = _randomMaker.NewToken();
                     var accountDevice = new AccountDeviceAddSchema {
-                        AccountId = account.Id,
+                        AccountId = accountId,
                         DeviceId = externalUser.DeviceId,
                         DeviceName = externalUser.DeviceName,
                         DeviceType = externalUser.DeviceType,
                         Token = token,
                         CreatedAt = now,
-                        StatusId = Status.Active
+                        StatusId = Status.Active.ToInt()
                     };
                     await _accountDeviceService.AddAsync(accountDevice);
 
                     var accountProfile = new AccountProfileAddSchema {
-                        AccountId = account.Id.Value,
-                        TypeId = AccountProfileType.Email,
+                        AccountId = accountId,
+                        TypeId = AccountProfileType.Email.ToInt(),
                         LinkedId = externalUser.Email,
                         CreatedAt = now,
-                        StatusId = Status.Active
+                        StatusId = Status.Active.ToInt()
                     };
                     await _accountProfileService.AddAsync(accountProfile);
 
-                    transaction.Commit();
+                    transaction.Complete();
                     return DataTransferer.Ok(token);
                 }
                 catch(Exception ex) {
                     var errmsg = "Something went wrong.";
                     Log.Error(ex, errmsg);
-                    transaction.Rollback();
                     return null;
                 }
             }
@@ -171,17 +171,17 @@ namespace Core.Application.Services {
             var now = DateTime.UtcNow;
             var token = _randomMaker.NewToken();
 
-            using(var transaction = _dbConnection.BeginTransaction()) {
+            using(var transaction = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled)) {
                 try {
                     var query = new AccountProfileGetFirstSchema {
                         LinkedId = signinModel.Username
                         //StatusId = Status.Active
                     };
                     if(signinModel.Username.IsPhoneNumber()) {
-                        query.TypeId = AccountProfileType.Phone;
+                        query.TypeId = AccountProfileType.Phone.ToInt();
                     }
                     else if(new EmailAddressAttribute().IsValid(signinModel.Username)) {
-                        query.TypeId = AccountProfileType.Email;
+                        query.TypeId = AccountProfileType.Email.ToInt();
                     }
                     else {
                         return DataTransferer.BadEmailOrCellphone();
@@ -189,7 +189,7 @@ namespace Core.Application.Services {
 
                     var accountProfile = await _accountProfileService.FirstAsync(query).ConfigureAwait(true);
                     if(accountProfile == null) {
-                        if(query.TypeId == AccountProfileType.Phone)
+                        if(query.TypeId == AccountProfileType.Phone.ToInt())
                             return DataTransferer.PhoneNotFound();
                         else
                             return DataTransferer.EmailNotFound();
@@ -197,7 +197,7 @@ namespace Core.Application.Services {
 
                     var account = await FirstAsync(new AccountGetFirstSchema {
                         Id = accountProfile.AccountId,
-                        StatusId = Status.Active
+                        StatusId = Status.Active.ToInt()
                     }).ConfigureAwait(true);
 
                     if(account == null)
@@ -228,7 +228,7 @@ namespace Core.Application.Services {
                                 DeviceType = signinModel.DeviceType,
                                 Token = token,
                                 CreatedAt = now,
-                                StatusId = Status.Active
+                                StatusId = Status.Active.ToInt()
                             });
                         }
                     }
@@ -241,9 +241,9 @@ namespace Core.Application.Services {
                         AccountId = account.Id.Value
                     };
                     await _accountProfileService.CleanForgotPasswordTokensAsync(accountProfilesQuery);
-                    if(accountProfilesQuery.StatusCode != HttpStatusCode.OK) {
+                    if(accountProfilesQuery.StatusCode != 200) {
                         Log.Error($"Can't update 'ForgotPasswordTokens' to NULL for AccountId={account.Id}");
-                        transaction.Rollback();
+                        return DataTransferer.SomethingWentWrong();
                     }
 
                     // set last signed in at
@@ -251,12 +251,11 @@ namespace Core.Application.Services {
                         LastSignedinAt = now
                     });
 
-                    transaction.Commit();
+                    transaction.Complete();
                     return DataTransferer.Ok(token);
                 }
                 catch(Exception ex) {
                     Log.Error(ex, ex.Source);
-                    transaction.Rollback();
                     return DataTransferer.InternalServerError();
                 }
             }
@@ -277,14 +276,14 @@ namespace Core.Application.Services {
 
             var accountQuery = new AccountGetFirstSchema {
                 Id = accountProfile.AccountId,
-                StatusId = Status.Active
+                StatusId = Status.Active.ToInt()
             };
             var account = await FirstAsync(accountQuery);
             if(account == null)
                 return DataTransferer.UserNotFound();
 
             // todo: check the account
-            using(var transaction = _dbConnection.BeginTransaction()) {
+            using(var transaction = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled)) {
                 try {
                     var accountDeviceQuery = new AccountDeviceGetFirstSchema {
                         AccountId = account.Id,
@@ -310,7 +309,7 @@ namespace Core.Application.Services {
                             DeviceType = externalUser.DeviceType,
                             Token = token,
                             CreatedAt = now,
-                            StatusId = Status.Active
+                            StatusId = Status.Active.ToInt()
                         });
                     }
 
@@ -320,10 +319,9 @@ namespace Core.Application.Services {
                         AccountId = account.Id.Value
                     };
                     await _accountProfileService.CleanForgotPasswordTokensAsync(accountProfileCleanTokens);
-                    if(accountProfileCleanTokens.StatusCode != HttpStatusCode.OK) {
+                    if(accountProfileCleanTokens.StatusCode != 200) {
                         Log.Error($"Can't update 'ForgotPasswordTokens' to NULL for AccountId={account.Id}");
-                        transaction.Rollback();
-                        return DataTransferer.InternalServerError();
+                        return DataTransferer.SomethingWentWrong();
                     }
 
                     // set last signed in at
@@ -332,15 +330,14 @@ namespace Core.Application.Services {
                         LastSignedinAt = now
                     };
                     await UpdateAsync(accountUpdate);
-                    if(accountUpdate.StatusCode != HttpStatusCode.OK)
+                    if(accountUpdate.StatusCode != 200)
                         Log.Error($"Can't update 'LastSignedinAt' after a successfully signing in for AccountId={account.Id}");
 
-                    transaction.Commit();
+                    transaction.Complete();
                     return DataTransferer.Ok(token);
                 }
                 catch(Exception ex) {
                     Log.Error(ex, ex.Source);
-                    transaction.Rollback();
                     return DataTransferer.InternalServerError(ex);
                 }
             }

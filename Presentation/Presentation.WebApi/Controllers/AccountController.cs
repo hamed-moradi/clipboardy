@@ -215,10 +215,10 @@ namespace Presentation.WebApi.Controllers {
 
                 var query = new AccountProfileGetFirstSchema { LinkedId = collection.Username };
                 if(collection.Username.IsPhoneNumber()) {
-                    query.TypeId = AccountProfileType.Phone;
+                    query.TypeId = AccountProfileType.Phone.ToInt();
                 }
                 else if(new EmailAddressAttribute().IsValid(collection.Username)) {
-                    query.TypeId = AccountProfileType.Email;
+                    query.TypeId = AccountProfileType.Email.ToInt();
                 }
                 else {
                     return BadRequest(message: _localizer[DataTransferer.BadEmailOrCellphone().Message]);
@@ -226,10 +226,10 @@ namespace Presentation.WebApi.Controllers {
 
                 var accountProfile = await _accountProfileService.FirstAsync(query).ConfigureAwait(true);
                 if(accountProfile == null) {
-                    if(query.TypeId == AccountProfileType.Phone)
+                    if(query.TypeId == AccountProfileType.Phone.ToInt())
                         return BadRequest(message: _localizer[DataTransferer.PhoneNotFound().Message]);
 
-                    if(query.TypeId == AccountProfileType.Email)
+                    if(query.TypeId == AccountProfileType.Email.ToInt())
                         return BadRequest(message: _localizer[DataTransferer.EmailNotFound().Message]);
                 }
 
@@ -296,10 +296,10 @@ namespace Presentation.WebApi.Controllers {
             try {
                 var query = new AccountProfileGetFirstSchema { LinkedId = collection.Username };
                 if(collection.Username.IsPhoneNumber()) {
-                    query.TypeId = AccountProfileType.Phone;
+                    query.TypeId = AccountProfileType.Phone.ToInt();
                 }
                 else if(new EmailAddressAttribute().IsValid(collection.Username)) {
-                    query.TypeId = AccountProfileType.Email;
+                    query.TypeId = AccountProfileType.Email.ToInt();
                 }
                 else {
                     return BadRequest(message: _localizer[DataTransferer.BadEmailOrCellphone().Message]);
@@ -307,10 +307,10 @@ namespace Presentation.WebApi.Controllers {
 
                 var accountProfile = await _accountProfileService.FirstAsync(query).ConfigureAwait(true);
                 if(accountProfile == null) {
-                    if(query.TypeId == AccountProfileType.Phone)
+                    if(query.TypeId == AccountProfileType.Phone.ToInt())
                         return BadRequest(message: _localizer[DataTransferer.PhoneNotFound().Message]);
 
-                    if(query.TypeId == AccountProfileType.Email)
+                    if(query.TypeId == AccountProfileType.Email.ToInt())
                         return BadRequest(message: _localizer[DataTransferer.EmailNotFound().Message]);
                 }
 
@@ -322,7 +322,7 @@ namespace Presentation.WebApi.Controllers {
                     ForgotPasswordToken = string.Empty
                 }).ConfigureAwait(false);
 
-                if(query.TypeId == AccountProfileType.Phone) {
+                if(query.TypeId == AccountProfileType.Phone.ToInt()) {
                     await _smsService.SendAsync(new SMSModel {
                         PhoneNo = accountProfile.LinkedId,
                         TextBody = _contentBodyMaker.CommonSMSBody(changepassurl)

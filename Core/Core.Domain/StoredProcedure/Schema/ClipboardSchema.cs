@@ -13,19 +13,16 @@ namespace Core.Domain.StoredProcedure.Schema {
         public int? DeviceId { get; set; }
 
         [InputParameter]
-        public ContentType? TypeId { get; set; }
+        public int? TypeId { get; set; }
 
         [InputParameter]
         public string Content { get; set; }
 
         [InputParameter]
-        public DateTime Priority { get; set; }
+        public DateTime? CreatedAt { get; set; }
 
         [InputParameter]
-        public DateTime CreatedAt { get; set; }
-
-        [InputParameter]
-        public Status StatusId { get; set; }
+        public int? StatusId { get; set; }
     }
 
     [StoredProcedure("dbo", "webapi_clipboard_getPaging")]
@@ -46,7 +43,7 @@ namespace Core.Domain.StoredProcedure.Schema {
         public DateTime? CreatedAt { get; set; }
 
         [InputParameter]
-        public Status? StatusId { get; set; }
+        public int? StatusId { get; set; }
     }
 
     [StoredProcedure("dbo", "webapi_clipboard_add")]
@@ -58,7 +55,7 @@ namespace Core.Domain.StoredProcedure.Schema {
         public int? DeviceId { get; set; }
 
         [InputParameter]
-        public ContentType? TypeId { get; set; }
+        public int? TypeId { get; set; }
 
         [InputParameter]
         public string Content { get; set; }
@@ -67,7 +64,7 @@ namespace Core.Domain.StoredProcedure.Schema {
         public DateTime CreatedAt { get; set; }
 
         [InputParameter]
-        public Status StatusId { get; set; }
+        public int StatusId { get; set; }
     }
 
     [StoredProcedure("dbo", "webapi_clipboard_update")]
@@ -79,15 +76,15 @@ namespace Core.Domain.StoredProcedure.Schema {
         public int? DeviceId { get; set; }
 
         [InputParameter]
-        public ContentType? TypeId { get; set; }
+        public int? TypeId { get; set; }
 
         [InputParameter]
         public string Content { get; set; }
 
         [InputParameter]
-        public DateTime CreatedAt { get; set; }
+        public DateTime? CreatedAt { get; set; }
 
         [InputParameter]
-        public Status StatusId { get; set; }
+        public int? StatusId { get; set; }
     }
 }

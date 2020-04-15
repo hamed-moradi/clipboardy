@@ -11,10 +11,10 @@ namespace Assets.Utility.Infrastructure {
         public void Generate<Schema>(Schema schema, bool rebuild = false) where Schema : IStoredProcSchema {
             var wholequery = string.Empty;
 
-            var storeprocattr = schema.GetStoredProcedureAttribute();
+            var proc = schema.GetStoredProcedureName();
             if(rebuild) {
-                wholequery = $"IF(OBJECT({storeprocattr.Schema}.{storeprocattr.Name}, 'SP') <> NULL) " +
-                    $"DROP OBJECT({storeprocattr.Schema}.{storeprocattr.Name});";
+                wholequery = $"IF(OBJECT({proc}, 'SP') <> NULL) " +
+                    $"DROP OBJECT({proc});";
             }
 
             var inprops = schema.GetType().GetProperties().Where(attr => Attribute.IsDefined(attr, typeof(InputParameterAttribute)));
@@ -27,7 +27,7 @@ namespace Assets.Utility.Infrastructure {
             wholequery = "SET QUOTED_IDENTIFIER ON|OFF " +
                 "SET ANSI_NULLS ON | OFF " +
                 "GO " +
-                $"CREATE PROCEDURE[{storeprocattr.Schema}].[{storeprocattr.Name}] ";
+                $"CREATE PROCEDURE[{proc}] ";
 
             // generating input parameters
             foreach(var arg in inprops) {

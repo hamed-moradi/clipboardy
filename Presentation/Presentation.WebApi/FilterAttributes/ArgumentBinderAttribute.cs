@@ -1,5 +1,4 @@
 ﻿using Assets.Model.Common;
-using Assets.Resource;
 using Assets.Utility;
 using Assets.Utility.Infrastructure;
 using Core.Application;
@@ -51,11 +50,11 @@ namespace Presentation.WebApi.FilterAttributes {
                 var schema = new AccountAuthenticateSchema { Token = token };
                 var result = _accountService.AuthenticateAsync(schema).GetAwaiter().GetResult();
                 switch(schema.StatusCode) {
-                    case HttpStatusCode.NotFound:
+                    case 404:
                         throw new Exception(_localizer[DataTransferer.UserNotFound().Message]);
-                    case HttpStatusCode.Unauthorized:
+                    case 401:
                         throw new Exception(_localizer[DataTransferer.UserIsNotActive().Message]);
-                    case HttpStatusCode.OK:
+                    case 200:
                         context?.HttpContext.Items.Add(nameof(HttpAccountHeader), new HttpAccountHeader {
                             Id = result.Id,
                             Username = result.Username,

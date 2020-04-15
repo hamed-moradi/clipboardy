@@ -1,5 +1,6 @@
 ﻿using Assets.Model;
 using Assets.Model.Base;
+using Assets.Utility.Extension;
 using System;
 using System.Net;
 
@@ -13,25 +14,22 @@ namespace Core.Domain.StoredProcedure.Schema {
         public int? AccountId { get; set; }
 
         [InputParameter]
-        public AccountProfileType? TypeId { get; set; }
+        public int? TypeId { get; set; }
 
         [InputParameter]
         public string LinkedId { get; set; }
 
         [InputParameter]
-        public Status? StatusId { get; set; }
+        public int? StatusId { get; set; }
     }
 
     [StoredProcedure("dbo", "webapi_accountProfile_add")]
     public class AccountProfileAddSchema: BaseSchema, IStoredProcSchema {
-        [OutputParameter]
-        public int? Id { get; set; }
-
         [InputParameter]
         public int AccountId { get; set; }
 
         [InputParameter]
-        public AccountProfileType TypeId { get; set; }
+        public int TypeId { get; set; }
 
         [InputParameter]
         public string LinkedId { get; set; }
@@ -40,7 +38,7 @@ namespace Core.Domain.StoredProcedure.Schema {
         public DateTime CreatedAt { get; set; } = DateTime.Now;
 
         [InputParameter]
-        public Status? StatusId { get; set; } = Status.Pending;
+        public int? StatusId { get; set; } = Status.Pending.ToInt();
     }
 
     [StoredProcedure("dbo", "webapi_accountProfile_update")]
@@ -52,7 +50,7 @@ namespace Core.Domain.StoredProcedure.Schema {
         public string ForgotPasswordToken { get; set; }
 
         [InputParameter]
-        public Status? StatusId { get; set; }
+        public int? StatusId { get; set; }
     }
 
     [StoredProcedure("dbo", "webapi_accountProfile_cleanTokens")]

@@ -13,7 +13,6 @@ namespace Assets.Utility {
             services.AddScoped<ISMSService, ParsGreenSMSService>();
             services.AddSingleton<StoredProcedureHelper>();
             services.AddSingleton<IParameterHandler, ParameterHandler>();
-            services.AddSingleton(typeof(IParameterHandler<>), typeof(ParameterHandler<>));
         }
     }
 }
