@@ -14,6 +14,7 @@ namespace Assets.Utility.Infrastructure {
         DynamicParameters MakeParameters<T>(T schema) where T : IStoredProcSchema;
         void SetOutputValues<T>(T model, DynamicParameters parameters) where T : IStoredProcSchema;
         void SetReturnValue<T>(T model, DynamicParameters parameters) where T : IStoredProcSchema;
+        void SetTotalCount<Schema, Result>(Schema model, IEnumerable<Result> result) where Schema : IStoredProcSchema where Result : IStoredProcResult;
     }
 
     public class ParameterHandler: IParameterHandler {
@@ -159,6 +160,21 @@ namespace Assets.Utility.Infrastructure {
             var returnProperty = model.GetType().GetProperties().FirstOrDefault(item => Attribute.IsDefined(item, typeof(ReturnParameterAttribute)));
             if(returnProperty != null) {
                 returnProperty.SetValue(model, parameters.Get<int>(returnProperty.Name));
+            }
+        }
+
+        public void SetTotalCount<Schema, Result>(Schema model, IEnumerable<Result> result)
+            where Schema : IStoredProcSchema
+            where Result : IStoredProcResult {
+
+            if(result.Any()) {
+                var node = result.FirstOrDefault();
+                var resulttotalcount = node.GetType().GetProperty(nameof(PagingResult.TotalCount));
+                var schematotalcount = model.GetType().GetProperty(nameof(PagingSchema.TotalCount));
+
+                if(schematotalcount != null && resulttotalcount != null) {
+                    schematotalcount.SetValue(model, resulttotalcount.GetValue(node, null));
+                }
             }
         }
     }

@@ -8,7 +8,6 @@ using Microsoft.Extensions.Localization;
 using System;
 using System.Globalization;
 using System.Linq;
-using System.Net;
 
 namespace Presentation.WebApi.FilterAttributes {
     public class ArgumentBinderAttribute: ActionFilterAttribute {

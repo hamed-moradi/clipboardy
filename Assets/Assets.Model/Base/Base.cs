@@ -14,18 +14,23 @@ namespace Assets.Model.Base {
         public int StatusCode { get; set; }
     }
 
+    public class PagingResult: IStoredProcResult {
+        [HelperParameter]
+        public long TotalCount { get; set; }
+    }
+
     public class PagingSchema: BaseSchema {
         [InputParameter]
-        public string @OrderBy { get; set; }
+        public string @OrderBy { get; set; } = "Id";
 
         [InputParameter]
-        public string @Order { get; set; }
+        public string @Order { get; set; } = "DESC";
 
         [InputParameter]
-        public int? @Skip { get; set; }
+        public int? @Skip { get; set; } = 0;
 
         [InputParameter]
-        public int? @Take { get; set; }
+        public int? @Take { get; set; } = 10;
 
         [HelperParameter]
         public long TotalCount { get; set; }

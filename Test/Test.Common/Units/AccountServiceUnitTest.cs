@@ -4,6 +4,7 @@ using Assets.Utility;
 using Assets.Utility.Extension;
 using Assets.Utility.Infrastructure;
 using Core.Application;
+using Core.Domain.StoredProcedure.Result;
 using Core.Domain.StoredProcedure.Schema;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
@@ -92,6 +93,29 @@ namespace Test.Common.Units {
             Assert.IsTrue(result.Data != null);
         }
 
+        [TestMethod, TestCategory("AccountService"), TestCategory("ExternalSignup")]
+        public void ExternalSignup() {
+            var user = new ExternalUserBindingModel {
+                MobilePhone = "0924",
+                GivenName = "GivenName",
+                Name = "Name",
+                ProviderId = AccountProvider.Facebook,
+                NameIdentifier = "NameIdentifier",
+                Surname = "Surname",
+                Email = "email_1@clipboardy.com",
+                DeviceId = Guid.NewGuid().ToString(),
+                DeviceName = "DeviceName",
+                DeviceType = "DeviceType"
+            };
+            var result = _accountService.ExternalSignupAsync(user).GetAwaiter().GetResult();
+
+            Console.WriteLine(result.Code);
+            Console.WriteLine(result.Data);
+
+            Assert.IsTrue(result.Code == 200);
+            Assert.IsTrue(result.Data != null);
+        }
+
         [TestMethod, TestCategory("AccountService"), TestCategory("Signin")]
         public void Signin() {
             var user = new SigninBindingModel {
@@ -99,6 +123,38 @@ namespace Test.Common.Units {
                 Password = "1234"
             };
             var result = _accountService.SigninAsync(user).GetAwaiter().GetResult();
+
+            Console.WriteLine(result.Code);
+            Console.WriteLine(result.Data);
+
+            Assert.IsTrue(result.Code == 200);
+            Assert.IsTrue(result.Data != null);
+        }
+
+        [TestMethod, TestCategory("AccountService"), TestCategory("ExternalSignin")]
+        public void ExternalSignin() {
+            var user = new ExternalUserBindingModel {
+                MobilePhone = "0924",
+                GivenName = "GivenName",
+                Name = "Name",
+                ProviderId = AccountProvider.Facebook,
+                NameIdentifier = "NameIdentifier",
+                Surname = "Surname",
+                Email = "email_1@clipboardy.com",
+                DeviceId = "27dc93ce-3190-4dc1-9fd1-b43a4081a16d",
+                DeviceName = "DeviceName",
+                DeviceType = "DeviceType"
+            };
+
+            var sccountProfile = new AccountProfileResult {
+                Id = 3,
+                AccountId = 21,
+                LinkedId = "email_1@clipboardy.com",
+                TypeId = 2,
+                StatusId = Status.Active
+            };
+
+            var result = _accountService.ExternalSigninAsync(user, sccountProfile).GetAwaiter().GetResult();
 
             Console.WriteLine(result.Code);
             Console.WriteLine(result.Data);

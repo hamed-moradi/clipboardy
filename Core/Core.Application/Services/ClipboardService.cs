@@ -1,6 +1,7 @@
 ﻿using Core.Domain.StoredProcedure.Result;
 using Core.Domain.StoredProcedure.Schema;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Core.Application.Services {
@@ -25,12 +26,9 @@ namespace Core.Application.Services {
             return result;
         }
 
-        public async Task AddAsync(ClipboardAddSchema clipboard) {
-            await _storedProcedure.ExecuteAsync(clipboard);
+        public async Task<int> AddAsync(ClipboardAddSchema clipboard) {
+            var result = await _storedProcedure.ExecuteScalarAsync<ClipboardAddSchema, int>(clipboard);
+            return result;
         }
-
-        //public async Task UpdateAsync(clipboardUpdateSchema clipboard) {
-        //    await _storedProcedure.ExecuteAsync(clipboard);
-        //}
     }
 }

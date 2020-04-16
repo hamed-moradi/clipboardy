@@ -33,7 +33,7 @@ namespace Core.Application {
     public interface IClipboardService {
         Task<ClipboardResult> FirstAsync(ClipboardGetFirstSchema clipboard);
         Task<IEnumerable<ClipboardResult>> PagingAsync(ClipboardGetPagingSchema clipboard);
-        Task AddAsync(ClipboardAddSchema clipboard);
+        Task<int> AddAsync(ClipboardAddSchema clipboard);
     }
 
     //public interface IContentTypeService: IGenericService<ContentType> {

@@ -71,6 +71,7 @@ namespace Core.Application {
             var result = _dbconn.Query<Result>(model.GetStoredProcedureName(), parameters, commandType: CommandType.StoredProcedure);
             parameterHandler.SetOutputValues(model, parameters);
             parameterHandler.SetReturnValue(model, parameters);
+            parameterHandler.SetTotalCount(model, result);
             return result;
         }
 
@@ -137,14 +138,15 @@ namespace Core.Application {
         }
 
         public async Task<IEnumerable<Result>> QueryAsync<Schema, Result>(Schema model)
-            where Result : IStoredProcResult
-            where Schema : IStoredProcSchema {
+            where Schema : IStoredProcSchema
+            where Result : IStoredProcResult {
 
             var parameterHandler = ServiceLocator.Current.GetInstance<IParameterHandler>();
             var parameters = parameterHandler.MakeParameters(model);
             var result = await _dbconn.QueryAsync<Result>(model.GetStoredProcedureName(), parameters, commandType: CommandType.StoredProcedure);
             parameterHandler.SetOutputValues(model, parameters);
             parameterHandler.SetReturnValue(model, parameters);
+            parameterHandler.SetTotalCount(model, result);
             return result;
         }
 
