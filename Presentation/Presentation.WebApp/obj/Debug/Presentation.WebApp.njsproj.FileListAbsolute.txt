@@ -1,0 +1,3 @@
+D:\git\clipboardy\Presentation\Presentation.WebApp\obj\Debug\Presentation.WebApp.njsprojAssemblyReference.cache
+D:\git\clipboardy\Presentation\Presentation.WebApp\obj\Debug\Presentation.WebApp.njsproj.CoreCompileInputs.cache
+D:\git\clipboardy\Presentation\Presentation.WebApp\bin\Microsoft.NodejsTools.WebRole.dll

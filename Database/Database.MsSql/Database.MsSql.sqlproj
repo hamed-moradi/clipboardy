@@ -77,5 +77,19 @@
     <Build Include="serilog\Tables\AppException.sql" />
     <Build Include="dbo\Stored Procedures\webapi_account_authenticate.sql" />
     <Build Include="Security\serilog.sql" />
+    <Build Include="dbo\Tables\AccountProfileType.sql" />
+    <Build Include="dbo\Stored Procedures\webapi_clipboard_getPaging.sql" />
+    <Build Include="dbo\Stored Procedures\webapi_clipboard_getFirst.sql" />
+    <Build Include="dbo\Stored Procedures\webapi_clipboard_add.sql" />
+    <Build Include="dbo\Stored Procedures\webapi_accountProfile_update.sql" />
+    <Build Include="dbo\Stored Procedures\webapi_accountProfile_getFirst.sql" />
+    <Build Include="dbo\Stored Procedures\webapi_accountProfile_cleanTokens.sql" />
+    <Build Include="dbo\Stored Procedures\webapi_accountProfile_add.sql" />
+    <Build Include="dbo\Stored Procedures\webapi_accountDevice_update.sql" />
+    <Build Include="dbo\Stored Procedures\webapi_accountDevice_getFirst.sql" />
+    <Build Include="dbo\Stored Procedures\webapi_accountDevice_add.sql" />
+    <Build Include="dbo\Stored Procedures\webapi_account_update.sql" />
+    <Build Include="dbo\Stored Procedures\webapi_account_getFirst.sql" />
+    <Build Include="dbo\Stored Procedures\webapi_account_add.sql" />
   </ItemGroup>
 </Project>

@@ -92,7 +92,7 @@ namespace Presentation.WebApi.Controllers {
                 }
 
                 if(string.IsNullOrEmpty(collection.DeviceId) || string.IsNullOrEmpty(collection.DeviceName)) {
-                    return BadRequest(message: _localizer[DataTransferer.EmptyHeader().Message]);
+                    return BadRequest(message: _localizer[DataTransferer.UnofficialRequest().Message]);
                 }
 
                 var result = await _accountService.SignupAsync(collection).ConfigureAwait(true);
@@ -125,7 +125,7 @@ namespace Presentation.WebApi.Controllers {
                 string.IsNullOrEmpty(HttpDeviceHeader.DeviceName) ||
                 string.IsNullOrEmpty(HttpDeviceHeader.DeviceType)) {
 
-                return BadRequest(message: _localizer[DataTransferer.EmptyHeader().Message]);
+                return BadRequest(message: _localizer[DataTransferer.UnofficialRequest().Message]);
             }
 
             try {
@@ -210,7 +210,7 @@ namespace Presentation.WebApi.Controllers {
                 }
 
                 if(string.IsNullOrWhiteSpace(collection.Token)) {
-                    return BadRequest(message: _localizer[DataTransferer.EmptyHeader().Message]);
+                    return BadRequest(message: _localizer[DataTransferer.UnofficialRequest().Message]);
                 }
 
                 var query = new AccountProfileGetFirstSchema { LinkedId = collection.Username };

@@ -1,4 +1,6 @@
-﻿namespace Assets.Model.Base {
+﻿
+namespace Assets.Model.Base {
+
     public enum SQLPropType {
         INT,
         VARCHAR,

@@ -3,39 +3,31 @@ using Assets.Model.Binding;
 using Core.Domain.StoredProcedure.Result;
 using Assets.Utility.Extension;
 using Assets.Utility.Infrastructure;
-using Core.Domain;
 using Core.Domain.StoredProcedure.Schema;
 using Serilog;
 using System;
 using System.ComponentModel.DataAnnotations;
-using System.Data;
-using System.Net;
 using System.Threading.Tasks;
 using System.Transactions;
+using Core.Application.Infrastructure;
 
 namespace Core.Application.Services {
     public class AccountService: IAccountService {
         #region
-        private readonly IDbConnection _dbConnection;
         private readonly IStoredProcedureService _storedProcedure;
-
         private readonly RandomMaker _randomMaker;
         private readonly Cryptograph _cryptograph;
         private readonly IAccountProfileService _accountProfileService;
         private readonly IAccountDeviceService _accountDeviceService;
 
         public AccountService(
-            ConnectionPool connectionPool,
             IStoredProcedureService storedProcedure,
-
             RandomMaker randomMaker,
             Cryptograph cryptograph,
             IAccountProfileService accountProfileService,
             IAccountDeviceService accountDeviceService) {
 
-            _dbConnection = connectionPool.DbConnection;
             _storedProcedure = storedProcedure;
-
             _randomMaker = randomMaker;
             _cryptograph = cryptograph;
             _accountProfileService = accountProfileService;

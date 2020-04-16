@@ -117,10 +117,142 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="AccessDenied" xml:space="preserve">
+    <value>AccessDenied</value>
+  </data>
   <data name="AuthenticationFailed" xml:space="preserve">
     <value>Authentication is failed.</value>
   </data>
+  <data name="BadEmailOrCellphone" xml:space="preserve">
+    <value>Please define a correct Email or CellPhone number.</value>
+  </data>
+  <data name="BadRequest" xml:space="preserve">
+    <value>BadRequest</value>
+  </data>
+  <data name="CellPhoneAlreadyExists" xml:space="preserve">
+    <value>This Phone number is already registered. If you forgot your Password try to use Forgat Password feature.</value>
+  </data>
+  <data name="ChangingPasswordWithoutToken" xml:space="preserve">
+    <value>You should request forgoten password first.</value>
+  </data>
+  <data name="ChangingPasswordWithWrongToken" xml:space="preserve">
+    <value>Your request for changing the password is liked an abnormal activity and it's logged.</value>
+  </data>
+  <data name="ConnectionError" xml:space="preserve">
+    <value>ConnectionError</value>
+  </data>
+  <data name="DangerousRequest" xml:space="preserve">
+    <value>DangerousRequest</value>
+  </data>
+  <data name="DefectiveCellPhone" xml:space="preserve">
+    <value>DefectiveCellPhone</value>
+  </data>
+  <data name="DefectiveEmail" xml:space="preserve">
+    <value>DefectiveEmail</value>
+  </data>
+  <data name="DefectiveEmailOrCellPhone" xml:space="preserve">
+    <value>Please define your Email or CellPhone number.</value>
+  </data>
+  <data name="DefectiveEntry" xml:space="preserve">
+    <value>DefectiveEntry</value>
+  </data>
+  <data name="DefectivePassword" xml:space="preserve">
+    <value>Please define a Password.</value>
+  </data>
+  <data name="DefectiveUsernameOrPassword" xml:space="preserve">
+    <value>Please define your Username and Password.</value>
+  </data>
+  <data name="DeviceIdNotFound" xml:space="preserve">
+    <value>DeviceIdNotFound</value>
+  </data>
+  <data name="DeviceIsNotActive" xml:space="preserve">
+    <value>DeviceIsNotActive</value>
+  </data>
+  <data name="DuplicatedValueFound" xml:space="preserve">
+    <value>DuplicatedValueFound</value>
+  </data>
+  <data name="EmailAlreadyExists" xml:space="preserve">
+    <value>This Email is already registered. If you forgot your Password try to use Forgat Password feature.</value>
+  </data>
+  <data name="EmailNotFound" xml:space="preserve">
+    <value>This Email is not found.</value>
+  </data>
+  <data name="ExternalAuthenticationEmailError" xml:space="preserve">
+    <value>External authentication user email not found</value>
+  </data>
+  <data name="ExternalAuthenticationFailed" xml:space="preserve">
+    <value>External authentication failed</value>
+  </data>
+  <data name="ExternalAuthenticationUserError" xml:space="preserve">
+    <value>External authentication user principal error</value>
+  </data>
+  <data name="ExternalAuthenticationWithUnknownProvider" xml:space="preserve">
+    <value>External signup with unknown ProviderId</value>
+  </data>
+  <data name="GoToStepTwo" xml:space="preserve">
+    <value>GoToStepTwo</value>
+  </data>
+  <data name="InternalServerError" xml:space="preserve">
+    <value>InternalServerError</value>
+  </data>
+  <data name="InvalidEmailOrCellPhone" xml:space="preserve">
+    <value>Please define a correct Email or CellPhone number.</value>
+  </data>
+  <data name="InvalidSigninAttempt" xml:space="preserve">
+    <value>InvalidSigninAttempt</value>
+  </data>
+  <data name="NothingFound" xml:space="preserve">
+    <value>NothingFound</value>
+  </data>
+  <data name="Ok" xml:space="preserve">
+    <value>Ok</value>
+  </data>
+  <data name="PasswordChanged" xml:space="preserve">
+    <value>Password is changed successfully.</value>
+  </data>
+  <data name="PasswordsMissmatch" xml:space="preserve">
+    <value>Defined Password is not match with repeated one.</value>
+  </data>
+  <data name="PhoneIsNotVerified" xml:space="preserve">
+    <value>PhoneIsNotVerified</value>
+  </data>
+  <data name="PhoneNotFound" xml:space="preserve">
+    <value>This Phone number is not found.</value>
+  </data>
+  <data name="RequestForVerificationCodeFirst" xml:space="preserve">
+    <value>RequestForVerificationCodeFirst</value>
+  </data>
+  <data name="RetrieveLimit" xml:space="preserve">
+    <value>RetrieveLimit</value>
+  </data>
   <data name="SomethingWentWrong" xml:space="preserve">
     <value>Something went wrong.</value>
+  </data>
+  <data name="TokenNotFound" xml:space="preserve">
+    <value>TokenNotFound</value>
+  </data>
+  <data name="UnofficialRequest" xml:space="preserve">
+    <value>You're trying to signing in through the wrong way! buddy.</value>
+  </data>
+  <data name="UnsupportedLanguage" xml:space="preserve">
+    <value>UnsupportedLanguage</value>
+  </data>
+  <data name="UnsupportedTimeZone" xml:space="preserve">
+    <value>UnsupportedTimeZone</value>
+  </data>
+  <data name="UserIsNotActive" xml:space="preserve">
+    <value>UserIsNotActive</value>
+  </data>
+  <data name="UserNotFound" xml:space="preserve">
+    <value>UserNotFound</value>
+  </data>
+  <data name="VerificationCodeHasBeenExpired" xml:space="preserve">
+    <value>VerificationCodeHasBeenExpired</value>
+  </data>
+  <data name="WrongPassword" xml:space="preserve">
+    <value>WrongPassword</value>
+  </data>
+  <data name="WrongVerificationCode" xml:space="preserve">
+    <value>WrongVerificationCode</value>
   </data>
 </root>

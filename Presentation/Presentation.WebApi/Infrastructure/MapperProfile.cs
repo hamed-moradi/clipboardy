@@ -4,6 +4,7 @@ using Assets.Model.Test;
 using Assets.Model.View;
 using Assets.Utility.Extension;
 using AutoMapper;
+using Core.Domain.StoredProcedure.Result;
 using Core.Domain.StoredProcedure.Schema;
 using System;
 using System.Text;
@@ -17,8 +18,7 @@ namespace Presentation.WebApi.Infrastructure {
 
             CreateMap<ClipboardGetBindingModel, ClipboardGetPagingSchema>();
 
-            //CreateMap<ClipboardGetBindingModel, Clipboard>()
-            //    .ForMember(dst => dst.DeviceId, opt => opt.Ignore());
+            CreateMap<ClipboardResult, ClipboardViewModel>();
 
             CreateMap<ClipboardAddBindingModel, ClipboardAddSchema>()
                 .ForMember(dst => dst.TypeId, opt => opt.MapFrom(src => ContentType.txt.ToInt()))

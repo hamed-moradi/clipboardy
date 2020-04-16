@@ -48,13 +48,5 @@ namespace Assets.Model {
 
     public class ReturnParameterAttribute: Attribute { }
 
-    public class ErrorAttribute: Attribute {
-        public string Message { get; set; }
-
-        public ErrorAttribute(string message) {
-            Message = message;
-        }
-    }
-
     public class HelperParameterAttribute: Attribute { }
 }

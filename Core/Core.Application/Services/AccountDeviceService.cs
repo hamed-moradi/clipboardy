@@ -1,4 +1,5 @@
-﻿using Core.Domain.StoredProcedure.Result;
+﻿using Core.Application.Infrastructure;
+using Core.Domain.StoredProcedure.Result;
 using Core.Domain.StoredProcedure.Schema;
 using System.Threading.Tasks;
 

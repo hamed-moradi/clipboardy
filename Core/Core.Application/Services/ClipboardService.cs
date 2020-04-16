@@ -1,7 +1,7 @@
-﻿using Core.Domain.StoredProcedure.Result;
+﻿using Core.Application.Infrastructure;
+using Core.Domain.StoredProcedure.Result;
 using Core.Domain.StoredProcedure.Schema;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace Core.Application.Services {

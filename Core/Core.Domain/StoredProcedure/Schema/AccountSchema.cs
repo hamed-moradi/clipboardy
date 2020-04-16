@@ -8,60 +8,60 @@ namespace Core.Domain.StoredProcedure.Schema {
     [StoredProcedure("dbo", "webapi_account_authenticate")]
     public class AccountAuthenticateSchema: BaseSchema {
         [InputParameter]
-        public string Token { get; set; }
+        public string @Token { get; set; }
     }
 
     [StoredProcedure("dbo", "webapi_account_getFirst")]
     public class AccountGetFirstSchema: BaseSchema {
         [InputParameter(Name = "Id")]
-        public int? Id { get; set; }
+        public int? @Id { get; set; }
 
         [InputParameter]
-        public string Username { get; set; }
+        public string @Username { get; set; }
 
         [InputParameter]
-        public string Password { get; set; }
+        public string @Password { get; set; }
 
         [InputParameter]
-        public int? ProviderId { get; set; }
+        public int? @ProviderId { get; set; }
 
         [InputParameter]
         public DateTime? LastSignedinAt { get; set; }
 
         [InputParameter]
-        public int? StatusId { get; set; }
+        public int? @StatusId { get; set; }
     }
 
     [StoredProcedure("dbo", "webapi_account_add")]
     public class AccountAddSchema: BaseSchema {
         [InputParameter]
-        public string Username { get; set; }
+        public string @Username { get; set; }
 
         [InputParameter]
-        public string Password { get; set; }
+        public string @Password { get; set; }
 
         [InputParameter]
-        public int ProviderId { get; set; }
+        public int @ProviderId { get; set; }
 
         [InputParameter]
         public DateTime CreatedAt { get; set; } = DateTime.Now;
 
         [InputParameter]
-        public int StatusId { get; set; } = Status.Pending.ToInt();
+        public int @StatusId { get; set; } = Status.Pending.ToInt();
     }
 
     [StoredProcedure("dbo", "webapi_account_update")]
     public class AccountUpdateSchema: BaseSchema {
         [InputParameter]
-        public int Id { get; set; }
+        public int @Id { get; set; }
 
         [InputParameter]
-        public string Password { get; set; }
+        public string @Password { get; set; }
 
         [InputParameter]
         public DateTime? LastSignedinAt { get; set; }
 
         [InputParameter]
-        public int? StatusId { get; set; }
+        public int? @StatusId { get; set; }
     }
 }

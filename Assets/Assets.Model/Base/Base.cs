@@ -8,6 +8,7 @@ namespace Assets.Model.Base {
     public interface IStoredProcSchema { }
     public interface IStoredProcResult { }
     public interface IBaseBindingModel { }
+    public interface IBaseViewModel { }
 
     public class BaseSchema: IStoredProcSchema {
         [ReturnParameter]
@@ -80,42 +81,4 @@ namespace Assets.Model.Base {
             Data = data;
         }
     }
-
-
-    #region old
-    public interface IBaseEntity { }
-    public interface IBaseModel { }
-
-
-    public interface IBaseViewModel: IBaseModel { }
-
-    public class BaseEntity: IBaseEntity {
-        [Key]
-        public virtual int? Id { get; set; }
-    }
-
-    public class QuerySetting: IBaseEntity {
-        public string OrderBy { get; set; } = "Id";
-        public bool OrderAscending { get; set; } = false;
-        public int Skip { get; set; } = 0;
-        public int Take { get; set; } = 10;
-    }
-
-    public class BaseModel: IBaseModel {
-        public virtual int? Id { get; set; }
-        //public int? TotalPages { get; set; }
-    }
-
-    public class BaseBindingModel: IBaseBindingModel {
-        public string OrderBy { get; set; } = "Id";
-        public bool OrderAscending { get; set; } = false;
-        public int Skip { get; set; } = 0;
-        public int Take { get; set; } = 10;
-        public QuerySetting QuerySetting {
-            get {
-                return new QuerySetting { OrderBy = OrderBy, OrderAscending = OrderAscending, Skip = Skip, Take = Take };
-            }
-        }
-    }
-    #endregion
 }

@@ -1,4 +1,5 @@
 ﻿using Assets.Model.Common;
+using Core.Application.Infrastructure;
 using Core.Application.Services;
 using Microsoft.Extensions.DependencyInjection;
 

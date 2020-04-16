@@ -47,15 +47,14 @@ namespace Test.Common {
 
         [TestMethod, TestCategory("FastMember"), TestCategory("ReflectExpression")]
         public void ReflectExpression() {
-            //var entity =
-            Expression<Func<BaseEntity, bool>> predicate = p => p.Id == 0;
+            Expression<Func<BaseSchema, bool>> predicate = p => p.StatusCode == 0;
 
             var accessor = TypeAccessor.Create(predicate.Body.Type);
             //var getVal = accessor[predicate, nameof(BaseEntity.TotalCount)];
 
             var wrapped = ObjectAccessor.Create(predicate.Body.Type);
 
-            Assert.AreEqual(wrapped, typeof(BaseEntity));
+            Assert.AreEqual(wrapped, typeof(BaseSchema));
         }
     }
 }
