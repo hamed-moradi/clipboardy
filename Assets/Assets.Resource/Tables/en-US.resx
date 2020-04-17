@@ -189,6 +189,15 @@
   <data name="ExternalAuthenticationWithUnknownProvider" xml:space="preserve">
     <value>External signup with unknown ProviderId</value>
   </data>
+  <data name="ForgotPasswordEmailBody" xml:space="preserve">
+    <value>Click on link below to reset your password</value>
+  </data>
+  <data name="ForgotPasswordEmailSubject" xml:space="preserve">
+    <value>Reset your forgotten password</value>
+  </data>
+  <data name="ForgotPasswordSMSBody" xml:space="preserve">
+    <value>Click on link below to reset your password</value>
+  </data>
   <data name="GoToStepTwo" xml:space="preserve">
     <value>GoToStepTwo</value>
   </data>

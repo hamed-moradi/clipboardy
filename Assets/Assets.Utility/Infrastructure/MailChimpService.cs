@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using Assets.Model.Base;
 
 namespace Assets.Utility.Infrastructure {
     public class MailChimpService: IEmailService {
@@ -54,7 +55,7 @@ namespace Assets.Utility.Infrastructure {
         public List<List> GetAllMailingLists() => _mailChimpManager.Lists.GetAllAsync().Result.ToList();
         public Content GetTemplateDefaultContent(string templateId) => (Content)_mailChimpManager.Templates.GetDefaultContentAsync(templateId).Result;
 
-        public Task SendAsync(EmailModel email) {
+        public Task<IServiceResult> SendAsync(EmailModel email) {
             throw new NotImplementedException();
         }
     }

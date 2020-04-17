@@ -27,7 +27,6 @@ namespace Presentation.WebApi.Controllers {
         private readonly IAccountProfileService _accountProfileService;
         private readonly RandomMaker _randomMaker;
         private readonly Cryptograph _cryptograph;
-        private readonly ContentBodyMaker _contentBodyMaker;
         private readonly IEmailService _emailService;
         private readonly ISMSService _smsService;
 
@@ -36,7 +35,6 @@ namespace Presentation.WebApi.Controllers {
             IAccountProfileService accountProfileService,
             RandomMaker randomMaker,
             Cryptograph cryptograph,
-            ContentBodyMaker contentBodyMaker,
             IEmailService emailService,
             ISMSService smsService) {
 
@@ -44,7 +42,6 @@ namespace Presentation.WebApi.Controllers {
             _accountProfileService = accountProfileService;
             _randomMaker = randomMaker;
             _cryptograph = cryptograph;
-            _contentBodyMaker = contentBodyMaker;
             _emailService = emailService;
             _smsService = smsService;
         }
@@ -325,15 +322,16 @@ namespace Presentation.WebApi.Controllers {
                 if(query.TypeId == AccountProfileType.Phone.ToInt()) {
                     await _smsService.SendAsync(new SMSModel {
                         PhoneNo = accountProfile.LinkedId,
-                        TextBody = _contentBodyMaker.CommonSMSBody(changepassurl)
+                        TextBody = $"{DataTransferer.ForgotPasswordSMSBody().Message} \r\n {changepassurl}"
                     }).ConfigureAwait(false);
                 }
                 else {
                     await _emailService.SendAsync(new EmailModel {
-                        Name = accountProfile.LinkedId,
                         Address = accountProfile.LinkedId,
-                        Subject = _localizer[""],
-                        TextBody = _contentBodyMaker.CommonEmailBody(changepassurl)
+                        Subject = _localizer[DataTransferer.ForgotPasswordEmailSubject().Message],
+                        IsBodyHtml = true,
+                        Body = $"<p>{DataTransferer.ForgotPasswordEmailBody().Message}</p>" +
+                            $"<p>{changepassurl}</p>"
                     }).ConfigureAwait(false);
                 }
                 return Ok(data: changepassurl);

@@ -28,11 +28,6 @@ namespace Assets.Model.Base {
         Twitter = 5
     }
 
-    public enum SendSMSStatus {
-        Sent = 1,
-        Failed = 2
-    }
-
     public enum ContentType {
         aac = 1,
         tar = 2,

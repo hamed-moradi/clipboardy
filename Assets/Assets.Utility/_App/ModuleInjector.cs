@@ -8,8 +8,7 @@ namespace Assets.Utility {
             services.AddTransient<Cryptograph>();
             services.AddTransient<RandomMaker>();
             services.AddScoped<CompressionHandler>();
-            services.AddScoped<ContentBodyMaker>();
-            services.AddScoped<IEmailService, MailKitService>();
+            services.AddScoped<IEmailService, EmailService>();
             services.AddScoped<ISMSService, ParsGreenSMSService>();
             services.AddSingleton<StoredProcedureHelper>();
             services.AddSingleton<IParameterHandler, ParameterHandler>();

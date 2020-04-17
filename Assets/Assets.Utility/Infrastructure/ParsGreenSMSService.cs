@@ -21,7 +21,7 @@ namespace Assets.Utility.Infrastructure {
         }
         #endregion
 
-        public async Task<SendSMSStatus> SendAsync(SMSModel sms) {
+        public async Task<IServiceResult> SendAsync(SMSModel sms) {
             Log.Debug($"ParsGreenSMSService.SendAsync.Begin => {sms}");
 
             try {
@@ -42,8 +42,7 @@ namespace Assets.Utility.Infrastructure {
 
                 if(response.StatusCode == HttpStatusCode.OK) {
                     if(response.Data == string.Empty) {
-                        return SendSMSStatus.Sent;
-
+                        return DataTransferer.Ok();
                     }
                 }
                 #endregion
@@ -67,7 +66,7 @@ namespace Assets.Utility.Infrastructure {
                 Log.Error(ex, ex.Source);
             }
 
-            return SendSMSStatus.Failed;
+            return DataTransferer.InternalServerError();
         }
     }
 }

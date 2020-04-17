@@ -1,4 +1,5 @@
 ﻿using System.Threading.Tasks;
+using Assets.Model.Base;
 using Assets.Model.Common;
 using MailKit.Net.Smtp;
 using MimeKit;
@@ -15,19 +16,21 @@ namespace Assets.Utility.Infrastructure {
         }
         #endregion
 
-        public async Task SendAsync(EmailModel email) {
+        public async Task<IServiceResult> SendAsync(EmailModel email) {
             var message = new MimeMessage();
 
-            var from = new MailboxAddress(_appSetting.SmtpConfig.MailboxName, _appSetting.SmtpConfig.MailboxAddress);
+            var from = new MailboxAddress("MailboxName", _appSetting.SmtpConfig.Host);
             message.From.Add(from);
 
-            var to = new MailboxAddress(email.Name, email.Address);
+            var to = new MailboxAddress(email.Address);
             message.To.Add(to);
 
 
             var bodyBuilder = new BodyBuilder();
-            bodyBuilder.HtmlBody = email.HtmlBody;
-            bodyBuilder.TextBody = email.TextBody;
+            if(email.IsBodyHtml)
+                bodyBuilder.HtmlBody = email.Body;
+            else
+                bodyBuilder.TextBody = email.Body;
             bodyBuilder.Attachments.Add(email.AttachmentPath);
 
             message.Subject = email.Subject;
@@ -40,6 +43,8 @@ namespace Assets.Utility.Infrastructure {
             await client.SendAsync(message);
             await client.DisconnectAsync(true);
             client.Dispose();
+
+            return DataTransferer.Ok();
         }
     }
 }

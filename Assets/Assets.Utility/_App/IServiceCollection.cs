@@ -4,10 +4,10 @@ using System.Threading.Tasks;
 
 namespace Assets.Utility {
     public interface ISMSService {
-        Task<SendSMSStatus> SendAsync(SMSModel email);
+        Task<IServiceResult> SendAsync(SMSModel email);
     }
 
     public interface IEmailService {
-        Task SendAsync(EmailModel email);
+        Task<IServiceResult> SendAsync(EmailModel email);
     }
 }

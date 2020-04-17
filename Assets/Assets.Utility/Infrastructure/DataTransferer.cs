@@ -23,8 +23,6 @@ namespace Assets.Utility.Infrastructure {
         public static IServiceResult UnofficialRequest(object data = null) { return new ServiceResult(0, nameof(UnofficialRequest), data); }
         #endregion
 
-        #region Account
-
         #region authentication
         public static IServiceResult AuthenticationFailed(object data = null) { return new ServiceResult(0, nameof(AuthenticationFailed), data); }
         public static IServiceResult TokenNotFound(object data = null) { return new ServiceResult(0, nameof(TokenNotFound), data); }
@@ -68,9 +66,13 @@ namespace Assets.Utility.Infrastructure {
         public static IServiceResult ExternalAuthenticationWithUnknownProvider(object data = null) { return new ServiceResult(0, nameof(ExternalAuthenticationWithUnknownProvider), data); }
         #endregion
 
+        #region email
+        public static IServiceResult ForgotPasswordEmailSubject(object data = null) { return new ServiceResult(0, nameof(ForgotPasswordEmailSubject), data); }
+        public static IServiceResult ForgotPasswordEmailBody(object data = null) { return new ServiceResult(0, nameof(ForgotPasswordEmailBody), data); }
         #endregion
 
-        #region Clipboard
+        #region sms
+        public static IServiceResult ForgotPasswordSMSBody(object data = null) { return new ServiceResult(0, nameof(ForgotPasswordSMSBody), data); }
         #endregion
     }
 }

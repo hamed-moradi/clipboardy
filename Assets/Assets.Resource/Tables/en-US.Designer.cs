@@ -277,6 +277,33 @@ namespace Assets.Resource.Tables {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Click on link below to reset your password.
+        /// </summary>
+        internal static string ForgotPasswordEmailBody {
+            get {
+                return ResourceManager.GetString("ForgotPasswordEmailBody", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Reset your forgotten password.
+        /// </summary>
+        internal static string ForgotPasswordEmailSubject {
+            get {
+                return ResourceManager.GetString("ForgotPasswordEmailSubject", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Click on link below to reset your password.
+        /// </summary>
+        internal static string ForgotPasswordSMSBody {
+            get {
+                return ResourceManager.GetString("ForgotPasswordSMSBody", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to GoToStepTwo.
         /// </summary>
         internal static string GoToStepTwo {
