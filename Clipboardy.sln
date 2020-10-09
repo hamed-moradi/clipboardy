@@ -3,25 +3,25 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.29709.97
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Core.Application", "Core\Core.Application\Core.Application.csproj", "{BAC5E3CE-2E79-49C3-BD72-D1EAA84D5421}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Core.Application", "src\Core\Core.Application\Core.Application.csproj", "{BAC5E3CE-2E79-49C3-BD72-D1EAA84D5421}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Presentation", "Presentation", "{83F5F24D-379B-4137-B305-EF9A9FC756AA}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Core", "Core", "{C2422377-193C-4843-AF3F-B9D0FCEDB373}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Core.Domain", "Core\Core.Domain\Core.Domain.csproj", "{AA90C57A-BBB2-4839-8F85-ACF440205312}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Core.Domain", "src\Core\Core.Domain\Core.Domain.csproj", "{AA90C57A-BBB2-4839-8F85-ACF440205312}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Assets", "Assets", "{761160FB-80DE-4358-9ED1-9A8C4EBF459F}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Test", "Test", "{9522BA30-E9BB-419A-8C3C-6904547CE935}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Test.Common", "Test\Test.Common\Test.Common.csproj", "{517486CB-251F-4E16-B804-59F575EC6710}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Test.Common", "src\Test\Test.Common\Test.Common.csproj", "{517486CB-251F-4E16-B804-59F575EC6710}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Assets.Utility", "Assets\Assets.Utility\Assets.Utility.csproj", "{A4AE58B7-CDEE-4E4B-937A-0A98C516C267}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Assets.Utility", "src\Assets\Assets.Utility\Assets.Utility.csproj", "{A4AE58B7-CDEE-4E4B-937A-0A98C516C267}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Assets.Model", "Assets\Assets.Model\Assets.Model.csproj", "{53A30AB1-76F1-4BC8-AC52-5340DBAB6BD4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Assets.Model", "src\Assets\Assets.Model\Assets.Model.csproj", "{53A30AB1-76F1-4BC8-AC52-5340DBAB6BD4}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Presentation.WebApi", "Presentation\Presentation.WebApi\Presentation.WebApi.csproj", "{05897208-4E3B-42C4-AF3A-1933D50695A4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Presentation.WebApi", "src\Presentation\Presentation.WebApi\Presentation.WebApi.csproj", "{05897208-4E3B-42C4-AF3A-1933D50695A4}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Documentation", "Documentation", "{E129B67A-E8BB-4A06-951A-1F3B0BA4CAB8}"
 	ProjectSection(SolutionItems) = preProject
@@ -30,11 +30,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Documentation", "Documentat
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Database", "Database", "{E9C1C956-D4B3-4318-9CFB-87A269793300}"
 EndProject
-Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "Database.MsSQL", "Database\Database.MsSql\Database.MsSQL.sqlproj", "{38FC9A5F-85FF-482E-9D96-92BEA6B51FA1}"
+Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "Database.MsSQL", "src\Database\Database.MsSql\Database.MsSQL.sqlproj", "{38FC9A5F-85FF-482E-9D96-92BEA6B51FA1}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Assets.Resource", "Assets\Assets.Resource\Assets.Resource.csproj", "{701BD19B-95A5-413F-A15D-45476167D78A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Assets.Resource", "src\Assets\Assets.Resource\Assets.Resource.csproj", "{701BD19B-95A5-413F-A15D-45476167D78A}"
 EndProject
-Project("{9092AA53-FB77-4645-B42D-1CCCA6BD08BD}") = "Presentation.WebApp", "Presentation\Presentation.WebApp\Presentation.WebApp.njsproj", "{673DF4F5-E1A0-43BF-BBE4-6C33C866A5BA}"
+Project("{9092AA53-FB77-4645-B42D-1CCCA6BD08BD}") = "Presentation.WebApp", "src\Presentation\Presentation.WebApp\Presentation.WebApp.njsproj", "{673DF4F5-E1A0-43BF-BBE4-6C33C866A5BA}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

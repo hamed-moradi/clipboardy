@@ -1,0 +1,14 @@
+D:\git\clipboardy\src\Core\Core.Domain\bin\Debug\netcoreapp3.1\Core.Domain.deps.json
+D:\git\clipboardy\src\Core\Core.Domain\bin\Debug\netcoreapp3.1\Core.Domain.dll
+D:\git\clipboardy\src\Core\Core.Domain\bin\Debug\netcoreapp3.1\Core.Domain.pdb
+D:\git\clipboardy\src\Core\Core.Domain\bin\Debug\netcoreapp3.1\Assets.Model.dll
+D:\git\clipboardy\src\Core\Core.Domain\bin\Debug\netcoreapp3.1\Assets.Utility.dll
+D:\git\clipboardy\src\Core\Core.Domain\bin\Debug\netcoreapp3.1\Assets.Model.pdb
+D:\git\clipboardy\src\Core\Core.Domain\bin\Debug\netcoreapp3.1\Assets.Utility.pdb
+D:\git\clipboardy\src\Core\Core.Domain\obj\Debug\netcoreapp3.1\Core.Domain.csprojAssemblyReference.cache
+D:\git\clipboardy\src\Core\Core.Domain\obj\Debug\netcoreapp3.1\Core.Domain.AssemblyInfoInputs.cache
+D:\git\clipboardy\src\Core\Core.Domain\obj\Debug\netcoreapp3.1\Core.Domain.AssemblyInfo.cs
+D:\git\clipboardy\src\Core\Core.Domain\obj\Debug\netcoreapp3.1\Core.Domain.csproj.CoreCompileInputs.cache
+D:\git\clipboardy\src\Core\Core.Domain\obj\Debug\netcoreapp3.1\Core.Domain.csproj.CopyComplete
+D:\git\clipboardy\src\Core\Core.Domain\obj\Debug\netcoreapp3.1\Core.Domain.dll
+D:\git\clipboardy\src\Core\Core.Domain\obj\Debug\netcoreapp3.1\Core.Domain.pdb

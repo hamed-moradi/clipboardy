@@ -1,0 +1,12 @@
+{
+  "version": 2,
+  "dgSpecHash": "HNVMOncBLVCxo1JX/oPa2YUkjgDK88MD1sl2ZlCMHc9ROytZRpK5a3IKXi16xGdvCKoAAJ72hAOO5QYx1a4zUw==",
+  "success": true,
+  "projectFilePath": "D:\\git\\clipboardy\\src\\Assets\\Assets.Model\\Assets.Model.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\h.moradi\\.nuget\\packages\\microsoft.netcore.platforms\\1.1.0\\microsoft.netcore.platforms.1.1.0.nupkg.sha512",
+    "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder\\netstandard.library\\2.0.3\\netstandard.library.2.0.3.nupkg.sha512",
+    "C:\\Users\\h.moradi\\.nuget\\packages\\system.componentmodel.annotations\\4.7.0\\system.componentmodel.annotations.4.7.0.nupkg.sha512"
+  ],
+  "logs": []
+}

@@ -1,0 +1,6 @@
+D:\git\clipboardy\src\Database\Database.MsSql\bin\Debug\Database.MsSQL.dacpac
+D:\git\clipboardy\src\Database\Database.MsSql\bin\Debug\Database.MsSql.dll
+D:\git\clipboardy\src\Database\Database.MsSql\bin\Debug\Database.MsSql.pdb
+D:\git\clipboardy\src\Database\Database.MsSql\obj\Debug\Database.MsSQL.sqlprojAssemblyReference.cache
+D:\git\clipboardy\src\Database\Database.MsSql\obj\Debug\Database.MsSql.dll
+D:\git\clipboardy\src\Database\Database.MsSql\obj\Debug\Database.MsSql.pdb
