@@ -34,8 +34,6 @@ Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "Database.MsSQL", "src\Datab
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Assets.Resource", "src\Assets\Assets.Resource\Assets.Resource.csproj", "{701BD19B-95A5-413F-A15D-45476167D78A}"
 EndProject
-Project("{9092AA53-FB77-4645-B42D-1CCCA6BD08BD}") = "Presentation.WebApp", "src\Presentation\Presentation.WebApp\Presentation.WebApp.njsproj", "{673DF4F5-E1A0-43BF-BBE4-6C33C866A5BA}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -76,10 +74,6 @@ Global
 		{701BD19B-95A5-413F-A15D-45476167D78A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{701BD19B-95A5-413F-A15D-45476167D78A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{701BD19B-95A5-413F-A15D-45476167D78A}.Release|Any CPU.Build.0 = Release|Any CPU
-		{673DF4F5-E1A0-43BF-BBE4-6C33C866A5BA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{673DF4F5-E1A0-43BF-BBE4-6C33C866A5BA}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{673DF4F5-E1A0-43BF-BBE4-6C33C866A5BA}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{673DF4F5-E1A0-43BF-BBE4-6C33C866A5BA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -93,7 +87,6 @@ Global
 		{05897208-4E3B-42C4-AF3A-1933D50695A4} = {83F5F24D-379B-4137-B305-EF9A9FC756AA}
 		{38FC9A5F-85FF-482E-9D96-92BEA6B51FA1} = {E9C1C956-D4B3-4318-9CFB-87A269793300}
 		{701BD19B-95A5-413F-A15D-45476167D78A} = {761160FB-80DE-4358-9ED1-9A8C4EBF459F}
-		{673DF4F5-E1A0-43BF-BBE4-6C33C866A5BA} = {83F5F24D-379B-4137-B305-EF9A9FC756AA}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {556F4AFA-D08A-4A01-A643-1768F2C64277}

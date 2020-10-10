@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "D:\\git\\clipboardy\\src\\Presentation\\Presentation.WebApi\\Presentation.WebApi.csproj": {}
+    "D:\\Git\\clipboardy\\src\\Presentation\\Presentation.WebApi\\Presentation.WebApi.csproj": {}
   },
   "projects": {
-    "D:\\git\\clipboardy\\src\\Assets\\Assets.Model\\Assets.Model.csproj": {
+    "D:\\Git\\clipboardy\\src\\Assets\\Assets.Model\\Assets.Model.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\git\\clipboardy\\src\\Assets\\Assets.Model\\Assets.Model.csproj",
+        "projectUniqueName": "D:\\Git\\clipboardy\\src\\Assets\\Assets.Model\\Assets.Model.csproj",
         "projectName": "Assets.Model",
-        "projectPath": "D:\\git\\clipboardy\\src\\Assets\\Assets.Model\\Assets.Model.csproj",
+        "projectPath": "D:\\Git\\clipboardy\\src\\Assets\\Assets.Model\\Assets.Model.csproj",
         "packagesPath": "C:\\Users\\h.moradi\\.nuget\\packages\\",
-        "outputPath": "D:\\git\\clipboardy\\src\\Assets\\Assets.Model\\obj\\",
+        "outputPath": "D:\\Git\\clipboardy\\src\\Assets\\Assets.Model\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
@@ -68,14 +68,14 @@
         }
       }
     },
-    "D:\\git\\clipboardy\\src\\Assets\\Assets.Resource\\Assets.Resource.csproj": {
+    "D:\\Git\\clipboardy\\src\\Assets\\Assets.Resource\\Assets.Resource.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\git\\clipboardy\\src\\Assets\\Assets.Resource\\Assets.Resource.csproj",
+        "projectUniqueName": "D:\\Git\\clipboardy\\src\\Assets\\Assets.Resource\\Assets.Resource.csproj",
         "projectName": "Assets.Resource",
-        "projectPath": "D:\\git\\clipboardy\\src\\Assets\\Assets.Resource\\Assets.Resource.csproj",
+        "projectPath": "D:\\Git\\clipboardy\\src\\Assets\\Assets.Resource\\Assets.Resource.csproj",
         "packagesPath": "C:\\Users\\h.moradi\\.nuget\\packages\\",
-        "outputPath": "D:\\git\\clipboardy\\src\\Assets\\Assets.Resource\\obj\\",
+        "outputPath": "D:\\Git\\clipboardy\\src\\Assets\\Assets.Resource\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
@@ -96,8 +96,8 @@
         "frameworks": {
           "netstandard2.0": {
             "projectReferences": {
-              "D:\\git\\clipboardy\\src\\Assets\\Assets.Model\\Assets.Model.csproj": {
-                "projectPath": "D:\\git\\clipboardy\\src\\Assets\\Assets.Model\\Assets.Model.csproj"
+              "D:\\Git\\clipboardy\\src\\Assets\\Assets.Model\\Assets.Model.csproj": {
+                "projectPath": "D:\\Git\\clipboardy\\src\\Assets\\Assets.Model\\Assets.Model.csproj"
               }
             }
           }
@@ -132,14 +132,14 @@
         }
       }
     },
-    "D:\\git\\clipboardy\\src\\Assets\\Assets.Utility\\Assets.Utility.csproj": {
+    "D:\\Git\\clipboardy\\src\\Assets\\Assets.Utility\\Assets.Utility.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\git\\clipboardy\\src\\Assets\\Assets.Utility\\Assets.Utility.csproj",
+        "projectUniqueName": "D:\\Git\\clipboardy\\src\\Assets\\Assets.Utility\\Assets.Utility.csproj",
         "projectName": "Assets.Utility",
-        "projectPath": "D:\\git\\clipboardy\\src\\Assets\\Assets.Utility\\Assets.Utility.csproj",
+        "projectPath": "D:\\Git\\clipboardy\\src\\Assets\\Assets.Utility\\Assets.Utility.csproj",
         "packagesPath": "C:\\Users\\h.moradi\\.nuget\\packages\\",
-        "outputPath": "D:\\git\\clipboardy\\src\\Assets\\Assets.Utility\\obj\\",
+        "outputPath": "D:\\Git\\clipboardy\\src\\Assets\\Assets.Utility\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
@@ -160,8 +160,8 @@
         "frameworks": {
           "netcoreapp3.1": {
             "projectReferences": {
-              "D:\\git\\clipboardy\\src\\Assets\\Assets.Model\\Assets.Model.csproj": {
-                "projectPath": "D:\\git\\clipboardy\\src\\Assets\\Assets.Model\\Assets.Model.csproj"
+              "D:\\Git\\clipboardy\\src\\Assets\\Assets.Model\\Assets.Model.csproj": {
+                "projectPath": "D:\\Git\\clipboardy\\src\\Assets\\Assets.Model\\Assets.Model.csproj"
               }
             }
           }
@@ -251,14 +251,14 @@
         }
       }
     },
-    "D:\\git\\clipboardy\\src\\Core\\Core.Application\\Core.Application.csproj": {
+    "D:\\Git\\clipboardy\\src\\Core\\Core.Application\\Core.Application.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\git\\clipboardy\\src\\Core\\Core.Application\\Core.Application.csproj",
+        "projectUniqueName": "D:\\Git\\clipboardy\\src\\Core\\Core.Application\\Core.Application.csproj",
         "projectName": "Core.Application",
-        "projectPath": "D:\\git\\clipboardy\\src\\Core\\Core.Application\\Core.Application.csproj",
+        "projectPath": "D:\\Git\\clipboardy\\src\\Core\\Core.Application\\Core.Application.csproj",
         "packagesPath": "C:\\Users\\h.moradi\\.nuget\\packages\\",
-        "outputPath": "D:\\git\\clipboardy\\src\\Core\\Core.Application\\obj\\",
+        "outputPath": "D:\\Git\\clipboardy\\src\\Core\\Core.Application\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
@@ -279,14 +279,14 @@
         "frameworks": {
           "netcoreapp3.1": {
             "projectReferences": {
-              "D:\\git\\clipboardy\\src\\Assets\\Assets.Resource\\Assets.Resource.csproj": {
-                "projectPath": "D:\\git\\clipboardy\\src\\Assets\\Assets.Resource\\Assets.Resource.csproj"
+              "D:\\Git\\clipboardy\\src\\Assets\\Assets.Resource\\Assets.Resource.csproj": {
+                "projectPath": "D:\\Git\\clipboardy\\src\\Assets\\Assets.Resource\\Assets.Resource.csproj"
               },
-              "D:\\git\\clipboardy\\src\\Assets\\Assets.Utility\\Assets.Utility.csproj": {
-                "projectPath": "D:\\git\\clipboardy\\src\\Assets\\Assets.Utility\\Assets.Utility.csproj"
+              "D:\\Git\\clipboardy\\src\\Assets\\Assets.Utility\\Assets.Utility.csproj": {
+                "projectPath": "D:\\Git\\clipboardy\\src\\Assets\\Assets.Utility\\Assets.Utility.csproj"
               },
-              "D:\\git\\clipboardy\\src\\Core\\Core.Domain\\Core.Domain.csproj": {
-                "projectPath": "D:\\git\\clipboardy\\src\\Core\\Core.Domain\\Core.Domain.csproj"
+              "D:\\Git\\clipboardy\\src\\Core\\Core.Domain\\Core.Domain.csproj": {
+                "projectPath": "D:\\Git\\clipboardy\\src\\Core\\Core.Domain\\Core.Domain.csproj"
               }
             }
           }
@@ -332,14 +332,14 @@
         }
       }
     },
-    "D:\\git\\clipboardy\\src\\Core\\Core.Domain\\Core.Domain.csproj": {
+    "D:\\Git\\clipboardy\\src\\Core\\Core.Domain\\Core.Domain.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\git\\clipboardy\\src\\Core\\Core.Domain\\Core.Domain.csproj",
+        "projectUniqueName": "D:\\Git\\clipboardy\\src\\Core\\Core.Domain\\Core.Domain.csproj",
         "projectName": "Core.Domain",
-        "projectPath": "D:\\git\\clipboardy\\src\\Core\\Core.Domain\\Core.Domain.csproj",
+        "projectPath": "D:\\Git\\clipboardy\\src\\Core\\Core.Domain\\Core.Domain.csproj",
         "packagesPath": "C:\\Users\\h.moradi\\.nuget\\packages\\",
-        "outputPath": "D:\\git\\clipboardy\\src\\Core\\Core.Domain\\obj\\",
+        "outputPath": "D:\\Git\\clipboardy\\src\\Core\\Core.Domain\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
@@ -360,11 +360,11 @@
         "frameworks": {
           "netcoreapp3.1": {
             "projectReferences": {
-              "D:\\git\\clipboardy\\src\\Assets\\Assets.Model\\Assets.Model.csproj": {
-                "projectPath": "D:\\git\\clipboardy\\src\\Assets\\Assets.Model\\Assets.Model.csproj"
+              "D:\\Git\\clipboardy\\src\\Assets\\Assets.Model\\Assets.Model.csproj": {
+                "projectPath": "D:\\Git\\clipboardy\\src\\Assets\\Assets.Model\\Assets.Model.csproj"
               },
-              "D:\\git\\clipboardy\\src\\Assets\\Assets.Utility\\Assets.Utility.csproj": {
-                "projectPath": "D:\\git\\clipboardy\\src\\Assets\\Assets.Utility\\Assets.Utility.csproj"
+              "D:\\Git\\clipboardy\\src\\Assets\\Assets.Utility\\Assets.Utility.csproj": {
+                "projectPath": "D:\\Git\\clipboardy\\src\\Assets\\Assets.Utility\\Assets.Utility.csproj"
               }
             }
           }
@@ -418,14 +418,14 @@
         }
       }
     },
-    "D:\\git\\clipboardy\\src\\Presentation\\Presentation.WebApi\\Presentation.WebApi.csproj": {
+    "D:\\Git\\clipboardy\\src\\Presentation\\Presentation.WebApi\\Presentation.WebApi.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\git\\clipboardy\\src\\Presentation\\Presentation.WebApi\\Presentation.WebApi.csproj",
+        "projectUniqueName": "D:\\Git\\clipboardy\\src\\Presentation\\Presentation.WebApi\\Presentation.WebApi.csproj",
         "projectName": "clipboardy.com",
-        "projectPath": "D:\\git\\clipboardy\\src\\Presentation\\Presentation.WebApi\\Presentation.WebApi.csproj",
+        "projectPath": "D:\\Git\\clipboardy\\src\\Presentation\\Presentation.WebApi\\Presentation.WebApi.csproj",
         "packagesPath": "C:\\Users\\h.moradi\\.nuget\\packages\\",
-        "outputPath": "D:\\git\\clipboardy\\src\\Presentation\\Presentation.WebApi\\obj\\",
+        "outputPath": "D:\\Git\\clipboardy\\src\\Presentation\\Presentation.WebApi\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
@@ -446,20 +446,20 @@
         "frameworks": {
           "netcoreapp3.1": {
             "projectReferences": {
-              "D:\\git\\clipboardy\\src\\Assets\\Assets.Model\\Assets.Model.csproj": {
-                "projectPath": "D:\\git\\clipboardy\\src\\Assets\\Assets.Model\\Assets.Model.csproj"
+              "D:\\Git\\clipboardy\\src\\Assets\\Assets.Model\\Assets.Model.csproj": {
+                "projectPath": "D:\\Git\\clipboardy\\src\\Assets\\Assets.Model\\Assets.Model.csproj"
               },
-              "D:\\git\\clipboardy\\src\\Assets\\Assets.Resource\\Assets.Resource.csproj": {
-                "projectPath": "D:\\git\\clipboardy\\src\\Assets\\Assets.Resource\\Assets.Resource.csproj"
+              "D:\\Git\\clipboardy\\src\\Assets\\Assets.Resource\\Assets.Resource.csproj": {
+                "projectPath": "D:\\Git\\clipboardy\\src\\Assets\\Assets.Resource\\Assets.Resource.csproj"
               },
-              "D:\\git\\clipboardy\\src\\Assets\\Assets.Utility\\Assets.Utility.csproj": {
-                "projectPath": "D:\\git\\clipboardy\\src\\Assets\\Assets.Utility\\Assets.Utility.csproj"
+              "D:\\Git\\clipboardy\\src\\Assets\\Assets.Utility\\Assets.Utility.csproj": {
+                "projectPath": "D:\\Git\\clipboardy\\src\\Assets\\Assets.Utility\\Assets.Utility.csproj"
               },
-              "D:\\git\\clipboardy\\src\\Core\\Core.Application\\Core.Application.csproj": {
-                "projectPath": "D:\\git\\clipboardy\\src\\Core\\Core.Application\\Core.Application.csproj"
+              "D:\\Git\\clipboardy\\src\\Core\\Core.Application\\Core.Application.csproj": {
+                "projectPath": "D:\\Git\\clipboardy\\src\\Core\\Core.Application\\Core.Application.csproj"
               },
-              "D:\\git\\clipboardy\\src\\Core\\Core.Domain\\Core.Domain.csproj": {
-                "projectPath": "D:\\git\\clipboardy\\src\\Core\\Core.Domain\\Core.Domain.csproj"
+              "D:\\Git\\clipboardy\\src\\Core\\Core.Domain\\Core.Domain.csproj": {
+                "projectPath": "D:\\Git\\clipboardy\\src\\Core\\Core.Domain\\Core.Domain.csproj"
               }
             }
           }

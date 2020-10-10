@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "hkyOGAdsWkyl0IFlF1USj+Mi8O7GTscu8C5bdeF8AUvIKzfPQkKXNj/g4u9oinAfENyasos46YTJnGjTxdeTGg==",
+  "dgSpecHash": "UKo9SHKsdgNJSaq8HIOempLHM0/3rgLzTWkDnPbfXY4iibAGgOwz+kbz6WfOfc/8BS7UZRMqhGnKbBCvmrRkaw==",
   "success": true,
-  "projectFilePath": "D:\\git\\clipboardy\\src\\Assets\\Assets.Utility\\Assets.Utility.csproj",
+  "projectFilePath": "D:\\Git\\clipboardy\\src\\Assets\\Assets.Utility\\Assets.Utility.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\h.moradi\\.nuget\\packages\\automapper\\9.0.0\\automapper.9.0.0.nupkg.sha512",
     "C:\\Users\\h.moradi\\.nuget\\packages\\dapper\\2.0.35\\dapper.2.0.35.nupkg.sha512",

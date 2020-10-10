@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "qZ2wzll416+voIGgY8qwjtDvP0MqTikAT1T8aBTHWIv2QD1PbWJuSnFIhC/n99w/DNfu5X92NSTCH3emDBBX1g==",
+  "dgSpecHash": "LONISKEOK6riu3TFQHhqn/27dslPtrwcg3alZs0+MVTXHJgGmiOg5wzMBbloJIbO159OtOASbgEV8KtkOzddQw==",
   "success": true,
-  "projectFilePath": "D:\\git\\clipboardy\\src\\Assets\\Assets.Resource\\Assets.Resource.csproj",
+  "projectFilePath": "D:\\Git\\clipboardy\\src\\Assets\\Assets.Resource\\Assets.Resource.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\h.moradi\\.nuget\\packages\\microsoft.netcore.platforms\\1.1.0\\microsoft.netcore.platforms.1.1.0.nupkg.sha512",
     "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder\\netstandard.library\\2.0.3\\netstandard.library.2.0.3.nupkg.sha512",

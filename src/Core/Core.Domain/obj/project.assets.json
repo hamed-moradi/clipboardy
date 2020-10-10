@@ -9680,11 +9680,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\git\\clipboardy\\src\\Core\\Core.Domain\\Core.Domain.csproj",
+      "projectUniqueName": "D:\\Git\\clipboardy\\src\\Core\\Core.Domain\\Core.Domain.csproj",
       "projectName": "Core.Domain",
-      "projectPath": "D:\\git\\clipboardy\\src\\Core\\Core.Domain\\Core.Domain.csproj",
+      "projectPath": "D:\\Git\\clipboardy\\src\\Core\\Core.Domain\\Core.Domain.csproj",
       "packagesPath": "C:\\Users\\h.moradi\\.nuget\\packages\\",
-      "outputPath": "D:\\git\\clipboardy\\src\\Core\\Core.Domain\\obj\\",
+      "outputPath": "D:\\Git\\clipboardy\\src\\Core\\Core.Domain\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
@@ -9705,11 +9705,11 @@
       "frameworks": {
         "netcoreapp3.1": {
           "projectReferences": {
-            "D:\\git\\clipboardy\\src\\Assets\\Assets.Model\\Assets.Model.csproj": {
-              "projectPath": "D:\\git\\clipboardy\\src\\Assets\\Assets.Model\\Assets.Model.csproj"
+            "D:\\Git\\clipboardy\\src\\Assets\\Assets.Model\\Assets.Model.csproj": {
+              "projectPath": "D:\\Git\\clipboardy\\src\\Assets\\Assets.Model\\Assets.Model.csproj"
             },
-            "D:\\git\\clipboardy\\src\\Assets\\Assets.Utility\\Assets.Utility.csproj": {
-              "projectPath": "D:\\git\\clipboardy\\src\\Assets\\Assets.Utility\\Assets.Utility.csproj"
+            "D:\\Git\\clipboardy\\src\\Assets\\Assets.Utility\\Assets.Utility.csproj": {
+              "projectPath": "D:\\Git\\clipboardy\\src\\Assets\\Assets.Utility\\Assets.Utility.csproj"
             }
           }
         }

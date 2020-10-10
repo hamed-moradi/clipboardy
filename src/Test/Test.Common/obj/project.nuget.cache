@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "kbtJe+tEAWrkSmwWem+Niyru0aQ2BJ0enAAibHU6ipYTHrpcWEngmf6xpyiGGtFPiEqylxa+8tiTdRe40sXXqw==",
+  "dgSpecHash": "NAJEc7r6SyDVEg2CZKBEQnbkDu3rL2zynw/YNbknLB1eDxeSPUb+TbLVgVlT1roru0KaKvkt19P9xNPatg50ng==",
   "success": true,
-  "projectFilePath": "D:\\git\\clipboardy\\src\\Test\\Test.Common\\Test.Common.csproj",
+  "projectFilePath": "D:\\Git\\clipboardy\\src\\Test\\Test.Common\\Test.Common.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\h.moradi\\.nuget\\packages\\automapper\\9.0.0\\automapper.9.0.0.nupkg.sha512",
     "C:\\Users\\h.moradi\\.nuget\\packages\\automapper.extensions.microsoft.dependencyinjection\\7.0.0\\automapper.extensions.microsoft.dependencyinjection.7.0.0.nupkg.sha512",

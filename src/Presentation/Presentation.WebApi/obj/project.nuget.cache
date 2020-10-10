@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "AttDL5KhHXHLUwTi4GfK3+zjm35/f+RlUKVzpepwmlMi5evDdKQb2lPLhGqtfx+ngFa+iXhwoamfJbrIHIQRUQ==",
+  "dgSpecHash": "G5ncfwg9VtrKvqkDYsYh+hmD545IB6lddI3sX7PIfBKSUmxM83UOza0bb/x5Idd63DztQ9gHncxXIC0smahEmg==",
   "success": true,
-  "projectFilePath": "D:\\git\\clipboardy\\src\\Presentation\\Presentation.WebApi\\Presentation.WebApi.csproj",
+  "projectFilePath": "D:\\Git\\clipboardy\\src\\Presentation\\Presentation.WebApi\\Presentation.WebApi.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\h.moradi\\.nuget\\packages\\automapper\\9.0.0\\automapper.9.0.0.nupkg.sha512",
     "C:\\Users\\h.moradi\\.nuget\\packages\\automapper.extensions.microsoft.dependencyinjection\\7.0.0\\automapper.extensions.microsoft.dependencyinjection.7.0.0.nupkg.sha512",
