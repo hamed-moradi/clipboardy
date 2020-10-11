@@ -6,36 +6,28 @@
 *.jfm
 /.vs
 
-/Assets/Assets.Model/obj
-/Assets/Assets.Model/bin
+/src/Assets/Assets.Model/obj
+/src/Assets/Assets.Model/bin
 
-/Assets/Assets.Utility/obj
-/Assets/Assets.Utility/bin
+/src/Assets/Assets.Resource/obj
+/src/Assets/Assets.Resource/bin
 
-/Core/Core.Application/obj
-/Core/Core.Application/bin
+/src/Assets/Assets.Utility/obj
+/src/Assets/Assets.Utility/bin
 
-/Core/Core.Domain/obj
-/Core/Core.Domain/bin
+/src/Core/Core.Application/obj
+/src/Core/Core.Application/bin
 
-/Database/Database.MsSql/obj
-/Database/Database.MsSql/bin
+/src/Core/Core.Domain/obj
+/src/Core/Core.Domain/bin
 
-/Presentation/Presentation.WebApi/obj
-/Presentation/Presentation.WebApi/bin
-/Presentation/Presentation.WebApi/logs
+/src/Database/Database.MsSql/obj
+/src/Database/Database.MsSql/bin
+/src/Database/Database.MsSql/Import Schema Logs
 
-/Test/Test.Common/obj
-/Test/Test.Common/bin
+/src/Presentation/Presentation.WebApi/obj
+/src/Presentation/Presentation.WebApi/bin
+/src/Presentation/Presentation.WebApi/logs
 
-/Database/Database.MsSql/bin
-/Database/Database.MsSql/obj
-/Database/Database.MsSql/Import Schema Logs
-
-/Assets/Assets.Resource/obj
-/Assets/Assets.Resource/bin
-/src/Assets/Assets.Model/bin/Debug/netstandard2.1
-/src/Assets/Assets.Model/bin/Debug/netstandard2.1
-/src/Assets/Assets.Model/obj/Debug/netstandard2.1
-/src/Assets/Assets.Resource/bin/Debug/netstandard2.1
-/src/Assets/Assets.Resource/obj/Debug/netstandard2.1
+/src/Test/Test.Common/obj
+/src/Test/Test.Common/bin

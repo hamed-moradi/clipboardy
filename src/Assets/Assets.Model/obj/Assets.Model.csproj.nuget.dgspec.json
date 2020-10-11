@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "D:\\Git\\clipboardy\\src\\Assets\\Assets.Model\\Assets.Model.csproj": {}
+    "D:\\git\\clipboardy\\src\\Assets\\Assets.Model\\Assets.Model.csproj": {}
   },
   "projects": {
-    "D:\\Git\\clipboardy\\src\\Assets\\Assets.Model\\Assets.Model.csproj": {
+    "D:\\git\\clipboardy\\src\\Assets\\Assets.Model\\Assets.Model.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\Git\\clipboardy\\src\\Assets\\Assets.Model\\Assets.Model.csproj",
+        "projectUniqueName": "D:\\git\\clipboardy\\src\\Assets\\Assets.Model\\Assets.Model.csproj",
         "projectName": "Assets.Model",
-        "projectPath": "D:\\Git\\clipboardy\\src\\Assets\\Assets.Model\\Assets.Model.csproj",
+        "projectPath": "D:\\git\\clipboardy\\src\\Assets\\Assets.Model\\Assets.Model.csproj",
         "packagesPath": "C:\\Users\\h.moradi\\.nuget\\packages\\",
-        "outputPath": "D:\\Git\\clipboardy\\src\\Assets\\Assets.Model\\obj\\",
+        "outputPath": "D:\\git\\clipboardy\\src\\Assets\\Assets.Model\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
@@ -22,7 +22,7 @@
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
-          "netstandard2.0"
+          "netstandard2.1"
         ],
         "sources": {
           "C:\\Program Files (x86)\\DevExpress 18.2\\Components\\System\\Components\\Packages": {},
@@ -30,7 +30,7 @@
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
-          "netstandard2.0": {
+          "netstandard2.1": {
             "projectReferences": {}
           }
         },
@@ -41,14 +41,8 @@
         }
       },
       "frameworks": {
-        "netstandard2.0": {
+        "netstandard2.1": {
           "dependencies": {
-            "NETStandard.Library": {
-              "suppressParent": "All",
-              "target": "Package",
-              "version": "[2.0.3, )",
-              "autoReferenced": true
-            },
             "System.ComponentModel.Annotations": {
               "target": "Package",
               "version": "[4.7.0, )"
@@ -64,6 +58,11 @@
           ],
           "assetTargetFallback": true,
           "warn": true,
+          "frameworkReferences": {
+            "NETStandard.Library": {
+              "privateAssets": "all"
+            }
+          },
           "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.402\\RuntimeIdentifierGraph.json"
         }
       }

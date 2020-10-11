@@ -18,6 +18,7 @@ D:\git\clipboardy\src\Presentation\Presentation.WebApi\bin\Debug\netcoreapp3.1\S
 D:\git\clipboardy\src\Presentation\Presentation.WebApi\bin\Debug\netcoreapp3.1\System.Web.Http.dll
 D:\git\clipboardy\src\Presentation\Presentation.WebApi\bin\Debug\netcoreapp3.1\System.Web.Http.Owin.dll
 D:\git\clipboardy\src\Presentation\Presentation.WebApi\bin\Debug\netcoreapp3.1\Microsoft.AspNetCore.Authentication.Google.dll
+D:\git\clipboardy\src\Presentation\Presentation.WebApi\bin\Debug\netcoreapp3.1\Microsoft.AspNetCore.Authentication.JwtBearer.dll
 D:\git\clipboardy\src\Presentation\Presentation.WebApi\bin\Debug\netcoreapp3.1\Microsoft.AspNetCore.Authentication.MicrosoftAccount.dll
 D:\git\clipboardy\src\Presentation\Presentation.WebApi\bin\Debug\netcoreapp3.1\Microsoft.AspNetCore.Owin.dll
 D:\git\clipboardy\src\Presentation\Presentation.WebApi\bin\Debug\netcoreapp3.1\Microsoft.AspNetCore.Razor.Language.dll
