@@ -16,6 +16,11 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.Google;
 using Assets.Model.Base;
 using Microsoft.AspNetCore.Authentication.MicrosoftAccount;
+using Core.Domain;
+using Core.Application;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 namespace Presentation.WebApi {
     public class Startup {
@@ -28,7 +33,7 @@ namespace Presentation.WebApi {
         #endregion
 
         public void ConfigureServices(IServiceCollection services) {
-            Log.Debug($"SendReceiveWebApi {BaseViewModel.Version} getting ready...");
+            Log.Debug($"SendReceiveWebApi {AppSetting.Version} getting ready...");
 
             // config localization
             services.AddLocalization(options => options.ResourcesPath = "Assets/Assets.Resource/Tables");
@@ -46,11 +51,11 @@ namespace Presentation.WebApi {
             // automapper
             services.AddAutoMapper(typeof(MapperProfile));
 
-            // custome services
-            Assets.Utility.ModuleInjector.Inject(services);
-            Core.Domain.ModuleInjector.Inject(services, appSettings);
-            Core.Application.ModuleInjector.Inject(services);
-            Presentation.WebApi.ModuleInjector.Inject(services, appSettings);
+            // custom services
+            services.AddUtilities();
+            services.AddDomains();
+            services.AddApplications();
+            services.AddModules();
 
             // add mvc routing
             services.AddControllers(configure => {
@@ -79,6 +84,20 @@ namespace Presentation.WebApi {
                 .AddMicrosoftAccount(MicrosoftAccountDefaults.AuthenticationScheme, options => {
                     options.ClientId = appSettings.Authentication.Microsoft.ClientId;
                     options.ClientSecret = appSettings.Authentication.Microsoft.ClientSecret;
+                });
+
+            // identity config
+            services.AddAuthentication(
+                options => {
+                    options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+                    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+                })
+                .AddJwtBearer(cfg => {
+                    cfg.TokenValidationParameters = new TokenValidationParameters() {
+                        ValidIssuer = appSettings.Authentication.Issuer,
+                        ValidAudience = appSettings.Authentication.Audience,
+                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(appSettings.Authentication.SecurityKey))
+                    };
                 });
 
             // service locator

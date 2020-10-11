@@ -1,12 +1,14 @@
-﻿using Assets.Model.Common;
+﻿using Assets.Model.Base;
+using Assets.Model.Common;
 using Assets.Utility.Infrastructure;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.VisualBasic;
 
 namespace Presentation.WebApi.Controllers {
-    [Authorize]//[Route("[controller]")]
-    public class HomeController: Controller {
+    [Route("[controller]")]
+    public class HomeController: BaseController {
         #region ctor
         private readonly AppSetting _appSetting;
         private readonly CompressionHandler _compressionHandler;
@@ -25,7 +27,7 @@ namespace Presentation.WebApi.Controllers {
 
         [HttpGet, Route("index")]
         public IActionResult Index() {
-            return View();
+            return Ok(AppSetting.Version);
         }
     }
 }

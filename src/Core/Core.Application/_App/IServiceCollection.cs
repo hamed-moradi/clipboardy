@@ -1,5 +1,6 @@
 ﻿using Assets.Model.Base;
 using Assets.Model.Binding;
+using Assets.Model.Header;
 using Core.Domain.StoredProcedure.Result;
 using Core.Domain.StoredProcedure.Schema;
 using System.Collections.Generic;
@@ -7,7 +8,9 @@ using System.Threading.Tasks;
 
 namespace Core.Application {
     public interface IAccountService {
-        Task<AccountAuthenticateResult> AuthenticateAsync(AccountAuthenticateSchema schema);
+        AccountResult GetById(int id);
+        Task<Account> AuthenticateAsync(string token);
+        AccountResult First(AccountGetFirstSchema account);
         Task<AccountResult> FirstAsync(AccountGetFirstSchema account);
         Task<int> AddAsync(AccountAddSchema account);
         Task UpdateAsync(AccountUpdateSchema account);
@@ -27,7 +30,7 @@ namespace Core.Application {
         Task<AccountProfileResult> FirstAsync(AccountProfileGetFirstSchema accountProfile);
         Task<int> AddAsync(AccountProfileAddSchema accountProfile);
         Task UpdateAsync(AccountProfileUpdateSchema accountProfile);
-        Task CleanForgotPasswordTokensAsync(AccountProfileCleanTokensSchema accountProfile);
+        Task CleanForgotPasswordTokensAsync(int accountId);
     }
 
     public interface IClipboardService {

@@ -10,6 +10,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
 using System.Transactions;
 using Core.Application.Infrastructure;
+using Assets.Model.Header;
 
 namespace Core.Application.Services {
     public class AccountService: IAccountService {
@@ -19,24 +20,41 @@ namespace Core.Application.Services {
         private readonly Cryptograph _cryptograph;
         private readonly IAccountProfileService _accountProfileService;
         private readonly IAccountDeviceService _accountDeviceService;
+        private readonly JwtHandler _jwtHandler;
 
         public AccountService(
             IStoredProcedureService storedProcedure,
             RandomMaker randomMaker,
             Cryptograph cryptograph,
             IAccountProfileService accountProfileService,
-            IAccountDeviceService accountDeviceService) {
+            IAccountDeviceService accountDeviceService,
+            JwtHandler jwtHandler) {
 
             _storedProcedure = storedProcedure;
             _randomMaker = randomMaker;
             _cryptograph = cryptograph;
             _accountProfileService = accountProfileService;
             _accountDeviceService = accountDeviceService;
+            _jwtHandler = jwtHandler;
         }
         #endregion
 
-        public async Task<AccountAuthenticateResult> AuthenticateAsync(AccountAuthenticateSchema schema) {
-            var result = await _storedProcedure.QueryFirstAsync<AccountAuthenticateSchema, AccountAuthenticateResult>(schema);
+        public async Task<Account> AuthenticateAsync(string token) {
+            Account account = null;
+            await Task.Run(() => {
+                account = _jwtHandler.Validate(token).ToAccount();
+            });
+            return account;
+        }
+
+        public AccountResult GetById(int id) {
+            var result = _storedProcedure.QueryFirstAsync<AccountGetFirstSchema, AccountResult>(
+                new AccountGetFirstSchema { Id = id }).GetAwaiter().GetResult();
+            return result;
+        }
+
+        public AccountResult First(AccountGetFirstSchema account) {
+            var result = _storedProcedure.QueryFirst<AccountGetFirstSchema, AccountResult>(account);
             return result;
         }
 
@@ -68,24 +86,22 @@ namespace Core.Application.Services {
 
                     var account = new AccountAddSchema {
                         Password = _cryptograph.RNG(signupModel.Password),
-                        ProviderId = AccountProvider.Clipboard.ToInt(),
+                        ProviderId = AccountProvider.Clipboardy.ToInt(),
                         Username = username,
                         CreatedAt = now,
                         StatusId = Status.Active.ToInt()
                     };
                     var accountId = await AddAsync(account);
 
-                    var token = _randomMaker.NewToken();
                     var accountDevice = new AccountDeviceAddSchema {
                         AccountId = accountId,
                         DeviceId = signupModel.DeviceId,
                         DeviceName = signupModel.DeviceName,
                         DeviceType = signupModel.DeviceType,
-                        Token = token,
                         CreatedAt = now,
                         StatusId = Status.Active.ToInt()
                     };
-                    await _accountDeviceService.AddAsync(accountDevice);
+                    var deviceId = await _accountDeviceService.AddAsync(accountDevice);
 
                     var accountProfile = new AccountProfileAddSchema {
                         AccountId = accountId,
@@ -97,6 +113,8 @@ namespace Core.Application.Services {
                     await _accountProfileService.AddAsync(accountProfile);
 
                     transaction.Complete();
+
+                    var token = _jwtHandler.Bearer(new Account(accountId, deviceId, username, now).ToClaimsIdentity());
                     return DataTransferer.Ok(token);
                 }
                 catch(Exception ex) {
@@ -127,17 +145,15 @@ namespace Core.Application.Services {
                     };
                     var accountId = await AddAsync(account);
 
-                    var token = _randomMaker.NewToken();
                     var accountDevice = new AccountDeviceAddSchema {
                         AccountId = accountId,
                         DeviceId = externalUser.DeviceId,
                         DeviceName = externalUser.DeviceName,
                         DeviceType = externalUser.DeviceType,
-                        Token = token,
                         CreatedAt = now,
                         StatusId = Status.Active.ToInt()
                     };
-                    await _accountDeviceService.AddAsync(accountDevice);
+                    var deviceId = await _accountDeviceService.AddAsync(accountDevice);
 
                     var accountProfile = new AccountProfileAddSchema {
                         AccountId = accountId,
@@ -149,6 +165,7 @@ namespace Core.Application.Services {
                     await _accountProfileService.AddAsync(accountProfile);
 
                     transaction.Complete();
+                    var token = _jwtHandler.Bearer(new Account(accountId, deviceId, username, now).ToClaimsIdentity());
                     return DataTransferer.Ok(token);
                 }
                 catch(Exception ex) {
@@ -161,7 +178,6 @@ namespace Core.Application.Services {
 
         public async Task<IServiceResult> SigninAsync(SigninBindingModel signinModel) {
             var now = DateTime.UtcNow;
-            var token = _randomMaker.NewToken();
 
             using(var transaction = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled)) {
                 try {
@@ -176,7 +192,7 @@ namespace Core.Application.Services {
                         query.TypeId = AccountProfileType.Email.ToInt();
                     }
                     else {
-                        return DataTransferer.BadEmailOrCellphone();
+                        return DataTransferer.InvalidEmailOrCellPhone();
                     }
 
                     var accountProfile = await _accountProfileService.FirstAsync(query).ConfigureAwait(true);
@@ -195,6 +211,7 @@ namespace Core.Application.Services {
                     if(account == null)
                         return DataTransferer.UserIsNotActive();
 
+                    var deviceId = 0;
                     // check password
                     if(_cryptograph.IsEqual(signinModel.Password, account.Password)) {
                         var accountDeviceQuery = new AccountDeviceGetFirstSchema {
@@ -205,20 +222,19 @@ namespace Core.Application.Services {
                         // todo: check the accountDevice
 
                         if(accountDevice != null) {
+                            deviceId = accountDevice.Id.Value;
                             // set new token
                             await _accountDeviceService.UpdateAsync(new AccountDeviceUpdateSchema {
                                 Id = accountDevice.Id.Value,
-                                Token = token
                             });
                         }
                         else {
                             // create new device for account
-                            await _accountDeviceService.AddAsync(new AccountDeviceAddSchema {
+                            deviceId = await _accountDeviceService.AddAsync(new AccountDeviceAddSchema {
                                 AccountId = account.Id,
                                 DeviceId = signinModel.DeviceId,
                                 DeviceName = signinModel.DeviceName,
                                 DeviceType = signinModel.DeviceType,
-                                Token = token,
                                 CreatedAt = now,
                                 StatusId = Status.Active.ToInt()
                             });
@@ -229,14 +245,11 @@ namespace Core.Application.Services {
                     }
 
                     // clean forgot password tokens
-                    var accountProfilesQuery = new AccountProfileCleanTokensSchema {
-                        AccountId = account.Id.Value
-                    };
-                    await _accountProfileService.CleanForgotPasswordTokensAsync(accountProfilesQuery);
-                    if(accountProfilesQuery.StatusCode != 200) {
-                        Log.Error($"Can't update 'ForgotPasswordTokens' to NULL for AccountId={account.Id}");
-                        return DataTransferer.SomethingWentWrong();
-                    }
+                    await _accountProfileService.CleanForgotPasswordTokensAsync(account.Id.Value);
+                    //if(accountProfilesQuery.StatusCode != 200) {
+                    //    Log.Error($"Can't update 'ForgotPasswordTokens' to NULL for AccountId={account.Id}");
+                    //    return DataTransferer.SomethingWentWrong();
+                    //}
 
                     // set last signed in at
                     var changedAccount = UpdateAsync(new AccountUpdateSchema {
@@ -244,6 +257,7 @@ namespace Core.Application.Services {
                     });
 
                     transaction.Complete();
+                    var token = _jwtHandler.Bearer(new Account(account.Id.Value, deviceId, signinModel.Username, now).ToClaimsIdentity());
                     return DataTransferer.Ok(token);
                 }
                 catch(Exception ex) {
@@ -264,7 +278,6 @@ namespace Core.Application.Services {
             }
 
             var now = DateTime.UtcNow;
-            var token = _randomMaker.NewToken();
 
             var accountQuery = new AccountGetFirstSchema {
                 Id = accountProfile.AccountId,
@@ -285,21 +298,21 @@ namespace Core.Application.Services {
                     if(accountDevice == null)
                         return DataTransferer.DeviceIdNotFound();
 
+                    int deviceId;
                     if(accountDevice != null) {
+                        deviceId = accountDevice.Id.Value;
                         // set a new token
                         await _accountDeviceService.UpdateAsync(new AccountDeviceUpdateSchema {
-                            Id = accountDevice.Id.Value,
-                            Token = token
+                            Id = accountDevice.Id.Value
                         });
                     }
                     else {
                         // create new device for account
-                        await _accountDeviceService.AddAsync(new AccountDeviceAddSchema {
+                        deviceId = await _accountDeviceService.AddAsync(new AccountDeviceAddSchema {
                             AccountId = account.Id,
                             DeviceId = externalUser.DeviceId,
                             DeviceName = externalUser.DeviceName,
                             DeviceType = externalUser.DeviceType,
-                            Token = token,
                             CreatedAt = now,
                             StatusId = Status.Active.ToInt()
                         });
@@ -307,14 +320,11 @@ namespace Core.Application.Services {
 
                     // clean forgot password tokens
                     //account.Id.Value, transaction
-                    var accountProfileCleanTokens = new AccountProfileCleanTokensSchema {
-                        AccountId = account.Id.Value
-                    };
-                    await _accountProfileService.CleanForgotPasswordTokensAsync(accountProfileCleanTokens);
-                    if(accountProfileCleanTokens.StatusCode != 200) {
-                        Log.Error($"Can't update 'ForgotPasswordTokens' to NULL for AccountId={account.Id}");
-                        return DataTransferer.SomethingWentWrong();
-                    }
+                    await _accountProfileService.CleanForgotPasswordTokensAsync(account.Id.Value);
+                    //if(accountProfileCleanTokens.StatusCode != 200) {
+                    //    Log.Error($"Can't update 'ForgotPasswordTokens' to NULL for AccountId={account.Id}");
+                    //    return DataTransferer.SomethingWentWrong();
+                    //}
 
                     // set last signed in at
                     var accountUpdate = new AccountUpdateSchema {
@@ -326,6 +336,7 @@ namespace Core.Application.Services {
                         Log.Error($"Can't update 'LastSignedinAt' after a successfully signing in for AccountId={account.Id}");
 
                     transaction.Complete();
+                    var token = _jwtHandler.Bearer(new Account(account.Id.Value, deviceId, account.Username, now).ToClaimsIdentity());
                     return DataTransferer.Ok(token);
                 }
                 catch(Exception ex) {

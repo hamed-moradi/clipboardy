@@ -3,7 +3,6 @@
     [AccountId]           INT           NOT NULL,
     [TypeId]              INT           NOT NULL,
     [LinkedId]            VARCHAR (128) NULL,
-    [ForgotPasswordToken] VARCHAR (128) NULL,
     [CreatedAt]           DATETIME      CONSTRAINT [DF_AccountProfile_CreatedAt] DEFAULT (getdate()) NOT NULL,
     [StatusId]            INT           CONSTRAINT [DF_AccountProfile_StatusId] DEFAULT ((0)) NOT NULL,
     CONSTRAINT [PK_AccountProfile] PRIMARY KEY CLUSTERED ([Id] ASC),

@@ -21,7 +21,7 @@ namespace Assets.Model.Base {
     }
 
     public enum AccountProvider {
-        Clipboard = 1,
+        Clipboardy = 1,
         Google = 2,
         Microsoft = 3,
         Facebook = 4,

@@ -3,8 +3,8 @@ using Assets.Model.Common;
 using Assets.Utility.Infrastructure;
 
 namespace Assets.Utility {
-    public class ModuleInjector {
-        public static void Inject(IServiceCollection services, AppSetting appSetting = null) {
+    public static class ModuleInjector {
+        public static void AddUtilities(this IServiceCollection services, AppSetting appSetting = null) {
             services.AddTransient<Cryptograph>();
             services.AddTransient<RandomMaker>();
             services.AddScoped<CompressionHandler>();
@@ -12,6 +12,7 @@ namespace Assets.Utility {
             services.AddScoped<ISMSService, ParsGreenSMSService>();
             services.AddSingleton<StoredProcedureHelper>();
             services.AddSingleton<IParameterHandler, ParameterHandler>();
+            services.AddScoped<JwtHandler>();
         }
     }
 }

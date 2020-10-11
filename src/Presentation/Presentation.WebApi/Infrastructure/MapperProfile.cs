@@ -1,5 +1,6 @@
 ﻿using Assets.Model.Base;
 using Assets.Model.Binding;
+using Assets.Model.Header;
 using Assets.Model.Test;
 using Assets.Model.View;
 using Assets.Utility.Extension;
@@ -29,6 +30,7 @@ namespace Presentation.WebApi.Infrastructure {
             //CreateMap<Clipboard, ClipboardViewModel>()
             //    .ForMember(dst => dst.Content, opt => opt.MapFrom(src => Encoding.UTF8.GetString(Convert.FromBase64String(src.Content))));
 
+            //CreateMap<Account, AccountAuthenticateResult>();
         }
     }
 }

@@ -7,7 +7,6 @@ namespace Core.Domain.StoredProcedure.Result {
         public int? AccountId { get; set; }
         public int? TypeId { get; set; }
         public string LinkedId { get; set; }
-        public string ForgotPasswordToken { get; set; }
         public Status? StatusId { get; set; }
     }
 }

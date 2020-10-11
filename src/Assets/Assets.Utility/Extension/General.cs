@@ -22,14 +22,19 @@ namespace Assets.Utility.Extension {
             switch(provider.ToLower()) {
                 case "google":
                     return AccountProvider.Google;
+
                 case "microsoft":
                     return AccountProvider.Microsoft;
+
                 case "facebook":
                     return AccountProvider.Facebook;
+
                 case "twitter":
                     return AccountProvider.Twitter;
+
+                case "clipboardy":
                 default:
-                    return AccountProvider.Clipboard;
+                    return AccountProvider.Clipboardy;
             }
         }
         #endregion

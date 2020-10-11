@@ -26,6 +26,8 @@ using Microsoft.Extensions.Hosting;
 using Core.Domain.StoredProcedure.Schema;
 using Assets.Model.Common;
 using Assets.Utility.Infrastructure;
+using Assets.Model.Header;
+using System.Globalization;
 
 namespace Presentation.WebApi.Controllers {
     [Route("api/[controller]")]
@@ -47,28 +49,36 @@ namespace Presentation.WebApi.Controllers {
         #endregion
 
         #region private
+
         private ExternalUserBindingModel GetExternalUser(IEnumerable<Claim> claims) {
             var result = new ExternalUserBindingModel();
             var objectAccessor = ObjectAccessor.Create(result);
-            foreach(var item in CustomClaimTypes.List) {
+            foreach(var item in claims) {
                 var claim = claims.FirstOrDefault(x => x.Type == item.Value);
-                objectAccessor[item.Key] = claim?.Value;
-                if(result.ProviderId == AccountProvider.Clipboard)
+                objectAccessor[item.Type] = claim?.Value;
+                if(result.ProviderId == AccountProvider.Clipboardy)
                     result.ProviderId = claim.Issuer.ToProvider();
             }
             return result;
         }
+
         #endregion
 
-        [HttpGet("signin"), AllowAnonymous, ArgumentBinder(HttpAccountHeader = false)]
-        public async Task<IActionResult> Signin([FromQuery]string provider = "Google") {
-            if(_webHostEnvironment.IsDevelopment()) {
-                if(string.IsNullOrWhiteSpace(HttpDeviceHeader.DeviceId)) HttpDeviceHeader.DeviceId = "DeviceId";
-                if(string.IsNullOrWhiteSpace(HttpDeviceHeader.DeviceName)) HttpDeviceHeader.DeviceName = "DeviceName";
-                if(string.IsNullOrWhiteSpace(HttpDeviceHeader.DeviceType)) HttpDeviceHeader.DeviceType = "DeviceType";
+        [HttpGet("signin"), AllowAnonymous, HttpHeaderBinder]
+        public async Task<IActionResult> Signin([FromQuery] string provider = "Google") {
+            var deviceHeader = GetDeviceInfosFromHeader();
+            if(deviceHeader == null && _webHostEnvironment.IsDevelopment()) {
+                deviceHeader = new Device {
+                    DeviceId = "DeviceId",
+                    DeviceName = "DeviceName",
+                    DeviceType = "DeviceType"
+                };
+            }
+            else if(deviceHeader == null) {
+                return BadRequest(DataTransferer.DefectiveEntry().Message);
             }
 
-            var userdata = Convert.ToBase64String(Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(HttpDeviceHeader)));
+            var userdata = Convert.ToBase64String(Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(deviceHeader)));
             var redirecturl = $"/api/externalauthentication/signincallback?userdata={userdata}";
 
             var authprops = new AuthenticationProperties {
@@ -94,10 +104,10 @@ namespace Presentation.WebApi.Controllers {
         }
 
         [HttpGet, AllowAnonymous, Route("signinfailure")]
-        public async Task<IActionResult> SigninFailureAsync([FromQuery]string provider = "Google") {
+        public async Task<IActionResult> SigninFailureAsync([FromQuery] string provider = "Google") {
             var msg = $"Failed to signin to '{provider}'";
             await Task.CompletedTask.ConfigureAwait(false);
-            return InternalServerError(message: msg);
+            return Problem(msg);
         }
 
         [HttpGet, AllowAnonymous, Route("signincallback")]
@@ -105,17 +115,17 @@ namespace Presentation.WebApi.Controllers {
             try {
                 if(string.IsNullOrWhiteSpace(userData)) {
                     Log.Error("userData is not defined");
-                    return BadRequest(message: _localizer[DataTransferer.DefectiveEntry().Message]);
+                    return BadRequest(_localizer[DataTransferer.DefectiveEntry().Message]);
                 }
 
-                var headerbindingmodel = JsonConvert.DeserializeObject<HttpDeviceHeader>(Encoding.UTF8.GetString(Convert.FromBase64String(userData)));
+                var headerbindingmodel = JsonConvert.DeserializeObject<Device>(Encoding.UTF8.GetString(Convert.FromBase64String(userData)));
                 if(headerbindingmodel == null
                     || string.IsNullOrWhiteSpace(headerbindingmodel.DeviceId)
                     || string.IsNullOrWhiteSpace(headerbindingmodel.DeviceName)
                     || string.IsNullOrWhiteSpace(headerbindingmodel.DeviceType)) {
 
                     Log.Error("userData is not valid");
-                    return BadRequest(message: _localizer[DataTransferer.DefectiveEntry().Message]);
+                    return BadRequest(_localizer[DataTransferer.DefectiveEntry().Message]);
                 }
 
                 // read external identity from the temporary cookie
@@ -123,14 +133,14 @@ namespace Presentation.WebApi.Controllers {
 
                 if(!authenticationResult.Succeeded) {
                     Log.Error("External authentication failed");
-                    return InternalServerError(message: _localizer[DataTransferer.ExternalAuthenticationFailed().Message]);
+                    return Problem(_localizer[DataTransferer.ExternalAuthenticationFailed().Message]);
                 }
 
                 // retrieve claims of the external user
                 var claimPrincipal = authenticationResult.Principal;
                 if(claimPrincipal == null) {
                     Log.Error("External authentication user principal error");
-                    return InternalServerError(message: _localizer[DataTransferer.ExternalAuthenticationUserError().Message]);
+                    return Problem(_localizer[DataTransferer.ExternalAuthenticationUserError().Message]);
                 }
 
                 // transform claims list to model
@@ -138,12 +148,12 @@ namespace Presentation.WebApi.Controllers {
 
                 if(string.IsNullOrWhiteSpace(externalUser.Email)) {
                     Log.Error("External authentication user email not found");
-                    return InternalServerError(message: _localizer[DataTransferer.ExternalAuthenticationEmailError().Message]);
+                    return Problem(_localizer[DataTransferer.ExternalAuthenticationEmailError().Message]);
                 }
 
-                if(externalUser.ProviderId == AccountProvider.Clipboard) {
+                if(externalUser.ProviderId == AccountProvider.Clipboardy) {
                     Log.Error("External signup with unknown ProviderId");
-                    return InternalServerError(message: _localizer[DataTransferer.ExternalAuthenticationWithUnknownProvider().Message]);
+                    return Problem(_localizer[DataTransferer.ExternalAuthenticationWithUnknownProvider().Message]);
                 }
 
                 externalUser.DeviceId = headerbindingmodel.DeviceId;
@@ -165,7 +175,7 @@ namespace Presentation.WebApi.Controllers {
                         case 200:
                             return Ok(result.Data);
                         case 500:
-                            return InternalServerError(message: _localizer[result.Message]);
+                            return Problem(_localizer[result.Message]);
                         default:
                             return BadRequest(_localizer[result.Message]);
                     }
@@ -173,7 +183,7 @@ namespace Presentation.WebApi.Controllers {
             }
             catch(Exception ex) {
                 Log.Error(ex, ex.Source);
-                return InternalServerError(message: _localizer[DataTransferer.SomethingWentWrong().Message]);
+                return Problem(_localizer[DataTransferer.SomethingWentWrong().Message]);
             }
         }
 
@@ -186,7 +196,7 @@ namespace Presentation.WebApi.Controllers {
             }
             catch(Exception ex) {
                 Log.Error(ex, ex.Source);
-                return InternalServerError(message: _localizer[DataTransferer.SomethingWentWrong().Message]);
+                return Problem(_localizer[DataTransferer.SomethingWentWrong().Message]);
             }
         }
     }

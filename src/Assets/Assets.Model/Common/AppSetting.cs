@@ -1,6 +1,17 @@
 ﻿
+using System.Reflection;
+
 namespace Assets.Model.Common {
     public class AppSetting {
+        private static string _version;
+        public static string Version {
+            get {
+                if(string.IsNullOrWhiteSpace(_version)) {
+                    _version = Assembly.GetEntryAssembly().GetName().Version.ToString();
+                }
+                return _version;
+            }
+        }
         public Authentication Authentication { get; set; }
         public Encryption Encryption { get; set; }
         public SignalR SignalR { get; set; }
@@ -10,6 +21,9 @@ namespace Assets.Model.Common {
     }
 
     public class Authentication {
+        public string Issuer { get; set; }
+        public string Audience { get; set; }
+        public string SecurityKey { get; set; }
         public Google Google { get; set; }
         public Microsoft Microsoft { get; set; }
     }

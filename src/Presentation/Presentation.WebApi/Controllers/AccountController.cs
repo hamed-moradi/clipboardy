@@ -16,6 +16,8 @@ using Core.Domain.StoredProcedure.Schema;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
+using Microsoft.Extensions.Caching.Memory;
 using Newtonsoft.Json;
 using Presentation.WebApi.FilterAttributes;
 using Serilog;
@@ -29,6 +31,7 @@ namespace Presentation.WebApi.Controllers {
         private readonly Cryptograph _cryptograph;
         private readonly IEmailService _emailService;
         private readonly ISMSService _smsService;
+        private readonly IMemoryCache _memoryCache;
 
         public AccountController(
             IAccountService accountService,
@@ -36,7 +39,8 @@ namespace Presentation.WebApi.Controllers {
             RandomMaker randomMaker,
             Cryptograph cryptograph,
             IEmailService emailService,
-            ISMSService smsService) {
+            ISMSService smsService,
+            IMemoryCache memoryCache) {
 
             _accountService = accountService;
             _accountProfileService = accountProfileService;
@@ -44,52 +48,52 @@ namespace Presentation.WebApi.Controllers {
             _cryptograph = cryptograph;
             _emailService = emailService;
             _smsService = smsService;
+            _memoryCache = memoryCache;
         }
         #endregion
 
         [HttpPost, AllowAnonymous, Route("signup")]
-        public async Task<IActionResult> SignupAsync([FromBody]SignupBindingModel collection) {
+        public async Task<IActionResult> SignupAsync([FromBody] SignupBindingModel collection) {
             // todo: Captcha
 
             if(collection == null) {
-                return BadRequest(message: _localizer[DataTransferer.DefectiveEntry().Message]);
+                return BadRequest(_localizer[DataTransferer.DefectiveEntry().Message]);
             }
-            Log.Debug($"A User is trying to register with this data: {JsonConvert.SerializeObject(collection)}");
 
             if(string.IsNullOrEmpty(collection?.Username)) {
-                return BadRequest(message: _localizer[DataTransferer.DefectiveEmailOrCellPhone().Message]);
+                return BadRequest(_localizer[DataTransferer.DefectiveEmailOrCellPhone().Message]);
             }
+
+            Log.Debug($"A User is trying to register with this data: {JsonConvert.SerializeObject(collection)}");
             collection.Username = collection.Username.Trim();
 
             try {
                 if(collection.Username.IsPhoneNumber()) {
                     collection.Phone = collection.Username;
                     if(await _accountProfileService.FirstAsync(new AccountProfileGetFirstSchema { LinkedId = collection.Phone }).ConfigureAwait(true) != null) {
-                        return Ok(status: HttpStatusCode.NonAuthoritativeInformation,
-                            message: _localizer[DataTransferer.CellPhoneAlreadyExists().Message]);
+                        return BadRequest(_localizer[DataTransferer.CellPhoneAlreadyExists().Message]);
                     }
                 }
                 else if(new EmailAddressAttribute().IsValid(collection.Username)) {
                     collection.Email = collection.Username;
                     if(await _accountProfileService.FirstAsync(new AccountProfileGetFirstSchema { LinkedId = collection.Email }).ConfigureAwait(true) != null) {
-                        return Ok(status: HttpStatusCode.NonAuthoritativeInformation,
-                            message: _localizer[DataTransferer.EmailAlreadyExists().Message]);
+                        return BadRequest(_localizer[DataTransferer.EmailAlreadyExists().Message]);
                     }
                 }
                 else {
-                    return BadRequest(message: _localizer[DataTransferer.InvalidEmailOrCellPhone().Message]);
+                    return BadRequest(_localizer[DataTransferer.InvalidEmailOrCellPhone().Message]);
                 }
 
                 if(string.IsNullOrEmpty(collection.Password) && string.IsNullOrEmpty(collection.ConfirmPassword)) {
-                    return BadRequest(message: _localizer[DataTransferer.DefectivePassword().Message]);
+                    return BadRequest(_localizer[DataTransferer.DefectivePassword().Message]);
                 }
 
                 if(collection.Password != collection.ConfirmPassword) {
-                    return BadRequest(message: _localizer[DataTransferer.PasswordsMissmatch().Message]);
+                    return BadRequest(_localizer[DataTransferer.PasswordsMissmatch().Message]);
                 }
 
                 if(string.IsNullOrEmpty(collection.DeviceId) || string.IsNullOrEmpty(collection.DeviceName)) {
-                    return BadRequest(message: _localizer[DataTransferer.UnofficialRequest().Message]);
+                    return BadRequest(_localizer[DataTransferer.UnofficialRequest().Message]);
                 }
 
                 var result = await _accountService.SignupAsync(collection).ConfigureAwait(true);
@@ -100,46 +104,47 @@ namespace Presentation.WebApi.Controllers {
                         return BadRequest(result.Message);
                     case 500:
                     default:
-                        return InternalServerError(message: result.Message);
+                        return Problem(result.Message);
                 }
             }
             catch(Exception ex) {
                 Log.Error(ex, ex.Source);
-                Log.Error(ex, ex.Source);
-                return InternalServerError(message: _localizer[DataTransferer.SomethingWentWrong().Message]);
+                return Problem(_localizer[DataTransferer.SomethingWentWrong().Message]);
             }
         }
 
         [HttpPost, AllowAnonymous, Route("signin")]
-        public async Task<IActionResult> SigninAsync([FromBody]SigninBindingModel collection) {
+        public async Task<IActionResult> SigninAsync([FromBody] SigninBindingModel collection) {
             Log.Debug($"A User is trying to signing in with this data: {JsonConvert.SerializeObject(collection)}");
 
             if(string.IsNullOrEmpty(collection?.Username) || string.IsNullOrEmpty(collection?.Password)) {
-                return BadRequest(message: _localizer[DataTransferer.DefectiveUsernameOrPassword().Message]);
+                return BadRequest(_localizer[DataTransferer.DefectiveUsernameOrPassword().Message]);
             }
 
-            if(string.IsNullOrEmpty(HttpDeviceHeader.DeviceId) ||
-                string.IsNullOrEmpty(HttpDeviceHeader.DeviceName) ||
-                string.IsNullOrEmpty(HttpDeviceHeader.DeviceType)) {
-
-                return BadRequest(message: _localizer[DataTransferer.UnofficialRequest().Message]);
+            var deviceHeader = GetDeviceInfosFromHeader();
+            if(deviceHeader == null) {
+                return BadRequest(_localizer[DataTransferer.UnofficialRequest().Message]);
             }
+
+            collection.DeviceId = deviceHeader.DeviceId;
+            collection.DeviceName = deviceHeader.DeviceName;
+            collection.DeviceType = deviceHeader.DeviceType;
 
             try {
                 var result = await _accountService.SigninAsync(collection).ConfigureAwait(true);
                 switch(result.Code) {
                     case 200:
-                        return Ok(data: result.Data);
+                        return Ok(result.Data);
                     case 400:
-                        return BadRequest(message: result.Message);
+                        return BadRequest(result.Message);
                     case 500:
                     default:
-                        return InternalServerError(message: result.Message);
+                        return Problem(result.Message);
                 }
             }
             catch(Exception ex) {
                 Log.Error(ex, ex.Source);
-                return InternalServerError(message: _localizer[DataTransferer.SomethingWentWrong().Message]);
+                return Problem(_localizer[DataTransferer.SomethingWentWrong().Message]);
             }
         }
 
@@ -149,21 +154,21 @@ namespace Presentation.WebApi.Controllers {
             return Ok();
         }
 
-        [HttpPost, ArgumentBinder, Route("changepassword")]
-        public async Task<IActionResult> ChangePasswordAsync([FromBody]ChangePasswordBindingModel collection) {
+        [HttpPost, HttpHeaderBinder, Route("changepassword")]
+        public async Task<IActionResult> ChangePasswordAsync([FromBody] ChangePasswordBindingModel collection) {
             Log.Debug($"ChangePassword => {JsonConvert.SerializeObject(collection)}");
 
             try {
                 if(string.IsNullOrEmpty(collection?.Password) || string.IsNullOrEmpty(collection.NewPassword) || string.IsNullOrEmpty(collection.ConfirmPassword)) {
-                    return BadRequest(message: _localizer[DataTransferer.DefectivePassword().Message]);
+                    return BadRequest(_localizer[DataTransferer.DefectivePassword().Message]);
                 }
 
                 if(collection.NewPassword != collection.ConfirmPassword) {
-                    return BadRequest(message: _localizer[DataTransferer.PasswordsMissmatch().Message]);
+                    return BadRequest(_localizer[DataTransferer.PasswordsMissmatch().Message]);
                 }
 
                 var account = await _accountService.FirstAsync(new AccountGetFirstSchema {
-                    Id = HttpAccountHeader.Id
+                    Id = CurrentAccount.Id
                 }).ConfigureAwait(true);
 
                 if(account == null) {
@@ -176,38 +181,38 @@ namespace Presentation.WebApi.Controllers {
                         Password = _cryptograph.RNG(collection.NewPassword)
                     }).ConfigureAwait(false);
 
-                    return Ok(message: _localizer[DataTransferer.PasswordChanged().Message]);
+                    return Ok(_localizer[DataTransferer.PasswordChanged().Message]);
                 }
                 else {
-                    return BadRequest(status: HttpStatusCode.Unauthorized, message: _localizer[DataTransferer.WrongPassword().Message]);
+                    return Unauthorized(_localizer[DataTransferer.WrongPassword().Message]);
                 }
             }
             catch(Exception ex) {
                 Log.Error(ex, ex.Source);
-                return InternalServerError(message: _localizer[DataTransferer.SomethingWentWrong().Message]);
+                return Problem(_localizer[DataTransferer.SomethingWentWrong().Message]);
             }
         }
 
         [HttpPost, AllowAnonymous, Route("changeforgotenpassword")]
-        public async Task<IActionResult> ChangeForgotenPasswordAsync([FromBody]ChangeForgotenPasswordBindingModel collection) {
+        public async Task<IActionResult> ChangeForgotenPasswordAsync([FromBody] ChangeForgotenPasswordBindingModel collection) {
             Log.Debug($"ChangeForgotenPassword => {JsonConvert.SerializeObject(collection)}");
 
             try {
                 if(string.IsNullOrEmpty(collection?.Username)) {
-                    return BadRequest(message: _localizer[DataTransferer.DefectiveEmailOrCellPhone().Message]);
+                    return BadRequest(_localizer[DataTransferer.DefectiveEmailOrCellPhone().Message]);
                 }
                 collection.Username = collection.Username.Trim();
 
                 if(string.IsNullOrEmpty(collection.NewPassword) && string.IsNullOrEmpty(collection.ConfirmPassword)) {
-                    return BadRequest(message: _localizer[DataTransferer.DefectivePassword().Message]);
+                    return BadRequest(_localizer[DataTransferer.DefectivePassword().Message]);
                 }
 
                 if(collection.NewPassword != collection.ConfirmPassword) {
-                    return BadRequest(message: _localizer[DataTransferer.PasswordsMissmatch().Message]);
+                    return BadRequest(_localizer[DataTransferer.PasswordsMissmatch().Message]);
                 }
 
                 if(string.IsNullOrWhiteSpace(collection.Token)) {
-                    return BadRequest(message: _localizer[DataTransferer.UnofficialRequest().Message]);
+                    return BadRequest(_localizer[DataTransferer.UnofficialRequest().Message]);
                 }
 
                 var query = new AccountProfileGetFirstSchema { LinkedId = collection.Username };
@@ -218,20 +223,21 @@ namespace Presentation.WebApi.Controllers {
                     query.TypeId = AccountProfileType.Email.ToInt();
                 }
                 else {
-                    return BadRequest(message: _localizer[DataTransferer.BadEmailOrCellphone().Message]);
+                    return BadRequest(_localizer[DataTransferer.InvalidEmailOrCellPhone().Message]);
                 }
 
                 var accountProfile = await _accountProfileService.FirstAsync(query).ConfigureAwait(true);
                 if(accountProfile == null) {
                     if(query.TypeId == AccountProfileType.Phone.ToInt())
-                        return BadRequest(message: _localizer[DataTransferer.PhoneNotFound().Message]);
+                        return BadRequest(_localizer[DataTransferer.PhoneNotFound().Message]);
 
                     if(query.TypeId == AccountProfileType.Email.ToInt())
-                        return BadRequest(message: _localizer[DataTransferer.EmailNotFound().Message]);
+                        return BadRequest(_localizer[DataTransferer.EmailNotFound().Message]);
                 }
 
-                if(string.IsNullOrWhiteSpace(accountProfile.ForgotPasswordToken)) {
-                    return BadRequest(message: _localizer[DataTransferer.ChangingPasswordWithoutToken().Message]);
+                var cachedToken = _memoryCache.Get(collection.Username);
+                if(cachedToken == null) {
+                    return BadRequest(_localizer[DataTransferer.ChangingPasswordWithoutToken().Message]);
                 }
 
                 var account = await _accountService.FirstAsync(new AccountGetFirstSchema {
@@ -242,34 +248,30 @@ namespace Presentation.WebApi.Controllers {
                     return BadRequest(_localizer[DataTransferer.UserNotFound().Message]);
                 }
 
-                if(accountProfile.ForgotPasswordToken == collection.Token) {
-                    await _accountProfileService.UpdateAsync(new AccountProfileUpdateSchema {
-                        Id = accountProfile.Id.Value,
-                        ForgotPasswordToken = string.Empty
-                    }).ConfigureAwait(false);
-
-                    await _accountService.UpdateAsync(new AccountUpdateSchema {
-                        Id = account.Id.Value,
-                        Password = _cryptograph.RNG(collection.NewPassword)
-                    }).ConfigureAwait(false);
-
-                    return Ok(message: _localizer[DataTransferer.PasswordChanged().Message]);
-                }
-                else {
+                if(collection.Token != cachedToken.ToString()) {
                     Log.Warning($"Account => {account}, AccountProfile => {accountProfile}, It tried to change its password with a wrong 'ForgotPasswordToken'");
-                    return BadRequest(status: HttpStatusCode.BadRequest, message: _localizer[DataTransferer.ChangingPasswordWithWrongToken().Message]);
+                    return BadRequest(_localizer[DataTransferer.ChangingPasswordWithWrongToken().Message]);
                 }
+
+                _memoryCache.Remove(collection.Username);
+
+                await _accountService.UpdateAsync(new AccountUpdateSchema {
+                    Id = account.Id.Value,
+                    Password = _cryptograph.RNG(collection.NewPassword)
+                }).ConfigureAwait(false);
+
+                return Ok(_localizer[DataTransferer.PasswordChanged().Message]);
             }
             catch(Exception ex) {
                 Log.Error(ex, ex.Source);
-                return InternalServerError(message: _localizer[DataTransferer.SomethingWentWrong().Message]);
+                return Problem(_localizer[DataTransferer.SomethingWentWrong().Message]);
             }
         }
 
         [HttpGet, AllowAnonymous, Route("changepasswordrequested")]
-        public async Task<IActionResult> ChangePasswordRequestedAsync([FromQuery]string username, [FromQuery]string token) {
+        public async Task<IActionResult> ChangePasswordRequestedAsync([FromQuery] string username, [FromQuery] string token) {
             if(string.IsNullOrWhiteSpace(username) || string.IsNullOrWhiteSpace(token)) {
-                return BadRequest(message: _localizer[DataTransferer.DefectiveEntry().Message]);
+                return BadRequest(_localizer[DataTransferer.DefectiveEntry().Message]);
             }
 
             var result = new ChangeForgotenPasswordViewModel {
@@ -278,15 +280,15 @@ namespace Presentation.WebApi.Controllers {
             };
             await Task.CompletedTask.ConfigureAwait(true);
 
-            return Ok(data: result);
+            return Ok(result);
         }
 
         [HttpPost, AllowAnonymous, Route("forgotpassword")]
-        public async Task<IActionResult> ForgotPasswordAsync([FromBody]ForgotPasswordBindingModel collection) {
+        public async Task<IActionResult> ForgotPasswordAsync([FromBody] ForgotPasswordBindingModel collection) {
             Log.Debug($"ForgotPassword => {JsonConvert.SerializeObject(collection)}");
 
             if(string.IsNullOrEmpty(collection?.Username)) {
-                return BadRequest(message: _localizer[DataTransferer.DefectiveEmailOrCellPhone().Message]);
+                return BadRequest(_localizer[DataTransferer.DefectiveEmailOrCellPhone().Message]);
             }
             collection.Username = collection.Username.Trim();
 
@@ -299,25 +301,22 @@ namespace Presentation.WebApi.Controllers {
                     query.TypeId = AccountProfileType.Email.ToInt();
                 }
                 else {
-                    return BadRequest(message: _localizer[DataTransferer.BadEmailOrCellphone().Message]);
+                    return BadRequest(_localizer[DataTransferer.InvalidEmailOrCellPhone().Message]);
                 }
 
                 var accountProfile = await _accountProfileService.FirstAsync(query).ConfigureAwait(true);
                 if(accountProfile == null) {
                     if(query.TypeId == AccountProfileType.Phone.ToInt())
-                        return BadRequest(message: _localizer[DataTransferer.PhoneNotFound().Message]);
+                        return BadRequest(_localizer[DataTransferer.PhoneNotFound().Message]);
 
                     if(query.TypeId == AccountProfileType.Email.ToInt())
-                        return BadRequest(message: _localizer[DataTransferer.EmailNotFound().Message]);
+                        return BadRequest(_localizer[DataTransferer.EmailNotFound().Message]);
                 }
 
                 var token = _randomMaker.NewToken();
                 var username = Convert.ToBase64String(Encoding.UTF8.GetBytes(collection.Username));
                 var changepassurl = $"clipboardy.com/api/account/changepasswordrequested?username={username}&token={token}";
-                await _accountProfileService.UpdateAsync(new AccountProfileUpdateSchema {
-                    Id = accountProfile.Id.Value,
-                    ForgotPasswordToken = string.Empty
-                }).ConfigureAwait(false);
+                _memoryCache.Set(username, token, DateTime.Now.AddMinutes(10));
 
                 if(query.TypeId == AccountProfileType.Phone.ToInt()) {
                     await _smsService.SendAsync(new SMSModel {
@@ -334,11 +333,116 @@ namespace Presentation.WebApi.Controllers {
                             $"<p>{changepassurl}</p>"
                     }).ConfigureAwait(false);
                 }
-                return Ok(data: changepassurl);
+
+                return Ok(changepassurl);
             }
             catch(Exception ex) {
                 Log.Error(ex, ex.Source);
-                return InternalServerError(message: _localizer[DataTransferer.SomethingWentWrong().Message]);
+                return Problem(_localizer[DataTransferer.SomethingWentWrong().Message]);
+            }
+        }
+
+        [HttpPost, Authorize, Route("activationrequest")]
+        public async Task<ActionResult> ActivationRequest() {
+            var query = new AccountProfileGetFirstSchema { LinkedId = CurrentAccount.Username };
+            if(CurrentAccount.Username.IsPhoneNumber()) {
+                query.TypeId = AccountProfileType.Phone.ToInt();
+            }
+            else if(new EmailAddressAttribute().IsValid(CurrentAccount.Username)) {
+                query.TypeId = AccountProfileType.Email.ToInt();
+            }
+            else {
+                return BadRequest(_localizer[DataTransferer.InvalidEmailOrCellPhone().Message]);
+            }
+
+            try {
+                var accountProfile = await _accountProfileService.FirstAsync(query).ConfigureAwait(true);
+                if(accountProfile == null) {
+                    if(query.TypeId == AccountProfileType.Phone.ToInt())
+                        return BadRequest(_localizer[DataTransferer.PhoneNotFound().Message]);
+
+                    if(query.TypeId == AccountProfileType.Email.ToInt())
+                        return BadRequest(_localizer[DataTransferer.EmailNotFound().Message]);
+                }
+
+                var activationCode = _randomMaker.NewNumber(10000, 99999);
+                _memoryCache.Set(CurrentAccount.Username, activationCode, DateTime.Now.AddMinutes(10));
+
+                if(query.TypeId == AccountProfileType.Phone.ToInt()) {
+                    await _smsService.SendAsync(new SMSModel {
+                        PhoneNo = accountProfile.LinkedId,
+                        TextBody = $"{DataTransferer.ActivationCodeSMSBody().Message} \r\n {activationCode}"
+                    }).ConfigureAwait(false);
+                }
+                else {
+                    await _emailService.SendAsync(new EmailModel {
+                        Address = accountProfile.LinkedId,
+                        Subject = _localizer[DataTransferer.ActivationCodeEmailSubject().Message],
+                        IsBodyHtml = true,
+                        Body = $"<p>{DataTransferer.ActivationCodeEmailBody().Message}</p>" +
+                            $"<p>{activationCode}</p>"
+                    }).ConfigureAwait(false);
+                }
+
+                return Ok(_localizer[DataTransferer.ActivationCodeRequested().Message]);
+            }
+            catch(Exception ex) {
+                Log.Error(ex, ex.Source);
+                return Problem();
+            }
+        }
+
+        [HttpPost, Authorize, Route("activateaccount")]
+        public async Task<ActionResult> ActivateAccount([FromBody] ActivateAccountBindingModel collection) {
+            if(collection == null ||
+                string.IsNullOrWhiteSpace(collection.Username) ||
+                string.IsNullOrWhiteSpace(collection.Code)) {
+
+                return BadRequest(_localizer[DataTransferer.DefectiveEntry().Message]);
+            }
+
+            var query = new AccountProfileGetFirstSchema { LinkedId = collection.Username };
+            if(collection.Username.IsPhoneNumber()) {
+                query.TypeId = AccountProfileType.Phone.ToInt();
+            }
+            else if(new EmailAddressAttribute().IsValid(collection.Username)) {
+                query.TypeId = AccountProfileType.Email.ToInt();
+            }
+            else {
+                return BadRequest(_localizer[DataTransferer.InvalidEmailOrCellPhone().Message]);
+            }
+
+            try {
+                var accountProfile = await _accountProfileService.FirstAsync(query).ConfigureAwait(true);
+                if(accountProfile == null) {
+                    if(query.TypeId == AccountProfileType.Phone.ToInt())
+                        return BadRequest(_localizer[DataTransferer.PhoneNotFound().Message]);
+
+                    if(query.TypeId == AccountProfileType.Email.ToInt())
+                        return BadRequest(_localizer[DataTransferer.EmailNotFound().Message]);
+                }
+
+                var activationCode = _memoryCache.Get(collection.Username);
+                if(activationCode == null) {
+                    return BadRequest(_localizer[DataTransferer.ActivationCodeRequestedNotFound().Message]);
+                }
+
+                if(collection.Code != activationCode.ToString()) {
+                    return BadRequest(_localizer[DataTransferer.ActivationCodeRequestedNotFound().Message]);
+                }
+
+                _memoryCache.Remove(collection.Username);
+                var accountProfileQuery = new AccountProfileUpdateSchema {
+                    Id = accountProfile.Id.Value,
+                    StatusId = Status.Active.ToInt()
+                };
+                await _accountProfileService.UpdateAsync(accountProfileQuery).ConfigureAwait(true);
+
+                return Ok(_localizer[DataTransferer.AccountActivated().Message]);
+            }
+            catch(Exception ex) {
+                Log.Error(ex, ex.Source);
+                return Problem();
             }
         }
     }

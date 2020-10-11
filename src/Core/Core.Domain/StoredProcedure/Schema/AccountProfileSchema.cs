@@ -47,15 +47,6 @@ namespace Core.Domain.StoredProcedure.Schema {
         public int @Id { get; set; }
 
         [InputParameter]
-        public string @ForgotPasswordToken { get; set; }
-
-        [InputParameter]
         public int? @StatusId { get; set; }
-    }
-
-    [StoredProcedure("dbo", "webapi_accountProfile_cleanTokens")]
-    public class AccountProfileCleanTokensSchema: BaseSchema, IStoredProcSchema {
-        [InputParameter]
-        public int @AccountId { get; set; }
     }
 }

@@ -10,7 +10,6 @@ using Presentation.WebApi.FilterAttributes;
 using Serilog;
 
 namespace Presentation.WebApi.Controllers {
-    [Route("api/[controller]")]
     public class ClipboardController: BaseController {
         #region ctor
         private readonly IClipboardService _clipboardService;
@@ -22,26 +21,26 @@ namespace Presentation.WebApi.Controllers {
         }
         #endregion
 
-        [HttpGet, ArgumentBinder, Route("get")]
-        public async Task<IActionResult> Get([FromQuery]ClipboardGetBindingModel collection) {
+        [HttpGet, HttpHeaderBinder, Route("get")]
+        public async Task<IActionResult> Get([FromQuery] ClipboardGetBindingModel collection) {
             try {
                 var query = _mapper.Map<ClipboardGetPagingSchema>(collection);
                 var result = await _clipboardService.PagingAsync(query).ConfigureAwait(true);
-                return Ok(data: result, totalPages: query.TotalPages);
+                return Ok(new { result, query.TotalPages });
             }
             catch(Exception ex) {
                 Log.Error(ex, ex.Source);
-                return InternalServerError();
+                return Problem();
             }
         }
 
-        [HttpPost, ArgumentBinder, Route("add")]
-        public async Task<IActionResult> Add([FromBody]ClipboardAddBindingModel collection) {
+        [HttpPost, HttpHeaderBinder, Route("add")]
+        public async Task<IActionResult> Add([FromBody] ClipboardAddBindingModel collection) {
             try {
                 var model = _mapper.Map<ClipboardAddSchema>(collection);
 
                 var query = new ClipboardGetFirstSchema {
-                    AccountId = HttpAccountHeader.Id,
+                    AccountId = CurrentAccount.Id,
                     Content = model.Content
                 };
                 var duplicated = await _clipboardService.FirstAsync(query).ConfigureAwait(true);
@@ -55,7 +54,7 @@ namespace Presentation.WebApi.Controllers {
             }
             catch(Exception ex) {
                 Log.Error(ex, ex.Source);
-                return InternalServerError();
+                return Problem();
             }
         }
     }

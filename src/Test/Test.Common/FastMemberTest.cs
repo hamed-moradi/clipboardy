@@ -5,6 +5,7 @@ using System;
 using System.Linq;
 using Assets.Model.Base;
 using Assets.Model.Common;
+using Assets.Model.Header;
 
 namespace Test.Common {
     [TestClass]
@@ -17,7 +18,7 @@ namespace Test.Common {
 
         [TestMethod, TestCategory("FastMember"), TestCategory("GetMethod")]
         public void GetMethod() {
-            var cb = new HttpDeviceHeader();
+            var cb = new Device();
 
             var propName = "Id";
 
@@ -35,7 +36,7 @@ namespace Test.Common {
 
         [TestMethod, TestCategory("FastMember"), TestCategory("IfExist")]
         public void IfExist() {
-            var cb = new HttpDeviceHeader();
+            var cb = new Device();
             var propName = "Id2";
 
             var accessor = TypeAccessor.Create(cb.GetType());

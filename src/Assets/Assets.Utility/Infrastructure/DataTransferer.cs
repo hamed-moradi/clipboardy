@@ -35,10 +35,6 @@ namespace Assets.Utility.Infrastructure {
         public static IServiceResult UserIsNotActive(object data = null) { return new ServiceResult(420, nameof(UserIsNotActive), data); }
         public static IServiceResult PhoneNotFound(object data = null) { return new ServiceResult(0, nameof(PhoneNotFound), data); }
         public static IServiceResult EmailNotFound(object data = null) { return new ServiceResult(0, nameof(EmailNotFound), data); }
-        public static IServiceResult BadEmailOrCellphone(object data = null) { return new ServiceResult(0, nameof(BadEmailOrCellphone), data); }
-        public static IServiceResult PasswordChanged(object data = null) { return new ServiceResult(0, nameof(PasswordChanged), data); }
-        public static IServiceResult ChangingPasswordWithoutToken(object data = null) { return new ServiceResult(0, nameof(ChangingPasswordWithoutToken), data); }
-        public static IServiceResult ChangingPasswordWithWrongToken(object data = null) { return new ServiceResult(0, nameof(ChangingPasswordWithWrongToken), data); }
         #endregion
 
         #region SignUp
@@ -59,6 +55,19 @@ namespace Assets.Utility.Infrastructure {
         public static IServiceResult GoToStepTwo(object data = null) { return new ServiceResult(0, nameof(GoToStepTwo), data); }
         #endregion
 
+        #region Change password
+        public static IServiceResult PasswordChanged(object data = null) { return new ServiceResult(0, nameof(PasswordChanged), data); }
+        public static IServiceResult ChangingPasswordWithoutToken(object data = null) { return new ServiceResult(0, nameof(ChangingPasswordWithoutToken), data); }
+        public static IServiceResult ChangingPasswordWithWrongToken(object data = null) { return new ServiceResult(0, nameof(ChangingPasswordWithWrongToken), data); }
+        #endregion
+
+        #region Activation
+        public static IServiceResult ActivationCodeRequested(object data = null) { return new ServiceResult(0, nameof(ActivationCodeRequested), data); }
+        public static IServiceResult ActivationCodeRequestedNotFound(object data = null) { return new ServiceResult(0, nameof(ActivationCodeRequestedNotFound), data); }
+        public static IServiceResult InvalidActivationCode(object data = null) { return new ServiceResult(0, nameof(InvalidActivationCode), data); }
+        public static IServiceResult AccountActivated(object data = null) { return new ServiceResult(0, nameof(AccountActivated), data); }
+        #endregion
+
         #region external authentication
         public static IServiceResult ExternalAuthenticationFailed(object data = null) { return new ServiceResult(0, nameof(ExternalAuthenticationFailed), data); }
         public static IServiceResult ExternalAuthenticationUserError(object data = null) { return new ServiceResult(0, nameof(ExternalAuthenticationUserError), data); }
@@ -69,10 +78,13 @@ namespace Assets.Utility.Infrastructure {
         #region email
         public static IServiceResult ForgotPasswordEmailSubject(object data = null) { return new ServiceResult(0, nameof(ForgotPasswordEmailSubject), data); }
         public static IServiceResult ForgotPasswordEmailBody(object data = null) { return new ServiceResult(0, nameof(ForgotPasswordEmailBody), data); }
+        public static IServiceResult ActivationCodeEmailSubject(object data = null) { return new ServiceResult(0, nameof(ActivationCodeEmailSubject), data); }
+        public static IServiceResult ActivationCodeEmailBody(object data = null) { return new ServiceResult(0, nameof(ActivationCodeEmailBody), data); }
         #endregion
 
         #region sms
         public static IServiceResult ForgotPasswordSMSBody(object data = null) { return new ServiceResult(0, nameof(ForgotPasswordSMSBody), data); }
+        public static IServiceResult ActivationCodeSMSBody(object data = null) { return new ServiceResult(0, nameof(ActivationCodeSMSBody), data); }
         #endregion
     }
 }

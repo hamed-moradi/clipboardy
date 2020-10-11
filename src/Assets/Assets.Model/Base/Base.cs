@@ -46,39 +46,4 @@ namespace Assets.Model.Base {
         public int Skip { get; set; } = 0;
         public int Take { get; set; } = 10;
     }
-
-    public class BaseViewModel: IBaseViewModel {
-        public HttpStatusCode Status { get; set; } = HttpStatusCode.BadRequest;
-        public string Message { get; set; }
-        public object Data { get; set; }
-        public long? TotalPages { get; set; }
-
-        private static string _version;
-        public static string Version {
-            get {
-                if(string.IsNullOrWhiteSpace(_version)) {
-                    _version = Assembly.GetEntryAssembly().GetName().Version.ToString();
-                }
-                return _version;
-            }
-        }
-    }
-
-    public interface IServiceResult {
-        int Code { get; set; }
-        string Message { get; set; }
-        object Data { get; set; }
-    }
-
-    public class ServiceResult: IServiceResult {
-        public int Code { get; set; }
-        public string Message { get; set; }
-        public object Data { get; set; }
-
-        public ServiceResult(int code, string message, object data = null) {
-            Code = code;
-            Message = message;
-            Data = data;
-        }
-    }
 }

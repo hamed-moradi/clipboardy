@@ -27,15 +27,15 @@ namespace Test.Common.Units {
 
         [TestMethod, TestCategory("AccountService"), TestCategory("Authenticate")]
         public void Authenticate() {
-            var query = new AccountAuthenticateSchema { Token = "ZmI0NGE4NTAtYzIyMC00Y2I5LWFlNGItNDNkMTAxNjNmYjYz" };
-            var account = _accountService.AuthenticateAsync(query).GetAwaiter().GetResult();
-            Assert.IsTrue(query.StatusCode == 200);
+            //var token = "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjQiLCJkZXZpY2VJZCI6IjIiLCJ1c2VybmFtZSI6IjY2NTM0OTgwNyIsImxhc3RTaWduZWRpbkF0IjoiMjAyMC0xMC0xMSAwNjo1MjoxMCBBTSIsIm5iZiI6MTYwMjM5OTEzOSwiZXhwIjoxNjAzMDAzOTM5LCJpYXQiOjE2MDIzOTkxMzksImlzcyI6ImNsaXBib2FyZHkiLCJhdWQiOiJhdWRpZW5jZSJ9.WEYo88TxCAgyECvP3LJiHGl0RKGvbwdXfvs96IZpjyY";
+            var token = "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjQiLCJkZXZpY2VJZCI6IjIiLCJ1c2VybmFtZSI6ImhhbWVkLW1vcmFkaUBsaXZlLmNvbSIsImxhc3RTaWduZWRpbkF0IjoiMjAyMC0xMC0xMSAwNzoxMDoxNiBBTSIsIm5iZiI6MTYwMjQwMDIyMiwiZXhwIjoxNjAzMDA1MDIyLCJpYXQiOjE2MDI0MDAyMjIsImlzcyI6ImNsaXBib2FyZHkiLCJhdWQiOiJhdWRpZW5jZSJ9.W1Mv7UBN0LiEGabVpkhvLBhtDCMO4MPaU7_U1tylYAs";
+            var account = _accountService.AuthenticateAsync(token).GetAwaiter().GetResult();
             Assert.IsTrue(account != null);
         }
 
         [TestMethod, TestCategory("AccountService"), TestCategory("First")]
         public void First() {
-            var query = new AccountGetFirstSchema { Id = 5 };
+            var query = new AccountGetFirstSchema { Id = 4 };
             var account = _accountService.FirstAsync(query).GetAwaiter().GetResult();
             Assert.IsTrue(query.StatusCode == 200);
             Assert.IsTrue(account != null);
@@ -52,7 +52,7 @@ namespace Test.Common.Units {
 
             var account = new AccountAddSchema {
                 Password = _cryptograph.RNG("1234"),
-                ProviderId = AccountProvider.Clipboard.ToInt(),
+                ProviderId = AccountProvider.Clipboardy.ToInt(),
                 Username = username,
                 CreatedAt = DateTime.Now,
                 StatusId = Status.Active.ToInt()
@@ -103,9 +103,9 @@ namespace Test.Common.Units {
                 NameIdentifier = "NameIdentifier",
                 Surname = "Surname",
                 Email = "email_1@clipboardy.com",
-                DeviceId = Guid.NewGuid().ToString(),
-                DeviceName = "DeviceName",
-                DeviceType = "DeviceType"
+                //DeviceId = Guid.NewGuid().ToString(),
+                //DeviceName = "DeviceName",
+                //DeviceType = "DeviceType"
             };
             var result = _accountService.ExternalSignupAsync(user).GetAwaiter().GetResult();
 
@@ -141,9 +141,9 @@ namespace Test.Common.Units {
                 NameIdentifier = "NameIdentifier",
                 Surname = "Surname",
                 Email = "email_1@clipboardy.com",
-                DeviceId = "27dc93ce-3190-4dc1-9fd1-b43a4081a16d",
-                DeviceName = "DeviceName",
-                DeviceType = "DeviceType"
+                //DeviceId = "27dc93ce-3190-4dc1-9fd1-b43a4081a16d",
+                //DeviceName = "DeviceName",
+                //DeviceType = "DeviceType"
             };
 
             var sccountProfile = new AccountProfileResult {

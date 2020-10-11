@@ -34,9 +34,6 @@ namespace Core.Domain.StoredProcedure.Schema {
         public int? @AccountId { get; set; }
 
         [InputParameter]
-        public string @Token { get; set; }
-
-        [InputParameter]
         public string @DeviceId { get; set; }
 
         [InputParameter]
@@ -56,9 +53,6 @@ namespace Core.Domain.StoredProcedure.Schema {
     public class AccountDeviceUpdateSchema: BaseSchema, IStoredProcSchema {
         [InputParameter]
         public int @Id { get; set; }
-
-        [InputParameter]
-        public string @Token { get; set; }
 
         [InputParameter]
         public int? @StatusId { get; set; }

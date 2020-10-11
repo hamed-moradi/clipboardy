@@ -5,12 +5,6 @@ using System;
 using System.Net;
 
 namespace Core.Domain.StoredProcedure.Schema {
-    [StoredProcedure("dbo", "webapi_account_authenticate")]
-    public class AccountAuthenticateSchema: BaseSchema {
-        [InputParameter]
-        public string @Token { get; set; }
-    }
-
     [StoredProcedure("dbo", "webapi_account_getFirst")]
     public class AccountGetFirstSchema: BaseSchema {
         [InputParameter(Name = "Id")]

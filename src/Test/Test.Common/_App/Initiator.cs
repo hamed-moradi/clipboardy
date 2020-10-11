@@ -33,10 +33,10 @@ namespace Test.Common {
             services.AddAutoMapper(typeof(MapperProfile));
 
             // custome services
-            Assets.Utility.ModuleInjector.Inject(services);
-            Core.Domain.ModuleInjector.Inject(services, appSettings);
-            Core.Application.ModuleInjector.Inject(services);
-            Presentation.WebApi.ModuleInjector.Inject(services, appSettings);
+            Assets.Utility.ModuleInjector.AddUtilities(services);
+            Core.Domain.ModuleInjector.AddDomains(services, appSettings);
+            Core.Application.ModuleInjector.AddApplications(services);
+            Presentation.WebApi.ModuleInjector.AddModules(services, appSettings);
 
             // service locator
             services.AddSingleton(new Assets.Utility.ServiceLocator(services));

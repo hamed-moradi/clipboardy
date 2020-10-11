@@ -29,8 +29,7 @@ namespace Core.Application.Services {
             await _storedProcedure.ExecuteAsync(accountProfile);
         }
 
-        public async Task CleanForgotPasswordTokensAsync(AccountProfileCleanTokensSchema accountProfile) {
-            await _storedProcedure.ExecuteAsync(accountProfile);
+        public async Task CleanForgotPasswordTokensAsync(int accountId) {
         }
     }
 }

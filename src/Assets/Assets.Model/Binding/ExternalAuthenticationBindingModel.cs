@@ -1,9 +1,10 @@
 ﻿using Assets.Model.Base;
 using Assets.Model.Common;
+using Assets.Model.Header;
 
 namespace Assets.Model.Binding {
-    public class ExternalUserBindingModel: HttpDeviceHeader {
-        public AccountProvider ProviderId { get; set; } = AccountProvider.Clipboard;
+    public partial class ExternalUserBindingModel: Device {
+        public AccountProvider ProviderId { get; set; } = AccountProvider.Clipboardy;
         public string Surname { get; set; }
         public string UserData { get; set; }
         public string NameIdentifier { get; set; }

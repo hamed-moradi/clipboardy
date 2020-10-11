@@ -8,7 +8,7 @@ AS
 BEGIN
 	SET NOCOUNT ON;
 
-	SELECT TOP(1) Id, AccountId, TypeId, LinkedId, ForgotPasswordToken, StatusId
+	SELECT TOP(1) Id, AccountId, TypeId, LinkedId, StatusId
 	FROM dbo.AccountProfile WITH(NOLOCK)
 	WHERE (@Id IS NULL OR [Id] = @Id)
 	    AND (@AccountId IS NULL OR [AccountId] = @AccountId)

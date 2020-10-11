@@ -32,7 +32,6 @@ namespace Test.Common.Units {
         public void Add() {
             var accountDevice = new AccountDeviceAddSchema {
                 AccountId = 8,
-                Token = _randomMaker.NewToken(),
                 DeviceId = Guid.NewGuid().ToString(),
                 DeviceName = "DeviceName",
                 DeviceType = "DeviceType",
@@ -48,7 +47,6 @@ namespace Test.Common.Units {
         public void Update() {
             var accountDevice = new AccountDeviceUpdateSchema {
                 Id = 15,
-                Token = _randomMaker.NewToken(),
                 StatusId = Status.Active.ToInt()
             };
             _accountDeviceService.UpdateAsync(accountDevice).GetAwaiter().GetResult();

@@ -38,4 +38,9 @@ namespace Assets.Model.Binding {
         public string ConfirmPassword { get; set; }
         public string Token { get; set; }
     }
+
+    public class ActivateAccountBindingModel: IBaseBindingModel {
+        public string Username { get; set; }
+        public string Code { get; set; }
+    }
 }

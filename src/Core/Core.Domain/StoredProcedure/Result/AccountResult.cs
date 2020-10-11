@@ -13,8 +13,8 @@ namespace Core.Domain.StoredProcedure.Result {
 
     public class AccountAuthenticateResult: IStoredProcResult {
         public int? Id { get; set; }
+        public string DeviceId { get; set; }
         public string Username { get; set; }
         public DateTime? LastSignedinAt { get; set; }
-        public string DeviceId { get; set; }
     }
 }

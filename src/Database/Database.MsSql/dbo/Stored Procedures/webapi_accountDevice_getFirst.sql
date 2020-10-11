@@ -9,7 +9,7 @@ AS
 BEGIN
 	SET NOCOUNT ON;
 
-	SELECT TOP(1) Id, AccountId, Token, DeviceId, DeviceName, DeviceType, StatusId
+	SELECT TOP(1) Id, AccountId, DeviceId, DeviceName, DeviceType, StatusId
 	FROM dbo.AccountDevice WITH(NOLOCK)
 	WHERE (@Id IS NULL OR [Id] = @Id)
 	    AND (@AccountId IS NULL OR [AccountId] = @AccountId)
