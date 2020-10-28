@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
-using Assets.Model.Base;
 using Assets.Model.Common;
 using Microsoft.Data.SqlClient;
+using MySql.Data.MySqlClient;
 
 namespace Core.Domain {
     public class ConnectionPool {
@@ -15,6 +15,7 @@ namespace Core.Domain {
         }
         #endregion
 
-        public IDbConnection DbConnection => new SqlConnection(_appSetting.ConnectionStrings.MsSql);
+        public IDbConnection MsSqlConnection => new SqlConnection(_appSetting.ConnectionStrings.MsSql);
+        public IDbConnection MySqlConnection => new MySqlConnection(_appSetting.ConnectionStrings.MsSql);
     }
 }

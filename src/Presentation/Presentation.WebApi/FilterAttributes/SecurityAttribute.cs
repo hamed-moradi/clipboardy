@@ -1,6 +1,8 @@
 ﻿using Assets.Model;
 using Assets.Model.Base;
+using Assets.Utility;
 using Microsoft.AspNetCore.Mvc.Filters;
+using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using Serilog;
 using System;
@@ -8,6 +10,13 @@ using System.Linq;
 
 namespace Presentation.WebApi.FilterAttributes {
     public class SecurityAttribute: ActionFilterAttribute {
+        #region ctor
+        private readonly ILogger<SecurityAttribute> _logger;
+
+        public SecurityAttribute() {
+            _logger = ServiceLocator.Current.GetInstance<ILogger<SecurityAttribute>>();
+        }
+        #endregion
 
         #region Private
         private void KeywordChecker(ActionExecutingContext filterContext, string text) {
@@ -26,7 +35,7 @@ namespace Presentation.WebApi.FilterAttributes {
         #endregion
 
         public override void OnActionExecuting(ActionExecutingContext context) {
-            foreach(var param in context.ActionArguments) {
+            foreach(var param in context?.ActionArguments) {
                 if(param.Value is string && param.Value != null) {
                     //filterContext.ActionParameters[param.Key] = new KeyValuePair<string, object>(param.Key, param.Value.ToString().CharacterNormalizer());
                     KeywordChecker(context, param.Value.ToString());

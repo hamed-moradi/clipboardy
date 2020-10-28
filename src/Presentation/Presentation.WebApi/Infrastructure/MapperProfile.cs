@@ -27,10 +27,13 @@ namespace Presentation.WebApi.Infrastructure {
                 .ForMember(dst => dst.CreatedAt, opt => opt.MapFrom(src => DateTime.Now))
                 .ForMember(dst => dst.Content, opt => opt.MapFrom(src => Convert.ToBase64String(Encoding.UTF8.GetBytes(src.Content))));
 
-            //CreateMap<Clipboard, ClipboardViewModel>()
-            //    .ForMember(dst => dst.Content, opt => opt.MapFrom(src => Encoding.UTF8.GetString(Convert.FromBase64String(src.Content))));
+            CreateMap<ClipboardResult, ClipboardViewModel>()
+                .ForMember(dst => dst.Icon, opt => opt.MapFrom(src => "file-text"))
+                .ForMember(dst => dst.TypeName, opt => opt.MapFrom(src => "text"))
+                .ForMember(dst => dst.Content, opt => opt.MapFrom(src => Encoding.UTF8.GetString(Convert.FromBase64String(src.Content))));
 
             //CreateMap<Account, AccountAuthenticateResult>();
+            //
         }
     }
 }

@@ -18,7 +18,7 @@ namespace Core.Application.Infrastructure {
             ConnectionPool connpool,
             IParameterHandler parameterHandler) {
 
-            _dbconn = connpool.DbConnection;
+            _dbconn = connpool.MsSqlConnection;
             _parameterHandler = parameterHandler;
         }
         #endregion

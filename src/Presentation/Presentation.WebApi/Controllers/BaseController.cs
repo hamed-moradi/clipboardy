@@ -8,7 +8,9 @@ using Assets.Resource;
 using Assets.Utility;
 using Assets.Utility.Infrastructure;
 using AutoMapper;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Localization;
 using Presentation.WebApi.FilterAttributes;
 
@@ -18,6 +20,8 @@ namespace Presentation.WebApi.Controllers {
         #region ctor
         protected readonly IMapper _mapper;
         protected readonly IStringLocalizer<BaseController> _localizer;
+        private readonly IWebHostEnvironment _webHostEnvironment;
+
         protected Account CurrentAccount { get { return (Account)HttpContext.Items[nameof(CurrentAccount)]; } }
         protected string IP { get { return HttpContext.Connection.RemoteIpAddress.ToString(); } }
         protected string URL { get { return $"{HttpContext.Request.Scheme}://{HttpContext.Request.Host}{HttpContext.Request.Path}{HttpContext.Request.QueryString}"; } }
@@ -25,26 +29,39 @@ namespace Presentation.WebApi.Controllers {
         public BaseController() {
             _mapper = ServiceLocator.Current.GetInstance<IMapper>();
             _localizer = ServiceLocator.Current.GetInstance<IStringLocalizer<BaseController>>();
+            _webHostEnvironment = ServiceLocator.Current.GetInstance<IWebHostEnvironment>();
         }
         #endregion
 
-        public Device GetDeviceInfosFromHeader() {
-            var deviceId = HttpContext.Request.Headers
-                .FirstOrDefault(f => f.Key.ToLower(CultureInfo.CurrentCulture) == "deviceid").Value[0];
+        [ApiExplorerSettings(IgnoreApi = true)]
+        protected Device GetDeviceInfosFromHeader() {
+            Device device = null;
 
-            var deviceName = HttpContext.Request.Headers
-                .FirstOrDefault(f => f.Key.ToLower(CultureInfo.CurrentCulture) == "devicename").Value[0];
+            var id = HttpContext.Request.Headers
+                .FirstOrDefault(f => f.Key.ToLower(CultureInfo.CurrentCulture) == "deviceid").Value;
 
-            var deviceType = HttpContext.Request.Headers
-                .FirstOrDefault(f => f.Key.ToLower(CultureInfo.CurrentCulture) == "devicetype").Value[0];
+            var name = HttpContext.Request.Headers
+                .FirstOrDefault(f => f.Key.ToLower(CultureInfo.CurrentCulture) == "devicename").Value;
 
-            return (string.IsNullOrWhiteSpace(deviceId) || string.IsNullOrWhiteSpace(deviceName) || string.IsNullOrWhiteSpace(deviceType))
-                ? null
-                : new Device {
-                    DeviceId = deviceId,
-                    DeviceName = deviceName,
-                    DeviceType = deviceType
+            var type = HttpContext.Request.Headers
+                .FirstOrDefault(f => f.Key.ToLower(CultureInfo.CurrentCulture) == "devicetype").Value;
+
+            if(id.Any() && name.Any() && type.Any()) {
+                device = new Device {
+                    DeviceId = id[0],
+                    DeviceName = name[0],
+                    DeviceType = type[0]
                 };
+            }
+            else if(_webHostEnvironment.IsDevelopment()) {
+                device = new Device {
+                    DeviceId = id.Any() ? id[0] : "TestDeviceId",
+                    DeviceName = name.Any() ? name[0] : "TestDeviceName",
+                    DeviceType = type.Any() ? type[0] : "TestDeviceType"
+                };
+            }
+
+            return device;
         }
 
         //[ApiExplorerSettings(IgnoreApi = true)]
