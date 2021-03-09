@@ -1,31 +1,31 @@
 {
   "format": 1,
   "restore": {
-    "D:\\git\\clipboardy\\src\\Test\\Test.Common\\Test.Common.csproj": {}
+    "D:\\source-code\\git\\clipboardy\\src\\Test\\Test.Common\\Test.Common.csproj": {}
   },
   "projects": {
-    "D:\\git\\clipboardy\\src\\Assets\\Assets.Model\\Assets.Model.csproj": {
+    "D:\\source-code\\git\\clipboardy\\src\\Assets\\Assets.Model\\Assets.Model.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\git\\clipboardy\\src\\Assets\\Assets.Model\\Assets.Model.csproj",
+        "projectUniqueName": "D:\\source-code\\git\\clipboardy\\src\\Assets\\Assets.Model\\Assets.Model.csproj",
         "projectName": "Assets.Model",
-        "projectPath": "D:\\git\\clipboardy\\src\\Assets\\Assets.Model\\Assets.Model.csproj",
+        "projectPath": "D:\\source-code\\git\\clipboardy\\src\\Assets\\Assets.Model\\Assets.Model.csproj",
         "packagesPath": "C:\\Users\\h.moradi\\.nuget\\packages\\",
-        "outputPath": "D:\\git\\clipboardy\\src\\Assets\\Assets.Model\\obj\\",
+        "outputPath": "D:\\source-code\\git\\clipboardy\\src\\Assets\\Assets.Model\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
-          "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
+          "C:\\Program Files (x86)\\DevExpress 20.2\\Components\\Offline Packages"
         ],
         "configFilePaths": [
           "C:\\Users\\h.moradi\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\DevExpress 18.2.config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\DevExpress 20.2.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
           "netstandard2.1"
         ],
         "sources": {
-          "C:\\Program Files (x86)\\DevExpress 18.2\\Components\\System\\Components\\Packages": {},
+          "C:\\Program Files (x86)\\DevExpress 20.2\\Components\\System\\Components\\Packages": {},
           "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "https://api.nuget.org/v3/index.json": {}
         },
@@ -63,40 +63,40 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.402\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.100\\RuntimeIdentifierGraph.json"
         }
       }
     },
-    "D:\\git\\clipboardy\\src\\Assets\\Assets.Resource\\Assets.Resource.csproj": {
+    "D:\\source-code\\git\\clipboardy\\src\\Assets\\Assets.Resource\\Assets.Resource.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\git\\clipboardy\\src\\Assets\\Assets.Resource\\Assets.Resource.csproj",
+        "projectUniqueName": "D:\\source-code\\git\\clipboardy\\src\\Assets\\Assets.Resource\\Assets.Resource.csproj",
         "projectName": "Assets.Resource",
-        "projectPath": "D:\\git\\clipboardy\\src\\Assets\\Assets.Resource\\Assets.Resource.csproj",
+        "projectPath": "D:\\source-code\\git\\clipboardy\\src\\Assets\\Assets.Resource\\Assets.Resource.csproj",
         "packagesPath": "C:\\Users\\h.moradi\\.nuget\\packages\\",
-        "outputPath": "D:\\git\\clipboardy\\src\\Assets\\Assets.Resource\\obj\\",
+        "outputPath": "D:\\source-code\\git\\clipboardy\\src\\Assets\\Assets.Resource\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
-          "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
+          "C:\\Program Files (x86)\\DevExpress 20.2\\Components\\Offline Packages"
         ],
         "configFilePaths": [
           "C:\\Users\\h.moradi\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\DevExpress 18.2.config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\DevExpress 20.2.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
           "netstandard2.1"
         ],
         "sources": {
-          "C:\\Program Files (x86)\\DevExpress 18.2\\Components\\System\\Components\\Packages": {},
+          "C:\\Program Files (x86)\\DevExpress 20.2\\Components\\System\\Components\\Packages": {},
           "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
           "netstandard2.1": {
             "projectReferences": {
-              "D:\\git\\clipboardy\\src\\Assets\\Assets.Model\\Assets.Model.csproj": {
-                "projectPath": "D:\\git\\clipboardy\\src\\Assets\\Assets.Model\\Assets.Model.csproj"
+              "D:\\source-code\\git\\clipboardy\\src\\Assets\\Assets.Model\\Assets.Model.csproj": {
+                "projectPath": "D:\\source-code\\git\\clipboardy\\src\\Assets\\Assets.Model\\Assets.Model.csproj"
               }
             }
           }
@@ -124,40 +124,40 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.402\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.100\\RuntimeIdentifierGraph.json"
         }
       }
     },
-    "D:\\git\\clipboardy\\src\\Assets\\Assets.Utility\\Assets.Utility.csproj": {
+    "D:\\source-code\\git\\clipboardy\\src\\Assets\\Assets.Utility\\Assets.Utility.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\git\\clipboardy\\src\\Assets\\Assets.Utility\\Assets.Utility.csproj",
+        "projectUniqueName": "D:\\source-code\\git\\clipboardy\\src\\Assets\\Assets.Utility\\Assets.Utility.csproj",
         "projectName": "Assets.Utility",
-        "projectPath": "D:\\git\\clipboardy\\src\\Assets\\Assets.Utility\\Assets.Utility.csproj",
+        "projectPath": "D:\\source-code\\git\\clipboardy\\src\\Assets\\Assets.Utility\\Assets.Utility.csproj",
         "packagesPath": "C:\\Users\\h.moradi\\.nuget\\packages\\",
-        "outputPath": "D:\\git\\clipboardy\\src\\Assets\\Assets.Utility\\obj\\",
+        "outputPath": "D:\\source-code\\git\\clipboardy\\src\\Assets\\Assets.Utility\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
-          "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
+          "C:\\Program Files (x86)\\DevExpress 20.2\\Components\\Offline Packages"
         ],
         "configFilePaths": [
           "C:\\Users\\h.moradi\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\DevExpress 18.2.config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\DevExpress 20.2.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
           "netcoreapp3.1"
         ],
         "sources": {
-          "C:\\Program Files (x86)\\DevExpress 18.2\\Components\\System\\Components\\Packages": {},
+          "C:\\Program Files (x86)\\DevExpress 20.2\\Components\\System\\Components\\Packages": {},
           "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
           "netcoreapp3.1": {
             "projectReferences": {
-              "D:\\git\\clipboardy\\src\\Assets\\Assets.Model\\Assets.Model.csproj": {
-                "projectPath": "D:\\git\\clipboardy\\src\\Assets\\Assets.Model\\Assets.Model.csproj"
+              "D:\\source-code\\git\\clipboardy\\src\\Assets\\Assets.Model\\Assets.Model.csproj": {
+                "projectPath": "D:\\source-code\\git\\clipboardy\\src\\Assets\\Assets.Model\\Assets.Model.csproj"
               }
             }
           }
@@ -247,46 +247,46 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.402\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.100\\RuntimeIdentifierGraph.json"
         }
       }
     },
-    "D:\\git\\clipboardy\\src\\Core\\Core.Application\\Core.Application.csproj": {
+    "D:\\source-code\\git\\clipboardy\\src\\Core\\Core.Application\\Core.Application.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\git\\clipboardy\\src\\Core\\Core.Application\\Core.Application.csproj",
+        "projectUniqueName": "D:\\source-code\\git\\clipboardy\\src\\Core\\Core.Application\\Core.Application.csproj",
         "projectName": "Core.Application",
-        "projectPath": "D:\\git\\clipboardy\\src\\Core\\Core.Application\\Core.Application.csproj",
+        "projectPath": "D:\\source-code\\git\\clipboardy\\src\\Core\\Core.Application\\Core.Application.csproj",
         "packagesPath": "C:\\Users\\h.moradi\\.nuget\\packages\\",
-        "outputPath": "D:\\git\\clipboardy\\src\\Core\\Core.Application\\obj\\",
+        "outputPath": "D:\\source-code\\git\\clipboardy\\src\\Core\\Core.Application\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
-          "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
+          "C:\\Program Files (x86)\\DevExpress 20.2\\Components\\Offline Packages"
         ],
         "configFilePaths": [
           "C:\\Users\\h.moradi\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\DevExpress 18.2.config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\DevExpress 20.2.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
           "netcoreapp3.1"
         ],
         "sources": {
-          "C:\\Program Files (x86)\\DevExpress 18.2\\Components\\System\\Components\\Packages": {},
+          "C:\\Program Files (x86)\\DevExpress 20.2\\Components\\System\\Components\\Packages": {},
           "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
           "netcoreapp3.1": {
             "projectReferences": {
-              "D:\\git\\clipboardy\\src\\Assets\\Assets.Resource\\Assets.Resource.csproj": {
-                "projectPath": "D:\\git\\clipboardy\\src\\Assets\\Assets.Resource\\Assets.Resource.csproj"
+              "D:\\source-code\\git\\clipboardy\\src\\Assets\\Assets.Resource\\Assets.Resource.csproj": {
+                "projectPath": "D:\\source-code\\git\\clipboardy\\src\\Assets\\Assets.Resource\\Assets.Resource.csproj"
               },
-              "D:\\git\\clipboardy\\src\\Assets\\Assets.Utility\\Assets.Utility.csproj": {
-                "projectPath": "D:\\git\\clipboardy\\src\\Assets\\Assets.Utility\\Assets.Utility.csproj"
+              "D:\\source-code\\git\\clipboardy\\src\\Assets\\Assets.Utility\\Assets.Utility.csproj": {
+                "projectPath": "D:\\source-code\\git\\clipboardy\\src\\Assets\\Assets.Utility\\Assets.Utility.csproj"
               },
-              "D:\\git\\clipboardy\\src\\Core\\Core.Domain\\Core.Domain.csproj": {
-                "projectPath": "D:\\git\\clipboardy\\src\\Core\\Core.Domain\\Core.Domain.csproj"
+              "D:\\source-code\\git\\clipboardy\\src\\Core\\Core.Domain\\Core.Domain.csproj": {
+                "projectPath": "D:\\source-code\\git\\clipboardy\\src\\Core\\Core.Domain\\Core.Domain.csproj"
               }
             }
           }
@@ -328,43 +328,43 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.402\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.100\\RuntimeIdentifierGraph.json"
         }
       }
     },
-    "D:\\git\\clipboardy\\src\\Core\\Core.Domain\\Core.Domain.csproj": {
+    "D:\\source-code\\git\\clipboardy\\src\\Core\\Core.Domain\\Core.Domain.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\git\\clipboardy\\src\\Core\\Core.Domain\\Core.Domain.csproj",
+        "projectUniqueName": "D:\\source-code\\git\\clipboardy\\src\\Core\\Core.Domain\\Core.Domain.csproj",
         "projectName": "Core.Domain",
-        "projectPath": "D:\\git\\clipboardy\\src\\Core\\Core.Domain\\Core.Domain.csproj",
+        "projectPath": "D:\\source-code\\git\\clipboardy\\src\\Core\\Core.Domain\\Core.Domain.csproj",
         "packagesPath": "C:\\Users\\h.moradi\\.nuget\\packages\\",
-        "outputPath": "D:\\git\\clipboardy\\src\\Core\\Core.Domain\\obj\\",
+        "outputPath": "D:\\source-code\\git\\clipboardy\\src\\Core\\Core.Domain\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
-          "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
+          "C:\\Program Files (x86)\\DevExpress 20.2\\Components\\Offline Packages"
         ],
         "configFilePaths": [
           "C:\\Users\\h.moradi\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\DevExpress 18.2.config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\DevExpress 20.2.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
           "netcoreapp3.1"
         ],
         "sources": {
-          "C:\\Program Files (x86)\\DevExpress 18.2\\Components\\System\\Components\\Packages": {},
+          "C:\\Program Files (x86)\\DevExpress 20.2\\Components\\System\\Components\\Packages": {},
           "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
           "netcoreapp3.1": {
             "projectReferences": {
-              "D:\\git\\clipboardy\\src\\Assets\\Assets.Model\\Assets.Model.csproj": {
-                "projectPath": "D:\\git\\clipboardy\\src\\Assets\\Assets.Model\\Assets.Model.csproj"
+              "D:\\source-code\\git\\clipboardy\\src\\Assets\\Assets.Model\\Assets.Model.csproj": {
+                "projectPath": "D:\\source-code\\git\\clipboardy\\src\\Assets\\Assets.Model\\Assets.Model.csproj"
               },
-              "D:\\git\\clipboardy\\src\\Assets\\Assets.Utility\\Assets.Utility.csproj": {
-                "projectPath": "D:\\git\\clipboardy\\src\\Assets\\Assets.Utility\\Assets.Utility.csproj"
+              "D:\\source-code\\git\\clipboardy\\src\\Assets\\Assets.Utility\\Assets.Utility.csproj": {
+                "projectPath": "D:\\source-code\\git\\clipboardy\\src\\Assets\\Assets.Utility\\Assets.Utility.csproj"
               }
             }
           }
@@ -414,52 +414,52 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.402\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.100\\RuntimeIdentifierGraph.json"
         }
       }
     },
-    "D:\\git\\clipboardy\\src\\Presentation\\Presentation.WebApi\\Presentation.WebApi.csproj": {
+    "D:\\source-code\\git\\clipboardy\\src\\Presentation\\Presentation.WebApi\\Presentation.WebApi.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\git\\clipboardy\\src\\Presentation\\Presentation.WebApi\\Presentation.WebApi.csproj",
+        "projectUniqueName": "D:\\source-code\\git\\clipboardy\\src\\Presentation\\Presentation.WebApi\\Presentation.WebApi.csproj",
         "projectName": "clipboardy.com",
-        "projectPath": "D:\\git\\clipboardy\\src\\Presentation\\Presentation.WebApi\\Presentation.WebApi.csproj",
+        "projectPath": "D:\\source-code\\git\\clipboardy\\src\\Presentation\\Presentation.WebApi\\Presentation.WebApi.csproj",
         "packagesPath": "C:\\Users\\h.moradi\\.nuget\\packages\\",
-        "outputPath": "D:\\git\\clipboardy\\src\\Presentation\\Presentation.WebApi\\obj\\",
+        "outputPath": "D:\\source-code\\git\\clipboardy\\src\\Presentation\\Presentation.WebApi\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
-          "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
+          "C:\\Program Files (x86)\\DevExpress 20.2\\Components\\Offline Packages"
         ],
         "configFilePaths": [
           "C:\\Users\\h.moradi\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\DevExpress 18.2.config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\DevExpress 20.2.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
           "netcoreapp3.1"
         ],
         "sources": {
-          "C:\\Program Files (x86)\\DevExpress 18.2\\Components\\System\\Components\\Packages": {},
+          "C:\\Program Files (x86)\\DevExpress 20.2\\Components\\System\\Components\\Packages": {},
           "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
           "netcoreapp3.1": {
             "projectReferences": {
-              "D:\\git\\clipboardy\\src\\Assets\\Assets.Model\\Assets.Model.csproj": {
-                "projectPath": "D:\\git\\clipboardy\\src\\Assets\\Assets.Model\\Assets.Model.csproj"
+              "D:\\source-code\\git\\clipboardy\\src\\Assets\\Assets.Model\\Assets.Model.csproj": {
+                "projectPath": "D:\\source-code\\git\\clipboardy\\src\\Assets\\Assets.Model\\Assets.Model.csproj"
               },
-              "D:\\git\\clipboardy\\src\\Assets\\Assets.Resource\\Assets.Resource.csproj": {
-                "projectPath": "D:\\git\\clipboardy\\src\\Assets\\Assets.Resource\\Assets.Resource.csproj"
+              "D:\\source-code\\git\\clipboardy\\src\\Assets\\Assets.Resource\\Assets.Resource.csproj": {
+                "projectPath": "D:\\source-code\\git\\clipboardy\\src\\Assets\\Assets.Resource\\Assets.Resource.csproj"
               },
-              "D:\\git\\clipboardy\\src\\Assets\\Assets.Utility\\Assets.Utility.csproj": {
-                "projectPath": "D:\\git\\clipboardy\\src\\Assets\\Assets.Utility\\Assets.Utility.csproj"
+              "D:\\source-code\\git\\clipboardy\\src\\Assets\\Assets.Utility\\Assets.Utility.csproj": {
+                "projectPath": "D:\\source-code\\git\\clipboardy\\src\\Assets\\Assets.Utility\\Assets.Utility.csproj"
               },
-              "D:\\git\\clipboardy\\src\\Core\\Core.Application\\Core.Application.csproj": {
-                "projectPath": "D:\\git\\clipboardy\\src\\Core\\Core.Application\\Core.Application.csproj"
+              "D:\\source-code\\git\\clipboardy\\src\\Core\\Core.Application\\Core.Application.csproj": {
+                "projectPath": "D:\\source-code\\git\\clipboardy\\src\\Core\\Core.Application\\Core.Application.csproj"
               },
-              "D:\\git\\clipboardy\\src\\Core\\Core.Domain\\Core.Domain.csproj": {
-                "projectPath": "D:\\git\\clipboardy\\src\\Core\\Core.Domain\\Core.Domain.csproj"
+              "D:\\source-code\\git\\clipboardy\\src\\Core\\Core.Domain\\Core.Domain.csproj": {
+                "projectPath": "D:\\source-code\\git\\clipboardy\\src\\Core\\Core.Domain\\Core.Domain.csproj"
               }
             }
           }
@@ -606,52 +606,52 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.402\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.100\\RuntimeIdentifierGraph.json"
         }
       }
     },
-    "D:\\git\\clipboardy\\src\\Test\\Test.Common\\Test.Common.csproj": {
+    "D:\\source-code\\git\\clipboardy\\src\\Test\\Test.Common\\Test.Common.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\git\\clipboardy\\src\\Test\\Test.Common\\Test.Common.csproj",
+        "projectUniqueName": "D:\\source-code\\git\\clipboardy\\src\\Test\\Test.Common\\Test.Common.csproj",
         "projectName": "Test.Common",
-        "projectPath": "D:\\git\\clipboardy\\src\\Test\\Test.Common\\Test.Common.csproj",
+        "projectPath": "D:\\source-code\\git\\clipboardy\\src\\Test\\Test.Common\\Test.Common.csproj",
         "packagesPath": "C:\\Users\\h.moradi\\.nuget\\packages\\",
-        "outputPath": "D:\\git\\clipboardy\\src\\Test\\Test.Common\\obj\\",
+        "outputPath": "D:\\source-code\\git\\clipboardy\\src\\Test\\Test.Common\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
-          "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
+          "C:\\Program Files (x86)\\DevExpress 20.2\\Components\\Offline Packages"
         ],
         "configFilePaths": [
           "C:\\Users\\h.moradi\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\DevExpress 18.2.config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\DevExpress 20.2.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
           "netcoreapp3.1"
         ],
         "sources": {
-          "C:\\Program Files (x86)\\DevExpress 18.2\\Components\\System\\Components\\Packages": {},
+          "C:\\Program Files (x86)\\DevExpress 20.2\\Components\\System\\Components\\Packages": {},
           "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
           "netcoreapp3.1": {
             "projectReferences": {
-              "D:\\git\\clipboardy\\src\\Assets\\Assets.Model\\Assets.Model.csproj": {
-                "projectPath": "D:\\git\\clipboardy\\src\\Assets\\Assets.Model\\Assets.Model.csproj"
+              "D:\\source-code\\git\\clipboardy\\src\\Assets\\Assets.Model\\Assets.Model.csproj": {
+                "projectPath": "D:\\source-code\\git\\clipboardy\\src\\Assets\\Assets.Model\\Assets.Model.csproj"
               },
-              "D:\\git\\clipboardy\\src\\Assets\\Assets.Utility\\Assets.Utility.csproj": {
-                "projectPath": "D:\\git\\clipboardy\\src\\Assets\\Assets.Utility\\Assets.Utility.csproj"
+              "D:\\source-code\\git\\clipboardy\\src\\Assets\\Assets.Utility\\Assets.Utility.csproj": {
+                "projectPath": "D:\\source-code\\git\\clipboardy\\src\\Assets\\Assets.Utility\\Assets.Utility.csproj"
               },
-              "D:\\git\\clipboardy\\src\\Core\\Core.Application\\Core.Application.csproj": {
-                "projectPath": "D:\\git\\clipboardy\\src\\Core\\Core.Application\\Core.Application.csproj"
+              "D:\\source-code\\git\\clipboardy\\src\\Core\\Core.Application\\Core.Application.csproj": {
+                "projectPath": "D:\\source-code\\git\\clipboardy\\src\\Core\\Core.Application\\Core.Application.csproj"
               },
-              "D:\\git\\clipboardy\\src\\Core\\Core.Domain\\Core.Domain.csproj": {
-                "projectPath": "D:\\git\\clipboardy\\src\\Core\\Core.Domain\\Core.Domain.csproj"
+              "D:\\source-code\\git\\clipboardy\\src\\Core\\Core.Domain\\Core.Domain.csproj": {
+                "projectPath": "D:\\source-code\\git\\clipboardy\\src\\Core\\Core.Domain\\Core.Domain.csproj"
               },
-              "D:\\git\\clipboardy\\src\\Presentation\\Presentation.WebApi\\Presentation.WebApi.csproj": {
-                "projectPath": "D:\\git\\clipboardy\\src\\Presentation\\Presentation.WebApi\\Presentation.WebApi.csproj"
+              "D:\\source-code\\git\\clipboardy\\src\\Presentation\\Presentation.WebApi\\Presentation.WebApi.csproj": {
+                "projectPath": "D:\\source-code\\git\\clipboardy\\src\\Presentation\\Presentation.WebApi\\Presentation.WebApi.csproj"
               }
             }
           }
@@ -716,7 +716,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.402\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.100\\RuntimeIdentifierGraph.json"
         }
       }
     }

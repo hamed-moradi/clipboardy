@@ -8,9 +8,13 @@ using Assets.Resource;
 using Assets.Utility;
 using Assets.Utility.Infrastructure;
 using AutoMapper;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Localization;
 using Presentation.WebApi.FilterAttributes;
+using System;
+using Serilog;
 
 namespace Presentation.WebApi.Controllers {
     [Security, ApiController, Route("api/[controller]")]
@@ -18,6 +22,7 @@ namespace Presentation.WebApi.Controllers {
         #region ctor
         protected readonly IMapper _mapper;
         protected readonly IStringLocalizer<BaseController> _localizer;
+        protected readonly IWebHostEnvironment _webHostEnvironment;
         protected Account CurrentAccount { get { return (Account)HttpContext.Items[nameof(CurrentAccount)]; } }
         protected string IP { get { return HttpContext.Connection.RemoteIpAddress.ToString(); } }
         protected string URL { get { return $"{HttpContext.Request.Scheme}://{HttpContext.Request.Host}{HttpContext.Request.Path}{HttpContext.Request.QueryString}"; } }
@@ -25,6 +30,7 @@ namespace Presentation.WebApi.Controllers {
         public BaseController() {
             _mapper = ServiceLocator.Current.GetInstance<IMapper>();
             _localizer = ServiceLocator.Current.GetInstance<IStringLocalizer<BaseController>>();
+            _webHostEnvironment = ServiceLocator.Current.GetInstance<IWebHostEnvironment>();
         }
         #endregion
 
@@ -38,7 +44,13 @@ namespace Presentation.WebApi.Controllers {
             var deviceType = HttpContext.Request.Headers
                 .FirstOrDefault(f => f.Key.ToLower(CultureInfo.CurrentCulture) == "devicetype").Value[0];
 
-            return (string.IsNullOrWhiteSpace(deviceId) || string.IsNullOrWhiteSpace(deviceName) || string.IsNullOrWhiteSpace(deviceType))
+            if(_webHostEnvironment.IsDevelopment()) {
+                deviceId = string.IsNullOrWhiteSpace(deviceId) ? "deviceId" : deviceId;
+                deviceName = string.IsNullOrWhiteSpace(deviceName) ? "deviceName" : deviceName;
+                deviceType = string.IsNullOrWhiteSpace(deviceType) ? "deviceType" : deviceType;
+            }
+
+            return (string.IsNullOrWhiteSpace(deviceId) || string.IsNullOrWhiteSpace(deviceName))// || string.IsNullOrWhiteSpace(deviceType)
                 ? null
                 : new Device {
                     DeviceId = deviceId,
@@ -64,10 +76,10 @@ namespace Presentation.WebApi.Controllers {
         //    return Json(new BaseViewModel { Status = status, Message = message });
         //}
 
-        //[ApiExplorerSettings(IgnoreApi = true)]
-        //public IActionResult InternalServerError(HttpStatusCode status = HttpStatusCode.InternalServerError, string message = null) {
-        //    message ??= _localizer[DataTransferer.InternalServerError().Message];
-        //    return Json(new BaseViewModel { Status = status, Message = message });
-        //}
+        [ApiExplorerSettings(IgnoreApi = true)]
+        public IActionResult Problem(Exception exception) {
+            Log.Error(exception, exception?.Source);
+            return Problem(detail: _localizer[DataTransferer.InternalServerError().Message]);
+        }
     }
 }

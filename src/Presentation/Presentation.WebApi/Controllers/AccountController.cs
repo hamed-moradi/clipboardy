@@ -14,6 +14,7 @@ using Assets.Utility.Infrastructure;
 using Core.Application;
 using Core.Domain.StoredProcedure.Schema;
 using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
@@ -342,8 +343,8 @@ namespace Presentation.WebApi.Controllers {
             }
         }
 
-        [HttpPost, Authorize, Route("activationrequest")]
-        public async Task<ActionResult> ActivationRequest() {
+        [HttpPost, Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme), Route("activationrequest")]
+        public async Task<ActionResult> ActivationRequestAsync() {
             var query = new AccountProfileGetFirstSchema { LinkedId = CurrentAccount.Username };
             if(CurrentAccount.Username.IsPhoneNumber()) {
                 query.TypeId = AccountProfileType.Phone.ToInt();
@@ -393,7 +394,7 @@ namespace Presentation.WebApi.Controllers {
         }
 
         [HttpPost, Authorize, Route("activateaccount")]
-        public async Task<ActionResult> ActivateAccount([FromBody] ActivateAccountBindingModel collection) {
+        public async Task<ActionResult> ActivateAccountAsync([FromBody] ActivateAccountBindingModel collection) {
             if(collection == null ||
                 string.IsNullOrWhiteSpace(collection.Username) ||
                 string.IsNullOrWhiteSpace(collection.Code)) {

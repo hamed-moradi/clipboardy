@@ -48,6 +48,9 @@ namespace Presentation.WebApi {
             var appSettings = services.BuildServiceProvider().GetService<IOptionsSnapshot<AppSetting>>().Value;
             services.AddSingleton(sp => appSettings);
 
+            // memory cache
+            services.AddMemoryCache();
+
             // automapper
             services.AddAutoMapper(typeof(MapperProfile));
 

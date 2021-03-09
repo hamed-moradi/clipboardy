@@ -21,8 +21,6 @@ using Assets.Model.Base;
 using System.Text;
 using Newtonsoft.Json;
 using Presentation.WebApi.FilterAttributes;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Hosting;
 using Core.Domain.StoredProcedure.Schema;
 using Assets.Model.Common;
 using Assets.Utility.Infrastructure;
@@ -35,16 +33,13 @@ namespace Presentation.WebApi.Controllers {
         #region ctor
         private readonly IAccountService _accountService;
         private readonly IAccountProfileService _accountProfileService;
-        private readonly IWebHostEnvironment _webHostEnvironment;
 
         public ExternalAuthenticationController(
             IAccountService accountService,
-            IAccountProfileService accountProfileService,
-            IWebHostEnvironment webHostEnvironment) {
+            IAccountProfileService accountProfileService) {
 
             _accountService = accountService;
             _accountProfileService = accountProfileService;
-            _webHostEnvironment = webHostEnvironment;
         }
         #endregion
 
@@ -67,14 +62,7 @@ namespace Presentation.WebApi.Controllers {
         [HttpGet("signin"), AllowAnonymous, HttpHeaderBinder]
         public async Task<IActionResult> Signin([FromQuery] string provider = "Google") {
             var deviceHeader = GetDeviceInfosFromHeader();
-            if(deviceHeader == null && _webHostEnvironment.IsDevelopment()) {
-                deviceHeader = new Device {
-                    DeviceId = "DeviceId",
-                    DeviceName = "DeviceName",
-                    DeviceType = "DeviceType"
-                };
-            }
-            else if(deviceHeader == null) {
+            if(deviceHeader == null) {
                 return BadRequest(DataTransferer.DefectiveEntry().Message);
             }
 
