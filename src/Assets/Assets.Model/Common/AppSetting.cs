@@ -13,7 +13,6 @@ namespace Assets.Model.Common {
             }
         }
         public Authentication Authentication { get; set; }
-        public Encryption Encryption { get; set; }
         public SignalR SignalR { get; set; }
         public ConnectionString ConnectionStrings { get; set; }
         public SmtpConfig SmtpConfig { get; set; }
@@ -39,11 +38,6 @@ namespace Assets.Model.Common {
         public string ClientSecret { get; set; }
     }
 
-    public class Encryption {
-        public string PublicKey { get; set; }
-        public string PrivateKey { get; set; }
-    }
-
     public class SignalR {
         public string ServerPattern { get; set; }
         public int MaximumMessageSize { get; set; }
@@ -51,6 +45,7 @@ namespace Assets.Model.Common {
 
     public class ConnectionString {
         public string MsSql { get; set; }
+        public string MySql { get; set; }
     }
 
     public class SmtpConfig {

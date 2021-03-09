@@ -21,7 +21,7 @@ namespace Presentation.WebApi.Controllers {
         }
         #endregion
 
-        [HttpGet, HttpHeaderBinder, Route("get")]
+        [HttpGet("get")]
         public async Task<IActionResult> Get([FromQuery] ClipboardGetBindingModel collection) {
             try {
                 var query = _mapper.Map<ClipboardGetPagingSchema>(collection);
@@ -34,7 +34,7 @@ namespace Presentation.WebApi.Controllers {
             }
         }
 
-        [HttpPost, HttpHeaderBinder, Route("add")]
+        [HttpPost("add")]
         public async Task<IActionResult> Add([FromBody] ClipboardAddBindingModel collection) {
             try {
                 var model = _mapper.Map<ClipboardAddSchema>(collection);

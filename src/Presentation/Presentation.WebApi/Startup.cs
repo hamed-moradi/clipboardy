@@ -21,6 +21,7 @@ using Core.Application;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using Microsoft.Extensions.Logging;
 
 namespace Presentation.WebApi {
     public class Startup {
@@ -32,8 +33,8 @@ namespace Presentation.WebApi {
         }
         #endregion
 
-        public void ConfigureServices(IServiceCollection services) {
-            Log.Debug($"SendReceiveWebApi {AppSetting.Version} getting ready...");
+        public void ConfigureServices(
+            IServiceCollection services) {
 
             // config localization
             services.AddLocalization(options => options.ResourcesPath = "Assets/Assets.Resource/Tables");
@@ -60,10 +61,15 @@ namespace Presentation.WebApi {
             services.AddApplications();
             services.AddModules();
 
+            // add mvc
+            services.AddMvc();
+
             // add mvc routing
             services.AddControllers(configure => {
                 configure.AllowEmptyInputInBodyModelBinding = true;
             });
+
+            // add cors
             services.AddCors(options => {
                 options.AddPolicy(_allowedSpecificOrigins,
                 builder => {
@@ -111,7 +117,10 @@ namespace Presentation.WebApi {
             IApplicationBuilder appBuilder,
             IWebHostEnvironment webHostEnv,
             IHealthCkeckService healthCheck,
-            IHostApplicationLifetime appLifetime) {
+            IHostApplicationLifetime appLifetime,
+            ILogger<Startup> logger) {
+
+            logger.LogInformation("Web api about to start");
 
             if(webHostEnv.IsDevelopment()) {
                 appBuilder.UseDeveloperExceptionPage();
@@ -131,13 +140,23 @@ namespace Presentation.WebApi {
                     //MinimumSameSitePolicy = SameSiteMode.Strict,
                 });
 
+                appBuilder.UseHttpsRedirection();
+
+                appBuilder.UseStaticFiles();
+
                 appBuilder.UseRouting();
 
                 appBuilder.UseAuthentication();
                 appBuilder.UseAuthorization();
 
+                //appBuilder.UseFileServer(false);
+                //appBuilder.UseStatusCodePages();
+
                 appBuilder.UseEndpoints(endpoints => {
-                    endpoints.MapControllers();
+                    //endpoints.MapControllers();
+                    endpoints.MapControllerRoute(
+                        name: "default",
+                        pattern: "{controller=Home}/{action=Index}/{id?}");
                 });
             }
             else {

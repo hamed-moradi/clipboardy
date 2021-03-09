@@ -11,6 +11,7 @@ using AutoMapper;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Localization;
 using Presentation.WebApi.FilterAttributes;
 using System;
@@ -34,15 +35,18 @@ namespace Presentation.WebApi.Controllers {
         }
         #endregion
 
-        public Device GetDeviceInfosFromHeader() {
-            var deviceId = HttpContext.Request.Headers
-                .FirstOrDefault(f => f.Key.ToLower(CultureInfo.CurrentCulture) == "deviceid").Value[0];
+        [ApiExplorerSettings(IgnoreApi = true)]
+        protected Device GetDeviceInfosFromHeader() {
+            Device device = null;
 
-            var deviceName = HttpContext.Request.Headers
-                .FirstOrDefault(f => f.Key.ToLower(CultureInfo.CurrentCulture) == "devicename").Value[0];
+            var id = HttpContext.Request.Headers
+                .FirstOrDefault(f => f.Key.ToLower(CultureInfo.CurrentCulture) == "deviceid").Value;
 
-            var deviceType = HttpContext.Request.Headers
-                .FirstOrDefault(f => f.Key.ToLower(CultureInfo.CurrentCulture) == "devicetype").Value[0];
+            var name = HttpContext.Request.Headers
+                .FirstOrDefault(f => f.Key.ToLower(CultureInfo.CurrentCulture) == "devicename").Value;
+
+            var type = HttpContext.Request.Headers
+                .FirstOrDefault(f => f.Key.ToLower(CultureInfo.CurrentCulture) == "devicetype").Value;
 
             if(_webHostEnvironment.IsDevelopment()) {
                 deviceId = string.IsNullOrWhiteSpace(deviceId) ? "deviceId" : deviceId;
@@ -57,6 +61,9 @@ namespace Presentation.WebApi.Controllers {
                     DeviceName = deviceName,
                     DeviceType = deviceType
                 };
+            }
+
+            return device;
         }
 
         //[ApiExplorerSettings(IgnoreApi = true)]

@@ -1,5 +1,4 @@
 ﻿using Assets.Model.Common;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Core.Domain {

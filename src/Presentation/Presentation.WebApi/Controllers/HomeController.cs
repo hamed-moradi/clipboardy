@@ -4,11 +4,9 @@ using Assets.Utility.Infrastructure;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.VisualBasic;
 
 namespace Presentation.WebApi.Controllers {
-    [Route("[controller]")]
-    public class HomeController: BaseController {
+    public class HomeController: Controller {
         #region ctor
         private readonly AppSetting _appSetting;
         private readonly CompressionHandler _compressionHandler;
@@ -25,9 +23,9 @@ namespace Presentation.WebApi.Controllers {
         }
         #endregion
 
-        [HttpGet, Route("index")]
         public IActionResult Index() {
-            return Ok(AppSetting.Version);
+            return View();
+            //return Ok(AppSetting.Version);
         }
     }
 }
