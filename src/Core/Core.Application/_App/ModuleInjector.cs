@@ -5,7 +5,10 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace Core.Application {
     public static class ModuleInjector {
-        public static void AddApplications(this IServiceCollection services, AppSetting appSetting = null) {
+        public static void AddApplications(
+            this IServiceCollection services, 
+            AppSetting appSetting = null) {
+
             services.AddSingleton<IStoredProcedureService, StoredProcedureService>();
             services.AddScoped<IAccountService, AccountService>();
             services.AddScoped<IAccountDeviceService, AccountDeviceService>();
