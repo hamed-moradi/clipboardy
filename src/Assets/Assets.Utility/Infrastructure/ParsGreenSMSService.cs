@@ -30,7 +30,7 @@ namespace Assets.Utility.Infrastructure {
 
                 #region get
                 var client = new RestClient("http://login.parsgreen.com/");
-                var request = new RestRequest("UrlService/sendSMS.ashx", Method.GET);
+                var request = new RestRequest("UrlService/sendSMS.ashx", Method.Post);
 
                 request.AddParameter("from", _appSetting.SMSConfig.Number);
                 request.AddParameter("to", sms.PhoneNo);

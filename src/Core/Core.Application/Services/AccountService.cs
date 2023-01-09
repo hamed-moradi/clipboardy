@@ -9,13 +9,11 @@ using System;
 using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
 using System.Transactions;
-using Core.Application.Infrastructure;
 using Assets.Model.Header;
 
 namespace Core.Application.Services {
     public class AccountService: IAccountService {
         #region
-        private readonly IStoredProcedureService _storedProcedure;
         private readonly RandomMaker _randomMaker;
         private readonly Cryptograph _cryptograph;
         private readonly IAccountProfileService _accountProfileService;
@@ -23,14 +21,12 @@ namespace Core.Application.Services {
         private readonly JwtHandler _jwtHandler;
 
         public AccountService(
-            IStoredProcedureService storedProcedure,
             RandomMaker randomMaker,
             Cryptograph cryptograph,
             IAccountProfileService accountProfileService,
             IAccountDeviceService accountDeviceService,
             JwtHandler jwtHandler) {
 
-            _storedProcedure = storedProcedure;
             _randomMaker = randomMaker;
             _cryptograph = cryptograph;
             _accountProfileService = accountProfileService;
@@ -48,28 +44,22 @@ namespace Core.Application.Services {
         }
 
         public AccountResult GetById(int id) {
-            var result = _storedProcedure.QueryFirstAsync<AccountGetFirstSchema, AccountResult>(
-                new AccountGetFirstSchema { Id = id }).GetAwaiter().GetResult();
-            return result;
+            return null;
         }
 
         public AccountResult First(AccountGetFirstSchema account) {
-            var result = _storedProcedure.QueryFirst<AccountGetFirstSchema, AccountResult>(account);
-            return result;
+            return null;
         }
 
         public async Task<AccountResult> FirstAsync(AccountGetFirstSchema account) {
-            var result = await _storedProcedure.QueryFirstAsync<AccountGetFirstSchema, AccountResult>(account);
-            return result;
+            return null;
         }
 
         public async Task<int> AddAsync(AccountAddSchema account) {
-            var result = await _storedProcedure.ExecuteScalarAsync<AccountAddSchema, int>(account);
-            return result;
+            return 0;
         }
 
         public async Task UpdateAsync(AccountUpdateSchema account) {
-            await _storedProcedure.ExecuteAsync(account);
         }
 
         public async Task<IServiceResult> SignupAsync(SignupBindingModel signupModel) {

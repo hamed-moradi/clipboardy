@@ -11,7 +11,6 @@ namespace Assets.Utility {
             services.AddScoped<IEmailService, EmailService>();
             services.AddScoped<ISMSService, ParsGreenSMSService>();
             services.AddSingleton<StoredProcedureHelper>();
-            services.AddSingleton<IParameterHandler, ParameterHandler>();
             services.AddScoped<JwtHandler>();
         }
     }

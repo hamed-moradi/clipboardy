@@ -22,7 +22,7 @@ namespace Assets.Utility.Infrastructure {
             var from = new MailboxAddress("MailboxName", _appSetting.SmtpConfig.Host);
             message.From.Add(from);
 
-            var to = new MailboxAddress(email.Address);
+            var to = new MailboxAddress("MailboxName", email.Address);
             message.To.Add(to);
 
 
