@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.29709.97
+# Visual Studio Version 17
+VisualStudioVersion = 17.4.33205.214
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Core.Application", "src\Core\Core.Application\Core.Application.csproj", "{BAC5E3CE-2E79-49C3-BD72-D1EAA84D5421}"
 EndProject
@@ -27,10 +27,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Documentation", "Documentat
 	ProjectSection(SolutionItems) = preProject
 		VersionHistory.md = VersionHistory.md
 	EndProjectSection
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Database", "Database", "{E9C1C956-D4B3-4318-9CFB-87A269793300}"
-EndProject
-Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "Database.MsSQL", "src\Database\Database.MsSql\Database.MsSQL.sqlproj", "{38FC9A5F-85FF-482E-9D96-92BEA6B51FA1}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Assets.Resource", "src\Assets\Assets.Resource\Assets.Resource.csproj", "{701BD19B-95A5-413F-A15D-45476167D78A}"
 EndProject
@@ -64,12 +60,6 @@ Global
 		{05897208-4E3B-42C4-AF3A-1933D50695A4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{05897208-4E3B-42C4-AF3A-1933D50695A4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{05897208-4E3B-42C4-AF3A-1933D50695A4}.Release|Any CPU.Build.0 = Release|Any CPU
-		{38FC9A5F-85FF-482E-9D96-92BEA6B51FA1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{38FC9A5F-85FF-482E-9D96-92BEA6B51FA1}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{38FC9A5F-85FF-482E-9D96-92BEA6B51FA1}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
-		{38FC9A5F-85FF-482E-9D96-92BEA6B51FA1}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{38FC9A5F-85FF-482E-9D96-92BEA6B51FA1}.Release|Any CPU.Build.0 = Release|Any CPU
-		{38FC9A5F-85FF-482E-9D96-92BEA6B51FA1}.Release|Any CPU.Deploy.0 = Release|Any CPU
 		{701BD19B-95A5-413F-A15D-45476167D78A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{701BD19B-95A5-413F-A15D-45476167D78A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{701BD19B-95A5-413F-A15D-45476167D78A}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -85,7 +75,6 @@ Global
 		{A4AE58B7-CDEE-4E4B-937A-0A98C516C267} = {761160FB-80DE-4358-9ED1-9A8C4EBF459F}
 		{53A30AB1-76F1-4BC8-AC52-5340DBAB6BD4} = {761160FB-80DE-4358-9ED1-9A8C4EBF459F}
 		{05897208-4E3B-42C4-AF3A-1933D50695A4} = {83F5F24D-379B-4137-B305-EF9A9FC756AA}
-		{38FC9A5F-85FF-482E-9D96-92BEA6B51FA1} = {E9C1C956-D4B3-4318-9CFB-87A269793300}
 		{701BD19B-95A5-413F-A15D-45476167D78A} = {761160FB-80DE-4358-9ED1-9A8C4EBF459F}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
