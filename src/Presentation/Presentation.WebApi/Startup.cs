@@ -9,7 +9,7 @@ using Microsoft.Extensions.Options;
 using Presentation.WebApi.Infrastructure;
 using Presentation.WebApi.Services;
 using Serilog;
-using AutoMapper;
+using Core.Domain._App;
 using Microsoft.AspNetCore.Localization;
 using Assets.Resource;
 using Microsoft.AspNetCore.Authentication.Cookies;
@@ -22,6 +22,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using Microsoft.Extensions.Logging;
+using Microsoft.EntityFrameworkCore;
 
 namespace Presentation.WebApi {
     public class Startup {
@@ -78,6 +79,8 @@ namespace Presentation.WebApi {
                   .AllowAnyHeader();
                 });
             });
+
+            services.AddDbContext<PostgreContext>(opt => opt.UseNpgsql(appSettings.ConnectionStrings.MsSql));
 
             // add external authentication
             services
