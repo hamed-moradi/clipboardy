@@ -44,8 +44,7 @@ namespace Assets.Model.Common {
     }
 
     public class ConnectionString {
-        public string MsSql { get; set; }
-        public string MySql { get; set; }
+        public string Postgres { get; set; }
     }
 
     public class SmtpConfig {

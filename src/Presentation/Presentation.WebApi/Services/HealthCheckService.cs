@@ -19,7 +19,7 @@ namespace Presentation.WebApi.Services {
 
         #region private
         private bool CheckConfig() {
-            if(string.IsNullOrWhiteSpace(_appSetting.ConnectionStrings?.MsSql)) {
+            if(string.IsNullOrWhiteSpace(_appSetting.ConnectionStrings?.Postgres)) {
                 Log.Error("There is no connection string to MsSqldb.");
                 return false;
             }

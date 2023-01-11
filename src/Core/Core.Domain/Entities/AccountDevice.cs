@@ -3,17 +3,17 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Core.Domain.Entities {
-    [Table("account")]
-    public class Account {
+    [Table("account_device")]
+    public class AccountDevice {
         [Key]
         public int id { get; set; }
+        public int account_id { get; set; }
         [Required, MaxLength(32)]
-        public string username { get; set; }
-        [Required, MaxLength(256)]
-        public string password { get; set; }
-        [Required]
-        public int provider_id { get; set; }
-        public DateTime? last_signedin_at { get; set; }
+        public string device_id { get; set; }
+        [Required, MaxLength(128)]
+        public string device_name { get; set; }
+        [Required, MaxLength(64)]
+        public string device_type { get; set; }
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public DateTime inserted_at { get; set; }
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]

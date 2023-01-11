@@ -15,7 +15,7 @@ namespace Core.Domain {
         }
         #endregion
 
-        public IDbConnection MsSqlConnection => new SqlConnection(_appSetting.ConnectionStrings.MsSql);
-        public IDbConnection MySqlConnection => new MySqlConnection(_appSetting.ConnectionStrings.MsSql);
+        public IDbConnection MsSqlConnection => new SqlConnection(_appSetting.ConnectionStrings.Postgres);
+        public IDbConnection MySqlConnection => new MySqlConnection(_appSetting.ConnectionStrings.Postgres);
     }
 }
