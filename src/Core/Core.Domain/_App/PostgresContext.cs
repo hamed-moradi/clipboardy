@@ -1,16 +1,11 @@
-﻿using Core.Domain.Entities;
+﻿using Core.Domain.Configurations;
+using Core.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata;
 
 namespace Core.Domain._App {
   public class PostgresContext: DbContext {
     protected override void OnModelCreating(ModelBuilder modelBuilder) {
-      modelBuilder.Entity<Account>()
-        .HasKey(k => k.id);
-
-      modelBuilder.Entity<Account>()
-       .Property(p => p.inserted_at).ValueGeneratedOnAdd()
-       .Metadata.SetAfterSaveBehavior(PropertySaveBehavior.Save);
+      AccountConfiguration.OnModelCreating(modelBuilder);
     }
 
     public DbSet<Account> Accounts { get; set; }

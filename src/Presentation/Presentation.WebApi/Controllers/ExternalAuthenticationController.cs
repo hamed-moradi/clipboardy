@@ -141,26 +141,27 @@ namespace Presentation.WebApi.Controllers {
         externalUser.DeviceName = headerbindingmodel.DeviceName;
         externalUser.DeviceType = headerbindingmodel.DeviceType;
 
-        var accountprofile = await _accountProfileService.FirstAsync(new AccountProfileGetFirstSchema {
-          TypeId = AccountProfileType.Email.ToInt(),
-          LinkedId = externalUser.Email
-        }).ConfigureAwait(true);
-        if(accountprofile == null) {
-          Log.Debug($"User {User.Identity.Name} try to sign in for first time at {DateTime.UtcNow}");
-          return Ok(_accountService.ExternalSignupAsync(externalUser));
-        }
-        else {
-          Log.Debug($"Account with Id={accountprofile.AccountId} try to sign in at {DateTime.UtcNow}");
-          var result = await _accountService.ExternalSigninAsync(externalUser, accountprofile).ConfigureAwait(false);
-          switch(result.Code) {
-            case 200:
-              return Ok(result.Data);
-            case 500:
-              return Problem(_localizer[result.Message]);
-            default:
-              return BadRequest(_localizer[result.Message]);
-          }
-        }
+        //var accountprofile = await _accountProfileService.FirstAsync(new AccountProfileGetFirstSchema {
+        //  TypeId = AccountProfileType.Email.ToInt(),
+        //  LinkedId = externalUser.Email
+        //}).ConfigureAwait(true);
+        //if(accountprofile == null) {
+        //  Log.Debug($"User {User.Identity.Name} try to sign in for first time at {DateTime.UtcNow}");
+        //  return Ok(_accountService.ExternalSignupAsync(externalUser));
+        //}
+        //else {
+        //  Log.Debug($"Account with Id={accountprofile.AccountId} try to sign in at {DateTime.UtcNow}");
+        //  var result = await _accountService.ExternalSigninAsync(externalUser, accountprofile).ConfigureAwait(false);
+        //  switch(result.Code) {
+        //    case 200:
+        //      return Ok(result.Data);
+        //    case 500:
+        //      return Problem(_localizer[result.Message]);
+        //    default:
+        //      return BadRequest(_localizer[result.Message]);
+        //  }
+        //}
+        return Ok();
       }
       catch(Exception ex) {
         Log.Error(ex, ex.Source);
