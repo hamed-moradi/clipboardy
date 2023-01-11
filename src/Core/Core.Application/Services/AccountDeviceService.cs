@@ -1,25 +1,23 @@
-﻿using Core.Domain.StoredProcedure.Result;
-using Core.Domain.StoredProcedure.Schema;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 
 namespace Core.Application.Services {
-    public class AccountDeviceService: IAccountDeviceService {
-        #region
+  public class AccountDeviceService: IAccountDeviceService {
+    #region
 
-        public AccountDeviceService() {
+    public AccountDeviceService() {
 
-        }
-        #endregion
-
-        public async Task<AccountDeviceResult> FirstAsync(AccountDeviceGetFirstSchema accountDevice) {
-            return null;
-        }
-
-        public async Task<int> AddAsync(AccountDeviceAddSchema accountDevice) {
-            return 0;
-        }
-
-        public async Task UpdateAsync(AccountDeviceUpdateSchema accountDevice) {
-        }
     }
+    #endregion
+
+    public async Task<AccountDeviceResult> FirstAsync(AccountDeviceGetFirstSchema accountDevice) {
+      return null;
+    }
+
+    public async Task<int> AddAsync(AccountDeviceAddSchema accountDevice) {
+      return 0;
+    }
+
+    public async Task UpdateAsync(AccountDeviceUpdateSchema accountDevice) {
+    }
+  }
 }
