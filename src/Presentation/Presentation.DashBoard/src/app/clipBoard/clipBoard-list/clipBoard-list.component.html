@@ -1,0 +1,58 @@
+<div class="row">
+  <div class="col-xs-12 p-5">
+    <form
+      #f="ngForm"
+      (ngSubmit)="AddClipBoardList(f)">
+      <fieldset>
+        <div class="mb-3">
+          <input
+            type="text"
+            id="inputClipBoard"
+            class="form-control"
+            name="inputClipBoard"
+            placeholder="Enter Text To Move in Clip Board"
+            ngModel
+            >
+
+        </div>
+
+
+      </fieldset>
+    </form>
+
+
+  </div>
+</div>
+
+<hr>
+
+<div class="row">
+  <div class="col-xs-12" >
+
+    <app-clipBoard-item
+      *ngFor="let clipBoardEl of clipBoards"
+      [clipBoard]="clipBoardEl">
+    </app-clipBoard-item>
+
+  </div>
+</div>
+
+<nav aria-label="Page Navigation ClipBoard">
+    <ul class="pagination my-1 mx-4">
+      <li class="page-item disabled">
+        <a class="page-link" href="#" tabindex="-1">Previous</a>
+      </li>
+      <li class="page-item">
+        <a class="page-link" href="#">1</a>
+      </li>
+      <li  class="page-item active">
+        <a class="page-link" href="#">2 <span class="sr-only">(current)</span></a>
+      </li>
+      <li class="page-item">
+        <a class="page-link" href="#">3</a></li>
+      <li class="page-item">
+        <a class="page-link" href="#">Next</a>
+      </li>
+  </ul>
+</nav>
+

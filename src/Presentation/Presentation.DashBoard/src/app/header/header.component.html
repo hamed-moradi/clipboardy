@@ -1,0 +1,25 @@
+<nav
+  class="navbar navbar-expand-lg navbar-light p-2"
+  [style.backgroundColor]="headerColor"  >
+    <a class="navbar-brand" href="#">
+      ClipBoardy Logo
+    </a>
+  <div class="collapse navbar-collapse" id="navbarNavDropdown">
+    <ul class="navbar-nav">
+      <li class="nav-item">
+        <a class="nav-link" href="#" (click)="onSelect('SignIn')">Sign In</a>
+      </li>
+    </ul>
+    <ul class="nav navbar-nav navbar-right">
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+          Menu
+        </a>
+        <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+          <li><a class="dropdown-item" href="#">Save Data</a></li>
+          <li><a class="dropdown-item" href="#">Fetch Data</a></li>
+        </ul>
+      </li>
+    </ul>
+  </div>
+</nav>
