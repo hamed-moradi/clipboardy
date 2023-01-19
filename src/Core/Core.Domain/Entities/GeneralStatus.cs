@@ -3,12 +3,12 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Core.Domain.Entities {
-  [Table("general_status")]
+  [Table("GeneralStatus")]
   public class GeneralStatus: BaseEntity {
     [Key]
-    public int id { get; set; }
+    public int Id { get; set; }
     [Required]
-    public string title { get; set; }
-    public string desc { get; set; }
+    public string Title { get; set; }
+    public string Description { get; set; }
   }
 }

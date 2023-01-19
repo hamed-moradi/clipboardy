@@ -4,20 +4,18 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Core.Domain.Entities {
-  [Table("account")]
+  [Table("Account")]
   public class Account: BaseEntity {
     [Key]
-    public int id { get; set; }
+    public int Id { get; set; }
     [Required, MaxLength(32)]
-    public string username { get; set; }
+    public string Username { get; set; }
     [MaxLength(256)]
-    public string password { get; set; }
+    public string Password { get; set; }
     [Required]
-    public int provider_id { get; set; }
-    public DateTime? last_signedin_at { get; set; }
-    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-    public DateTime inserted_at { get; set; }
-    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-    public int status_id { get; set; }
+    public int ProviderId { get; set; }
+    public int StatusId { get; set; }
+    public DateTime? LastSignedinAt { get; set; }
+    public DateTime InsertedAt { get; set; }
   }
 }

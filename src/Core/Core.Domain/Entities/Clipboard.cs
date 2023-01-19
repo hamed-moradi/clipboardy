@@ -4,21 +4,19 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Core.Domain.Entities {
-  [Table("clipboard")]
+  [Table("Clipboard")]
   public class Clipboard: BaseEntity {
     [Key]
-    public int id { get; set; }
+    public int Id { get; set; }
     [Required]
-    public int account_id { get; set; }
+    public int AccountId { get; set; }
     [Required]
-    public int device_id { get; set; }
+    public int DeviceId { get; set; }
     [Required]
-    public int type_id { get; set; }
+    public int TypeId { get; set; }
     [Required]
-    public string content { get; set; }
-    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-    public DateTime inserted_at { get; set; }
-    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-    public int status_id { get; set; }
+    public string Content { get; set; }
+    public int StatusId { get; set; }
+    public DateTime InsertedAt { get; set; }
   }
 }

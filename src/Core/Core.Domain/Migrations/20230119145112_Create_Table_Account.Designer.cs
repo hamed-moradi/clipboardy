@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Core.Domain.Migrations
 {
     [DbContext(typeof(PostgresContext))]
-    [Migration("20230119140624_Create_Table_Account")]
+    [Migration("20230119145112_Create_Table_Account")]
     partial class CreateTableAccount
     {
         /// <inheritdoc />
@@ -27,40 +27,40 @@ namespace Core.Domain.Migrations
 
             modelBuilder.Entity("Core.Domain.Entities.Account", b =>
                 {
-                    b.Property<int>("id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("integer");
 
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("id"));
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
-                    b.Property<DateTime>("inserted_at")
+                    b.Property<DateTime>("InsertedAt")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("timestamp with time zone")
                         .HasDefaultValueSql("now()");
 
-                    b.Property<DateTime?>("last_signedin_at")
+                    b.Property<DateTime?>("LastSignedinAt")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<string>("password")
+                    b.Property<string>("Password")
                         .HasMaxLength(256)
                         .HasColumnType("character varying(256)");
 
-                    b.Property<int>("provider_id")
+                    b.Property<int>("ProviderId")
                         .HasColumnType("integer");
 
-                    b.Property<int>("status_id")
+                    b.Property<int>("StatusId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("integer")
                         .HasDefaultValue(10);
 
-                    b.Property<string>("username")
+                    b.Property<string>("Username")
                         .IsRequired()
                         .HasMaxLength(32)
                         .HasColumnType("character varying(32)");
 
-                    b.HasKey("id");
+                    b.HasKey("Id");
 
-                    b.ToTable("account");
+                    b.ToTable("Account");
                 });
 #pragma warning restore 612, 618
         }

@@ -38,8 +38,8 @@ namespace Test.Common.Units {
     [TestMethod, TestCategory("AccountService"), TestCategory("Add")]
     public void Add() {
       var account = new Account {
-        username = "admin",
-        provider_id = 1
+        Username = "admin",
+        ProviderId = 1
       };
       var result = _accountService.Add(account);
       Assert.IsNotNull(result);
