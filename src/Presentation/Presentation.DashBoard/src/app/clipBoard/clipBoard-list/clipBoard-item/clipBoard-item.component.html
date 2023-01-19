@@ -1,37 +1,22 @@
 <div class="list-group border border-2 p-2 mx-4 my-2">
-  <div class="container-fluid  ">
-    <div class="row d-flex justify-content-end">
+  <div class="container-fluid">
+    <div class="row d-flex justify-content-end my-1">
       <div class="col-1">
-        <button
-          type="button"
-          class="btn-image"
-          style="border: none; opacity: 0.5;">
-            <img
-              src="../../../../assets/pic/clipboard-list-solid.svg"
-              alt="clipBoardPic"
-              class="float-start"
-              style='width: 20px;'>
-        </button>
+        <a class="btn btn-primary mx-1" [href]="onClickCopyClipBoard()">
+          <i class="fa fa-copy" aria-hidden="true"></i>
+        </a>
 
-        <button
-          type="button"
-          class="btn-image"
-          style="border: none; opacity: 0.5;">
-            <img
-              src="../../../../assets/pic/trash-solid.svg"
-              alt="trashPic"
-              class="float-end"
-              style='width: 20px;'>
-        </button>
+        <a class="btn btn-danger" [href]="onClickDeleteClipBoard()">
+          <i class="fa fa-trash-o" aria-hidden="true"></i>
+        </a>
       </div>
     </div>
+
+    <a
+      href="#"
+      class="list-group-item list-group-item-action list-group-item-light"
+    >
+      {{ clipBoard.text }}
+    </a>
   </div>
-
-  <a
-    href="#"
-    class="list-group-item list-group-item-action list-group-item-light">
-    {{clipBoard.text}}
-  </a>
-
 </div>
-

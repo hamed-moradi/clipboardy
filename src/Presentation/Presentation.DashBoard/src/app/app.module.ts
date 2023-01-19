@@ -2,9 +2,8 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { RouterModule } from '@angular/router';
-import { AppRoutingModule } from './app.routing';
+import { AppRoutingModule } from './app.routing.module';
 
 import { AppComponent } from './app.component';
 import { SignupComponent } from './signup/signup.component';
@@ -16,9 +15,6 @@ import { FooterComponent } from './shared/footer/footer.component';
 
 import { HomeModule } from './home/home.module';
 import { LoginComponent } from './login/login.component';
-import { ClipBoardComponent } from './clipBoard/clipBoard.component';
-import { ClipBoardListComponent } from './clipBoard/clipBoard-list/clipBoard-list.component';
-import { ClipBoardItemComponent } from './clipBoard/clipBoard-list/clipBoard-item/clipBoard-item.component';
 
 @NgModule({
   declarations: [
@@ -29,9 +25,6 @@ import { ClipBoardItemComponent } from './clipBoard/clipBoard-list/clipBoard-ite
     NavbarComponent,
     FooterComponent,
     LoginComponent,
-    ClipBoardComponent,
-    ClipBoardListComponent,
-    ClipBoardItemComponent,
   ],
   imports: [
     BrowserModule,
@@ -40,7 +33,6 @@ import { ClipBoardItemComponent } from './clipBoard/clipBoard-list/clipBoard-ite
     RouterModule,
     AppRoutingModule,
     HomeModule,
-    FontAwesomeModule,
   ],
   providers: [],
   bootstrap: [AppComponent],

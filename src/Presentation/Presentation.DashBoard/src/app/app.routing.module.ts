@@ -10,7 +10,10 @@ import { LandingComponent } from './landing/landing.component';
 import { LoginComponent } from './login/login.component';
 
 const routes: Routes = [
-  { path: 'home', component: HomeComponent },
+  {
+    path: 'home',
+    loadChildren: () => import('./home/home.module').then((m) => m.HomeModule),
+  },
   { path: 'user-profile', component: ProfileComponent },
   { path: 'register', component: SignupComponent },
   { path: 'landing', component: LandingComponent },
