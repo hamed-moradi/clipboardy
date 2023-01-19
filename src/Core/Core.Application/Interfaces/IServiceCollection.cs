@@ -1,15 +1,7 @@
-﻿using Core.Domain._App;
-using Core.Domain.Entities;
-using Microsoft.EntityFrameworkCore;
+﻿using Core.Domain.Entities;
 using System.Threading.Tasks;
 
-namespace Core.Application {
-  public interface IBaseService<TEntity> where TEntity : BaseEntity {
-    DbSet<TEntity> Entity { get; }
-    TEntity Add(TEntity entity, bool save = true);
-    Task<TEntity> AddAsync(TEntity entity, bool save = true);
-  }
-
+namespace Core.Application.Interfaces {
   public interface IAccountService: IBaseService<Account> {
     //AccountResult GetById(int id);
     //Task<Account> AuthenticateAsync(string token);

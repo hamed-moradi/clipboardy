@@ -4,14 +4,16 @@ using Assets.Model.Header;
 using Assets.Utility.Extension;
 using Assets.Utility.Infrastructure;
 using Core.Application._App;
+using Core.Application.Interfaces;
 using Core.Domain.Entities;
 using Serilog;
 using System;
 using System.Threading.Tasks;
 using System.Transactions;
 
-namespace Core.Application.Services {
-  public class AccountService: BaseService<Account>, IAccountService {
+namespace Core.Application.Services
+{
+    public class AccountService: BaseService<Account>, IAccountService {
     #region
     private readonly RandomMaker _randomMaker;
     private readonly Cryptograph _cryptograph;

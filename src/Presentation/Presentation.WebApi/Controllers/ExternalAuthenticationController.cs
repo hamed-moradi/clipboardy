@@ -2,7 +2,7 @@
 using Assets.Model.Header;
 using Assets.Utility.Extension;
 using Assets.Utility.Infrastructure;
-using Core.Application;
+using Core.Application.Interfaces;
 using Core.Domain.Entities;
 using FastMember;
 using Microsoft.AspNetCore.Authentication;
@@ -20,8 +20,9 @@ using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Presentation.WebApi.Controllers {
-  [Route("api/[controller]")]
+namespace Presentation.WebApi.Controllers
+{
+    [Route("api/[controller]")]
   public class ExternalAuthenticationController: BaseController {
     #region ctor
     private readonly IAccountService _accountService;

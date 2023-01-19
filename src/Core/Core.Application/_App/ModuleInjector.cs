@@ -1,9 +1,11 @@
 ﻿using Assets.Model.Common;
+using Core.Application.Interfaces;
 using Core.Application.Services;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Core.Application {
-  public static class ModuleInjector {
+namespace Core.Application
+{
+    public static class ModuleInjector {
     public static void AddApplications(
         this IServiceCollection services,
         AppSetting appSetting = null) {

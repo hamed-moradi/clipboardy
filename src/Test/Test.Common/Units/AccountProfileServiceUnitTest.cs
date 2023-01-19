@@ -1,10 +1,11 @@
 using Assets.Utility;
 using Assets.Utility.Infrastructure;
-using Core.Application;
+using Core.Application.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace Test.Common.Units {
-  [TestClass]
+namespace Test.Common.Units
+{
+    [TestClass]
   public class AccountProfileServiceUnitTest {
     #region ctor
     private readonly IAccountProfileService _accountProfileService;

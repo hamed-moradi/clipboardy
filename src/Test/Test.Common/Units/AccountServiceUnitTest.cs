@@ -1,6 +1,6 @@
 using Assets.Utility;
 using Assets.Utility.Infrastructure;
-using Core.Application;
+using Core.Application.Interfaces;
 using Core.Domain.Entities;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -29,10 +29,8 @@ namespace Test.Common.Units {
 
     [TestMethod, TestCategory("AccountService"), TestCategory("First")]
     public void First() {
-      //var query = new AccountGetFirstSchema { Id = 4 };
-      //var account = _accountService.FirstAsync(query).GetAwaiter().GetResult();
-      //Assert.IsTrue(query.StatusCode == 200);
-      //Assert.IsTrue(account != null);
+      var account = _accountService.First(p => p.Id == 1);
+      Assert.IsNotNull(account);
     }
 
     [TestMethod, TestCategory("AccountService"), TestCategory("Add")]

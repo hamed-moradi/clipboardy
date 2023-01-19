@@ -1,9 +1,11 @@
 ﻿using Core.Application._App;
+using Core.Application.Interfaces;
 using Core.Domain.Entities;
 using System.Threading.Tasks;
 
-namespace Core.Application.Services {
-  public class AccountProfileService: BaseService<AccountProfile>, IAccountProfileService {
+namespace Core.Application.Services
+{
+    public class AccountProfileService: BaseService<AccountProfile>, IAccountProfileService {
     #region
 
     public AccountProfileService() {

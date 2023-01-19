@@ -1,12 +1,13 @@
 ﻿using Assets.Model.Binding;
-using Core.Application;
+using Core.Application.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Serilog;
 using System;
 using System.Threading.Tasks;
 
-namespace Presentation.WebApi.Controllers {
-  public class ClipboardController: BaseController {
+namespace Presentation.WebApi.Controllers
+{
+    public class ClipboardController: BaseController {
     #region ctor
     private readonly IClipboardService _clipboardService;
 

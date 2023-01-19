@@ -1,12 +1,13 @@
 ﻿using Assets.Utility;
 using Assets.Utility.Infrastructure;
-using Core.Application;
+using Core.Application.Interfaces;
 using Core.Domain.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.Localization;
 
-namespace Presentation.WebApi.FilterAttributes {
-  public class CustomAuthorizeAttribute: AuthorizeAttribute {
+namespace Presentation.WebApi.FilterAttributes
+{
+    public class CustomAuthorizeAttribute: AuthorizeAttribute {
     #region ctor
     private readonly IStringLocalizer _localizer;
     private readonly IAccountService _accountService;
