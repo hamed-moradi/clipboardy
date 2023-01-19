@@ -79,7 +79,9 @@ namespace Presentation.WebApi {
         });
       });
 
-      services.AddDbContext<PostgresContext>(opt => opt.UseNpgsql(appSettings.ConnectionStrings.Postgres));
+      services.AddDbContext<PostgresContext>(
+        opt => opt.UseNpgsql(appSettings.ConnectionStrings.Postgres),
+        ServiceLifetime.Transient);
 
       // add external authentication
       services

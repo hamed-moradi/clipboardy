@@ -2,6 +2,7 @@
 using Assets.Utility.Extension;
 using Assets.Utility.Infrastructure;
 using Core.Application;
+using Core.Domain.Entities;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.Extensions.Localization;
 using System;

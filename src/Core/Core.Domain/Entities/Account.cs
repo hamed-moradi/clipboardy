@@ -1,15 +1,16 @@
-﻿using System;
+﻿using Core.Domain._App;
+using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Core.Domain.Entities {
   [Table("account")]
-  public class Account {
+  public class Account: BaseEntity {
     [Key]
     public int id { get; set; }
     [Required, MaxLength(32)]
     public string username { get; set; }
-    [Required, MaxLength(256)]
+    [MaxLength(256)]
     public string password { get; set; }
     [Required]
     public int provider_id { get; set; }

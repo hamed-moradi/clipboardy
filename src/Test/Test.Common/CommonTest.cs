@@ -1,14 +1,21 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Core.Application._App;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json;
-using System;
-using Test.Common.Namespace1;
-//using Test.Common.Namespace2;
 
 namespace Test.Common {
   [TestClass]
   public class CommonTest {
-    [TestMethod, TestCategory("Common"), TestCategory("EnumToString")]
-    public void EnumToString() {
+    #region ctors
+    private readonly BaseService _baseService;
+
+    public CommonTest() {
+      _baseService = new BaseService();
+    }
+    #endregion
+
+    [TestMethod, TestCategory("Common"), TestCategory("DbConnection")]
+    public void DbConnection() {
+      Assert.IsTrue(_baseService.PostgresContext.Database.CanConnect());
     }
 
     [TestMethod, TestCategory("Common"), TestCategory("GetCorrectId")]
@@ -26,18 +33,5 @@ namespace Test.Common {
     public void PropertyMapper() {
 
     }
-
-    [TestMethod, TestCategory("Common"), TestCategory("Namespace")]
-    public void Namespace() {
-      Console.WriteLine(new Me());
-    }
   }
-}
-
-namespace Test.Common.Namespace1 {
-  public class Me { }
-}
-
-namespace Test.Common.Namespace2 {
-  public class Me { }
 }

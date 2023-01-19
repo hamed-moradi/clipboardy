@@ -1,5 +1,8 @@
-﻿namespace Core.Application.Services {
-  public class ClipboardService: IClipboardService {
+﻿using Core.Application._App;
+using Core.Domain.Entities;
+
+namespace Core.Application.Services {
+  public class ClipboardService: BaseService<Clipboard>, IClipboardService {
     #region
 
     public ClipboardService() {

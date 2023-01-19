@@ -1,10 +1,10 @@
 ﻿using System;
 
 namespace Assets.Model.Header {
-  public class Account {
-    public Account() { }
+  public class AccountHeaderModel {
+    public AccountHeaderModel() { }
 
-    public Account(int id, int deviceId, string username, DateTime? lastSignedinAt = null) {
+    public AccountHeaderModel(int id, int deviceId, string username, DateTime? lastSignedinAt = null) {
       Id = id;
       DeviceId = deviceId;
       Username = username;

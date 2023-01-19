@@ -1,9 +1,9 @@
-﻿using Assets.Model.Base;
-using Assets.Model.Binding;
+﻿using Assets.Model.Binding;
 using Assets.Model.Header;
 using Assets.Utility.Extension;
 using Assets.Utility.Infrastructure;
 using Core.Application;
+using Core.Domain.Entities;
 using FastMember;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
@@ -44,7 +44,7 @@ namespace Presentation.WebApi.Controllers {
       foreach(var item in claims) {
         var claim = claims.FirstOrDefault(x => x.Type == item.Value);
         objectAccessor[item.Type] = claim?.Value;
-        if(result.ProviderId == AccountProvider.Clipboardy)
+        if(result.ProviderId == Assets.Model.Base.AccountProvider.Clipboardy)
           result.ProviderId = claim.Issuer.ToProvider();
       }
       return result;
@@ -132,7 +132,7 @@ namespace Presentation.WebApi.Controllers {
           return Problem(_localizer[DataTransferer.ExternalAuthenticationEmailError().Message]);
         }
 
-        if(externalUser.ProviderId == AccountProvider.Clipboardy) {
+        if(externalUser.ProviderId == Assets.Model.Base.AccountProvider.Clipboardy) {
           Log.Error("External signup with unknown ProviderId");
           return Problem(_localizer[DataTransferer.ExternalAuthenticationWithUnknownProvider().Message]);
         }

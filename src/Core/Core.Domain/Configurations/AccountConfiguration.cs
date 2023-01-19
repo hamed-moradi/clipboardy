@@ -1,6 +1,6 @@
-﻿using Core.Domain.Entities;
+﻿using Assets.Model.Base;
+using Core.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata;
 
 namespace Core.Domain.Configurations {
   public class AccountConfiguration {
@@ -9,8 +9,12 @@ namespace Core.Domain.Configurations {
         .HasKey(k => k.id);
 
       modelBuilder.Entity<Account>()
-        .Property(p => p.inserted_at).ValueGeneratedOnAdd()
-        .Metadata.SetAfterSaveBehavior(PropertySaveBehavior.Save);
+        .Property(p => p.inserted_at)
+        .HasDefaultValueSql("now()");
+
+      modelBuilder.Entity<Account>()
+        .Property(p => p.status_id)
+        .HasDefaultValue(Status.Active);
     }
   }
 }

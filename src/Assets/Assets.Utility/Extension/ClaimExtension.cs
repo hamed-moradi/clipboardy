@@ -5,7 +5,7 @@ using System.Security.Claims;
 namespace Assets.Utility.Extension {
   public static class ClaimExtension {
 
-    public static ClaimsIdentity ToClaimsIdentity(this Account account) {
+    public static ClaimsIdentity ToClaimsIdentity(this AccountHeaderModel account) {
       var result = new ClaimsIdentity(new[] {
                     new Claim("id", account.Id.ToString()),
                     new Claim("deviceId", account.DeviceId.ToString()),
@@ -15,8 +15,8 @@ namespace Assets.Utility.Extension {
       return result;
     }
 
-    public static Account ToAccount(this ClaimsPrincipal principal) {
-      var result = new Account();
+    public static AccountHeaderModel ToAccount(this ClaimsPrincipal principal) {
+      var result = new AccountHeaderModel();
       foreach(var claim in principal.Claims) {
         switch(claim.Type.ToLower()) {
           case "id":

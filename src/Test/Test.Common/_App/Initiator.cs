@@ -1,4 +1,7 @@
 ﻿using Assets.Model.Common;
+using Core.Domain._App;
+using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
@@ -27,6 +30,16 @@ namespace Test.Common {
       services.Configure<AppSetting>(config => configuration.Bind(config));
       var appSettings = services.BuildServiceProvider().GetService<IOptionsSnapshot<AppSetting>>().Value;
       services.AddSingleton(sp => appSettings);
+
+      services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+      // No database provider has been configured for this DbContext.
+      // A provider can be configured by overriding the 'DbContext.OnConfiguring' method
+      // or by using 'AddDbContext' on the application service provider.
+      // If 'AddDbContext' is used, then also ensure that your DbContext type accepts a DbContextOptions<TContext> object
+      // in its constructor and passes it to the base constructor for DbContext
+      services.AddDbContext<PostgresContext>(opt => {
+        opt.UseNpgsql(appSettings.ConnectionStrings.Postgres);
+      }, ServiceLifetime.Transient);
 
       // automapper
       services.AddAutoMapper(typeof(MapperProfile));

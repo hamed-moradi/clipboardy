@@ -4,6 +4,7 @@ using Assets.Utility;
 using Assets.Utility.Extension;
 using Assets.Utility.Infrastructure;
 using Core.Application;
+using Core.Domain.Entities;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;

@@ -1,6 +1,7 @@
 ﻿using Assets.Utility;
 using Assets.Utility.Infrastructure;
 using Core.Application;
+using Core.Domain.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.Localization;
 

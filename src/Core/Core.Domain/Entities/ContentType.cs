@@ -1,9 +1,10 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Core.Domain._App;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Core.Domain.Entities {
   [Table("content_type")]
-  public class ContentType {
+  public class ContentType: BaseEntity {
     [Key]
     public int id { get; set; }
     [Required, MaxLength(64)]

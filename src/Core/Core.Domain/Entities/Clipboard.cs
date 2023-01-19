@@ -1,10 +1,11 @@
-﻿using System;
+﻿using Core.Domain._App;
+using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Core.Domain.Entities {
   [Table("clipboard")]
-  public class Clipboard {
+  public class Clipboard: BaseEntity {
     [Key]
     public int id { get; set; }
     [Required]

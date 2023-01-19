@@ -3,13 +3,15 @@ using Assets.Model.Binding;
 using Assets.Model.Header;
 using Assets.Utility.Extension;
 using Assets.Utility.Infrastructure;
+using Core.Application._App;
+using Core.Domain.Entities;
 using Serilog;
 using System;
 using System.Threading.Tasks;
 using System.Transactions;
 
 namespace Core.Application.Services {
-  public class AccountService: IAccountService {
+  public class AccountService: BaseService<Account>, IAccountService {
     #region
     private readonly RandomMaker _randomMaker;
     private readonly Cryptograph _cryptograph;
@@ -32,8 +34,8 @@ namespace Core.Application.Services {
     }
     #endregion
 
-    public async Task<Account> AuthenticateAsync(string token) {
-      Account account = null;
+    public async Task<AccountHeaderModel> AuthenticateAsync(string token) {
+      AccountHeaderModel account = null;
       await Task.Run(() => {
         account = _jwtHandler.Validate(token).ToAccount();
       });

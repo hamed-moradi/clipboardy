@@ -1,10 +1,11 @@
-﻿using System;
+﻿using Core.Domain._App;
+using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Core.Domain.Entities {
   [Table("account_device")]
-  public class AccountDevice {
+  public class AccountDevice: BaseEntity {
     [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public int id { get; set; }
     public int account_id { get; set; }

@@ -16,7 +16,7 @@ namespace Presentation.WebApi.Controllers {
     protected readonly IMapper _mapper;
     protected readonly IStringLocalizer<BaseController> _localizer;
     protected readonly IWebHostEnvironment _webHostEnvironment;
-    protected Account CurrentAccount { get { return (Account)HttpContext.Items[nameof(CurrentAccount)]; } }
+    protected AccountHeaderModel CurrentAccount { get { return (AccountHeaderModel)HttpContext.Items[nameof(CurrentAccount)]; } }
     protected string IP { get { return HttpContext.Connection.RemoteIpAddress.ToString(); } }
     protected string URL { get { return $"{HttpContext.Request.Scheme}://{HttpContext.Request.Host}{HttpContext.Request.Path}{HttpContext.Request.QueryString}"; } }
 

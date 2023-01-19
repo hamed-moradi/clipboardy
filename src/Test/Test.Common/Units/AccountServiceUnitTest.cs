@@ -1,6 +1,7 @@
 using Assets.Utility;
 using Assets.Utility.Infrastructure;
 using Core.Application;
+using Core.Domain.Entities;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Test.Common.Units {
@@ -36,6 +37,12 @@ namespace Test.Common.Units {
 
     [TestMethod, TestCategory("AccountService"), TestCategory("Add")]
     public void Add() {
+      var account = new Account {
+        username = "admin",
+        provider_id = 1
+      };
+      var result = _accountService.Add(account);
+      Assert.IsNotNull(result);
       //var username = _randomMaker.NewNumber();
       //var duplicated = _accountService.FirstAsync(new AccountGetFirstSchema { Username = username }).GetAwaiter().GetResult();
       //while(duplicated != null) {
