@@ -5,9 +5,8 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json;
 using System;
 
-namespace Test.Common.Units
-{
-    [TestClass]
+namespace Test.Common.Units {
+  [TestClass]
   public class AccountDeviceServiceUnitTest {
     #region ctor
     private readonly IAccountDeviceService _accountDeviceService;
@@ -19,7 +18,7 @@ namespace Test.Common.Units
 
     [TestMethod, TestCategory("AccountDeviceService"), TestCategory("First")]
     public void First() {
-      var accountDevice = _accountDeviceService.First(p => p.Id == 1);
+      var accountDevice = _accountDeviceService.First(p => p.id == 1);
       Assert.IsNotNull(accountDevice);
       Console.WriteLine(JsonConvert.SerializeObject(accountDevice.Account));
     }
@@ -27,10 +26,10 @@ namespace Test.Common.Units
     [TestMethod, TestCategory("AccountDeviceService"), TestCategory("Add")]
     public void Add() {
       var accountDevice = new AccountDevice {
-        AccountId = 1,
-        DeviceId = "DeviceId",
-        DeviceName = "DeviceName",
-        DeviceType = "DeviceType"
+        account_id = 1,
+        device_key = "DeviceId",
+        device_name = "DeviceName",
+        device_type = "DeviceType"
       };
       var result = _accountDeviceService.Add(accountDevice);
       Assert.IsNotNull(result);

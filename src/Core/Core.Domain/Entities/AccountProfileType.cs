@@ -3,12 +3,12 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Core.Domain.Entities {
-  [Table("AccountProfileType")]
+  [Table("account_profile_type")]
   public class AccountProfileType: BaseEntity {
     [Key]
-    public int Id { get; set; }
+    public int id { get; set; }
     [Required]
-    public string Title { get; set; }
-    public string Description { get; set; }
+    public string title { get; set; }
+    public string description { get; set; }
   }
 }

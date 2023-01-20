@@ -3,9 +3,8 @@ using Core.Application.Interfaces;
 using Core.Domain._App;
 using Microsoft.EntityFrameworkCore;
 
-namespace Core.Application._App
-{
-    public class BaseService {
+namespace Core.Application._App {
+  public class BaseService {
     public readonly PostgresContext PostgresContext;
 
     public BaseService() {

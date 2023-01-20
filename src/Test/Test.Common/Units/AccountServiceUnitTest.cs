@@ -29,15 +29,14 @@ namespace Test.Common.Units {
 
     [TestMethod, TestCategory("AccountService"), TestCategory("First")]
     public void First() {
-      var account = _accountService.First(p => p.Id == 1);
+      var account = _accountService.First(p => p.id == 1);
       Assert.IsNotNull(account);
     }
 
     [TestMethod, TestCategory("AccountService"), TestCategory("Add")]
     public void Add() {
       var account = new Account {
-        Username = "admin",
-        ProviderId = 1
+        username = "admin"
       };
       var result = _accountService.Add(account);
       Assert.IsNotNull(result);

@@ -6,14 +6,11 @@ namespace Core.Domain.Configurations {
   public class AccountConfiguration {
     internal static void OnModelCreating(ModelBuilder modelBuilder) {
       modelBuilder.Entity<Account>()
-        .HasKey(k => k.Id);
-
-      modelBuilder.Entity<Account>()
-        .Property(p => p.StatusId)
+        .Property(p => p.status_id)
         .HasDefaultValue(Status.Active);
 
       modelBuilder.Entity<Account>()
-        .Property(p => p.InsertedAt)
+        .Property(p => p.inserted_at)
         .HasDefaultValueSql("now()");
     }
   }

@@ -11,9 +11,8 @@ using System;
 using System.Threading.Tasks;
 using System.Transactions;
 
-namespace Core.Application.Services
-{
-    public class AccountService: BaseService<Account>, IAccountService {
+namespace Core.Application.Services {
+  public class AccountService: BaseService<Account>, IAccountService {
     #region
     private readonly RandomMaker _randomMaker;
     private readonly Cryptograph _cryptograph;

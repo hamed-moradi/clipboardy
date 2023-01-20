@@ -4,24 +4,24 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Core.Domain.Entities {
-  [Table("AccountDevice")]
+  [Table("account_device")]
   public partial class AccountDevice: BaseEntity {
     [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-    public int Id { get; set; }
+    public int id { get; set; }
     [Required]
-    public int AccountId { get; set; }
+    public int account_id { get; set; }
     [Required, MaxLength(64)]
-    public string DeviceId { get; set; }
+    public string device_key { get; set; }
     [Required, MaxLength(128)]
-    public string DeviceName { get; set; }
+    public string device_name { get; set; }
     [Required, MaxLength(64)]
-    public string DeviceType { get; set; }
-    public int StatusId { get; set; }
-    public DateTime InsertedAt { get; set; }
+    public string device_type { get; set; }
+    public int status_id { get; set; }
+    public DateTime inserted_at { get; set; }
   }
 
   public partial class AccountDevice {
-    [ForeignKey(nameof(AccountId))]
+    [ForeignKey(nameof(account_id))]
     public Account Account { get; set; }
   }
 }

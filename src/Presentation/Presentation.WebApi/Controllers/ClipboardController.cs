@@ -5,9 +5,8 @@ using Serilog;
 using System;
 using System.Threading.Tasks;
 
-namespace Presentation.WebApi.Controllers
-{
-    public class ClipboardController: BaseController {
+namespace Presentation.WebApi.Controllers {
+  public class ClipboardController: BaseController {
     #region ctor
     private readonly IClipboardService _clipboardService;
 

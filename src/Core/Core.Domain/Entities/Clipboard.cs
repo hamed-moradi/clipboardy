@@ -4,19 +4,30 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Core.Domain.Entities {
-  [Table("Clipboard")]
-  public class Clipboard: BaseEntity {
+  [Table("clipboard")]
+  public partial class Clipboard: BaseEntity {
     [Key]
-    public int Id { get; set; }
+    public int id { get; set; }
     [Required]
-    public int AccountId { get; set; }
+    public int account_id { get; set; }
     [Required]
-    public int DeviceId { get; set; }
+    public int device_id { get; set; }
     [Required]
-    public int TypeId { get; set; }
+    public int type_id { get; set; }
     [Required]
-    public string Content { get; set; }
-    public int StatusId { get; set; }
-    public DateTime InsertedAt { get; set; }
+    public string content { get; set; }
+    public int status_id { get; set; }
+    public DateTime inserted_at { get; set; }
+  }
+
+  public partial class Clipboard {
+    [ForeignKey(nameof(account_id))]
+    public Account Account { get; set; }
+
+    [ForeignKey(nameof(device_id))]
+    public AccountDevice AccountDevice { get; set; }
+
+    [ForeignKey(nameof(type_id))]
+    public ContentType ContentType { get; set; }
   }
 }

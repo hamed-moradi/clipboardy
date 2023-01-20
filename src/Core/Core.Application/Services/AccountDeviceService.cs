@@ -2,9 +2,8 @@
 using Core.Application.Interfaces;
 using Core.Domain.Entities;
 
-namespace Core.Application.Services
-{
-    public class AccountDeviceService: BaseService<AccountDevice>, IAccountDeviceService {
+namespace Core.Application.Services {
+  public class AccountDeviceService: BaseService<AccountDevice>, IAccountDeviceService {
     #region
 
     public AccountDeviceService() {

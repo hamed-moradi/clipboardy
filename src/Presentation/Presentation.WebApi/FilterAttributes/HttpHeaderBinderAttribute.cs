@@ -2,16 +2,14 @@
 using Assets.Utility.Extension;
 using Assets.Utility.Infrastructure;
 using Core.Application.Interfaces;
-using Core.Domain.Entities;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.Extensions.Localization;
 using System;
 using System.Globalization;
 using System.Linq;
 
-namespace Presentation.WebApi.FilterAttributes
-{
-    public class HttpHeaderBinderAttribute: ActionFilterAttribute {
+namespace Presentation.WebApi.FilterAttributes {
+  public class HttpHeaderBinderAttribute: ActionFilterAttribute {
     #region ctor
     private readonly IStringLocalizer _localizer;
     private readonly IAccountService _accountService;

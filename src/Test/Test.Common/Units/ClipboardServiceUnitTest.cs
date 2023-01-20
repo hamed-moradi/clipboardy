@@ -2,9 +2,8 @@ using Assets.Utility;
 using Core.Application.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace Test.Common.Units
-{
-    [TestClass]
+namespace Test.Common.Units {
+  [TestClass]
   public class ClipboardServiceUnitTest {
     #region ctor
     private readonly IClipboardService _clipboardService;

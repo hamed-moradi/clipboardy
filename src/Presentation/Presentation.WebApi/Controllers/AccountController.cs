@@ -4,7 +4,6 @@ using Assets.Utility;
 using Assets.Utility.Extension;
 using Assets.Utility.Infrastructure;
 using Core.Application.Interfaces;
-using Core.Domain.Entities;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
@@ -18,9 +17,8 @@ using System.ComponentModel.DataAnnotations;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Presentation.WebApi.Controllers
-{
-    public class AccountController: BaseController {
+namespace Presentation.WebApi.Controllers {
+  public class AccountController: BaseController {
     #region ctor
     private readonly IAccountService _accountService;
     private readonly IAccountProfileService _accountProfileService;

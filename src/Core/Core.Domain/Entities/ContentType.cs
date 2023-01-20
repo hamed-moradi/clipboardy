@@ -3,15 +3,15 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Core.Domain.Entities {
-  [Table("ContentType")]
+  [Table("content_type")]
   public class ContentType: BaseEntity {
     [Key]
-    public int Id { get; set; }
+    public int id { get; set; }
     [Required, MaxLength(64)]
-    public string Name { get; set; }
+    public string name { get; set; }
     [Required, MaxLength(16)]
-    public string Extension { get; set; }
+    public string extension { get; set; }
     [Required, MaxLength(128)]
-    public string MIMEType { get; set; }
+    public string mime_type { get; set; }
   }
 }
