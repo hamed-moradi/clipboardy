@@ -1,6 +1,5 @@
-import { ConstantPool } from '@angular/compiler';
 import { Component, OnInit, Input } from '@angular/core';
-import { ClipBoard } from '../clipBoard.model';
+import { ClipBoard } from '../../clipBoard.model';
 
 @Component({
   selector: 'app-clipBoard-item',
@@ -13,6 +12,20 @@ export class ClipBoardItemComponent implements OnInit {
   constructor() {}
 
   ngOnInit(): void {}
-  onClickCopyClipBoard() {}
+  onClickCopyToClipBoard(event: Event) {
+    // Get the text field
+    if (event != null) {
+      console.log(event);
+      const copyText = this.clipBoard.text;
+
+      // Copy the text inside the text field
+      navigator.clipboard.writeText(copyText);
+
+      // Alert the copied text
+      //alert('Copied the text: ' + copyText);
+      console.log(copyText);
+    }
+  }
+
   onClickDeleteClipBoard() {}
 }

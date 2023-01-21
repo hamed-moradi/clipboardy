@@ -1,17 +1,16 @@
 import { Component, OnInit } from '@angular/core';
-import { ClipBoard } from './clipBoard-list/clipBoard.model';
+import { ClipBoard } from './clipBoard.model';
 
 @Component({
   selector: 'app-clipBoards',
   templateUrl: './clipBoard.component.html',
-  styleUrls: ['./clipBoard.component.css']
+  styleUrls: ['./clipBoard.component.css'],
 })
 export class ClipBoardComponent implements OnInit {
-  selectedclipBoard:ClipBoard;
-  constructor() { }
+  selectedclipBoard: ClipBoard;
+  constructor() {}
 
   ngOnInit(): void {
     console.log(this.selectedclipBoard);
   }
-
 }

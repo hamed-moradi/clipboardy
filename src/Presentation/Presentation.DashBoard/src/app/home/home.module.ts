@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { RouterModule } from '@angular/router';
-
+import { HttpClientModule } from '@angular/common/http';
 import { HomeComponent } from './home.component';
 
 import { SectionsModule } from '../sections/sections.module';
@@ -20,6 +20,7 @@ import { HomeRoutingModule } from './home.routing.module';
     HomeRoutingModule,
     SectionsModule,
     NgbModule,
+    HttpClientModule,
   ],
   declarations: [
     HomeComponent,
