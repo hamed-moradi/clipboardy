@@ -1,20 +1,19 @@
 ﻿using Assets.Model.Common;
-using Core.Application.Infrastructure;
+using Core.Application.Interfaces;
 using Core.Application.Services;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Core.Application {
-    public static class ModuleInjector {
-        public static void AddApplications(
-            this IServiceCollection services, 
-            AppSetting appSetting = null) {
+  public static class ModuleInjector {
+    public static void AddApplications(
+        this IServiceCollection services,
+        AppSetting appSetting = null) {
 
-            services.AddSingleton<IStoredProcedureService, StoredProcedureService>();
-            services.AddScoped<IAccountService, AccountService>();
-            services.AddScoped<IAccountDeviceService, AccountDeviceService>();
-            services.AddScoped<IAccountProfileService, AccountProfileService>();
-            services.AddScoped<IClipboardService, ClipboardService>();
-            //services.AddScoped<IContentTypeService, ContentTypeService>();
-        }
+      services.AddScoped<IAccountService, AccountService>();
+      services.AddScoped<IAccountDeviceService, AccountDeviceService>();
+      services.AddScoped<IAccountProfileService, AccountProfileService>();
+      services.AddScoped<IClipboardService, ClipboardService>();
+      //services.AddScoped<IContentTypeService, ContentTypeService>();
     }
+  }
 }
