@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
+
 import { ClipBoardService } from '../clip-board.service';
 import { ClipBoard } from '../clipBoard.model';
+import { ColorUsedService } from 'src/app/help/color-used.service';
 
 @Component({
   selector: 'app-clipBoard-list',
@@ -24,7 +26,13 @@ export class ClipBoardListComponent implements OnInit {
     new ClipBoard('Test clipBoard 3'),
   ];
 
-  constructor(private clipBoardService: ClipBoardService) {}
+  constructor(
+    private clipBoardService: ClipBoardService,
+    private colorUsedService: ColorUsedService
+  ) {}
+
+  searchColor: string = this.colorUsedService.TiffanyBlue;
+  clipboardColor: string = this.colorUsedService.TiffanyBlue;
 
   clipBoards2 = this.clipBoardService.getClipBoard().subscribe((r) => {
     console.log(r + 'get');
@@ -34,6 +42,7 @@ export class ClipBoardListComponent implements OnInit {
 
   AddClipBoardList(clipBoardInput: NgForm) {
     const value = clipBoardInput.value.inputClipBoard;
+    console.log(value);
     this.clipBoards.push(new ClipBoard(value));
 
     this.clipBoardService.postClipBoard(value).subscribe((r) => {
@@ -41,4 +50,13 @@ export class ClipBoardListComponent implements OnInit {
     });
     clipBoardInput.form.reset();
   }
+
+  SearchClipBoardList(searchInput: NgForm) {
+    const value = searchInput.value.inputClipBoard;
+    console.log(value);
+
+    searchInput.form.reset();
+  }
+
+  onClickAddModal() {}
 }

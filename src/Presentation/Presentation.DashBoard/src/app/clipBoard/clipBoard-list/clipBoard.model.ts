@@ -1,9 +1,7 @@
-export class ClipBoard{
+export class ClipBoard {
+  public text: string;
 
-  public text:string;
-
-  constructor(text:string){
-    this.text=text;
-
+  constructor(text: string) {
+    this.text = text;
   }
 }

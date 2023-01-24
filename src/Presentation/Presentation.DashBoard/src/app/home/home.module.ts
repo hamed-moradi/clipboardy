@@ -11,6 +11,7 @@ import { ClipBoardComponent } from '../clipBoard/clipBoard.component';
 import { ClipBoardListComponent } from '../clipBoard/clipBoard-list/clipBoard-list.component';
 import { ClipBoardItemComponent } from '../clipBoard/clipBoard-list/clipBoard-item/clipBoard-item.component';
 import { HomeRoutingModule } from './home.routing.module';
+import { ColorUsedService } from '../help/color-used.service';
 
 @NgModule({
   imports: [
@@ -29,6 +30,6 @@ import { HomeRoutingModule } from './home.routing.module';
     ClipBoardItemComponent,
   ],
   exports: [HomeComponent],
-  providers: [],
+  providers: [ColorUsedService],
 })
 export class HomeModule {}

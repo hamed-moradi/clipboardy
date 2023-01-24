@@ -15,6 +15,7 @@ import { FooterComponent } from './shared/footer/footer.component';
 
 import { HomeModule } from './home/home.module';
 import { LoginComponent } from './login/login.component';
+import { ColorUsedService } from './help/color-used.service';
 
 @NgModule({
   declarations: [
@@ -34,7 +35,7 @@ import { LoginComponent } from './login/login.component';
     AppRoutingModule,
     HomeModule,
   ],
-  providers: [],
+  providers: [ColorUsedService],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

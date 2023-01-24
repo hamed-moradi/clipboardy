@@ -1,7 +1,17 @@
-
- <nav class="navbar navbar-expand-lg navbar-dark bg-warning">
+<nav
+  class="navbar navbar-expand-lg navbar-dark"
+  [ngStyle]="{ backgroundColor: navbarColor }"
+>
   <div class="container">
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-warning" aria-controls="navbar-warning" aria-expanded="false" aria-label="Toggle navigation">
+    <button
+      class="navbar-toggler"
+      type="button"
+      data-toggle="collapse"
+      data-target="#navbar-warning"
+      aria-controls="navbar-warning"
+      aria-expanded="false"
+      aria-label="Toggle navigation"
+    >
       <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbar-warning">
@@ -9,11 +19,22 @@
         <div class="row">
           <div class="col-6 collapse-brand">
             <a href="javascript:void(0)">
-              <img src="../../../assets/img/Logo/clipBoardy.png" style="height: 100px;">
+              <img
+                src="../../../assets/img/Logo/clipBoardy.png"
+                style="height: 60px"
+              />
             </a>
           </div>
           <div class="col-6 collapse-close">
-            <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbar-warning" aria-controls="navbar-warning" aria-expanded="false" aria-label="Toggle navigation">
+            <button
+              type="button"
+              class="navbar-toggler"
+              data-toggle="collapse"
+              data-target="#navbar-warning"
+              aria-controls="navbar-warning"
+              aria-expanded="false"
+              aria-label="Toggle navigation"
+            >
               <span></span>
               <span></span>
             </button>
@@ -40,7 +61,11 @@
           </a>
         </li>
         <li class="nav-item">
-          <a  [routerLink]="['/login']" class="nav-link nav-link-icon" href="javascript:void(0)">
+          <a
+            [routerLink]="['/login']"
+            class="nav-link nav-link-icon"
+            href="javascript:void(0)"
+          >
             <span class="nav-link --text">Sign in</span>
           </a>
         </li>

@@ -1,24 +1,28 @@
 <div class="container-fluid">
-  <div class="row p-5">
-    <div class="d-flex align-items-center">
+  <!-- search input -->
+  <div class="row justify-content-center p-5">
+    <div class="col-md-11 d-flex align-items-center">
       <div class="flex-shrink-0">
         <i
-          class="fa fa-clipboard fa-2x"
-          aria-hidden="false"
-          style="color: blueviolet"
+          class="fa fa-search fa-2x"
+          aria-hidden="true"
+          [ngStyle]="{ color: searchColor }"
         >
         </i>
       </div>
-      <div class="flex-grow-1 ms-3">
-        <form #f="ngForm" (ngSubmit)="AddClipBoardList(f)">
+      <div class="flex-grow-1 ms-2">
+        <form
+          #searchInput="ngForm"
+          (ngSubmit)="SearchClipBoardList(searchInput)"
+        >
           <fieldset>
             <div>
               <input
                 type="text"
-                id="inputClipBoard"
+                id="searchClipBoard"
                 class="form-control"
-                name="inputClipBoard"
-                placeholder="Enter Text To Move in Clip Board"
+                name="searchClipBoard"
+                placeholder="Search in the clipboard list"
                 ngModel
               />
             </div>
@@ -30,8 +34,82 @@
 
   <hr />
 
-  <div class="row">
-    <div class="col-md-12">
+  <!-- Button add to clipboard -->
+  <div class="row d-flex justify-content-center">
+    <div class="col-md-2">
+      <button
+        class="btn btn-primary"
+        type="button"
+        data-bs-toggle="modal"
+        data-bs-target="#modalAddToClipboard"
+      >
+        <i class="fa fa-plus-square mx-2" aria-hidden="true"></i>
+        <span class="align-self-center">Add To Clipboard</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Modal Add To Clipboard -->
+  <div
+    class="modal fade"
+    id="modalAddToClipboard"
+    tabindex="-1"
+    aria-labelledby="modalAddToClipboardLabel"
+    aria-hidden="true"
+  >
+    <div class="modal-dialog" data-dismiss="modal">
+      <div class="modal-content">
+        <div class="modal-header d-flex justify-content-start">
+          <i
+            class="fa fa-clipboard fa-2x mx-1"
+            aria-hidden="true"
+            [ngStyle]="{ color: clipboardColor }"
+          >
+          </i>
+          <h2 class="modal-title fs-5" id="modalAddToClipboardLabel">
+            Add to the Clipboard list
+          </h2>
+        </div>
+        <div class="modal-body">
+          <form #clipboardInput="ngForm">
+            <fieldset>
+              <div>
+                <input
+                  type="text"
+                  id="inputClipBoard"
+                  class="form-control"
+                  name="inputClipBoard"
+                  placeholder="Enter text to add the clipboard"
+                  ngModel
+                />
+              </div>
+            </fieldset>
+          </form>
+        </div>
+        <div class="modal-footer d-flex justify-content-center">
+          <button
+            type="button"
+            class="btn btn-secondary"
+            data-bs-dismiss="modal"
+          >
+            Close
+          </button>
+          <button
+            type="submit"
+            class="btn btn-success"
+            data-bs-dismiss="modal"
+            (click)="AddClipBoardList(clipboardInput)"
+          >
+            Add To Clipboard List
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Clipboard List -->
+  <div class="row d-flex justify-content-center">
+    <div class="col-md-10">
       <app-clipBoard-item
         *ngFor="let clipBoardEl of clipBoards"
         [clipBoard]="clipBoardEl"
