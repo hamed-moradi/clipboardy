@@ -10,7 +10,6 @@ namespace Assets.Utility {
       services.AddScoped<CompressionHandler>();
       services.AddScoped<IEmailService, EmailService>();
       services.AddScoped<ISMSService, ParsGreenSMSService>();
-      services.AddSingleton<StoredProcedureHelper>();
       services.AddScoped<JwtHandler>();
     }
   }

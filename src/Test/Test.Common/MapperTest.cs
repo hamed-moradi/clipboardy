@@ -19,7 +19,7 @@ namespace Test.Common {
       var bindedmodel = new ClipboardGetBindingModel {
         TypeId = 10,
         Content = "cnt",
-        CreatedAt = null
+        FromDate = null
       };
     }
 
