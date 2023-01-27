@@ -18,7 +18,9 @@ export class NavbarComponent implements OnInit {
     private router: Router,
     private colorUsed: ColorUsedService
   ) {}
-  navbarColor: string = this.colorUsed.RichBlack;
+
+  richBlack: string = this.colorUsed.RichBlack;
+
   ngOnInit() {
     this.router.events.subscribe((event) => {
       this.isCollapsed = true;

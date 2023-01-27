@@ -1,4 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
+import { ColorUsedService } from 'src/app/help/color-used.service';
 import { ClipBoard } from '../../clipBoard.model';
 
 @Component({
@@ -9,7 +10,13 @@ import { ClipBoard } from '../../clipBoard.model';
 export class ClipBoardItemComponent implements OnInit {
   @Input() clipBoard: ClipBoard;
 
-  constructor() {}
+  constructor(private colorUsedService: ColorUsedService) {}
+
+  babyPowder: string = this.colorUsedService.BabyPowder;
+  tiffanyBlue: string = this.colorUsedService.TiffanyBlue;
+  orangePeel: string = this.colorUsedService.OrangePeel;
+  richBlack: string = this.colorUsedService.RichBlack;
+  roseMadder: string = this.colorUsedService.RoseMadder;
 
   ngOnInit(): void {}
   onClickCopyToClipBoard(event: Event) {
@@ -26,6 +33,8 @@ export class ClipBoardItemComponent implements OnInit {
       console.log(copyText);
     }
   }
+
+  onClickEditClipBoard(event: Event) {}
 
   onClickDeleteClipBoard() {}
 }

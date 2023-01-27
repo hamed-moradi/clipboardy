@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
 
-import { ClipBoardService } from '../clip-board.service';
+import { ClipBoardService } from '../clip-Board.service';
 import { ClipBoard } from '../clipBoard.model';
 import { ColorUsedService } from 'src/app/help/color-used.service';
 
@@ -15,15 +15,7 @@ export class ClipBoardListComponent implements OnInit {
     new ClipBoard('Test clipBoard 1'),
     new ClipBoard('Test clipBoard 2'),
     new ClipBoard('Test clipBoard 3'),
-    new ClipBoard('Test clipBoard 1'),
-    new ClipBoard('Test clipBoard 2'),
-    new ClipBoard('Test clipBoard 3'),
-    new ClipBoard('Test clipBoard 1'),
-    new ClipBoard('Test clipBoard 2'),
-    new ClipBoard('Test clipBoard 3'),
-    new ClipBoard('Test clipBoard 1'),
-    new ClipBoard('Test clipBoard 2'),
-    new ClipBoard('Test clipBoard 3'),
+    new ClipBoard('END'),
   ];
 
   constructor(
@@ -31,8 +23,13 @@ export class ClipBoardListComponent implements OnInit {
     private colorUsedService: ColorUsedService
   ) {}
 
-  searchColor: string = this.colorUsedService.TiffanyBlue;
-  clipboardColor: string = this.colorUsedService.TiffanyBlue;
+  babyPowder: string = this.colorUsedService.BabyPowder;
+  tiffanyBlue: string = this.colorUsedService.TiffanyBlue;
+  orangePeel: string = this.colorUsedService.OrangePeel;
+  richBlack: string = this.colorUsedService.RichBlack;
+  roseMadder: string = this.colorUsedService.RoseMadder;
+
+  isSearched: boolean = false;
 
   clipBoards2 = this.clipBoardService.getClipBoard().subscribe((r) => {
     console.log(r + 'get');
@@ -41,7 +38,7 @@ export class ClipBoardListComponent implements OnInit {
   ngOnInit(): void {}
 
   AddClipBoardList(clipBoardInput: NgForm) {
-    const value = clipBoardInput.value.inputClipBoard;
+    const value = clipBoardInput.value.clipBoardInput;
     console.log(value);
     this.clipBoards.push(new ClipBoard(value));
 
@@ -51,11 +48,23 @@ export class ClipBoardListComponent implements OnInit {
     clipBoardInput.form.reset();
   }
 
-  SearchClipBoardList(searchInput: NgForm) {
-    const value = searchInput.value.inputClipBoard;
-    console.log(value);
+  ClipBoardSerachList(searchInput: NgForm) {
+    //console.log(searchInput);
+    if (
+      searchInput.value.searchInput === undefined ||
+      searchInput.value.searchInput === ''
+    ) {
+      //console.log(this.clipBoards);
+      return this.clipBoards;
+    } else {
+      var clipBoardFilterd = this.clipBoards.filter((clipBoard) => {
+        return clipBoard.text
+          .toLowerCase()
+          .includes(searchInput.value.searchInput.toLowerCase());
+      });
 
-    searchInput.form.reset();
+      return clipBoardFilterd;
+    }
   }
 
   onClickAddModal() {}

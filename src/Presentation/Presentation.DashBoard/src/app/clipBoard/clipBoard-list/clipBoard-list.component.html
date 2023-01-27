@@ -6,23 +6,22 @@
         <i
           class="fa fa-search fa-2x"
           aria-hidden="true"
-          [ngStyle]="{ color: searchColor }"
+          [ngStyle]="{ color: tiffanyBlue }"
         >
         </i>
       </div>
       <div class="flex-grow-1 ms-2">
-        <form
-          #searchInput="ngForm"
-          (ngSubmit)="SearchClipBoardList(searchInput)"
-        >
+        <form #searchInput="ngForm">
           <fieldset>
             <div>
               <input
                 type="text"
-                id="searchClipBoard"
+                id="searchInput"
                 class="form-control"
-                name="searchClipBoard"
+                name="searchInput"
                 placeholder="Search in the clipboard list"
+                value="{{ 'a' }}"
+                (ngModelChange)="ClipBoardSerachList(searchInput)"
                 ngModel
               />
             </div>
@@ -38,7 +37,11 @@
   <div class="row d-flex justify-content-center">
     <div class="col-md-2">
       <button
-        class="btn btn-primary"
+        class="btn"
+        [ngStyle]="{
+          backgroundColor: tiffanyBlue,
+          color: babyPowder
+        }"
         type="button"
         data-bs-toggle="modal"
         data-bs-target="#modalAddToClipboard"
@@ -56,6 +59,7 @@
     tabindex="-1"
     aria-labelledby="modalAddToClipboardLabel"
     aria-hidden="true"
+    style="position: relative"
   >
     <div class="modal-dialog" data-dismiss="modal">
       <div class="modal-content">
@@ -63,7 +67,7 @@
           <i
             class="fa fa-clipboard fa-2x mx-1"
             aria-hidden="true"
-            [ngStyle]="{ color: clipboardColor }"
+            [ngStyle]="{ color: orangePeel }"
           >
           </i>
           <h2 class="modal-title fs-5" id="modalAddToClipboardLabel">
@@ -71,14 +75,14 @@
           </h2>
         </div>
         <div class="modal-body">
-          <form #clipboardInput="ngForm">
+          <form #clipBoardInput="ngForm">
             <fieldset>
               <div>
                 <input
                   type="text"
-                  id="inputClipBoard"
+                  id="clipBoardInput"
                   class="form-control"
-                  name="inputClipBoard"
+                  name="clipBoardInput"
                   placeholder="Enter text to add the clipboard"
                   ngModel
                 />
@@ -96,9 +100,13 @@
           </button>
           <button
             type="submit"
-            class="btn btn-success"
+            class="btn"
+            [ngStyle]="{
+              backgroundColor: tiffanyBlue,
+              color: babyPowder
+            }"
             data-bs-dismiss="modal"
-            (click)="AddClipBoardList(clipboardInput)"
+            (click)="AddClipBoardList(clipBoardInput)"
           >
             Add To Clipboard List
           </button>
@@ -111,7 +119,7 @@
   <div class="row d-flex justify-content-center">
     <div class="col-md-10">
       <app-clipBoard-item
-        *ngFor="let clipBoardEl of clipBoards"
+        *ngFor="let clipBoardEl of ClipBoardSerachList(searchInput)"
         [clipBoard]="clipBoardEl"
       >
       </app-clipBoard-item>
