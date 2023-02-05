@@ -1,4 +1,7 @@
-﻿using Core.Domain.Entities;
+﻿using Assets.Model.Binding;
+using Assets.Model.View;
+using Core.Domain.Entities;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace Core.Application.Interfaces {
@@ -29,9 +32,7 @@ namespace Core.Application.Interfaces {
   }
 
   public interface IClipboardService: IBaseService<Clipboard> {
-    //Task<ClipboardResult> FirstAsync(ClipboardGetFirstSchema clipboard);
-    //Task<IEnumerable<ClipboardResult>> PagingAsync(ClipboardGetPagingSchema clipboard);
-    //Task<int> AddAsync(ClipboardAddSchema clipboard);
+    Task<(List<ClipboardViewModel> List, int PageCount)> GetPagingAsync(ClipboardGetBindingModel collection);
   }
 
   //public interface IContentTypeService: IGenericService<ContentType> {

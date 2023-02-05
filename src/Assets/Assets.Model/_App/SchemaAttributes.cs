@@ -1,5 +1,4 @@
-﻿using Assets.Model.Base;
-using System;
+﻿using System;
 
 namespace Assets.Model {
   public class SchemaAttribute: Attribute {
@@ -17,34 +16,4 @@ namespace Assets.Model {
       Name = name;
     }
   }
-
-  public class CustomParameterAttribute: Attribute {
-    public string Name { get; set; }
-    public SQLPropType Type { get; set; }
-    public int Length { get; set; }
-    public bool IsNullable { get; set; }
-
-    public CustomParameterAttribute(string name = null, SQLPropType type = SQLPropType.INT, int length = 0, bool isnull = true) {
-      Name = name;
-      Type = type;
-      Length = length;
-      IsNullable = isnull;
-    }
-  }
-
-  public class InputParameterAttribute: CustomParameterAttribute {
-    public InputParameterAttribute(string name = null, SQLPropType type = SQLPropType.INT, int length = 0, bool isnull = true)
-        : base(name, type, length, isnull) {
-    }
-  }
-
-  public class OutputParameterAttribute: CustomParameterAttribute {
-    public OutputParameterAttribute(string name = null, SQLPropType type = SQLPropType.INT, int length = 0, bool isnull = true)
-        : base(name, type, length, isnull) {
-    }
-  }
-
-  public class ReturnParameterAttribute: Attribute { }
-
-  public class HelperParameterAttribute: Attribute { }
 }

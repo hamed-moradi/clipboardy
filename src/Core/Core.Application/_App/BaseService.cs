@@ -1,4 +1,5 @@
 ﻿using Assets.Utility;
+using AutoMapper;
 using Core.Application.Interfaces;
 using Core.Domain._App;
 using Microsoft.EntityFrameworkCore;
@@ -16,8 +17,10 @@ namespace Core.Application._App {
     where TEntity : BaseEntity {
 
     #region ctors
-    public BaseService() {
+    protected readonly IMapper _mapper;
 
+    public BaseService() {
+      _mapper = ServiceLocator.Current.GetInstance<IMapper>();
     }
     #endregion
 

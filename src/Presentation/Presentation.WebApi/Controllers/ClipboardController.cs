@@ -1,5 +1,6 @@
 ﻿using Assets.Model.Binding;
 using Core.Application.Interfaces;
+using Core.Domain.Entities;
 using Microsoft.AspNetCore.Mvc;
 using Serilog;
 using System;
@@ -20,10 +21,8 @@ namespace Presentation.WebApi.Controllers {
     [HttpGet("get")]
     public async Task<IActionResult> Get([FromQuery] ClipboardGetBindingModel collection) {
       try {
-        //var query = _mapper.Map<ClipboardGetPagingSchema>(collection);
-        //var result = await _clipboardService.PagingAsync(query).ConfigureAwait(true);
-        //return Ok(new { result, query.TotalPages });
-        return Ok();
+        var (list, pageCount) = await _clipboardService.GetPagingAsync(collection);
+        return Ok(new { list, pageCount });
       }
       catch(Exception ex) {
         Log.Error(ex, ex.Source);
@@ -34,20 +33,13 @@ namespace Presentation.WebApi.Controllers {
     [HttpPost("add")]
     public async Task<IActionResult> Add([FromBody] ClipboardAddBindingModel collection) {
       try {
-        //var model = _mapper.Map<ClipboardAddSchema>(collection);
+        if(collection.Content?.Length >= 5242880) {
+          return BadRequest(_localizer["SizeExceeded"]); // "Content is too long!"
+        }
 
-        //var query = new ClipboardGetFirstSchema {
-        //  AccountId = CurrentAccount.Id,
-        //  Content = model.Content
-        //};
-        //var duplicated = await _clipboardService.FirstAsync(query).ConfigureAwait(true);
+        var model = _mapper.Map<Clipboard>(collection);
+        await _clipboardService.AddAsync(model);
 
-        //if(duplicated == null) {
-        //  await _clipboardService.AddAsync(model).ConfigureAwait(true);
-        //  return Ok();
-        //}
-
-        //return BadRequest(_localizer[DataTransferer.DuplicatedValueFound().Message]);
         return Ok();
       }
       catch(Exception ex) {
