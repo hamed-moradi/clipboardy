@@ -31,3 +31,6 @@
 
 /src/Test/Test.Common/obj
 /src/Test/Test.Common/bin
+
+node_modules
+.angular

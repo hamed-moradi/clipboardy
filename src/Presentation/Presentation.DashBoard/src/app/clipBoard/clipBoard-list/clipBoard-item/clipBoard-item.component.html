@@ -1,0 +1,52 @@
+<div class="list-group border border-2 p-2 mx-4 my-4">
+  <div class="container-fluid">
+    <a
+      class="my-list-group list-group-item list-group-item-action align-items-end"
+      style="height: 200px"
+    >
+      {{ clipBoard.text }}
+    </a>
+
+    <button
+      class="btn btn-sm"
+      type="button"
+      [ngStyle]="{
+        backgroundColor: violet
+      }"
+      data-bs-toggle="tooltip"
+      data-bs-placement="top"
+      title="Copy to ClipBoard"
+      (click)="onClickCopyToClipBoard($event)"
+    >
+      <i class="fa fa-copy" aria-hidden="true"></i>
+    </button>
+
+    <button
+      class="btn btn-sm mx-1"
+      type="button"
+      [ngStyle]="{
+        backgroundColor: pink
+      }"
+      data-bs-toggle="tooltip"
+      data-bs-placement="top"
+      title="Edit text"
+      (click)="onClickEditClipBoard($event)"
+    >
+      <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+    </button>
+
+    <button
+      class="btn btn-sm"
+      type="button"
+      [ngStyle]="{
+        backgroundColor: lightPink
+      }"
+      data-bs-toggle="tooltip"
+      data-bs-placement="top"
+      title="Delete text"
+      (click)="onClickDeleteClipBoard()"
+    >
+      <i class="fa fa-trash-o" aria-hidden="true"></i>
+    </button>
+  </div>
+</div>
