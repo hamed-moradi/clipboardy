@@ -23,11 +23,19 @@ export class ClipBoardListComponent implements OnInit {
     private colorUsedService: ColorUsedService
   ) {}
 
+<<<<<<< HEAD
   babyPowder: string = this.colorUsedService.BabyPowder;
   tiffanyBlue: string = this.colorUsedService.TiffanyBlue;
   orangePeel: string = this.colorUsedService.OrangePeel;
   richBlack: string = this.colorUsedService.RichBlack;
   roseMadder: string = this.colorUsedService.RoseMadder;
+=======
+  violet: string = this.colorUsedService.violet;
+  pink: string = this.colorUsedService.pink;
+  orange: string = this.colorUsedService.orange;
+  blue: string = this.colorUsedService.blue;
+  green: string = this.colorUsedService.green;
+>>>>>>> 06499276 (add files)
 
   isSearched: boolean = false;
 

@@ -3,7 +3,10 @@ import { CommonModule } from '@angular/common';
 import { BrowserModule } from '@angular/platform-browser';
 import { Routes, RouterModule } from '@angular/router';
 
+<<<<<<< HEAD
 import { HomeComponent } from './home/home.component';
+=======
+>>>>>>> 06499276 (add files)
 import { ProfileComponent } from './profile/profile.component';
 import { SignupComponent } from './signup/signup.component';
 import { LandingComponent } from './landing/landing.component';

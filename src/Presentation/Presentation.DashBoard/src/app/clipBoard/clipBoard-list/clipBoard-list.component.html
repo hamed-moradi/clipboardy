@@ -6,7 +6,11 @@
         <i
           class="fa fa-search fa-2x"
           aria-hidden="true"
+<<<<<<< HEAD
           [ngStyle]="{ color: tiffanyBlue }"
+=======
+          [ngStyle]="{ color: violet }"
+>>>>>>> 06499276 (add files)
         >
         </i>
       </div>
@@ -20,7 +24,10 @@
                 class="form-control"
                 name="searchInput"
                 placeholder="Search in the clipboard list"
+<<<<<<< HEAD
                 value="{{ 'a' }}"
+=======
+>>>>>>> 06499276 (add files)
                 (ngModelChange)="ClipBoardSerachList(searchInput)"
                 ngModel
               />
@@ -31,17 +38,26 @@
     </div>
   </div>
 
+<<<<<<< HEAD
   <hr />
 
+=======
+>>>>>>> 06499276 (add files)
   <!-- Button add to clipboard -->
   <div class="row d-flex justify-content-center">
     <div class="col-md-2">
       <button
         class="btn"
         [ngStyle]="{
+<<<<<<< HEAD
           backgroundColor: tiffanyBlue,
           color: babyPowder
         }"
+=======
+          backgroundColor: violet
+        }"
+        style="color: aliceblue"
+>>>>>>> 06499276 (add files)
         type="button"
         data-bs-toggle="modal"
         data-bs-target="#modalAddToClipboard"
@@ -67,7 +83,11 @@
           <i
             class="fa fa-clipboard fa-2x mx-1"
             aria-hidden="true"
+<<<<<<< HEAD
             [ngStyle]="{ color: orangePeel }"
+=======
+            [ngStyle]="{ color: orange }"
+>>>>>>> 06499276 (add files)
           >
           </i>
           <h2 class="modal-title fs-5" id="modalAddToClipboardLabel">
@@ -102,8 +122,12 @@
             type="submit"
             class="btn"
             [ngStyle]="{
+<<<<<<< HEAD
               backgroundColor: tiffanyBlue,
               color: babyPowder
+=======
+              backgroundColor: blue
+>>>>>>> 06499276 (add files)
             }"
             data-bs-dismiss="modal"
             (click)="AddClipBoardList(clipBoardInput)"
@@ -114,10 +138,22 @@
       </div>
     </div>
   </div>
+<<<<<<< HEAD
 
   <!-- Clipboard List -->
   <div class="row d-flex justify-content-center">
     <div class="col-md-10">
+=======
+  <br />
+  <br />
+  <br />
+  <br />
+  <br />
+  <br />
+  <!-- Clipboard List -->
+  <div class="row d-flex justify-content-center my-5">
+    <div class="col-md-6 col-sm-4">
+>>>>>>> 06499276 (add files)
       <app-clipBoard-item
         *ngFor="let clipBoardEl of ClipBoardSerachList(searchInput)"
         [clipBoard]="clipBoardEl"
