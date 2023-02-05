@@ -8,7 +8,6 @@ using System.Data;
 using System.Globalization;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Reflection;
 using System.Text.RegularExpressions;
 
 namespace Assets.Utility.Extension {
@@ -189,33 +188,6 @@ namespace Assets.Utility.Extension {
       return $"{schema}.{name}";
     }
 
-    public static string GetSQLType(this PropertyInfo propertyInfo, Type customAttribute) {
-      CustomParameterAttribute attr;
-      if(customAttribute == typeof(InputParameterAttribute)) {
-        attr = (InputParameterAttribute)propertyInfo.GetType()
-            .GetCustomAttributes(typeof(InputParameterAttribute), true).FirstOrDefault();
-      }
-      else {
-        attr = (OutputParameterAttribute)propertyInfo.GetType()
-            .GetCustomAttributes(typeof(OutputParameterAttribute), true).FirstOrDefault();
-      }
-
-      var thetype = attr.Type.ToString();
-      switch(attr.Type) {
-        case SQLPropType.BIT:
-        case SQLPropType.INT:
-          thetype += attr.IsNullable ? " = NULL" : string.Empty;
-          break;
-        case SQLPropType.VARCHAR:
-        case SQLPropType.NVARCHAR:
-          thetype += (attr.Length > 0 ? $"({attr.Length})" : "(MAX)") + (attr.IsNullable ? " = NULL" : string.Empty);
-          break;
-        default:
-          break;
-      }
-
-      return thetype;
-    }
     #endregion
   }
 }

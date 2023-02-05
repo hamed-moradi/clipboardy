@@ -1,13 +1,6 @@
 ﻿
 namespace Assets.Model.Base {
 
-  public enum SQLPropType {
-    INT,
-    VARCHAR,
-    NVARCHAR,
-    BIT
-  }
-
   public enum Status {
     Inactive = 0,
     Active = 10,
@@ -104,7 +97,8 @@ namespace Assets.Model.Base {
     htm = 73,
     sevenz = 74
   }
-  public enum ContentType {
+
+  public enum ContentTypeEnum {
     aac = 1,
     tar = 2,
     swf = 3,

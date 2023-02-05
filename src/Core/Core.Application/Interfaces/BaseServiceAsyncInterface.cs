@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace Core.Application.Interfaces {
   public partial interface IBaseService<TEntity> where TEntity : BaseEntity {
     Task<TEntity> FirstAsync(Expression<Func<TEntity, bool>> expression);
-    Task<TEntity> AddAsync(TEntity entity, bool save = true);
+    Task<TEntity> AddAsync(TEntity entity, bool autoSave = true);
     Task<int> SaveAsync(CancellationToken cancellationToken = default);
   }
 }
