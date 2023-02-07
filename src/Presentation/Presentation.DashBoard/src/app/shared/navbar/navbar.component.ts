@@ -2,10 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router, NavigationEnd, NavigationStart } from '@angular/router';
 import { Location, PopStateEvent } from '@angular/common';
 import { ColorUsedService } from 'src/app/help/color-used.service';
-<<<<<<< HEAD
-=======
 import * as $ from 'jquery';
->>>>>>> 06499276 (add files)
 
 @Component({
   selector: 'app-navbar',
@@ -23,16 +20,12 @@ export class NavbarComponent implements OnInit {
     private colorUsed: ColorUsedService
   ) {}
 
-<<<<<<< HEAD
-  richBlack: string = this.colorUsed.RichBlack;
-=======
   pink: string = this.colorUsed.pink;
   lightPink: string = this.colorUsed.lightPink;
   orange: string = this.colorUsed.orange;
   green: string = this.colorUsed.green;
   violet: string = this.colorUsed.violet;
   blue: string = this.colorUsed.blue;
->>>>>>> 06499276 (add files)
 
   ngOnInit() {
     this.router.events.subscribe((event) => {
