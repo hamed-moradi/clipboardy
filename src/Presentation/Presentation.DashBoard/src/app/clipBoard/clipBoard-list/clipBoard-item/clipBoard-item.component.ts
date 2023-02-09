@@ -10,6 +10,7 @@ import { ClipBoard } from '../../clipBoard.model';
 export class ClipBoardItemComponent implements OnInit {
   @Input() clipBoard: ClipBoard;
 
+  isActiveScroll: boolean = false;
   constructor(private colorUsedService: ColorUsedService) {}
 
   violet: string = this.colorUsedService.violet;
@@ -19,7 +20,14 @@ export class ClipBoardItemComponent implements OnInit {
   blue: string = this.colorUsedService.blue;
   green: string = this.colorUsedService.green;
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    const clipBoardText: string = this.clipBoard.text;
+    if (clipBoardText.length > 350) {
+      this.isActiveScroll = true;
+      console.log('lenght' + clipBoardText.length);
+    }
+  }
+
   onClickCopyToClipBoard(event: Event) {
     // Get the text field
     if (event != null) {
