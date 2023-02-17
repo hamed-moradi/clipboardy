@@ -1,8 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, NavigationEnd, NavigationStart } from '@angular/router';
 import { Location, PopStateEvent } from '@angular/common';
+import { NgForm } from '@angular/forms';
+
 import { ColorUsedService } from 'src/app/help/color-used.service';
-import * as $ from 'jquery';
+import { AuthService } from '../../auth/auth.service';
 
 @Component({
   selector: 'app-navbar',
@@ -17,7 +19,8 @@ export class NavbarComponent implements OnInit {
   constructor(
     public location: Location,
     private router: Router,
-    private colorUsed: ColorUsedService
+    private colorUsed: ColorUsedService,
+    private authService: AuthService
   ) {}
 
   pink: string = this.colorUsed.pink;
@@ -59,6 +62,26 @@ export class NavbarComponent implements OnInit {
       return true;
     } else {
       return false;
+    }
+  }
+
+  onSignInForm(SignInuserForm: NgForm) {
+    if (SignInuserForm.valid) {
+      this.authService.login(SignInuserForm.value);
+    }
+  }
+
+  onSignUpForm(SignUpuserForm: NgForm) {
+    if (SignUpuserForm.valid) {
+      console.log(SignUpuserForm);
+      console.log(SignUpuserForm.value);
+    }
+  }
+
+  onForgotPassword(ForgotPasswordForm: NgForm) {
+    if (ForgotPasswordForm.valid) {
+      console.log(ForgotPasswordForm);
+      console.log(ForgotPasswordForm.value);
     }
   }
 }

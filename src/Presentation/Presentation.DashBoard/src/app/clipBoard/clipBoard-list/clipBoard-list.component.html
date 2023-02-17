@@ -87,14 +87,15 @@
           <form #clipBoardInput="ngForm">
             <fieldset>
               <div>
-                <input
+                <textarea
                   type="text"
                   id="clipBoardInput"
                   class="form-control"
                   name="clipBoardInput"
                   placeholder="Enter text to add the clipboard"
+                  style="max-height: 200px; min-height: 200px"
                   ngModel
-                />
+                ></textarea>
               </div>
             </fieldset>
           </form>
