@@ -20,7 +20,7 @@
                 class="form-control"
                 name="searchInput"
                 placeholder="Search in the clipboard list"
-                (ngModelChange)="ClipBoardSerachList(searchInput)"
+                (ngModelChange)="onClipBoardSerachList(searchInput)"
                 ngModel
               />
             </div>
@@ -102,7 +102,7 @@
               backgroundColor: blue
             }"
             data-bs-dismiss="modal"
-            (click)="AddClipBoardList(clipBoardInput)"
+            (click)="onAddClipBoardList(clipBoardInput)"
           >
             Add To Clipboard List
           </button>
@@ -117,13 +117,11 @@
   <br />
   <br />
   <!-- Clipboard List -->
-  <div class="row d-flex justify-content-center my-5">
-    <div class="col-md-6 col-sm-4">
-      <app-clipBoard-item
-        *ngFor="let clipBoardEl of ClipBoardSerachList(searchInput)"
-        [clipBoard]="clipBoardEl"
-      >
-      </app-clipBoard-item>
-    </div>
+  <div>
+    <app-clipBoard-item
+      *ngFor="let clipBoardEl of onClipBoardSerachList(searchInput)"
+      [clipBoard]="clipBoardEl"
+    >
+    </app-clipBoard-item>
   </div>
 </div>
