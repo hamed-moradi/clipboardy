@@ -5,14 +5,14 @@
         class="list-group-item list-group-item-action align-items-end max-hight"
         *ngIf="!isActiveScroll"
       >
-        {{ clipBoard.text }}
+        {{ clipBoard.content }}
       </p>
 
       <p
         class="my-list-group list-group-item list-group-item-action align-items-end"
         *ngIf="isActiveScroll"
       >
-        {{ clipBoard.text }}
+        {{ clipBoard.content }}
       </p>
       <button
         class="btn btn-sm"
@@ -59,4 +59,3 @@
     </div>
   </div>
 </div>
-<div class="perforation-line"></div>

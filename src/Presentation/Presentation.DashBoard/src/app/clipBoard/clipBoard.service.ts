@@ -13,12 +13,10 @@ export class ClipBoardService {
   constructor(private http: HttpClient) {}
 
   getClipBoard(): Observable<any> {
-    return this.http.get(this.baseURL + '/home', {
-      headers: new HttpHeaders({ customClipBoard: 'Hello!' }),
-    });
+    return this.http.get(this.baseURL + '/api/clipboard/get');
   }
 
-  postClipBoard(text: string): Observable<any> {
-    return this.http.post(this.baseURL + '/home', text);
+  postClipBoard(content: string): Observable<any> {
+    return this.http.post(this.baseURL + '/api/clipboard/add', content);
   }
 }

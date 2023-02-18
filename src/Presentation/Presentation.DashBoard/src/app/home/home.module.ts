@@ -8,8 +8,7 @@ import { HomeComponent } from './home.component';
 
 import { SectionsModule } from '../sections/sections.module';
 import { ClipBoardComponent } from '../clipBoard/clipBoard.component';
-import { ClipBoardListComponent } from '../clipBoard/clipBoard-list/clipBoard-list.component';
-import { ClipBoardItemComponent } from '../clipBoard/clipBoard-list/clipBoard-item/clipBoard-item.component';
+import { ClipBoardItemComponent } from '../clipBoard/clipBoard-item/clipBoard-item.component';
 import { HomeRoutingModule } from './home.routing.module';
 import { ColorUsedService } from '../help/color-used.service';
 
@@ -23,12 +22,7 @@ import { ColorUsedService } from '../help/color-used.service';
     NgbModule,
     HttpClientModule,
   ],
-  declarations: [
-    HomeComponent,
-    ClipBoardComponent,
-    ClipBoardListComponent,
-    ClipBoardItemComponent,
-  ],
+  declarations: [HomeComponent, ClipBoardComponent, ClipBoardItemComponent],
   exports: [HomeComponent],
   providers: [ColorUsedService],
 })

@@ -1,9 +1,9 @@
-export class ClipBoard{
+export class ClipBoard {
+  public typeId?: number;
+  public content: string;
 
-  public text:string;
-
-  constructor(text:string){
-    this.text=text;
-
+  constructor(content: string, typeId?: number) {
+    this.content = content;
+    this.typeId = typeId;
   }
 }

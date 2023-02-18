@@ -1,6 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { ColorUsedService } from 'src/app/help/color-used.service';
-import { ClipBoard } from '../../clipBoard.model';
+import { ClipBoard } from '../clipBoard.model';
 
 @Component({
   selector: 'app-clipBoard-item',
@@ -10,7 +10,6 @@ import { ClipBoard } from '../../clipBoard.model';
 export class ClipBoardItemComponent implements OnInit {
   @Input() clipBoard: ClipBoard;
 
-  isActiveScroll: boolean = false;
   constructor(private colorUsedService: ColorUsedService) {}
 
   violet: string = this.colorUsedService.violet;
@@ -20,26 +19,28 @@ export class ClipBoardItemComponent implements OnInit {
   blue: string = this.colorUsedService.blue;
   green: string = this.colorUsedService.green;
 
+  isActiveScroll: boolean = false;
+
   ngOnInit(): void {
-    const clipBoardText: string = this.clipBoard.text;
-    if (clipBoardText.length > 350) {
+    const clipBoardContent: string = this.clipBoard.content;
+    if (clipBoardContent.length > 350) {
       this.isActiveScroll = true;
-      console.log('lenght' + clipBoardText.length);
+      console.log('lenght' + clipBoardContent.length);
     }
   }
 
   onClickCopyToClipBoard(event: Event) {
-    // Get the text field
+    // Get the content field
     if (event != null) {
       console.log(event);
-      const copyText = this.clipBoard.text;
+      const copyContent = this.clipBoard.content;
 
-      // Copy the text inside the text field
-      navigator.clipboard.writeText(copyText);
+      // Copy the content inside the content field
+      navigator.clipboard.writeText(copyContent);
 
-      // Alert the copied text
-      //alert('Copied the text: ' + copyText);
-      console.log(copyText);
+      // Alert the copied content
+      //alert('Copied the content: ' + copycontent);
+      console.log(copyContent);
     }
   }
 
