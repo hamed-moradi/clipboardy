@@ -7,3 +7,9 @@ export class ClipBoard {
     this.typeId = typeId;
   }
 }
+/*
+export interface IClipboard {
+  typeId?: number;
+  content: string;
+}
+*/
