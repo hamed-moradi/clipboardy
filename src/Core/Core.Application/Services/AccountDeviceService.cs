@@ -1,32 +1,15 @@
-﻿using Core.Application.Infrastructure;
-using Core.Domain.StoredProcedure.Result;
-using Core.Domain.StoredProcedure.Schema;
-using System.Threading.Tasks;
+﻿using Core.Application._App;
+using Core.Application.Interfaces;
+using Core.Domain.Entities;
 
 namespace Core.Application.Services {
-    public class AccountDeviceService: IAccountDeviceService {
-        #region
-        private readonly IStoredProcedureService _storedProcedure;
+  public class AccountDeviceService: BaseService<AccountDevice>, IAccountDeviceService {
+    #region
 
-        public AccountDeviceService(
-            IStoredProcedureService storedProcedure) {
+    public AccountDeviceService() {
 
-            _storedProcedure = storedProcedure;
-        }
-        #endregion
-
-        public async Task<AccountDeviceResult> FirstAsync(AccountDeviceGetFirstSchema accountDevice) {
-            var result = await _storedProcedure.QueryFirstAsync<AccountDeviceGetFirstSchema, AccountDeviceResult>(accountDevice);
-            return result;
-        }
-
-        public async Task<int> AddAsync(AccountDeviceAddSchema accountDevice) {
-            var result = await _storedProcedure.ExecuteScalarAsync<AccountDeviceAddSchema, int>(accountDevice);
-            return result;
-        }
-
-        public async Task UpdateAsync(AccountDeviceUpdateSchema accountDevice) {
-            await _storedProcedure.ExecuteAsync(accountDevice);
-        }
     }
+    #endregion
+
+  }
 }

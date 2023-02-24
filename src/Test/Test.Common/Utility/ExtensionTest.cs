@@ -2,18 +2,18 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Test.Common.Utility {
-    [TestClass]
-    public class ExtensionTest {
-        #region ctor
+  [TestClass]
+  public class ExtensionTest {
+    #region ctor
 
-        public ExtensionTest() {
-        }
-        #endregion
-
-        [TestMethod, TestCategory("Extension"), TestCategory("IsPhoneNumber")]
-        public void IsPhoneNumberTest() {
-            var number = "09356817681";
-            Assert.IsTrue(number.IsPhoneNumber());
-        }
+    public ExtensionTest() {
     }
+    #endregion
+
+    [TestMethod, TestCategory("Extension"), TestCategory("IsPhoneNumber")]
+    public void IsPhoneNumberTest() {
+      var number = "09356817681";
+      Assert.IsTrue(number.IsPhoneNumber());
+    }
+  }
 }

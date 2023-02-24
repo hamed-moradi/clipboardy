@@ -1,17 +1,16 @@
 ﻿using Assets.Model.Base;
 using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Assets.Model.Binding {
-    public class ClipboardGetBindingModel: PagingOption {
-        public int? TypeId { get; set; } = 34;
-        public string Content { get; set; }
-        public DateTime? CreatedAt { get; set; }
-    }
+  public class ClipboardGetBindingModel: PagingOption {
+    public int? TypeId { get; set; } = 34;
+    public string Content { get; set; }
+    public DateTime? FromDate { get; set; }
+    public DateTime? ToDate { get; set; }
+  }
 
-    public class ClipboardAddBindingModel: IBaseBindingModel {
-        public int? TypeId { get; set; }
-        public string Content { get; set; }
-    }
+  public class ClipboardAddBindingModel: IBaseBindingModel {
+    public int? TypeId { get; set; }
+    public string Content { get; set; }
+  }
 }

@@ -12,15 +12,23 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="AutoMapper" Version="9.0.0" />
-    <PackageReference Include="Dapper" Version="2.0.35" />
-    <PackageReference Include="Microsoft.Data.SqlClient" Version="1.1.1" />
-    <PackageReference Include="MySql.Data" Version="8.0.22" />
+    <PackageReference Include="AutoMapper" Version="12.0.0" />
+    <PackageReference Include="Microsoft.Data.SqlClient" Version="5.0.1" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="7.0.1">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="MySql.Data" Version="8.0.31" />
+    <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="7.0.1" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\..\Assets\Assets.Model\Assets.Model.csproj" />
     <ProjectReference Include="..\..\Assets\Assets.Utility\Assets.Utility.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Migrations\" />
   </ItemGroup>
 
 </Project>
