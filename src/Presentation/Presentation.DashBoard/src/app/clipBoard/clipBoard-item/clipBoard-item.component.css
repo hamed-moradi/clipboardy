@@ -1,0 +1,13 @@
+.my-list-group{
+  max-height: 200px;
+  margin-bottom: 10px;
+  overflow:scroll;
+  -webkit-overflow-scrolling: touch;
+}
+.max-hight{
+  max-height: 200px;
+}
+.perforation-line {
+  border-top:2px dashed #ffb7ff;
+}
+
