@@ -1,6 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { ColorUsedService } from 'src/app/help/color-used.service';
-import { ClipBoard } from '../clipBoard.model';
+import { IClipBoard } from '../clipBoard.model';
 
 @Component({
   selector: 'app-clipBoard-item',
@@ -8,7 +8,7 @@ import { ClipBoard } from '../clipBoard.model';
   styleUrls: ['./clipBoard-item.component.css'],
 })
 export class ClipBoardItemComponent implements OnInit {
-  @Input() clipBoard: ClipBoard;
+  @Input() clipBoard: IClipBoard;
 
   constructor(private colorUsedService: ColorUsedService) {}
 

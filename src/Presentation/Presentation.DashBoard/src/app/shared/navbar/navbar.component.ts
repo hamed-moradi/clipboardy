@@ -64,24 +64,4 @@ export class NavbarComponent implements OnInit {
       return false;
     }
   }
-
-  onSignInForm(SignInuserForm: NgForm) {
-    if (SignInuserForm.valid) {
-      this.authService.login(SignInuserForm.value);
-    }
-  }
-
-  onSignUpForm(SignUpuserForm: NgForm) {
-    if (SignUpuserForm.valid) {
-      console.log(SignUpuserForm);
-      console.log(SignUpuserForm.value);
-    }
-  }
-
-  onForgotPassword(ForgotPasswordForm: NgForm) {
-    if (ForgotPasswordForm.valid) {
-      console.log(ForgotPasswordForm);
-      console.log(ForgotPasswordForm.value);
-    }
-  }
 }

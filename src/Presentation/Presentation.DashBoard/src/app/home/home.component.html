@@ -4,29 +4,42 @@
     <div class="full-bg-img mask rgba-gradient">
       <div class="container flex-center">
         <div class="d-flex align-items-center content-height w-100">
-          <div class="row flex-center pt-5 mt-3 w-100">
+          <div class="row d-flex justify-content-center pt-5 mt-3 w-100">
             <div class="col-md-6 text-center text-md-left mb-5">
               <div class="white-text">
+                <br />
+                <br />
                 <h2
                   class="h1 h1-responsive font-bold wow fadeInLeft my-4"
                   data-wow-delay="0.3s"
                 >
-                  Sign up right now!
+                  WELCOME TO CLIPBOARDY
                 </h2>
                 <hr class="hr-light wow fadeInLeft" data-wow-delay="0.3s" />
+                <h4
+                  class="h1 h1-responsive font-bold wow fadeInLeft my-4"
+                  data-wow-delay="0.3s"
+                >
+                  Sign up right now!
+                </h4>
                 <h6 class="wow fadeInLeft" data-wow-delay="0.3s">
-                  Copy stuff between your phone and PC Blazing Fast
+                  Share your thoughts! between your devices, privately
                 </h6>
                 <br />
-                <a
-                  mdbBtn
-                  color="white"
-                  outline="true"
-                  class="wow fadeInLeft waves-light"
-                  data-wow-delay="0.3s"
-                  mdbWavesEffect
-                  >Learn more</a
+
+                <button
+                  class="btn btn-outline-dark grow"
+                  type="button"
+                  [ngStyle]="{
+                    hover: violet
+                  }"
+                  data-bs-toggle="modal"
+                  data-bs-target="#modalSignInForm"
                 >
+                  <span class="mx-2" style="font-size: x-large"
+                    >GET STARTED</span
+                  >
+                </button>
               </div>
             </div>
           </div>
