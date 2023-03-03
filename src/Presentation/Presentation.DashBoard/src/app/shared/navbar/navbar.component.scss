@@ -9,6 +9,18 @@
     transition: all 450ms cubic-bezier(0.42, 0, 0.34, 0.64);
 
   }
+
+  .nav-item{
+    text-align: right;
+}
+
   .h1{
-   font-size:300%;
+   font-size:300% !important;
   }
+
+ /*  @media screen and (min-width: 480px) {
+    body {
+      background-color: lightgreen;
+    }
+  }
+ */

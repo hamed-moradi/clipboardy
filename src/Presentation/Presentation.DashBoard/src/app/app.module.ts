@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { RouterModule } from '@angular/router';
 import { AppRoutingModule } from './app.routing.module';
+import { NgwWowModule } from 'ngx-wow';
 
 import { AppComponent } from './app.component';
 import { SignupComponent } from './signup/signup.component';
@@ -35,6 +36,7 @@ import { ModalComponent } from './shared/modals/modal/modal.component';
     FormsModule,
     RouterModule,
     AppRoutingModule,
+    NgwWowModule,
     HomeModule,
   ],
   providers: [ColorUsedService, AuthService, AuthGuard],

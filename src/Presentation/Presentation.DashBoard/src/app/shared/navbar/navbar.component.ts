@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, NavigationEnd, NavigationStart } from '@angular/router';
-import { Location, PopStateEvent } from '@angular/common';
+import { DOCUMENT, Location, PopStateEvent } from '@angular/common';
 import { NgForm } from '@angular/forms';
 
 import { ColorUsedService } from 'src/app/help/color-used.service';
@@ -29,6 +29,8 @@ export class NavbarComponent implements OnInit {
   green: string = this.colorUsed.green;
   violet: string = this.colorUsed.violet;
   blue: string = this.colorUsed.blue;
+
+  navbarMobility: boolean = false;
 
   ngOnInit() {
     this.router.events.subscribe((event) => {
