@@ -8,9 +8,9 @@ namespace Assets.Model.Base {
     Deleted = 30
   }
 
-  public enum AccountProfileType {
-    Phone = 1,
-    Email = 2
+  public enum AccountProfileTypes {
+    Phone,
+    Email
   }
 
   public enum AccountProvider {

@@ -20,7 +20,6 @@ namespace Core.Domain._App {
     public DbSet<Account> Accounts { get; set; }
     public DbSet<AccountDevice> AccountDevices { get; set; }
     public DbSet<AccountProfile> AccountProfiles { get; set; }
-    public DbSet<AccountProfileType> AccountProfileTypes { get; set; }
     public DbSet<Clipboard> Clipboards { get; set; }
     public DbSet<ContentType> ContentTypes { get; set; }
     public DbSet<GeneralStatus> GeneralStatuses { get; set; }

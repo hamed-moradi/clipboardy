@@ -11,11 +11,6 @@ namespace Core.Domain.Configurations {
         .OnDelete(DeleteBehavior.Restrict);
 
       modelBuilder.Entity<AccountProfile>()
-        .HasOne(p => p.AccountProfileType)
-        .WithMany()
-        .OnDelete(DeleteBehavior.Restrict);
-
-      modelBuilder.Entity<AccountProfile>()
         .Property(p => p.status_id)
         .HasDefaultValue(Status.Active);
 

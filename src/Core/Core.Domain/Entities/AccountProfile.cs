@@ -11,7 +11,7 @@ namespace Core.Domain.Entities {
     [Required]
     public int account_id { get; set; }
     [Required]
-    public int type_id { get; set; }
+    public string profile_type { get; set; }
     [MaxLength(64)]
     public string linked_key { get; set; }
     public int status_id { get; set; }
@@ -21,8 +21,5 @@ namespace Core.Domain.Entities {
   public partial class AccountProfile {
     [ForeignKey(nameof(account_id))]
     public Account Account { get; set; }
-
-    [ForeignKey(nameof(type_id))]
-    public AccountProfileType AccountProfileType { get; set; }
   }
 }
