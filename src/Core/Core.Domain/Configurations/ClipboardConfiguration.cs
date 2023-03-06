@@ -21,8 +21,8 @@ namespace Core.Domain.Configurations {
         .OnDelete(DeleteBehavior.Restrict);
 
       modelBuilder.Entity<Clipboard>()
-        .Property(p => p.status_id)
-        .HasDefaultValue(Status.Active);
+        .Property(p => p.status)
+        .HasDefaultValue(Status.ACTIVE);
 
       modelBuilder.Entity<Clipboard>()
         .Property(p => p.inserted_at)

@@ -14,7 +14,6 @@ namespace Core.Domain._App {
       AccountProfileConfiguration.OnModelCreating(modelBuilder);
       ClipboardConfiguration.OnModelCreating(modelBuilder);
       ContentTypeConfiguration.OnModelCreating(modelBuilder);
-      GeneralStatusConfiguration.OnModelCreating(modelBuilder);
     }
 
     public DbSet<Account> Accounts { get; set; }
@@ -22,6 +21,5 @@ namespace Core.Domain._App {
     public DbSet<AccountProfile> AccountProfiles { get; set; }
     public DbSet<Clipboard> Clipboards { get; set; }
     public DbSet<ContentType> ContentTypes { get; set; }
-    public DbSet<GeneralStatus> GeneralStatuses { get; set; }
   }
 }

@@ -14,12 +14,12 @@ namespace Core.Domain.Entities {
     public string profile_type { get; set; }
     [MaxLength(64)]
     public string linked_key { get; set; }
-    public int status_id { get; set; }
+    public string status { get; set; }
     public DateTime inserted_at { get; set; }
   }
 
   public partial class AccountProfile {
-    [ForeignKey(nameof(account_id))]
+    [ForeignKey("account_id")]
     public Account Account { get; set; }
   }
 }

@@ -2,15 +2,15 @@
 namespace Assets.Model.Base {
 
   public enum Status {
-    Inactive = 0,
-    Active = 10,
-    Pending = 20,
-    Deleted = 30
+    INACTIVE = 0,
+    ACTIVE = 10,
+    PENDING = 20,
+    DELETED = 30
   }
 
   public enum AccountProfileTypes {
-    Phone,
-    Email
+    PHONE,
+    EMAIL
   }
 
   public enum AccountProvider {
