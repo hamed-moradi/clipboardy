@@ -1,6 +1,7 @@
 ﻿using Assets.Utility;
 using Assets.Utility.Infrastructure;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
 using System.Security.Claims;
 
 namespace Test.Common.Utility {
@@ -19,7 +20,7 @@ namespace Test.Common.Utility {
       var token = _jwtHandler.Create(new ClaimsIdentity(new[] {
                     new Claim(ClaimTypes.NameIdentifier, "hamèd"),
                     new Claim(ClaimTypes.Name, "User")
-                }));
+                }), DateTime.UtcNow.AddMonths(1));
 
       var claims = _jwtHandler.Validate(token);
     }

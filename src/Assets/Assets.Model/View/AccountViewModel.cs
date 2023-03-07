@@ -1,8 +1,10 @@
 ﻿using Assets.Model.Base;
+using System;
 
 namespace Assets.Model.View {
-  public class AccountViewModel: IBaseViewModel {
-    public string Username { get; set; }
+  public class SigninViewModel: IBaseViewModel {
+    public string Token { get; set; }
+    public DateTime ExpiresAt { get; set; }
   }
 
   public class ChangeForgotenPasswordViewModel: IBaseViewModel {
