@@ -22,17 +22,17 @@ export class ClipBoardItemComponent implements OnInit {
   isActiveScroll: boolean = false;
 
   ngOnInit(): void {
-    const clipBoardContent: string = this.clipBoard.content;
+    /* const clipBoardContent: string = this.clipBoard.content;
     if (clipBoardContent.length > 350) {
       this.isActiveScroll = true;
-      console.log('lenght' + clipBoardContent.length);
-    }
+       console.log('lenght' + clipBoardContent.length);
+    } */
   }
 
   onClickCopyToClipBoard(event: Event) {
     // Get the content field
     if (event != null) {
-      console.log(event);
+      //  console.log(event);
       const copyContent = this.clipBoard.content;
 
       // Copy the content inside the content field
@@ -40,7 +40,7 @@ export class ClipBoardItemComponent implements OnInit {
 
       // Alert the copied content
       //alert('Copied the content: ' + copycontent);
-      console.log(copyContent);
+      //  console.log(copyContent);
     }
   }
 

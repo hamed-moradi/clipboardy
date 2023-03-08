@@ -1,6 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { NgForm } from '@angular/forms';
-import { BehaviorSubject, map, of } from 'rxjs';
+import { BehaviorSubject, map, Observable, of } from 'rxjs';
 import { tap, take, takeWhile } from 'rxjs/operators';
 
 import { ClipBoardService } from './clipBoard.service';
@@ -13,7 +13,9 @@ import { ColorUsedService } from '../help/color-used.service';
   styleUrls: ['./clipBoard.component.css'],
 })
 export class ClipBoardComponent implements OnInit {
-  clipBoards: IClipBoard[];
+  @Input() searchInput: NgForm;
+  @Input() onClipBoardSerachList(searchQuery: NgForm) {}
+  @Output() clipBoards = new EventEmitter<any[]>();
 
   finished: boolean = true;
 
@@ -30,7 +32,7 @@ export class ClipBoardComponent implements OnInit {
 
   isSearched: boolean = false;
 
-  dataTest = of([
+  dataTest$: Observable<IClipBoard[]> = of([
     {
       content:
         'Angular is running in development mode. Call enableProdMode() to enable production mode.',
@@ -92,7 +94,8 @@ export class ClipBoardComponent implements OnInit {
         (getClipBoardResult) => (this.clipBoards = getClipBoardResult)
       ); */
 
-    this.dataTest
+    //************OLD*********** */
+    /*  this.dataTest
       .pipe(
         map((list) => list),
 
@@ -100,38 +103,16 @@ export class ClipBoardComponent implements OnInit {
       )
       .subscribe({
         next: (getClipBoardResult) => (this.clipBoards = getClipBoardResult),
+      }); */
+
+    this.onclipBoards();
+  }
+  onclipBoards() {
+    this.dataTest$
+      .pipe(tap((r) => console.log(r)))
+      .subscribe((getClipBoardResult) => {
+        this.clipBoards.emit(getClipBoardResult);
       });
   }
-
-  // Add Clipboard to list
-  onAddClipBoardList(clipBoardInput: NgForm) {
-    const content = clipBoardInput.value.clipBoardInput;
-    console.log(content);
-    this.clipBoards.push(content);
-
-    /*  this.clipBoardService.postClipBoard(content).subscribe((r) => {
-      console.log(r);
-    }); */
-    clipBoardInput.form.reset();
-  }
-
-  // Search method
-  onClipBoardSerachList(searchInput: NgForm) {
-    if (
-      searchInput.value.searchInput === undefined ||
-      searchInput.value.searchInput === ''
-    ) {
-      return this.clipBoards;
-    } else {
-      var clipBoardFilterd = this.clipBoards.filter((clipBoard) => {
-        return clipBoard.content
-          .toLowerCase()
-          .includes(searchInput.value.searchInput.toLowerCase());
-      });
-
-      return clipBoardFilterd;
-    }
-  }
-
   onScroll() {}
 }

@@ -1,135 +1,56 @@
 <main>
-  <br />
-  <br />
-  <br />
-  <br />
-  <div class="container">
-    <div class="row justify-content-center">
-      <div class="col col-6 col-sm-6 col-lg-6">
-        <h1>SECURE PRIVATE UNIVERSAL</h1>
-        <h1>CLIPBOARD</h1>
-        <p>
-          ClibBoardy makes it easy for you to manage all your favorite text and
-          links and share them across any of your devices or online
-        </p>
-      </div>
-      <div class="col col-6">
-        <section class="section section-shaped section-lg">
-          <div class="shape shape-style-1 bg-gradient-default"></div>
-          <div class="container pt-lg-md">
-            <div class="row justify-content-center">
-              <div class="col-lg-5">
-                <div class="card bg-warning shadow border-0">
-                  <div class="card-header bg-white pb-5">
-                    <div class="text-muted text-center mb-3">
-                      <small>Sign in with</small>
-                    </div>
-                    <div class="btn-wrapper text-center">
-                      <a
-                        href="javascript:void(0)"
-                        class="btn btn-neutral btn-icon"
-                      >
-                        <span class="btn-inner--icon">
-                          <img src="./assets/img/icons/common/github.svg" />
-                        </span>
-                        <span class="btn-inner--text">Github</span>
-                      </a>
-                      <a
-                        href="javascript:void(0)"
-                        class="btn btn-neutral btn-icon"
-                      >
-                        <span class="btn-inner--icon">
-                          <img src="./assets/img/icons/common/google.svg" />
-                        </span>
-                        <span class="btn-inner--text">Google</span>
-                      </a>
-                    </div>
-                  </div>
-                  <div class="card-body px-lg-5 py-lg-5">
-                    <div class="text-center text-muted mb-4">
-                      <small>Or sign in with credentials</small>
-                    </div>
-                    <form #userForm="ngForm">
-                      <div class="form-group mb-3">
-                        <div class="input-group input-group-alternative">
-                          <div class="input-group-prepend">
-                            <span class="input-group-text">
-                              <i class="fa fa-user" aria-hidden="true"></i>
-                            </span>
-                          </div>
-                          <input
-                            class="form-control"
-                            id="Username"
-                            name="Username"
-                            placeholder="Username"
-                            type="text"
-                            required
-                            ngModel
-                          />
-                        </div>
-                      </div>
-                      <div class="form-group">
-                        <div class="input-group input-group-alternative">
-                          <div class="input-group-prepend">
-                            <span class="input-group-text"
-                              ><i class="fa fa-key" aria-hidden="true"></i>
-                            </span>
-                          </div>
-                          <input
-                            class="form-control"
-                            id="Password"
-                            name="Password"
-                            placeholder="Password"
-                            type="password"
-                            required
-                            ngModel
-                          />
-                        </div>
-                      </div>
-                      <div
-                        class="custom-control custom-control-alternative custom-checkbox"
-                      >
-                        <input
-                          class="custom-control-input"
-                          id=" customCheckLogin"
-                          type="checkbox"
-                        />
-                        <label
-                          class="custom-control-label"
-                          for=" customCheckLogin"
-                        >
-                          <span>Remember me</span>
-                        </label>
-                      </div>
-                      <div class="text-center">
-                        <button
-                          type="button"
-                          class="btn btn-primary my-4"
-                          (click)="onSignIn(userForm)"
-                        >
-                          Sign in
-                        </button>
-                      </div>
-                    </form>
-                  </div>
-                </div>
-                <div class="row mt-3">
-                  <div class="col-6">
-                    <a href="javascript:void(0)" class="text-light">
-                      <small>Forgot password?</small>
-                    </a>
-                  </div>
-                  <div class="col-6 text-right">
-                    <a href="javascript:void(0)" class="text-light">
-                      <small>Create new account</small>
-                    </a>
-                  </div>
-                </div>
-              </div>
+  <!--hero Section-->
+  <section class="hero">
+    <div class="full-bg-img mask rgba-gradient">
+      <div class="container flex-center">
+        <div class="d-flex align-items-center content-height w-100">
+          <div class="row d-flex justify-content-center pt-5 mt-3 w-100">
+            <div class="col-md-6 text-center text-md-left mb-5">
+              <br />
+              <br />
+              <br />
+              <br />
+              <br />
+              <br />
+
+              <h1
+                class="hero-bold wow bounceInDown center my-4"
+                data-wow-duration="2s"
+                data-wow-delay="0.5s"
+              >
+                WELCOME TO CLIPBOARDY
+              </h1>
+              <hr
+                class="hr-light wow fadeInLeft"
+                data-wow-duration="3s"
+                data-wow-delay="0.6s"
+              />
+              <h6
+                class="wow fadeInLeft"
+                data-wow-duration="3s"
+                data-wow-delay="0.7s"
+              >
+                Share your thoughts! between your devices, privately
+              </h6>
+              <br />
+
+              <button
+                class="btn btn-outline-dark wow bounceInUp"
+                data-wow-duration="4s"
+                data-wow-delay="0.8s"
+                type="button"
+                [ngStyle]="{
+                  hover: violet
+                }"
+                data-bs-toggle="modal"
+                data-bs-target="#modalSignInForm"
+              >
+                <span class="mx-2" style="font-size: x-large">GET STARTED</span>
+              </button>
             </div>
           </div>
-        </section>
+        </div>
       </div>
     </div>
-  </div>
+  </section>
 </main>

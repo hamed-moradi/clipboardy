@@ -3,57 +3,127 @@
   <section class="hero">
     <div class="full-bg-img mask rgba-gradient">
       <div class="container flex-center">
-        <div class="d-flex align-items-center content-height w-100">
-          <div class="row d-flex justify-content-center pt-5 mt-3 w-100">
-            <div class="col-md-6 text-center text-md-left mb-5">
-              <br />
-              <br />
-              <br />
-              <br />
-              <br />
-
-              <h1
-                class="hero-bold wow bounceInDown center my-4"
-                data-wow-duration="2s"
-                data-wow-delay="0.5s"
+        <!-- search input -->
+        <div class="row hero-search justify-content-center p-5">
+          <div class="col-md-8 col-xs-5 d-flex align-items-center">
+            <div class="flex-grow-1">
+              <form #searchInput="ngForm">
+                <fieldset>
+                  <div>
+                    <input
+                      type="text"
+                      id="searchInput"
+                      class="form-control"
+                      name="searchInput"
+                      placeholder="Search in the clipboard list"
+                      (ngModelChange)="onClipBoardSerachList(searchInput)"
+                      ngModel
+                    />
+                  </div>
+                </fieldset>
+              </form>
+            </div>
+            <div class="flex-shrink-0 ms-2">
+              <i
+                class="fa fa-search fa-2x"
+                aria-hidden="true"
+                [ngStyle]="{ color: violet }"
               >
-                WELCOME TO CLIPBOARDY
-              </h1>
-              <hr
-                class="hr-light wow fadeInLeft"
-                data-wow-duration="3s"
-                data-wow-delay="0.6s"
-              />
-              <h6
-                class="wow fadeInLeft"
-                data-wow-duration="3s"
-                data-wow-delay="0.7s"
-              >
-                Share your thoughts! between your devices, privately
-              </h6>
-              <br />
-
-              <button
-                class="btn btn-outline-dark wow bounceInUp"
-                data-wow-duration="4s"
-                data-wow-delay="0.8s"
-                type="button"
-                [ngStyle]="{
-                  hover: violet
-                }"
-                data-bs-toggle="modal"
-                data-bs-target="#modalSignInForm"
-              >
-                <span class="mx-2" style="font-size: x-large">GET STARTED</span>
-              </button>
+              </i>
             </div>
           </div>
         </div>
-        <app-clipBoard></app-clipBoard>
+
+        <!-- Button New clipboard -->
+        <div class="row hero-newButton d-flex justify-content-center">
+          <div class="col-2">
+            <button
+              class="btn"
+              [ngStyle]="{
+                backgroundColor: violet
+              }"
+              style="color: aliceblue"
+              type="button"
+              data-bs-toggle="modal"
+              data-bs-target="#modalAddToClipboard"
+            >
+              <i class="fa fa-plus-square mx-2" aria-hidden="true"></i>
+              <span class="align-self-center">New</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Modal Add To Clipboard -->
+        <div
+          class="modal fade"
+          id="modalAddToClipboard"
+          tabindex="-1"
+          aria-labelledby="modalAddToClipboardLabel"
+          aria-hidden="true"
+          style="position: relative"
+        >
+          <div class="modal-dialog max-hight" data-dismiss="modal">
+            <div class="modal-content">
+              <div class="modal-header d-flex justify-content-start">
+                <i
+                  class="fa fa-clipboard fa-2x mx-1"
+                  aria-hidden="true"
+                  [ngStyle]="{ color: pink }"
+                >
+                </i>
+                <h2 class="modal-title fs-5" id="modalAddToClipboardLabel">
+                  Add to the Clipboard list
+                </h2>
+              </div>
+              <div class="modal-body">
+                <form #content="ngForm">
+                  <fieldset>
+                    <div>
+                      <textarea
+                        type="text"
+                        id="content"
+                        class="form-control"
+                        name="content"
+                        placeholder="Enter text to add the clipboard"
+                        style="max-height: 200px; min-height: 200px"
+                        ngModel
+                      ></textarea>
+                    </div>
+                  </fieldset>
+                </form>
+              </div>
+              <div class="modal-footer d-flex justify-content-center">
+                <button
+                  type="button"
+                  class="btn btn-secondary"
+                  data-bs-dismiss="modal"
+                >
+                  Close
+                </button>
+                <button
+                  type="submit"
+                  class="btn"
+                  [ngStyle]="{
+                    backgroundColor: violet
+                  }"
+                  style="color: aliceblue"
+                  data-bs-dismiss="modal"
+                  (click)="onAddClipBoardList(content)"
+                >
+                  Add To Clipboard List
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </section>
-
+  <app-clipBoard
+    (clipBoards)="clipBoardsInHome($event)"
+    [searchInput]="searchInput"
+  ></app-clipBoard>
+  <!-- [onClipBoardSerachList]="onClipBoardSerachList(searchInput)"-->
   <!--Main Navigation-->
   <!--
   <app-clipBoards></app-clipBoards>
