@@ -1,23 +1,135 @@
-<div class="row">
-  <div class="col-md-12">
-    <div class="container-fluid">
-      <!-- Clipboard List -->
-      <div>
-        <!--     *ngFor="let clipBoardEl of onClipBoardSerachList(searchInput)"
-          [clipBoard]="clipBoardEl"
-
-           <app-clipBoard-item> </app-clipBoard-item>
-        -->
+<section class="hero">
+  <div class="container flex-center">
+    <!-- search input -->
+    <div class="row hero-search justify-content-center p-5">
+      <div class="col-md-8 col-xs-5 d-flex align-items-center">
+        <div class="flex-grow-1">
+          <form #searchQuery="ngForm">
+            <fieldset>
+              <div>
+                <input
+                  type="text"
+                  id="searchQuery"
+                  class="form-control"
+                  name="searchQuery"
+                  placeholder="Search in the clipboard list"
+                  (ngModelChange)="onClipBoardSerachList(searchQuery)"
+                  ngModel
+                />
+              </div>
+            </fieldset>
+          </form>
+        </div>
+        <div class="flex-shrink-0 ms-2">
+          <i
+            class="fa fa-search fa-2x"
+            aria-hidden="true"
+            [ngStyle]="{ color: violet }"
+          >
+          </i>
+        </div>
       </div>
+    </div>
 
-      <div
-        infiniteScroll
-        [infiniteScrollDistance]="2"
-        [infiniteScrollThrottle]="1000"
-        (scrolled)="onScroll()"
-      ></div>
+    <!-- Button New clipboard -->
+    <div class="row hero-newButton d-flex justify-content-center">
+      <div class="col-2">
+        <button
+          class="btn"
+          [ngStyle]="{
+            backgroundColor: violet
+          }"
+          style="color: aliceblue"
+          type="button"
+          data-bs-toggle="modal"
+          data-bs-target="#modalAddToClipboard"
+        >
+          <i class="fa fa-plus-square mx-2" aria-hidden="true"></i>
+          <span class="align-self-center">New</span>
+        </button>
+      </div>
+    </div>
 
-      <app-spinner *ngIf="!finished"> </app-spinner>
+    <!-- Modal Add To Clipboard -->
+    <div
+      class="modal fade"
+      id="modalAddToClipboard"
+      tabindex="-1"
+      aria-labelledby="modalAddToClipboardLabel"
+      aria-hidden="true"
+      style="position: relative"
+    >
+      <div class="modal-dialog max-hight" data-dismiss="modal">
+        <div class="modal-content">
+          <div class="modal-header d-flex justify-content-start">
+            <i
+              class="fa fa-clipboard fa-2x mx-1"
+              aria-hidden="true"
+              [ngStyle]="{ color: pink }"
+            >
+            </i>
+            <h2 class="modal-title fs-5" id="modalAddToClipboardLabel">
+              Add to the Clipboard list
+            </h2>
+          </div>
+          <div class="modal-body">
+            <form #content="ngForm">
+              <fieldset>
+                <div>
+                  <textarea
+                    type="text"
+                    id="content"
+                    class="form-control"
+                    name="content"
+                    placeholder="Enter text to add the clipboard"
+                    style="max-height: 200px; min-height: 200px"
+                    ngModel
+                  ></textarea>
+                </div>
+              </fieldset>
+            </form>
+          </div>
+          <div class="modal-footer d-flex justify-content-center">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-bs-dismiss="modal"
+            >
+              Close
+            </button>
+            <button
+              type="submit"
+              class="btn"
+              [ngStyle]="{
+                backgroundColor: violet
+              }"
+              style="color: aliceblue"
+              data-bs-dismiss="modal"
+              (click)="onAddClipBoardList(content)"
+            >
+              Add To Clipboard List
+            </button>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
-</div>
+
+  <!-- Clipboard List -->
+  <div>
+    <app-clipBoard-item
+      *ngFor="let clipBoardEl of onClipBoardSerachList(searchQuery)"
+      [clipBoard]="clipBoardEl"
+    >
+    </app-clipBoard-item>
+  </div>
+</section>
+
+<div
+  infiniteScroll
+  [infiniteScrollDistance]="2"
+  [infiniteScrollThrottle]="1000"
+  (scrolled)="onScroll()"
+></div>
+
+<app-spinner *ngIf="!finished"> </app-spinner>

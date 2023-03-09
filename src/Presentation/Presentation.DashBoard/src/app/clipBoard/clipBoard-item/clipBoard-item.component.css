@@ -11,3 +11,8 @@
   border-top:2px dashed #ffb7ff;
 }
 
+.hero-clipBoardItems{
+  width: 100%;
+  top:300px;
+  position: relative;
+}

@@ -14,10 +14,11 @@
     text-align: right;
 }
 
-  .hero-bold{
+  .navbar-bold{
     font-weight: 700;
     font-size:250% !important;
     text-transform: uppercase;
+    margin-top:0.75rem ;
   }
 
   .logo-brand{
@@ -51,11 +52,12 @@
 }
 
   @media screen and (max-width: 506px) {
-      .hero-bold{
-        font-weight: 700;
-        font-size:170% !important;
-        text-transform: uppercase;
-      }
+    .navbar-bold{
+      font-weight: 700;
+      font-size:200% !important;
+      text-transform: uppercase;
+      margin-top:0.75rem ;
+    }
 
       .logo-brand{
         height: 65px;
