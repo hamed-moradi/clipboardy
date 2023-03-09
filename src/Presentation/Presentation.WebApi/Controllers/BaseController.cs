@@ -11,7 +11,7 @@ using System.Globalization;
 using System.Linq;
 
 namespace Presentation.WebApi.Controllers {
-  [Security, ApiController, Route("api/[controller]")]
+  [Security, CustomAuthentication, ApiController, Route("api/[controller]")]
   public class BaseController: ControllerBase {
     #region ctor
     protected readonly IMapper _mapper;

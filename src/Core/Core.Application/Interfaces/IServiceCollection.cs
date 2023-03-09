@@ -33,7 +33,7 @@ namespace Core.Application.Interfaces {
   }
 
   public interface IClipboardService: IBaseService<Clipboard> {
-    Task<(List<ClipboardViewModel> List, int PageCount)> GetPagingAsync(ClipboardGetBindingModel collection);
+    Task<(List<ClipboardViewModel> List, int TotalCount, int PageCount)> GetPagingAsync(ClipboardGetBindingModel collection);
   }
 
   //public interface IContentTypeService: IGenericService<ContentType> {

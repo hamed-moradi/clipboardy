@@ -25,5 +25,8 @@ namespace Presentation.WebApi.Controllers {
       return View();
       //return Ok(AppSetting.Version);
     }
+
+    [ApiExplorerSettings(IgnoreApi = true), Route("/error")]
+    public IActionResult HandleError() => Problem();
   }
 }

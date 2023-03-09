@@ -11,32 +11,32 @@ using System.Linq;
 namespace Presentation.WebApi.FilterAttributes {
   public class CustomAuthenticationAttribute: ActionFilterAttribute {
     #region ctor
-    private readonly IStringLocalizer _localizer;
+    private readonly IStringLocalizer<CustomAuthenticationAttribute> _localizer;
     private readonly IAccountService _accountService;
     private readonly JwtHandler _jwtHandler;
 
     public CustomAuthenticationAttribute() {
-      _localizer = ServiceLocator.Current.GetInstance<IStringLocalizer>();
+      _localizer = ServiceLocator.Current.GetInstance<IStringLocalizer<CustomAuthenticationAttribute>>();
       _accountService = ServiceLocator.Current.GetInstance<IAccountService>();
       _jwtHandler = ServiceLocator.Current.GetInstance<JwtHandler>();
     }
     #endregion
 
     public override void OnActionExecuting(ActionExecutingContext context) {
-      var deviceKey = context?.HttpContext.Request.Headers
-          .FirstOrDefault(f => f.Key.ToLower(CultureInfo.CurrentCulture) == "devicekey").Value[0];
+      var deviceKey = (context?.HttpContext.Request.Headers
+          .FirstOrDefault(f => f.Key.ToLower(CultureInfo.CurrentCulture) == "devicekey").Value).ToString();
       if(string.IsNullOrWhiteSpace(deviceKey)) {
         throw new Exception(_localizer["DeviceKey not found"]);
       }
 
-      var token = context?.HttpContext.Request.Headers
-          .FirstOrDefault(f => f.Key.ToLower(CultureInfo.CurrentCulture) == "authorization").Value[0];
+      var token = (context?.HttpContext.Request.Headers
+          .FirstOrDefault(f => f.Key.ToLower(CultureInfo.CurrentCulture) == "authorization").Value)?.ToString();
 
       if(string.IsNullOrWhiteSpace(token)) {
         throw new Exception(_localizer["Authorization token not found"]);
       }
 
-      token = token.StartsWith("Bearer ", false, CultureInfo.CurrentCulture) ? token.Remove(0, 7) : token;
+      token = token.Replace("Bearer ", string.Empty);
       var claims = _jwtHandler.Validate(token);
       var account = claims.ToAccount();
 
