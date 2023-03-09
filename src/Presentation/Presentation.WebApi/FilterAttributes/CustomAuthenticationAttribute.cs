@@ -9,13 +9,13 @@ using System.Globalization;
 using System.Linq;
 
 namespace Presentation.WebApi.FilterAttributes {
-  public class HttpHeaderBinderAttribute: ActionFilterAttribute {
+  public class CustomAuthenticationAttribute: ActionFilterAttribute {
     #region ctor
     private readonly IStringLocalizer _localizer;
     private readonly IAccountService _accountService;
     private readonly JwtHandler _jwtHandler;
 
-    public HttpHeaderBinderAttribute() {
+    public CustomAuthenticationAttribute() {
       _localizer = ServiceLocator.Current.GetInstance<IStringLocalizer>();
       _accountService = ServiceLocator.Current.GetInstance<IAccountService>();
       _jwtHandler = ServiceLocator.Current.GetInstance<JwtHandler>();
@@ -23,6 +23,12 @@ namespace Presentation.WebApi.FilterAttributes {
     #endregion
 
     public override void OnActionExecuting(ActionExecutingContext context) {
+      var deviceKey = context?.HttpContext.Request.Headers
+          .FirstOrDefault(f => f.Key.ToLower(CultureInfo.CurrentCulture) == "devicekey").Value[0];
+      if(string.IsNullOrWhiteSpace(deviceKey)) {
+        throw new Exception(_localizer["DeviceKey not found"]);
+      }
+
       var token = context?.HttpContext.Request.Headers
           .FirstOrDefault(f => f.Key.ToLower(CultureInfo.CurrentCulture) == "authorization").Value[0];
 

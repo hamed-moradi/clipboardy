@@ -1,4 +1,5 @@
-﻿using Assets.Model.Binding;
+﻿using Assets.Model.Base;
+using Assets.Model.Binding;
 using Assets.Model.View;
 using Assets.Utility;
 using Assets.Utility.Extension;
@@ -10,7 +11,6 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Caching.Memory;
 using Newtonsoft.Json;
-using Presentation.WebApi.FilterAttributes;
 using Serilog;
 using System;
 using System.ComponentModel.DataAnnotations;
@@ -49,60 +49,53 @@ namespace Presentation.WebApi.Controllers {
 
     [HttpPost, AllowAnonymous, Route("signup")]
     public async Task<IActionResult> SignupAsync([FromBody] SignupBindingModel collection) {
-      // todo: Captcha
+      // TODO: Captcha
+
+      var deviceHeader = GetDeviceInfosFromHeader();
+      if(deviceHeader == null) {
+        return BadRequest(_localizer[DataTransferer.UnofficialRequest().Message]);
+      }
+
+      collection.DeviceKey = deviceHeader.DeviceKey;
+      collection.DeviceName = deviceHeader.DeviceName;
+      collection.DeviceType = deviceHeader.DeviceType;
 
       if(collection == null) {
         return BadRequest(_localizer[DataTransferer.DefectiveEntry().Message]);
       }
 
-      if(string.IsNullOrEmpty(collection?.Username)) {
+      if(string.IsNullOrEmpty(collection?.AccountKey)) {
         return BadRequest(_localizer[DataTransferer.DefectiveEmailOrCellPhone().Message]);
+      }
+      collection.AccountKey = collection.AccountKey.Trim();
+
+      if(collection.AccountKey.IsPhoneNumber()) {
+        collection.AccountType = AccountProfileTypes.PHONE;
+      }
+      else if(new EmailAddressAttribute().IsValid(collection.AccountKey)) {
+        collection.AccountType = AccountProfileTypes.EMAIL;
+      }
+      else {
+        return BadRequest(_localizer[DataTransferer.InvalidEmailOrCellPhone().Message]);
+      }
+
+      if(string.IsNullOrEmpty(collection.Password) && string.IsNullOrEmpty(collection.ConfirmPassword)) {
+        return BadRequest(_localizer[DataTransferer.DefectivePassword().Message]);
+      }
+
+      if(collection.Password != collection.ConfirmPassword) {
+        return BadRequest(_localizer[DataTransferer.PasswordsMissmatch().Message]);
+      }
+
+      if(string.IsNullOrEmpty(collection.DeviceName) || string.IsNullOrEmpty(collection.DeviceType)) {
+        return BadRequest(_localizer[DataTransferer.UnofficialRequest().Message]);
       }
 
       Log.Debug($"A User is trying to register with this data: {JsonConvert.SerializeObject(collection)}");
-      collection.Username = collection.Username.Trim();
 
       try {
-        if(collection.Username.IsPhoneNumber()) {
-          collection.Phone = collection.Username;
-          //if(await _accountProfileService.FirstAsync(new AccountProfileGetFirstSchema { LinkedId = collection.Phone }).ConfigureAwait(true) != null) {
-          //  return BadRequest(_localizer[DataTransferer.CellPhoneAlreadyExists().Message]);
-          //}
-        }
-        else if(new EmailAddressAttribute().IsValid(collection.Username)) {
-          collection.Email = collection.Username;
-          //if(await _accountProfileService.FirstAsync(new AccountProfileGetFirstSchema { LinkedId = collection.Email }).ConfigureAwait(true) != null) {
-          //  return BadRequest(_localizer[DataTransferer.EmailAlreadyExists().Message]);
-          //}
-        }
-        else {
-          return BadRequest(_localizer[DataTransferer.InvalidEmailOrCellPhone().Message]);
-        }
-
-        if(string.IsNullOrEmpty(collection.Password) && string.IsNullOrEmpty(collection.ConfirmPassword)) {
-          return BadRequest(_localizer[DataTransferer.DefectivePassword().Message]);
-        }
-
-        if(collection.Password != collection.ConfirmPassword) {
-          return BadRequest(_localizer[DataTransferer.PasswordsMissmatch().Message]);
-        }
-
-        if(string.IsNullOrEmpty(collection.DeviceId) || string.IsNullOrEmpty(collection.DeviceName)) {
-          return BadRequest(_localizer[DataTransferer.UnofficialRequest().Message]);
-        }
-
-        //var result = await _accountService.SignupAsync(collection).ConfigureAwait(true);
-        //switch(result.Code) {
-        //  case 200:
-        //    return Ok(result.Data);
-        //  case 400:
-        //    return BadRequest(result.Message);
-        //  case 500:
-        //  default:
-        //    return Problem(result.Message);
-        //}
-
-        return Ok();
+        var result = await _accountService.SignupAsync(collection);
+        return Respond(result);
       }
       catch(Exception ex) {
         Log.Error(ex, ex.Source);
@@ -112,9 +105,9 @@ namespace Presentation.WebApi.Controllers {
 
     [HttpPost, AllowAnonymous, Route("signin")]
     public async Task<IActionResult> SigninAsync([FromBody] SigninBindingModel collection) {
-      Log.Debug($"A User is trying to signing in with this data: {JsonConvert.SerializeObject(collection)}");
+      // TODO: Captcha
 
-      if(string.IsNullOrEmpty(collection?.Username) || string.IsNullOrEmpty(collection?.Password)) {
+      if(string.IsNullOrEmpty(collection?.AccountKey) || string.IsNullOrEmpty(collection?.Password)) {
         return BadRequest(_localizer[DataTransferer.DefectiveUsernameOrPassword().Message]);
       }
 
@@ -123,22 +116,15 @@ namespace Presentation.WebApi.Controllers {
         return BadRequest(_localizer[DataTransferer.UnofficialRequest().Message]);
       }
 
-      collection.DeviceId = deviceHeader.DeviceId;
+      collection.DeviceKey = deviceHeader.DeviceKey;
       collection.DeviceName = deviceHeader.DeviceName;
       collection.DeviceType = deviceHeader.DeviceType;
 
+      Log.Debug($"A User is trying to signing in with this data: {JsonConvert.SerializeObject(collection)}");
+
       try {
-        //var result = await _accountService.SigninAsync(collection).ConfigureAwait(true);
-        //switch(result.Code) {
-        //  case 200:
-        //    return Ok(result.Data);
-        //  case 400:
-        //    return BadRequest(result.Message);
-        //  case 500:
-        //  default:
-        //    return Problem(result.Message);
-        //}
-        return Ok();
+        var result = await _accountService.SigninAsync(collection).ConfigureAwait(true);
+        return Respond(result);
       }
       catch(Exception ex) {
         Log.Error(ex, ex.Source);
@@ -152,7 +138,7 @@ namespace Presentation.WebApi.Controllers {
       return Ok();
     }
 
-    [HttpPost, HttpHeaderBinder, Route("changepassword")]
+    [HttpPost, Route("changepassword")]
     public async Task<IActionResult> ChangePasswordAsync([FromBody] ChangePasswordBindingModel collection) {
       Log.Debug($"ChangePassword => {JsonConvert.SerializeObject(collection)}");
 
