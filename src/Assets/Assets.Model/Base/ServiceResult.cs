@@ -10,7 +10,7 @@
     public string Message { get; set; }
     public object Data { get; set; }
 
-    public ServiceResult(int code, string message, object data = null) {
+    public ServiceResult(int code, string message = null, object data = null) {
       Code = code;
       Message = message;
       Data = data;

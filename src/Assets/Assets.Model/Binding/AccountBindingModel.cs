@@ -3,21 +3,20 @@
 namespace Assets.Model.Binding {
 
   public class SignupBindingModel: IBaseBindingModel {
-    public string Username { get; set; }
-    public string Email { get; set; }
-    public string Phone { get; set; }
+    public string AccountKey { get; set; }
+    public AccountProfileTypes AccountType { get; set; }
     public string Password { get; set; }
     public string ConfirmPassword { get; set; }
-    public string DeviceId { get; set; }
+    public string DeviceKey { get; set; }
     public string DeviceName { get; set; }
     public string DeviceType { get; set; }
   }
 
   public class SigninBindingModel: IBaseBindingModel {
-    public string Username { get; set; }
+    public string AccountKey { get; set; }
     public string Password { get; set; }
     public bool RememberMe { get; set; }
-    public string DeviceId { get; set; }
+    public string DeviceKey { get; set; }
     public string DeviceName { get; set; }
     public string DeviceType { get; set; }
   }

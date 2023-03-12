@@ -10,7 +10,6 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
-using Presentation.WebApi.FilterAttributes;
 using Serilog;
 using System;
 using System.Collections.Generic;
@@ -51,7 +50,7 @@ namespace Presentation.WebApi.Controllers {
 
     #endregion
 
-    [HttpGet("signin"), AllowAnonymous, HttpHeaderBinder]
+    [HttpGet("signin"), AllowAnonymous]
     public async Task<IActionResult> Signin([FromQuery] string provider = "Google") {
       var deviceHeader = GetDeviceInfosFromHeader();
       if(deviceHeader == null) {
@@ -100,7 +99,7 @@ namespace Presentation.WebApi.Controllers {
 
         var headerbindingmodel = JsonConvert.DeserializeObject<Device>(Encoding.UTF8.GetString(Convert.FromBase64String(userData)));
         if(headerbindingmodel == null
-            || string.IsNullOrWhiteSpace(headerbindingmodel.DeviceId)
+            || string.IsNullOrWhiteSpace(headerbindingmodel.DeviceKey)
             || string.IsNullOrWhiteSpace(headerbindingmodel.DeviceName)
             || string.IsNullOrWhiteSpace(headerbindingmodel.DeviceType)) {
 
@@ -136,7 +135,7 @@ namespace Presentation.WebApi.Controllers {
           return Problem(_localizer[DataTransferer.ExternalAuthenticationWithUnknownProvider().Message]);
         }
 
-        externalUser.DeviceId = headerbindingmodel.DeviceId;
+        externalUser.DeviceKey = headerbindingmodel.DeviceKey;
         externalUser.DeviceName = headerbindingmodel.DeviceName;
         externalUser.DeviceType = headerbindingmodel.DeviceType;
 

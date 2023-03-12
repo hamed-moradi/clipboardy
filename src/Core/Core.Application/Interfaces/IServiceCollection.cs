@@ -1,4 +1,5 @@
-﻿using Assets.Model.Binding;
+﻿using Assets.Model.Base;
+using Assets.Model.Binding;
 using Assets.Model.View;
 using Core.Domain.Entities;
 using System.Collections.Generic;
@@ -12,9 +13,9 @@ namespace Core.Application.Interfaces {
     //Task<AccountResult> FirstAsync(AccountGetFirstSchema account);
     //Task<int> AddAsync(AccountAddSchema account);
     //Task UpdateAsync(AccountUpdateSchema account);
-    //Task<IServiceResult> SignupAsync(SignupBindingModel signupModel);
+    Task<IServiceResult> SignupAsync(SignupBindingModel signupModel);
     //Task<IServiceResult> ExternalSignupAsync(ExternalUserBindingModel externalUser);
-    //Task<IServiceResult> SigninAsync(SigninBindingModel signinModel);
+    Task<IServiceResult> SigninAsync(SigninBindingModel signinModel);
     //Task<IServiceResult> ExternalSigninAsync(ExternalUserBindingModel externalUser, AccountProfileResult accountProfile);
   }
 
@@ -32,7 +33,7 @@ namespace Core.Application.Interfaces {
   }
 
   public interface IClipboardService: IBaseService<Clipboard> {
-    Task<(List<ClipboardViewModel> List, int PageCount)> GetPagingAsync(ClipboardGetBindingModel collection);
+    Task<(List<ClipboardViewModel> List, int TotalCount, int PageCount)> GetPagingAsync(ClipboardGetBindingModel collection);
   }
 
   //public interface IContentTypeService: IGenericService<ContentType> {

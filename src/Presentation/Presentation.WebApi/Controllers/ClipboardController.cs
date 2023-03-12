@@ -21,8 +21,10 @@ namespace Presentation.WebApi.Controllers {
     [HttpGet("get")]
     public async Task<IActionResult> Get([FromQuery] ClipboardGetBindingModel collection) {
       try {
-        var (list, pageCount) = await _clipboardService.GetPagingAsync(collection);
-        return Ok(new { list, pageCount });
+        collection.AccountId = CurrentAccount.Id;
+        collection.DeviceId = CurrentAccount.DeviceId;
+        var (list, totalCount, pageCount) = await _clipboardService.GetPagingAsync(collection);
+        return Ok(new { list, totalCount, pageCount });
       }
       catch(Exception ex) {
         Log.Error(ex, ex.Source);
@@ -38,13 +40,15 @@ namespace Presentation.WebApi.Controllers {
         }
 
         var model = _mapper.Map<Clipboard>(collection);
+        model.account_id = CurrentAccount.Id;
+        model.device_id = CurrentAccount.DeviceId;
         await _clipboardService.AddAsync(model);
 
         return Ok();
       }
       catch(Exception ex) {
         Log.Error(ex, ex.Source);
-        return Problem();
+        return Problem(ex.Message);
       }
     }
   }

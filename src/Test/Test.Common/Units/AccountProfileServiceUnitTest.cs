@@ -18,10 +18,8 @@ namespace Test.Common.Units {
 
     [TestMethod, TestCategory("AccountProfileService"), TestCategory("First")]
     public void First() {
-      //var query = new AccountProfileGetFirstSchema { Id = 1 };
-      //var account = _accountProfileService.FirstAsync(query).GetAwaiter().GetResult();
-      //Assert.IsTrue(query.StatusCode == 200);
-      //Assert.IsTrue(account != null);
+      var profile = _accountProfileService.First(p => p.id == 2);
+      Assert.IsTrue(profile != null);
     }
 
     [TestMethod, TestCategory("AccountProfileService"), TestCategory("Add")]
