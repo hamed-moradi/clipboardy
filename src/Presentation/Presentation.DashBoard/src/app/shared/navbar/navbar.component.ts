@@ -1,8 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, NavigationEnd, NavigationStart } from '@angular/router';
-import { Location, PopStateEvent } from '@angular/common';
+import { DOCUMENT, Location, PopStateEvent } from '@angular/common';
+import { NgForm } from '@angular/forms';
+
 import { ColorUsedService } from 'src/app/help/color-used.service';
-import * as $ from 'jquery';
+import { AuthService } from '../../auth/auth.service';
 
 @Component({
   selector: 'app-navbar',
@@ -17,7 +19,8 @@ export class NavbarComponent implements OnInit {
   constructor(
     public location: Location,
     private router: Router,
-    private colorUsed: ColorUsedService
+    private colorUsed: ColorUsedService,
+    private authService: AuthService
   ) {}
 
   pink: string = this.colorUsed.pink;
@@ -26,6 +29,8 @@ export class NavbarComponent implements OnInit {
   green: string = this.colorUsed.green;
   violet: string = this.colorUsed.violet;
   blue: string = this.colorUsed.blue;
+
+  navbarMobility: boolean = false;
 
   ngOnInit() {
     this.router.events.subscribe((event) => {

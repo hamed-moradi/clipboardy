@@ -1,48 +1,121 @@
-.intro-header {
-  height: unset !important;
-}
-.intro-2 {
-  background: url("../../assets/img/theme/home.jpg")no-repeat center center;
+
+/*--------------------------------------------------------------
+# Hero Section
+--------------------------------------------------------------*/
+.hero {
+  width: 100%;
+  height: 75vh;
+  background: url("../../assets/img/theme/home.jpg") top center;
   background-size: cover;
+  position: relative;
 }
-.view {
-  height: 100vh !important;
+
+@media (min-width: 1024px) {
+  .hero {
+    background-attachment: fixed;
+  }
 }
-.top-nav-collapse {
-  background-color: #3f51b5 !important;
+
+.hero-search {
+  position: relative;
+  top: 250px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  text-align: center;
 }
-.navbar:not(.top-nav-collapse) {
-  background: transparent !important;
+
+.hero-newButton {
+  position: relative;
+  top: 260px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  text-align: center;
 }
+
+.hero-bold{
+  margin: 30px 0 10px 0;
+  font-weight: 700;
+  line-height: 56px;
+  text-transform: uppercase;
+  color: #000000;
+}
+
+.hero h2 {
+  color: #000000;
+  margin-bottom: 50px;
+  font-size: 24px;
+}
+
+.hero .btn-outline-dark:hover{
+  background-color:#930086;
+  border:2px solid #930086;
+}
+
+
+
 @media (max-width: 768px) {
-  .navbar:not(.top-nav-collapse) {
-    background: #3f51b5 !important;
+  .hero h1 {
+    font-size: 28px;
+    line-height: 36px;
   }
+
+
+.hero-search {
+  position: relative;
+  top: 250px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  text-align: center;
 }
-.rgba-gradient .full-bg-img {
-  background: linear-gradient(45deg, rgba(83, 125, 210, 0.4), rgba(178, 30, 123, 0.4) 100%);
+
+.hero-newButton {
+  position: relative;
+  top: 260px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  text-align: center;
 }
-.full-bg-img {
-  height: 100%;
+
 }
-.card {
-  background-color: rgba(229, 228, 255, 0.2);
-}
-.md-form .prefix {
-  font-size: 1.5rem;
-  margin-top: 1rem;
-}
-.md-form label {
-  color: #ffffff;
-}
-h6 {
-  line-height: 1.7;
-}
-@media (max-width: 740px) {
-  .full-height,
-  .full-height body,
-  .full-height header,
-  .full-height header .view {
-    height: 1040px;
+
+@media (max-height:350px) {
+  .hero h1 {
+    font-size: 28px;
+    line-height: 36px;
   }
+
+  .hero h2 {
+    font-size: 18px;
+    line-height: 24px;
+    margin-bottom: 30px;
+  }
+
+.hero-search {
+  position: relative;
+  top: 100px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  text-align: center;
 }
+
+.hero-newButton  {
+  position: relative;
+  top: 105px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  text-align: center;
+}
+}
+

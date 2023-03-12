@@ -1,0 +1,36 @@
+import { NgModule } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { RouterModule } from '@angular/router';
+import { HttpClientModule } from '@angular/common/http';
+import { HomeComponent } from './home.component';
+import { InfiniteScrollModule } from 'ngx-infinite-scroll';
+
+import { SectionsModule } from '../sections/sections.module';
+import { ClipBoardComponent } from '../clipBoard/clipBoard.component';
+import { ClipBoardItemComponent } from '../clipBoard/clipBoard-item/clipBoard-item.component';
+import { HomeRoutingModule } from './home.routing.module';
+import { ColorUsedService } from '../help/color-used.service';
+import { SpinnerComponent } from '../shared/spinner/spinner/spinner.component';
+@NgModule({
+  imports: [
+    CommonModule,
+    FormsModule,
+    RouterModule,
+    HomeRoutingModule,
+    SectionsModule,
+    NgbModule,
+    InfiniteScrollModule,
+    HttpClientModule,
+  ],
+  declarations: [
+    HomeComponent,
+    ClipBoardComponent,
+    ClipBoardItemComponent,
+    SpinnerComponent,
+  ],
+  exports: [HomeComponent],
+  providers: [ColorUsedService],
+})
+export class HomeModule {}

@@ -16,7 +16,7 @@ const routes: Routes = [
   { path: 'user-profile', component: ProfileComponent },
   { path: 'register', component: SignupComponent },
   { path: 'landing', component: LandingComponent },
-  { path: 'login', component: LoginComponent },
+  { path: 'auth/login', component: LoginComponent },
   { path: '', redirectTo: 'home', pathMatch: 'full' },
 ];
 
@@ -25,7 +25,7 @@ const routes: Routes = [
     CommonModule,
     BrowserModule,
     RouterModule.forRoot(routes, {
-      useHash: true,
+      useHash: false,
     }),
   ],
   exports: [],
