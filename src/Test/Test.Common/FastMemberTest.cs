@@ -29,7 +29,7 @@ namespace Test.Common {
       wrapped[propName] = (int)val + 1;
       var ifexist = wrapped["Id"];
 
-      Assert.IsTrue(cb.DeviceId == "2");
+      Assert.IsTrue(cb.DeviceKey == "2");
     }
 
     [TestMethod, TestCategory("FastMember"), TestCategory("IfExist")]

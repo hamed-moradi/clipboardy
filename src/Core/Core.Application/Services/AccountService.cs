@@ -35,6 +35,15 @@ namespace Core.Application.Services {
     }
     #endregion
 
+    public AccountProfileTypes DetectAccountTypeByKey(string accountKey) {
+      if(accountKey.IsPhoneNumber()) {
+        return AccountProfileTypes.PHONE;
+      }
+      else {
+        return AccountProfileTypes.EMAIL;
+      }
+    }
+
     public async Task<AccountHeaderModel> AuthenticateAsync(string token) {
       AccountHeaderModel account = null;
       await Task.Run(() => {
@@ -44,57 +53,50 @@ namespace Core.Application.Services {
     }
 
     public async Task<IServiceResult> SignupAsync(SignupBindingModel signupModel) {
-      var username = _randomMaker.NewNumber();
-      return DataTransferer.Ok();
-      //var duplicated = await FirstAsync(new AccountGetFirstSchema { Username = username });
-      //while(duplicated != null) {
-      //  username = _randomMaker.NewNumber();
-      //  duplicated = await FirstAsync(new AccountGetFirstSchema { Username = username });
-      //}
+      var username = DateTime.UtcNow.Ticks.ToString();
 
-      //using(var transaction = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled)) {
-      //  try {
-      //    var now = DateTime.UtcNow;
+      var duplicated = _accountProfileService.First(p => p.linked_key == signupModel.AccountKey);
+      if(duplicated != null) {
+        return BadRequest("Uesr already exists");
+      }
 
-      //    var account = new AccountAddSchema {
-      //      Password = _cryptograph.RNG(signupModel.Password),
-      //      ProviderId = AccountProvider.Clipboardy.ToInt(),
-      //      Username = username,
-      //      CreatedAt = now,
-      //      StatusId = Status.Active.ToInt()
-      //    };
-      //    var accountId = await AddAsync(account);
+      using var transaction = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled);
+      try {
+        var accountModel = new Account {
+          password = _cryptograph.RNG(signupModel.Password),
+          username = username,
+          status = Status.ACTIVE.ToString()
+        };
+        var account = Add(accountModel, false);
 
-      //    var accountDevice = new AccountDeviceAddSchema {
-      //      AccountId = accountId,
-      //      DeviceId = signupModel.DeviceId,
-      //      DeviceName = signupModel.DeviceName,
-      //      DeviceType = signupModel.DeviceType,
-      //      CreatedAt = now,
-      //      StatusId = Status.Active.ToInt()
-      //    };
-      //    var deviceId = await _accountDeviceService.AddAsync(accountDevice);
+        var accountDevice = new AccountDevice {
+          account_id = account.id,
+          device_key = signupModel.DeviceKey,
+          device_name = signupModel.DeviceName,
+          device_type = signupModel.DeviceType,
+          status = Status.ACTIVE.ToString()
+        };
+        var device = _accountDeviceService.Add(accountDevice, false);
 
-      //    var accountProfile = new AccountProfileAddSchema {
-      //      AccountId = accountId,
-      //      LinkedId = string.IsNullOrWhiteSpace(signupModel.Email) ? signupModel.Phone : signupModel.Email,
-      //      TypeId = string.IsNullOrWhiteSpace(signupModel.Email) ? AccountProfileType.Phone.ToInt() : AccountProfileType.Email.ToInt(),
-      //      CreatedAt = now,
-      //      StatusId = Status.Active.ToInt()
-      //    };
-      //    await _accountProfileService.AddAsync(accountProfile);
+        var accountProfile = new AccountProfile {
+          account_id = account.id,
+          linked_key = signupModel.AccountKey,
+          profile_type = signupModel.AccountType.ToString().ToLower(),
+          status = Status.ACTIVE.ToString()
+        };
+        _accountProfileService.Add(accountProfile, false);
 
-      //    transaction.Complete();
+        await PostgresContext.SaveChangesAsync();
+        transaction.Complete();
 
-      //    var token = _jwtHandler.Bearer(new Account(accountId, deviceId, username, now).ToClaimsIdentity());
-      //    return DataTransferer.Ok(token);
-      //  }
-      //  catch(Exception ex) {
-      //    var errmsg = "Something went wrong.";
-      //    Log.Error(ex, errmsg);
-      //    return DataTransferer.InternalServerError(ex);
-      //  }
-      //}
+        var token = _jwtHandler.Bearer(new AccountHeaderModel(account.id, device.id, username, DateTime.UtcNow)
+          .ToClaimsIdentity());
+        return Ok(token);
+      }
+      catch(Exception ex) {
+        Log.Error(ex, ex.Source);
+        return InternalError(ex);
+      }
     }
 
     public async Task<IServiceResult> ExternalSignupAsync(ExternalUserBindingModel externalUser) {
@@ -152,92 +154,59 @@ namespace Core.Application.Services {
     public async Task<IServiceResult> SigninAsync(SigninBindingModel signinModel) {
       var now = DateTime.UtcNow;
 
-      using(var transaction = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled)) {
-        try {
-          //var query = new AccountProfileGetFirstSchema {
-          //  LinkedId = signinModel.Username
-          //  //StatusId = Status.Active
-          //};
-          //if(signinModel.Username.IsPhoneNumber()) {
-          //  query.TypeId = AccountProfileType.Phone.ToInt();
-          //}
-          //else if(new EmailAddressAttribute().IsValid(signinModel.Username)) {
-          //  query.TypeId = AccountProfileType.Email.ToInt();
-          //}
-          //else {
-          //  return DataTransferer.InvalidEmailOrCellPhone();
-          //}
-
-          //var accountProfile = await _accountProfileService.FirstAsync(query).ConfigureAwait(true);
-          //if(accountProfile == null) {
-          //  if(query.TypeId == AccountProfileType.Phone.ToInt())
-          //    return DataTransferer.PhoneNotFound();
-          //  else
-          //    return DataTransferer.EmailNotFound();
-          //}
-
-          //var account = await FirstAsync(new AccountGetFirstSchema {
-          //  Id = accountProfile.AccountId,
-          //  StatusId = Status.Active.ToInt()
-          //}).ConfigureAwait(true);
-
-          //if(account == null)
-          //  return DataTransferer.UserIsNotActive();
-
-          //var deviceId = 0;
-          //// check password
-          //if(_cryptograph.IsEqual(signinModel.Password, account.Password)) {
-          //  var accountDeviceQuery = new AccountDeviceGetFirstSchema {
-          //    AccountId = account.Id,
-          //    DeviceId = signinModel.DeviceId
-          //  };
-          //  var accountDevice = await _accountDeviceService.FirstAsync(accountDeviceQuery);
-          //  // todo: check the accountDevice
-
-          //  if(accountDevice != null) {
-          //    deviceId = accountDevice.Id.Value;
-          //    // set new token
-          //    await _accountDeviceService.UpdateAsync(new AccountDeviceUpdateSchema {
-          //      Id = accountDevice.Id.Value,
-          //    });
-          //  }
-          //  else {
-          //    // create new device for account
-          //    deviceId = await _accountDeviceService.AddAsync(new AccountDeviceAddSchema {
-          //      AccountId = account.Id,
-          //      DeviceId = signinModel.DeviceId,
-          //      DeviceName = signinModel.DeviceName,
-          //      DeviceType = signinModel.DeviceType,
-          //      CreatedAt = now,
-          //      StatusId = Status.Active.ToInt()
-          //    });
-          //  }
-          //}
-          //else {
-          //  return DataTransferer.WrongPassword();
-          //}
-
-          //// clean forgot password tokens
-          //await _accountProfileService.CleanForgotPasswordTokensAsync(account.Id.Value);
-          ////if(accountProfilesQuery.StatusCode != 200) {
-          ////    Log.Error($"Can't update 'ForgotPasswordTokens' to NULL for AccountId={account.Id}");
-          ////    return DataTransferer.SomethingWentWrong();
-          ////}
-
-          //// set last signed in at
-          //var changedAccount = UpdateAsync(new AccountUpdateSchema {
-          //  LastSignedinAt = now
-          //});
-
-          //transaction.Complete();
-          //var token = _jwtHandler.Bearer(new Account(account.Id.Value, deviceId, signinModel.Username, now).ToClaimsIdentity());
-          //return DataTransferer.Ok(token);
-          return DataTransferer.Ok();
+      using var transaction = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled);
+      try {
+        var accountProfile = _accountProfileService.First(p => p.linked_key == signinModel.AccountKey);
+        if(accountProfile == null) {
+          return BadRequest("Uesr not found");
         }
-        catch(Exception ex) {
-          Log.Error(ex, ex.Source);
-          return DataTransferer.InternalServerError();
+        if(accountProfile.status != Status.ACTIVE.ToString()) {
+          return BadRequest("Uesr profile is not active");
         }
+
+        var account = First(p => p.id == accountProfile.account_id);
+        if(account.status != Status.ACTIVE.ToString()) {
+          return BadRequest("Uesr is not active");
+        }
+
+        if(!_cryptograph.IsEqual(signinModel.Password, account.password)) {
+          return BadRequest("Wrong password");
+        }
+
+        var accountDevice = _accountDeviceService.First(
+          p => p.account_id == account.id && p.device_key == signinModel.DeviceKey);
+
+        if(accountDevice == null) {
+          // create new device for account
+          var device = _accountDeviceService.Add(new AccountDevice {
+            account_id = accountProfile.account_id,
+            device_key = signinModel.DeviceKey,
+            device_name = signinModel.DeviceName,
+            device_type = signinModel.DeviceType,
+            status = Status.ACTIVE.ToString()
+          });
+        }
+        else {
+          if(accountDevice.device_name != signinModel.DeviceName
+            || accountDevice.device_type != signinModel.DeviceType) {
+            accountDevice.device_name = signinModel.DeviceName;
+            accountDevice.device_type = signinModel.DeviceType;
+          }
+        }
+
+        // set last signed in at
+        account.last_signedin_at = DateTime.UtcNow;
+
+        await PostgresContext.SaveChangesAsync();
+        transaction.Complete();
+
+        var token = _jwtHandler.Bearer(new AccountHeaderModel(accountProfile.account_id, accountDevice.id, signinModel.AccountKey, now)
+          .ToClaimsIdentity());
+        return Ok(token);
+      }
+      catch(Exception ex) {
+        Log.Error(ex, ex.Source);
+        return InternalError(ex);
       }
     }
 

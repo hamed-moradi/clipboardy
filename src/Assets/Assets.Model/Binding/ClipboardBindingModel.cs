@@ -3,7 +3,9 @@ using System;
 
 namespace Assets.Model.Binding {
   public class ClipboardGetBindingModel: PagingOption {
-    public int? TypeId { get; set; } = 34;
+    public int AccountId { get; set; }
+    public int DeviceId { get; set; }
+    public int? TypeId { get; set; }
     public string Content { get; set; }
     public DateTime? FromDate { get; set; }
     public DateTime? ToDate { get; set; }

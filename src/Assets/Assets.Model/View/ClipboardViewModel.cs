@@ -8,6 +8,6 @@ namespace Assets.Model.View {
     public string TypeName { get; set; }
     public string Icon { get; set; }
     public string Content { get; set; }
-    public DateTime? CreatedAt { get; set; }
+    public DateTime? InsertedAt { get; set; }
   }
 }

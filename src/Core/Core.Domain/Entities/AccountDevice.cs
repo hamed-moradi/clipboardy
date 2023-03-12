@@ -16,7 +16,7 @@ namespace Core.Domain.Entities {
     public string device_name { get; set; }
     [Required, MaxLength(64)]
     public string device_type { get; set; }
-    public int status_id { get; set; }
+    public string status { get; set; }
     public DateTime inserted_at { get; set; }
   }
 

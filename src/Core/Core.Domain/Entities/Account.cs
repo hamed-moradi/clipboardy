@@ -12,8 +12,13 @@ namespace Core.Domain.Entities {
     public string username { get; set; }
     [MaxLength(256)]
     public string password { get; set; }
-    public int status_id { get; set; }
+    public string status { get; set; }
     public DateTime? last_signedin_at { get; set; }
     public DateTime inserted_at { get; set; }
+  }
+
+  public partial class Account {
+    //public ICollection<AccountProfile> Profiles { get; set; }
+    //public ICollection<AccountDevice> Devices { get; set; }
   }
 }

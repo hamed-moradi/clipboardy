@@ -83,6 +83,9 @@ namespace Presentation.WebApi {
         opt => opt.UseNpgsql(appSettings.ConnectionStrings.Postgres),
         ServiceLifetime.Transient);
 
+      //services.AddExceptionHandler(opt => { });
+      services.AddProblemDetails();
+
       // add external authentication
       services
           .AddAuthentication(options => {
@@ -126,11 +129,13 @@ namespace Presentation.WebApi {
 
       logger.LogInformation("Web api about to start");
 
+      appBuilder.UseExceptionHandler();
+
       if(webHostEnv.IsDevelopment()) {
         appBuilder.UseDeveloperExceptionPage();
       }
       else {
-        //appBuilder.UseExceptionHandler("/Home/ErrorHandler");
+        appBuilder.UseExceptionHandler("/Home/Error");
         appBuilder.UseHsts();
       }
 

@@ -1,4 +1,5 @@
-﻿using Assets.Model.Header;
+﻿using Assets.Model.Base;
+using Assets.Model.Header;
 using Assets.Utility;
 using AutoMapper;
 using Microsoft.AspNetCore.Hosting;
@@ -10,8 +11,8 @@ using System.Globalization;
 using System.Linq;
 
 namespace Presentation.WebApi.Controllers {
-  [Security, ApiController, Route("api/[controller]")]
-  public class BaseController: Controller {
+  [Security, CustomAuthentication, ApiController, Route("api/[controller]")]
+  public class BaseController: ControllerBase {
     #region ctor
     protected readonly IMapper _mapper;
     protected readonly IStringLocalizer<BaseController> _localizer;
@@ -29,8 +30,8 @@ namespace Presentation.WebApi.Controllers {
 
     [ApiExplorerSettings(IgnoreApi = true)]
     protected Device GetDeviceInfosFromHeader() {
-      var deviceId = HttpContext.Request.Headers
-          .FirstOrDefault(f => f.Key.ToLower(CultureInfo.CurrentCulture) == "deviceid").Value;
+      var deviceKey = HttpContext.Request.Headers
+          .FirstOrDefault(f => f.Key.ToLower(CultureInfo.CurrentCulture) == "devicekey").Value;
 
       var deviceName = HttpContext.Request.Headers
           .FirstOrDefault(f => f.Key.ToLower(CultureInfo.CurrentCulture) == "devicename").Value;
@@ -39,18 +40,36 @@ namespace Presentation.WebApi.Controllers {
           .FirstOrDefault(f => f.Key.ToLower(CultureInfo.CurrentCulture) == "devicetype").Value;
 
       if(_webHostEnvironment.IsDevelopment()) {
-        deviceId = string.IsNullOrWhiteSpace(deviceId) ? "deviceId" : deviceId.ToString();
+        deviceKey = string.IsNullOrWhiteSpace(deviceKey) ? "deviceId" : deviceKey.ToString();
         deviceName = string.IsNullOrWhiteSpace(deviceName) ? "deviceName" : deviceName.ToString();
         deviceType = string.IsNullOrWhiteSpace(deviceType) ? "deviceType" : deviceType.ToString();
       }
 
-      return (string.IsNullOrWhiteSpace(deviceId) || string.IsNullOrWhiteSpace(deviceName))// || string.IsNullOrWhiteSpace(deviceType)
+      return (string.IsNullOrWhiteSpace(deviceKey) || string.IsNullOrWhiteSpace(deviceName))// || string.IsNullOrWhiteSpace(deviceType)
           ? null
           : new Device {
-            DeviceId = deviceId,
+            DeviceKey = deviceKey,
             DeviceName = deviceName,
             DeviceType = deviceType
           };
+    }
+
+    [ApiExplorerSettings(IgnoreApi = true)]
+    public IActionResult Respond(IServiceResult serviceResult) {
+      switch(serviceResult.Code) {
+        case 200: {
+            return new ObjectResult(serviceResult.Data) {
+              StatusCode = serviceResult.Code,
+            };
+          }
+        default:
+        case 400:
+        case 500: {
+            return new ObjectResult(serviceResult.Message) {
+              StatusCode = serviceResult.Code,
+            };
+          }
+      }
     }
   }
 

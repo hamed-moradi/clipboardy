@@ -1,4 +1,5 @@
 ﻿using Assets.Model.Common;
+using Assets.Model.View;
 using Microsoft.IdentityModel.Tokens;
 using Serilog;
 using System;
@@ -23,11 +24,11 @@ namespace Assets.Utility.Infrastructure {
     }
     #endregion
 
-    public string Create(ClaimsIdentity claims, DateTime? expires = null) {
+    public string Create(ClaimsIdentity claims, DateTime expires) {
       var tokenDescriptor = new SecurityTokenDescriptor {
         Issuer = _appSetting.Authentication.Issuer,
         Audience = _appSetting.Authentication.Audience,
-        Expires = expires ?? DateTime.UtcNow.AddDays(7),
+        Expires = expires,
         Subject = claims,
         SigningCredentials = new SigningCredentials(
               new SymmetricSecurityKey(_buffer),
@@ -42,8 +43,12 @@ namespace Assets.Utility.Infrastructure {
       return string.Join(".", token);
     }
 
-    public string Bearer(ClaimsIdentity claims, DateTime? expires = null) {
-      return $"Bearer {Create(claims, expires)}";
+    public SigninViewModel Bearer(ClaimsIdentity claims, DateTime? expires = null) {
+      var expiresAt = expires ?? DateTime.UtcNow.AddMonths(1);
+      return new SigninViewModel {
+        Token = $"Bearer {Create(claims, expiresAt)}",
+        ExpiresAt = expiresAt
+      };
     }
 
     public ClaimsPrincipal Validate(string token) {

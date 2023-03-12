@@ -16,7 +16,7 @@ namespace Core.Domain.Entities {
     public int type_id { get; set; }
     [Required]
     public string content { get; set; }
-    public int status_id { get; set; }
+    public string status { get; set; }
     public DateTime inserted_at { get; set; }
   }
 
