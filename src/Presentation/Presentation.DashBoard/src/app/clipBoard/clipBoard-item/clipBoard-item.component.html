@@ -1,16 +1,16 @@
 <section class="hero-clipBoardItems">
-  <div class="row d-flex justify-content-center mx-5">
-    <div class="col-md-8 col-xs-5 list-group border border-2 p-3 mx-4 my-4">
-      <div class="container-fluid my-2">
+  <div class="row row-bg d-flex justify-content-center my-5">
+    <div class="col-8 list-group">
+      <div class="container-fluid">
         <p
-          class="list-group-item list-group-item-action align-items-end max-hight"
+          class="list-group-item list-group-item-action align-items-end mb-2 max-hight"
           *ngIf="!isActiveScroll"
         >
           {{ clipBoard.content }}
         </p>
 
         <p
-          class="my-list-group list-group-item list-group-item-action align-items-end"
+          class="my-list-group list-group-item list-group-item-action align-items-end mb-2"
           *ngIf="isActiveScroll"
         >
           {{ clipBoard.content }}
@@ -59,5 +59,8 @@
         </button>
       </div>
     </div>
+
+    <!-- Perforation between Clipboards List-->
+    <div class="perforation-line Perforation-max-width mt-5"></div>
   </div>
 </section>

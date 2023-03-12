@@ -8,7 +8,7 @@
   max-height: 200px;
 }
 .perforation-line {
-  border-top:2px dashed #ffb7ff;
+  border-top:2px dashed #c0bdbd;
 }
 
 .hero-clipBoardItems{
@@ -16,3 +16,6 @@
   top:300px;
   position: relative;
 }
+
+
+
