@@ -2,11 +2,14 @@
 using Assets.Utility.Extension;
 using Assets.Utility.Infrastructure;
 using Core.Application.Interfaces;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc.Controllers;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.Extensions.Localization;
 using System;
 using System.Globalization;
 using System.Linq;
+using System.Reflection;
 
 namespace Presentation.WebApi.FilterAttributes {
   public class CustomAuthenticationAttribute: ActionFilterAttribute {
@@ -23,6 +26,10 @@ namespace Presentation.WebApi.FilterAttributes {
     #endregion
 
     public override void OnActionExecuting(ActionExecutingContext context) {
+      var allowAnonymous = (context.ActionDescriptor as ControllerActionDescriptor)
+        .MethodInfo.GetCustomAttributes<AllowAnonymousAttribute>();
+      if(allowAnonymous.Any()) return;
+
       var deviceKey = (context?.HttpContext.Request.Headers
           .FirstOrDefault(f => f.Key.ToLower(CultureInfo.CurrentCulture) == "devicekey").Value).ToString();
       if(string.IsNullOrWhiteSpace(deviceKey)) {
