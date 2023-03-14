@@ -9,13 +9,15 @@
 }
 .perforation-line {
   border-top:2px dashed #c0bdbd;
+  max-width: 1024px;
 }
 
 .hero-clipBoardItems{
-  width: 100%;
   top:300px;
   position: relative;
 }
 
-
+.row{
+  --bs-gutter-x:0rem
+}
 
