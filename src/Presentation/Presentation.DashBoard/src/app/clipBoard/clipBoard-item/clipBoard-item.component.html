@@ -1,7 +1,8 @@
 <section class="hero-clipBoardItems">
   <div class="row d-flex justify-content-center my-4">
-    <div class="col-8 list-group">
+    <div class="col col-sm-10 col-md-9 col-lg-8 list-group">
       <div class="container-fluid">
+        <!-- clipboard Content -->
         <p
           class="list-group-item list-group-item-action align-items-end mb-2 max-hight"
           *ngIf="!isActiveScroll"
@@ -9,54 +10,67 @@
           {{ clipBoard.content }}
         </p>
 
+        <!-- clipboard Content -->
         <p
           class="my-list-group list-group-item list-group-item-action align-items-end mb-2"
           *ngIf="isActiveScroll"
         >
           {{ clipBoard.content }}
         </p>
-        <button
-          class="btn btn-sm"
-          type="button"
-          [ngStyle]="{
-            backgroundColor: violet
-          }"
-          style="color: aliceblue"
-          data-bs-toggle="tooltip"
-          data-bs-placement="top"
-          title="Copy to ClipBoard"
-          (click)="onClickCopyToClipBoard($event)"
-        >
-          <i class="fa fa-files-o" aria-hidden="true"></i>
-        </button>
 
-        <button
-          class="btn btn-sm mx-1"
-          type="button"
-          [ngStyle]="{
-            backgroundColor: pink
-          }"
-          data-bs-toggle="tooltip"
-          data-bs-placement="top"
-          title="Edit text"
-          (click)="onClickEditClipBoard($event)"
-        >
-          <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
-        </button>
+        <!-- Clipboard Items Buttons -->
+        <div class="row">
+          <div class="d-flex gap-1">
+            <!--copy button-->
+            <button
+              class="btn btn-sm"
+              #ClipboardItemsCopyButton
+              type="button"
+              [ngStyle]="{
+                backgroundColor: violet
+              }"
+              style="color: aliceblue"
+              data-bs-toggle="tooltip"
+              data-bs-placement="top"
+              title="Copy to ClipBoard"
+              (click)="onClickCopyToClipBoard($event)"
+            >
+              <i class="fa fa-files-o" aria-hidden="true"></i>
+            </button>
 
-        <button
-          class="btn btn-sm"
-          type="button"
-          [ngStyle]="{
-            backgroundColor: lightPink
-          }"
-          data-bs-toggle="tooltip"
-          data-bs-placement="top"
-          title="Delete text"
-          (click)="onClickDeleteClipBoard()"
-        >
-          <i class="fa fa-trash-o" aria-hidden="true"></i>
-        </button>
+            <!--edit button-->
+            <button
+              class="btn btn-sm mx-1"
+              #ClipboardItemsEditButton
+              type="button"
+              [ngStyle]="{
+                backgroundColor: pink
+              }"
+              data-bs-toggle="tooltip"
+              data-bs-placement="top"
+              title="Edit text"
+              (click)="onClickEditClipBoard($event)"
+            >
+              <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+            </button>
+
+            <!-- delete button -->
+            <button
+              class="btn btn-sm"
+              #ClipboardItemsDeleteButton
+              type="button"
+              [ngStyle]="{
+                backgroundColor: lightPink
+              }"
+              data-bs-toggle="tooltip"
+              data-bs-placement="top"
+              title="Delete text"
+              (click)="onClickDeleteClipBoard()"
+            >
+              <i class="fa fa-trash-o" aria-hidden="true"></i>
+            </button>
+          </div>
+        </div>
       </div>
     </div>
 
