@@ -20,7 +20,10 @@
     >
       <span class="navbar-toggler-icon"></span>
     </button>
-    <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+    <div
+      class="collapse navbar-collapse col-2 justify-content-end"
+      id="navbarNav"
+    >
       <ul class="navbar-nav align-items-lg-center">
         <li class="nav-item hover-underline-animation">
           <a
@@ -56,82 +59,4 @@
     </div>
   </div>
 </nav>
-
-<!-- <nav class="navbar navbar-expand-lg fixed-top top-nav-collapse">
-  <div class="container d-flex justify-content-end">
-    <div class="collapse navbar-collapse d-flex">
-      <div class="navbar-collapse-header d-flex">
-        <div class="row">
-          <div class="col-3 collapse-brand">
-            <img
-              src="../../../assets/img/Logo/clipBoardy.png"
-              style="height: 75px"
-            />
-          </div>
-          <div
-            class="col-8 collapse-brand align-self-center"
-            [ngStyle]="{ color: violet }"
-            style="font-family: Haettenschweiler"
-          >
-            <p class="h1">CLIPBOARDY</p>
-          </div>
-
-          <span></span>
-          <span></span>
-        </div>
-      </div>
-
-      <button
-        class="navbar-toggler d-flex justify-content-end"
-        type="button"
-        data-bs-toggle="collapse"
-        data-bs-target="#navbarNavDropdown"
-        aria-controls="navbarNavDropdown"
-        aria-expanded="false"
-        aria-label="Toggle navigation"
-      >
-        <span class="navbar-toggler-icon"></span>
-      </button>
-
-      <div
-        class="collapse navbar-collapse d-flex justify-content-end"
-        id="navbarNavDropdown"
-      >
-        <ul class="navbar-nav align-items-lg-center">
-          <li class="nav-item">
-            <a
-              [routerLink]="['/help']"
-              class="nav-link nav-link-icon"
-              href="javascript:void(0)"
-            >
-              <span class="nav-link --text">Help</span>
-            </a>
-          </li>
-
-          <li class="nav-item">
-            <a
-              [routerLink]="['/login']"
-              class="nav-link nav-link-icon"
-              href="javascript:void(0)"
-            >
-              <span class="nav-link --text">About Us</span>
-            </a>
-          </li>
-
-          <li class="nav-item">
-            <button
-              class="btn"
-              type="button"
-              data-bs-toggle="modal"
-              data-bs-target="#modalSignInForm"
-            >
-              <span class="nav-link --text">Sign in</span>
-            </button>
-          </li>
-        </ul>
-      </div>
-    </div>
-  </div>
-</nav> -->
-
 <app-modal></app-modal>

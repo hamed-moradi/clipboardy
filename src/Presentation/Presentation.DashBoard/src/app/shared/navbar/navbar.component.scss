@@ -51,7 +51,21 @@
     }
 }
 
-  @media screen and (max-width: 506px) {
+
+@media screen and (max-width: 600px) {
+.top-nav-collapse {
+  background-color: transparent  !important;
+  padding: 10px;
+}
+
+.headroom--not-top {
+  background-color:#fffaff !important;
+  padding: 2px;
+  transition: all 450ms cubic-bezier(0.42, 0, 0.34, 0.64);
+}
+}
+
+  @media screen and (max-width: 499px) {
     .navbar-bold{
       font-weight: 700;
       font-size:200% !important;
@@ -64,4 +78,27 @@
       }
   }
 
+  @media screen and (max-width: 394px) {
+    .navbar-bold{
+      font-weight: 650;
+      font-size:160% !important;
+      text-transform: uppercase;
+      margin-top:0.55rem ;
+    }
+
+      .logo-brand{
+        height: 50px;
+      }
+
+  .top-nav-collapse {
+    background-color: transparent  !important;
+    padding: 2px;
+  }
+
+  .headroom--not-top {
+    background-color:#fffaff !important;
+    padding: 2px;
+    transition: all 450ms cubic-bezier(0.42, 0, 0.34, 0.64);
+  }
+  }
 
