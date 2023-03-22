@@ -1,13 +1,17 @@
+ .navbar{
+  --bs-navbar-padding-y:0rem ;
+}
 
   .top-nav-collapse {
     background-color: transparent  !important;
-    padding: 20px;
+
   }
   .headroom--not-top {
     background-color:#fffaff !important;
-    padding: 2px;
     transition: all 450ms cubic-bezier(0.42, 0, 0.34, 0.64);
+    padding-top: 3px;
   }
+
 
   .nav-item{
     font-weight: 500;
@@ -54,14 +58,16 @@
 
 @media screen and (max-width: 600px) {
 .top-nav-collapse {
-  background-color: transparent  !important;
-  padding: 10px;
+  background-color: #fffaff  !important;
 }
 
+.container-fluid{
+  padding: 3px !important;
+}
 .headroom--not-top {
   background-color:#fffaff !important;
-  padding: 2px;
   transition: all 450ms cubic-bezier(0.42, 0, 0.34, 0.64);
+  padding-top: 3px;
 }
 }
 
@@ -90,15 +96,17 @@
         height: 50px;
       }
 
-  .top-nav-collapse {
-    background-color: transparent  !important;
-    padding: 2px;
-  }
+      .top-nav-collapse {
+        background-color: #fffaff  !important;
+      }
 
-  .headroom--not-top {
-    background-color:#fffaff !important;
-    padding: 2px;
-    transition: all 450ms cubic-bezier(0.42, 0, 0.34, 0.64);
-  }
+      .container-fluid{
+        padding: 3px !important;
+      }
+      .headroom--not-top {
+        background-color:#fffaff !important;
+        transition: all 450ms cubic-bezier(0.42, 0, 0.34, 0.64);
+        padding-top: 3px;
+      }
   }
 

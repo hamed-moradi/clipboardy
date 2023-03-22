@@ -83,13 +83,11 @@ export class ClipBoardComponent implements OnInit, AfterViewInit {
   ngAfterViewInit(): void {
     if (window.innerWidth < 500) {
       const newButtonClipBoardElement = this.myElementRef.nativeElement;
-      console.log(newButtonClipBoardElement);
       this.mobileViewService.resizeEvent(newButtonClipBoardElement, 'd-grid');
     }
     fromEvent(window, 'resize').subscribe(() => {
       if (window.innerWidth < 500) {
         const newButtonClipBoardElement = this.myElementRef.nativeElement;
-        console.log(newButtonClipBoardElement);
         this.mobileViewService.resizeEvent(newButtonClipBoardElement, 'd-grid');
       }
     });

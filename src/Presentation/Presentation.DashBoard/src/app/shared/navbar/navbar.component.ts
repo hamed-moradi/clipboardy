@@ -1,7 +1,7 @@
-import { Component, OnInit } from '@angular/core';
-import { Router, NavigationEnd, NavigationStart } from '@angular/router';
-import { DOCUMENT, Location, PopStateEvent } from '@angular/common';
-import { NgForm } from '@angular/forms';
+import { Component, OnInit, Renderer2, ElementRef } from '@angular/core';
+import { Router, NavigationEnd } from '@angular/router';
+import { Location } from '@angular/common';
+import { filter, Subscription } from 'rxjs';
 
 import { ColorUsedService } from 'src/app/help/color-used.service';
 import { AuthService } from '../../auth/auth.service';
@@ -15,10 +15,13 @@ export class NavbarComponent implements OnInit {
   public isCollapsed = true;
   private lastPoppedUrl?: string;
   private yScrollStack: number[] = [];
+  private _router: Subscription;
 
   constructor(
     public location: Location,
     private router: Router,
+    private renderer: Renderer2,
+    private element: ElementRef,
     private colorUsed: ColorUsedService,
     private authService: AuthService
   ) {}
@@ -33,20 +36,29 @@ export class NavbarComponent implements OnInit {
   navbarMobility: boolean = false;
 
   ngOnInit() {
-    this.router.events.subscribe((event) => {
-      this.isCollapsed = true;
-      if (event instanceof NavigationStart) {
-        if (event.url != this.lastPoppedUrl)
-          this.yScrollStack.push(window.scrollY);
-      } else if (event instanceof NavigationEnd) {
-        if (event.url == this.lastPoppedUrl) {
-          this.lastPoppedUrl = undefined;
-        } else window.scrollTo(0, 0);
-      }
-    });
-    this.location.subscribe((ev: PopStateEvent) => {
-      this.lastPoppedUrl = ev.url;
-    });
+    var navbar: HTMLElement =
+      this.element.nativeElement.children[0].children[0];
+
+    //add p-4 bootstrap calss into container-fluid
+    navbar.classList.add('p-4');
+
+    //add headroom--not-top calss into container-fluid
+    this._router = this.router.events
+      .pipe(filter((event) => event instanceof NavigationEnd))
+      .subscribe((event) => {
+        this.renderer.listen('window', 'scroll', (event) => {
+          const number = window.scrollY;
+          if (number > 150 || window.pageYOffset > 150) {
+            // add logic
+            navbar.classList.add('headroom--not-top');
+            navbar.classList.remove('p-4');
+          } else {
+            // remove logic
+            navbar.classList.remove('headroom--not-top');
+            navbar.classList.add('p-4');
+          }
+        });
+      });
   }
 
   isHome() {

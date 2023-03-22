@@ -21,11 +21,6 @@
   max-width: 1024px;
 }
 
-.hero-clipBoardItems{
-  top:300px;
-  position: relative;
-}
-
 .prevent-select {
   -webkit-user-select: none; /* Safari */
   -ms-user-select: none; /* IE 10 and IE 11 */
