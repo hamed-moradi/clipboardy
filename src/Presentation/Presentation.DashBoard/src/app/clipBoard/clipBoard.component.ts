@@ -16,7 +16,7 @@ import { tap, take, takeWhile } from 'rxjs/operators';
 
 import { ClipBoardService } from './clipBoard.service';
 import { IClipBoard } from './clipBoard.model';
-import { ColorUsedService } from '../help/color-used.service';
+import { ColorUsedService } from '../shared/services/color-used.service';
 import { MobileViewService } from '../shared/services/mobile-view.service';
 
 @Component({

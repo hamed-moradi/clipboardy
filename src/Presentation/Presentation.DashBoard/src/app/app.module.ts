@@ -13,7 +13,7 @@ import { NavbarComponent } from './shared/navbar/navbar.component';
 import { FooterComponent } from './shared/footer/footer.component';
 import { HomeModule } from './home/home.module';
 import { LoginComponent } from './login/login.component';
-import { ColorUsedService } from './help/color-used.service';
+import { ColorUsedService } from './shared/services/color-used.service';
 import { AuthService } from './auth/auth.service';
 import { AuthGuard } from './auth/auth.guard';
 import { ModalComponent } from './shared/modals/modal/modal.component';

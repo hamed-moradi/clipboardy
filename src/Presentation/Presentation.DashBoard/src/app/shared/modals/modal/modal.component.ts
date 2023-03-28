@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { AuthService } from 'src/app/auth/auth.service';
-import { ColorUsedService } from 'src/app/help/color-used.service';
+import { ColorUsedService } from '../../../shared/services/color-used.service';
 import { NgForm } from '@angular/forms';
 
 @Component({

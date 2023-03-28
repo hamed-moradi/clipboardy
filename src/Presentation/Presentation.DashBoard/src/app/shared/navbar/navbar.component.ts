@@ -3,7 +3,7 @@ import { Router, NavigationEnd } from '@angular/router';
 import { Location } from '@angular/common';
 import { filter, Subscription } from 'rxjs';
 
-import { ColorUsedService } from 'src/app/help/color-used.service';
+import { ColorUsedService } from '../../shared/services/color-used.service';
 import { AuthService } from '../../auth/auth.service';
 
 @Component({

@@ -6,7 +6,7 @@ import { NgwWowService } from 'ngx-wow';
 import { Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
 import { IClipBoard } from '../clipBoard/clipBoard.model';
-import { ColorUsedService } from '../help/color-used.service';
+import { ColorUsedService } from '../shared/services/color-used.service';
 
 @Component({
   selector: 'app-home',

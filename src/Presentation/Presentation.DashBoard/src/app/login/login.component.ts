@@ -3,7 +3,7 @@ import { Router, NavigationEnd } from '@angular/router';
 import { NgwWowService } from 'ngx-wow';
 import { Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
-import { ColorUsedService } from '../help/color-used.service';
+import { ColorUsedService } from '../shared/services/color-used.service';
 
 @Component({
   selector: 'app-login',

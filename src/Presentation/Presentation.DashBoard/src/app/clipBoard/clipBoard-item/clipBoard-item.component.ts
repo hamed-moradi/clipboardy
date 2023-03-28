@@ -10,7 +10,7 @@ import * as bootstrap from 'bootstrap';
 import { fromEvent } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
 
-import { ColorUsedService } from 'src/app/help/color-used.service';
+import { ColorUsedService } from '../../shared/services/color-used.service';
 import { MobileViewService } from 'src/app/shared/services/mobile-view.service';
 import { IClipBoard } from '../clipBoard.model';
 

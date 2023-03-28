@@ -11,7 +11,7 @@ import { ClipboardModule } from 'ngx-clipboard';
 import { ClipBoardComponent } from '../clipBoard/clipBoard.component';
 import { ClipBoardItemComponent } from '../clipBoard/clipBoard-item/clipBoard-item.component';
 import { HomeRoutingModule } from './home.routing.module';
-import { ColorUsedService } from '../help/color-used.service';
+import { ColorUsedService } from '../shared/services/color-used.service';
 import { SpinnerComponent } from '../shared/spinner/spinner/spinner.component';
 import { MobileViewService } from '../shared/services/mobile-view.service';
 
