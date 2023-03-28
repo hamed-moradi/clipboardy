@@ -5,7 +5,6 @@ import { Routes, RouterModule } from '@angular/router';
 
 import { ProfileComponent } from './profile/profile.component';
 import { SignupComponent } from './signup/signup.component';
-import { LandingComponent } from './landing/landing.component';
 import { LoginComponent } from './login/login.component';
 
 const routes: Routes = [
@@ -15,7 +14,6 @@ const routes: Routes = [
   },
   { path: 'user-profile', component: ProfileComponent },
   { path: 'register', component: SignupComponent },
-  { path: 'landing', component: LandingComponent },
   { path: 'auth/login', component: LoginComponent },
   { path: '', redirectTo: 'home', pathMatch: 'full' },
 ];
