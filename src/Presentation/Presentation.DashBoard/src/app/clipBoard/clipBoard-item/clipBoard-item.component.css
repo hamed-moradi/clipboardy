@@ -1,18 +1,4 @@
-.my-list-group{
-  min-height: 45px;
-  max-height: 200px;
-  margin-bottom: 10px;
-}
-.my-list-group:hover{
- cursor: pointer;
-}
-
-.my-list-group-bg{
-  min-height: 150px;
-  max-height: 200px;
-  margin-bottom: 10px;
-}
-.my-list-group-bg:hover{
+.list-group-item:hover{
   cursor: pointer;
  }
 
@@ -27,30 +13,14 @@
   user-select: none; /* Standard syntax */
 }
 
-#tooltip {
-  visibility: hidden;
-  background-color: #1ec8a3;
-  color: white;
-  align-items: center;
-  padding: 5px;
-  border-radius: 5px;
-}
-
-@media (max-width:750px) {
-
-  #tooltip {
-    visibility: hidden;
-    position: fixed;
-  margin-left: 350px;
-    background-color: #1ec8a3;
-    color: white;
-    padding: 5px;
-    border-radius: 5px;
-    margin-right: 10px;
-  }
-
-}
 .row{
   --bs-gutter-x:0rem
 }
 
+@media (max-width:500px) {
+
+  .list-group-item{
+  height: 200px !important;
+}
+
+}

@@ -3,20 +3,40 @@
     <div class="col col-sm-10 col-md-9 col-lg-8 list-group">
       <div class="container-fluid">
         <!-- clipboard Content -->
-        <p
-          class="list-group-item list-group-item-action align-items-end mb-2 max-hight"
-          *ngIf="!isActiveScroll"
+        <textarea
+          class="list-group-item list-group-item-action mb-2"
+          style="
+            text-align: justify;
+            text-indent: -57px;
+            height: 42px;
+            min-height: 42px;
+            max-height: 250px;
+          "
+          readonly
+          (dblclick)="onClickCopyToClipBoard($event)"
+          *ngIf="!isBigContent"
         >
-          {{ clipBoard.content }}
-        </p>
+             {{ clipBoard.content }}
+             </textarea
+        >
 
         <!-- clipboard Content -->
-        <p
-          class="my-list-group list-group-item list-group-item-action align-items-end mb-2"
-          *ngIf="isActiveScroll"
+        <textarea
+          class="list-group-item list-group-item-action mb-2"
+          style="
+            text-align: justify;
+            text-indent: -57px;
+            height: 85px;
+            min-height: 42px;
+            max-height: 250px;
+          "
+          readonly
+          (dblclick)="onClickCopyToClipBoard($event)"
+          *ngIf="isBigContent"
         >
-          {{ clipBoard.content }}
-        </p>
+             {{ clipBoard.content }}
+           </textarea
+        >
 
         <!-- Clipboard Items Buttons -->
         <div class="row">
@@ -31,7 +51,7 @@
               }"
               style="color: aliceblue"
               data-bs-toggle="tooltip"
-              data-bs-placement="top"
+              data-bs-placement="bottom"
               title="Copy to ClipBoard"
               (click)="onClickCopyToClipBoard($event)"
             >
@@ -47,7 +67,7 @@
                 backgroundColor: pink
               }"
               data-bs-toggle="tooltip"
-              data-bs-placement="top"
+              data-bs-placement="bottom"
               title="Edit text"
               (click)="onClickEditClipBoard($event)"
             >
@@ -63,7 +83,7 @@
                 backgroundColor: lightPink
               }"
               data-bs-toggle="tooltip"
-              data-bs-placement="top"
+              data-bs-placement="bottom"
               title="Delete text"
               (click)="onClickDeleteClipBoard()"
             >

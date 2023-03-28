@@ -6,6 +6,7 @@ import {
   ElementRef,
   AfterViewInit,
 } from '@angular/core';
+import * as bootstrap from 'bootstrap';
 import { fromEvent } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
 
@@ -42,15 +43,20 @@ export class ClipBoardItemComponent implements OnInit, AfterViewInit {
   blue: string = this.colorUsedService.blue;
   green: string = this.colorUsedService.green;
 
-  isActiveScroll: boolean = false;
+  isBigContent: boolean = false;
 
   ngOnInit(): void {
-    /* const clipBoardContent: string = this.clipBoard.content;
-    if (clipBoardContent.length > 350) {
-      this.isActiveScroll = true;
-       console.log('lenght' + clipBoardContent.length);
-    } */
-    //this.mobileViewService.resizeEvent('#button-Items-size', 'd-grid');
+    const tooltipTriggerList = [].slice.call(
+      document.querySelectorAll('[data-bs-toggle="tooltip"]')
+    );
+    const tooltipList = tooltipTriggerList.map(
+      (tooltipTriggerEl) => new bootstrap.Tooltip(tooltipTriggerEl)
+    );
+
+    const clipBoardContent: string = this.clipBoard.content;
+    if (clipBoardContent.length > 136) {
+      this.isBigContent = true;
+    }
   }
 
   ngAfterViewInit(): void {
@@ -102,9 +108,8 @@ export class ClipBoardItemComponent implements OnInit, AfterViewInit {
 
       // Copy the content inside the content field
       navigator.clipboard.writeText(copyContent);
-
       // Alert the copied content
-      //alert('Copied the content: ' + copycontent);
+      //alert('Copied the content: ' + copyContent);
       //  console.log(copyContent);
     }
   }
