@@ -16,7 +16,7 @@ import { tap, take, takeWhile } from 'rxjs/operators';
 
 import { ClipBoardService } from './clipBoard.service';
 import { IClipBoard } from './clipBoard.model';
-import { ColorUsedService } from '../help/color-used.service';
+import { ColorUsedService } from '../shared/services/color-used.service';
 import { MobileViewService } from '../shared/services/mobile-view.service';
 
 @Component({
@@ -47,7 +47,7 @@ export class ClipBoardComponent implements OnInit, AfterViewInit {
   dataTest$: Observable<IClipBoard[]> = of([
     {
       content:
-        'Angular is running in development mode. Call enableProdMode() to enable production mode.',
+        'The idea of a body so big that even light could not escape was briefly proposed by English astronomical pioneer and clergyman John Michell in a letter published in November 1784. Michell s simplistic calculations assumed such a body might have the same density as the Sun, and concluded that one would form when a star s diameter exceeds the Sun s by a factor of 500, and its surface escape velocity exceeds the usual speed of light. Michell referred to these bodies as dark stars.[13] He correctly noted that such supermassive but non-radiating bodies might be detectable through their gravitational effects on nearby visible bodies.[8][14][15] Scholars of the time were initially excited by the proposal that giant but invisible "dark stars" might be hiding in plain view, but enthusiasm dampened when the wavelike nature of light became apparent in the early nineteenth century,[16] as if light were a wave rather than a particle, it was unclear what, if any, influence gravity would have on escaping light waves.[8][15]',
     },
 
     {

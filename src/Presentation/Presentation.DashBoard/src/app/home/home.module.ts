@@ -8,11 +8,10 @@ import { HomeComponent } from './home.component';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 import { ClipboardModule } from 'ngx-clipboard';
 
-import { SectionsModule } from '../sections/sections.module';
 import { ClipBoardComponent } from '../clipBoard/clipBoard.component';
 import { ClipBoardItemComponent } from '../clipBoard/clipBoard-item/clipBoard-item.component';
 import { HomeRoutingModule } from './home.routing.module';
-import { ColorUsedService } from '../help/color-used.service';
+import { ColorUsedService } from '../shared/services/color-used.service';
 import { SpinnerComponent } from '../shared/spinner/spinner/spinner.component';
 import { MobileViewService } from '../shared/services/mobile-view.service';
 
@@ -26,7 +25,6 @@ export function rendererFactory(rendererFactory: RendererFactory2) {
     FormsModule,
     RouterModule,
     HomeRoutingModule,
-    SectionsModule,
     NgbModule,
     InfiniteScrollModule,
     HttpClientModule,
