@@ -7,7 +7,7 @@
   aria-hidden="true"
   style="position: absolute"
 >
-  <div class="modal-dialog max-hight" data-dismiss="modal">
+  <div class="modal-dialog max-hight">
     <div class="modal-content">
       <div
         class="modal-header d-flex justify-content-center align-items-center"
@@ -66,9 +66,8 @@
         </form>
         <p class="d-flex justify-content-center my-1" style="font-size: small">
           <a
-            href=""
             data-bs-toggle="modal"
-            data-bs-target="#modalForgotPassword"
+            href="#modalForgotPassword"
             [ngStyle]="{ color: orange }"
             data-bs-dismiss="modal"
             >Forgot Password?</a
@@ -115,15 +114,16 @@
 
 <!-- Modal SignUp Form-->
 <div
+  id="modalSignUpForm"
   class="modal fade"
   data-bs-backdrop="static"
-  id="modalSignUpForm"
+  data-bs-keyboard="false"
   tabindex="-1"
   aria-labelledby="modalSignUpFormLabel"
   aria-hidden="true"
   style="position: fixed"
 >
-  <div class="modal-dialog max-hight" data-dismiss="modal">
+  <div class="modal-dialog max-hight">
     <div class="modal-content">
       <div
         class="modal-header d-flex justify-content-center align-items-center"
@@ -203,7 +203,7 @@
   aria-hidden="true"
   style="position: fixed"
 >
-  <div class="modal-dialog max-hight" data-dismiss="modal">
+  <div class="modal-dialog max-hight">
     <div class="modal-content">
       <div
         class="modal-header d-flex justify-content-center align-items-center"

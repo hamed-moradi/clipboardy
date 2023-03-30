@@ -46,12 +46,12 @@ export class ClipBoardItemComponent implements OnInit, AfterViewInit {
   isBigContent: boolean = false;
 
   ngOnInit(): void {
-    const tooltipTriggerList = [].slice.call(
+    /*  const tooltipTriggerList = [].slice.call(
       document.querySelectorAll('[data-bs-toggle="tooltip"]')
     );
     const tooltipList = tooltipTriggerList.map(
       (tooltipTriggerEl) => new bootstrap.Tooltip(tooltipTriggerEl)
-    );
+    ); */
 
     const clipBoardContent: string = this.clipBoard.content;
     if (clipBoardContent.length > 136) {
