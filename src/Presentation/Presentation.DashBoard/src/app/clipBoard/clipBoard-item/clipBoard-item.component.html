@@ -31,7 +31,13 @@
             max-height: 250px;
           "
           readonly
-          (dblclick)="onClickCopyToClipBoard($event)"
+          ngbTooltip="Copied to ClipBoard!"
+          [autoClose]="true"
+          triggers="manual"
+          #t="ngbTooltip"
+          [positionTarget]="ClipboardItemsCopyButton"
+          placement="bottom"
+          (dblclick)="onClickCopyToClipBoard($event); t.open()"
           *ngIf="isBigContent"
         >
              {{ clipBoard.content }}
@@ -50,9 +56,8 @@
                 backgroundColor: violet
               }"
               style="color: aliceblue"
-              data-bs-toggle="tooltip"
-              data-bs-placement="bottom"
-              title="Copy to ClipBoard"
+              placement="bottom"
+              ngbTooltip="Copy to ClipBoard"
               (click)="onClickCopyToClipBoard($event)"
             >
               <i class="fa fa-files-o" aria-hidden="true"></i>
@@ -66,9 +71,8 @@
               [ngStyle]="{
                 backgroundColor: pink
               }"
-              data-bs-toggle="tooltip"
-              data-bs-placement="bottom"
-              title="Edit text"
+              placement="bottom"
+              ngbTooltip="Edit text"
               (click)="onClickEditClipBoard($event)"
             >
               <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
@@ -82,9 +86,8 @@
               [ngStyle]="{
                 backgroundColor: lightPink
               }"
-              data-bs-toggle="tooltip"
-              data-bs-placement="bottom"
-              title="Delete text"
+              placement="bottom"
+              ngbTooltip="Delete text"
               (click)="onClickDeleteClipBoard()"
             >
               <i class="fa fa-trash-o" aria-hidden="true"></i>
