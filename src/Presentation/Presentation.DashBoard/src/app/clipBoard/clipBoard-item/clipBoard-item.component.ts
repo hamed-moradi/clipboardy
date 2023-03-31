@@ -108,9 +108,8 @@ export class ClipBoardItemComponent implements OnInit, AfterViewInit {
 
       // Copy the content inside the content field
       navigator.clipboard.writeText(copyContent);
-      // Alert the copied content
-      //alert('Copied the content: ' + copyContent);
-      //  console.log(copyContent);
+
+      // tooltip copied content
     }
   }
 
