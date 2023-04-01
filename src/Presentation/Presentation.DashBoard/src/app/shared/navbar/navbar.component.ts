@@ -70,6 +70,13 @@ export class NavbarComponent implements OnInit {
       return false;
     }
   }
+
+  scrollToFooter(event: Event) {
+    event.preventDefault();
+    const footer = document.getElementById('footer')!;
+    footer.scrollIntoView({ behavior: 'smooth' });
+  }
+
   isDocumentation() {
     var titlee = this.location.prepareExternalUrl(this.location.path());
     if (titlee === '#/documentation') {

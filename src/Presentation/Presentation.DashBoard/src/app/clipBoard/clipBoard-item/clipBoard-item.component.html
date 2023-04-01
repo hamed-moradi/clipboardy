@@ -13,7 +13,13 @@
             max-height: 250px;
           "
           readonly
-          (dblclick)="onClickCopyToClipBoard($event)"
+          ngbTooltip="Copied to ClipBoard!"
+          [autoClose]="true"
+          triggers="manual"
+          #t="ngbTooltip"
+          [positionTarget]="ClipboardItemsCopyButton"
+          placement="bottom"
+          (dblclick)="onClickCopyToClipBoard($event); t.open()"
           *ngIf="!isBigContent"
         >
              {{ clipBoard.content }}

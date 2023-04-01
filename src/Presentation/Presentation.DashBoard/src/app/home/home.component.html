@@ -10,4 +10,16 @@
 
   <app-sections></app-sections>
   -->
+
+  <!-- scroll Top Button -->
+
+  <i
+    id="scrollTopButton"
+    type="button"
+    class="fa fa-arrow-circle-up fa-3x scrollTop"
+    [ngStyle]="{ color: green }"
+    style="opacity: 0.5"
+    aria-hidden="true"
+    (click)="scrollToTop($event)"
+  ></i>
 </main>

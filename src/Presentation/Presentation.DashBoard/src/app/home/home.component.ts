@@ -1,5 +1,11 @@
 import { ConstantPool } from '@angular/compiler';
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  OnDestroy,
+  OnInit,
+  Renderer2,
+} from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { Router, NavigationEnd } from '@angular/router';
 import { NgwWowService } from 'ngx-wow';
@@ -20,6 +26,8 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   constructor(
     private router: Router,
+    private renderer: Renderer2,
+    private elementRef: ElementRef,
     private colorUsedService: ColorUsedService,
     private wowService: NgwWowService
   ) {
@@ -46,6 +54,29 @@ export class HomeComponent implements OnInit, OnDestroy {
         // do whatever you want with revealed element
       }
     );
+
+    this.renderer.listen('window', 'scroll', () => {
+      const scrollTop =
+        window.pageYOffset ||
+        document.documentElement.scrollTop ||
+        document.body.scrollTop ||
+        0;
+      const scrollTopButton =
+        this.elementRef.nativeElement.querySelector('#scrollTopButton');
+
+      if (scrollTop >= 500) {
+        scrollTopButton.style.display = 'block';
+        this.renderer.addClass(scrollTopButton, 'scrollTop');
+      } else {
+        scrollTopButton.style.display = 'none';
+        this.renderer.removeClass(scrollTopButton, 'scrollTop');
+      }
+    });
+  }
+
+  scrollToTop(event: Event) {
+    event.preventDefault();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
   ngOnDestroy() {

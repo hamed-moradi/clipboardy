@@ -1,4 +1,4 @@
-<nav class="navbar navbar-expand-lg fixed-top top-nav-collapse">
+<nav id="nav" class="navbar navbar-expand-lg fixed-top top-nav-collapse">
   <div class="container-fluid">
     <div class="row">
       <div class="col-2 mx-2">
@@ -32,7 +32,11 @@
         </li>
 
         <li class="nav-item hover-underline-animation">
-          <a class="nav-link nav-link-icon" href="javascript:void(0)">
+          <a
+            class="nav-link nav-link-icon"
+            href="#"
+            (click)="scrollToFooter($event)"
+          >
             <span class="nav-link --text">About Us</span>
           </a>
         </li>
