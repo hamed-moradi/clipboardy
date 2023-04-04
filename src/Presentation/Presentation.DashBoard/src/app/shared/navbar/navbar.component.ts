@@ -71,10 +71,10 @@ export class NavbarComponent implements OnInit {
     }
   }
 
-  scrollToFooter(event: Event) {
+  scrollToContactUs(event: Event) {
     event.preventDefault();
-    const footer = document.getElementById('footer')!;
-    footer.scrollIntoView({ behavior: 'smooth' });
+    const contactUs = document.getElementById('contactUs')!;
+    contactUs.scrollIntoView({ behavior: 'smooth' });
   }
 
   isDocumentation() {

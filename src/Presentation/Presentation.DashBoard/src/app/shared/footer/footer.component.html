@@ -2,44 +2,45 @@
   id="footer"
   class="footer"
   [ngClass]="{
-    'has-cards':
-      getPath() !== '/user-profile' &&
-      getPath() !== '/register' &&
-      getPath() !== '/login'
+    'has-cards': getPath() !== '/user-profile' && getPath() !== 'auth/login'
   }"
 >
+  <!-- Contact US  -->
   <div
+    id="contactUs"
     class="container"
-    *ngIf="
-      getPath() !== '/user-profile' &&
-      getPath() !== '/register' &&
-      getPath() !== '/login'
-    "
+    *ngIf="getPath() !== '/user-profile' && getPath() !== 'auth/login'"
   >
-    <div
-      class="col-12 d-flex align-items-center"
-      style="
-        background-image: url('../../assets/img/theme/backGroundNew.png');
-        background-size: cover;
-        position: relative;
-        background-repeat: no-repeat;
-        width: 100%;
-        height: 100vh;
-      "
-    ></div>
     <div class="row">
       <div class="col-md-6 mb-5 mb-md-0">
         <div class="card card-lift--hover shadow border-0">
-          <a [routerLink]="['/landing']" title="Landing Page">
-            <img src="./assets/img/theme/landing.jpg" class="card-img" />
-          </a>
+          <img src="./assets/img/theme/contactUS.png" class="card-img" />
         </div>
       </div>
+
       <div class="col-md-6 mb-5 mb-lg-0">
         <div class="card card-lift--hover shadow border-0">
-          <a [routerLink]="['/user-profile']" title="Profile Page">
-            <img src="./assets/img/theme/profile.jpg" class="card-img" />
-          </a>
+          <h3 class="d-flex justify-content-center mt-5">Contact US</h3>
+          <hr />
+          <p
+            class="d-flex justify-content-center p-5"
+            style="font-size: large; color: gray"
+          >
+            If you have any questions/problems/feedback, You can Contact US.
+          </p>
+          <h4 class="d-flex justify-content-center mt-5">Support Email</h4>
+          <p
+            class="d-flex justify-content-center p-4"
+            style="font-size: large; color: gray"
+          >
+            Send us an email for support. We will respond within 24 hours
+          </p>
+          <h4
+            class="border border-5 d-flex justify-content-center p-5 mb-5"
+            style="border-radius: 10px"
+          >
+            a.hashemi6977@gmail.com
+          </h4>
         </div>
       </div>
     </div>
@@ -48,14 +49,8 @@
     <div
       class="row row-grid align-items-center"
       [ngClass]="{
-        'my-md':
-          getPath() !== '/user-profile' &&
-          getPath() !== '/register' &&
-          getPath() !== '/login',
-        'mb-5':
-          getPath() === '/user-profile' ||
-          getPath() === '/register' ||
-          getPath() === '/login'
+        'my-md': getPath() !== '/user-profile' && getPath() !== 'auth/login',
+        'mb-5': getPath() === '/user-profile' || getPath() === 'auth/login'
       }"
     >
       <!-- <div class="col-lg-6">
@@ -106,7 +101,7 @@
       <div class="col-md-6">
         <div class="copyright">
           &copy; {{ test | date : "yyyy" }}
-          <a href="javascript:viod()" target="_blank">ClipBoardy</a>.
+          <a href="javascript:viod()" target="_blank">CLIPBOARDY</a>.
         </div>
       </div>
       <div class="col-md-6">
