@@ -1,10 +1,11 @@
 ﻿using Assets.Model.Common;
 using Assets.Utility.Infrastructure;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Presentation.WebApi.Controllers {
-  public class HomeController: Controller {
+  public class HomeController: ControllerBase {
     #region ctor
     private readonly AppSetting _appSetting;
     private readonly CompressionHandler _compressionHandler;
@@ -21,9 +22,9 @@ namespace Presentation.WebApi.Controllers {
     }
     #endregion
 
+    [ApiExplorerSettings(IgnoreApi = true), AllowAnonymous]
     public IActionResult Index() {
-      return View();
-      //return Ok(AppSetting.Version);
+      return Ok(_webHostEnvironment.ApplicationName);
     }
 
     [ApiExplorerSettings(IgnoreApi = true), Route("/error")]

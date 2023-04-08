@@ -162,10 +162,7 @@ namespace Presentation.WebApi {
         //appBuilder.UseStatusCodePages();
 
         appBuilder.UseEndpoints(endpoints => {
-          //endpoints.MapControllers();
-          endpoints.MapControllerRoute(
-              name: "default",
-              pattern: "{controller=Home}/{action=Index}/{id?}");
+          endpoints.MapControllerRoute(name: "default", pattern: "/api/home/index");
         });
       }
       else {
