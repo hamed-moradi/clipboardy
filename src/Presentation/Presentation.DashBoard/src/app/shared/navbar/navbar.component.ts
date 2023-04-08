@@ -34,7 +34,7 @@ export class NavbarComponent implements OnInit {
   blue: string = this.colorUsed.blue;
 
   navbarMobility: boolean = false;
-
+  hasToken: boolean;
   ngOnInit() {
     var navbar: HTMLElement =
       this.element.nativeElement.children[0].children[0];
@@ -59,16 +59,16 @@ export class NavbarComponent implements OnInit {
           }
         });
       });
+    console.log(this.isLogin());
+    this.isLogin();
   }
 
-  isHome() {
-    var titlee = this.location.prepareExternalUrl(this.location.path());
-
-    if (titlee === '#/home') {
-      return true;
-    } else {
-      return false;
+  isLogin() {
+    this.hasToken = false;
+    if (localStorage.getItem('token')) {
+      this.hasToken = true;
     }
+    return this.hasToken;
   }
 
   scrollToContactUs(event: Event) {
@@ -77,12 +77,7 @@ export class NavbarComponent implements OnInit {
     contactUs.scrollIntoView({ behavior: 'smooth' });
   }
 
-  isDocumentation() {
-    var titlee = this.location.prepareExternalUrl(this.location.path());
-    if (titlee === '#/documentation') {
-      return true;
-    } else {
-      return false;
-    }
+  onSignOut() {
+    return localStorage.removeItem('token'), (this.hasToken = false);
   }
 }

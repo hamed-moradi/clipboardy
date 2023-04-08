@@ -20,9 +20,11 @@ export class ModalComponent {
   violet: string = this.colorUsed.violet;
   blue: string = this.colorUsed.blue;
 
+  hasToken: boolean;
   onSignInForm(SignInuserForm: NgForm) {
     if (SignInuserForm.valid) {
       this.authService.login(SignInuserForm.value);
+      localStorage.setItem('token', 'testtoken');
     }
   }
 

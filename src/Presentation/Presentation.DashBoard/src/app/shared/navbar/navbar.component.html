@@ -41,7 +41,8 @@
           </a>
         </li>
 
-        <li class="nav-item hover-underline-animation">
+        <!-- Sign In -->
+        <li class="nav-item hover-underline-animation" *ngIf="!hasToken">
           <a
             class="nav-link nav-link-icon"
             type="button"
@@ -49,6 +50,18 @@
             data-bs-target="#modalSignInForm"
           >
             <span class="nav-link --text">Sign in</span>
+          </a>
+        </li>
+
+        <!-- Sign Out -->
+        <li class="nav-item hover-underline-animation" *ngIf="hasToken">
+          <a
+            class="nav-link nav-link-icon"
+            type="button"
+            [routerLink]="['/auth/login']"
+            (click)="onSignOut()"
+          >
+            <span class="nav-link --text">Sign out</span>
           </a>
         </li>
       </ul>
