@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { AuthService } from '../../../auth/auth.service';
 import { ColorUsedService } from '../../../shared/services/color-used.service';
 import { NgForm } from '@angular/forms';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-modal',
@@ -22,9 +23,13 @@ export class ModalComponent {
 
   hasToken: boolean;
   onSignInForm(SignInuserForm: NgForm) {
+    console.log(SignInuserForm.valid);
     if (SignInuserForm.valid) {
-      this.authService.login(SignInuserForm.value);
-      localStorage.setItem('token', 'testtoken');
+      console.log(SignInuserForm.value);
+      this.authService.login();
+      console.log(
+        'modal SignIn' + ' ' + this.authService.isLoggedIn.getValue()
+      );
     }
   }
 

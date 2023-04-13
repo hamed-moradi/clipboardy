@@ -10,20 +10,20 @@ export class AuthService {
   );
 
   get isLoggedIn() {
-    return this.loggedIn.asObservable();
+    return this.loggedIn;
   }
 
   constructor(private router: Router) {}
 
-  login(user: User) {
-    if (user.userName !== '' && user.password !== '') {
-      this.loggedIn.next(true);
-      this.router.navigate(['/']);
-    }
+  login() {
+    this.loggedIn.next(true);
+    this.router.navigate(['/']);
+    localStorage.setItem('token', 'testAuth');
   }
 
   logout() {
     this.loggedIn.next(false);
     this.router.navigate(['/auth/login']);
+    localStorage.removeItem('token');
   }
 }

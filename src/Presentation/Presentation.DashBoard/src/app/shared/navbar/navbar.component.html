@@ -42,7 +42,10 @@
         </li>
 
         <!-- Sign In -->
-        <li class="nav-item hover-underline-animation" *ngIf="!hasToken">
+        <li
+          class="nav-item hover-underline-animation"
+          *ngIf="(authService.isLoggedIn | async) === false"
+        >
           <a
             class="nav-link nav-link-icon"
             type="button"
@@ -54,13 +57,11 @@
         </li>
 
         <!-- Sign Out -->
-        <li class="nav-item hover-underline-animation" *ngIf="hasToken">
-          <a
-            class="nav-link nav-link-icon"
-            type="button"
-            [routerLink]="['/auth/login']"
-            (click)="onSignOut()"
-          >
+        <li
+          class="nav-item hover-underline-animation"
+          *ngIf="(authService.isLoggedIn | async) === true"
+        >
+          <a class="nav-link nav-link-icon" type="button" (click)="onSignOut()">
             <span class="nav-link --text">Sign out</span>
           </a>
         </li>

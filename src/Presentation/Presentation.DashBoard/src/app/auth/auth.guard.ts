@@ -20,11 +20,13 @@ export class AuthGuard implements CanActivate {
   ): Observable<boolean> {
     return this.authService.isLoggedIn.pipe(
       take(1),
-      map((isLoggedIn: boolean) => {
-        // if (!isLoggedIn) {
-        if (isLoggedIn) {
-          this.router.navigate(['/auth/login']);
+      map(() => {
+        if (!localStorage.getItem('token')) {
+          this.router.navigate(['auth/login']);
+          //   localStorage.removeItem('token');
           return false;
+        } else if (localStorage.getItem('token')) {
+          return true;
         }
         return true;
       })

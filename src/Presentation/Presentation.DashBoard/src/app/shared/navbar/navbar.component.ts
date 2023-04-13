@@ -5,6 +5,7 @@ import { filter, Subscription } from 'rxjs';
 
 import { ColorUsedService } from '../../shared/services/color-used.service';
 import { AuthService } from '../../auth/auth.service';
+import { __values } from 'tslib';
 
 @Component({
   selector: 'app-navbar',
@@ -23,7 +24,7 @@ export class NavbarComponent implements OnInit {
     private renderer: Renderer2,
     private element: ElementRef,
     private colorUsed: ColorUsedService,
-    private authService: AuthService
+    public authService: AuthService
   ) {}
 
   pink: string = this.colorUsed.pink;
@@ -34,7 +35,7 @@ export class NavbarComponent implements OnInit {
   blue: string = this.colorUsed.blue;
 
   navbarMobility: boolean = false;
-  hasToken: boolean;
+
   ngOnInit() {
     var navbar: HTMLElement =
       this.element.nativeElement.children[0].children[0];
@@ -59,16 +60,6 @@ export class NavbarComponent implements OnInit {
           }
         });
       });
-    console.log(this.isLogin());
-    this.isLogin();
-  }
-
-  isLogin() {
-    this.hasToken = false;
-    if (localStorage.getItem('token')) {
-      this.hasToken = true;
-    }
-    return this.hasToken;
   }
 
   scrollToContactUs(event: Event) {
@@ -78,6 +69,6 @@ export class NavbarComponent implements OnInit {
   }
 
   onSignOut() {
-    return localStorage.removeItem('token'), (this.hasToken = false);
+    this.authService.logout();
   }
 }

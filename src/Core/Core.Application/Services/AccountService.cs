@@ -67,7 +67,7 @@ namespace Core.Application.Services {
           username = username,
           status = Status.ACTIVE.ToString()
         };
-        var account = Add(accountModel, false);
+        var account = await AddAsync(accountModel);
 
         var accountDevice = new AccountDevice {
           account_id = account.id,
@@ -76,7 +76,7 @@ namespace Core.Application.Services {
           device_type = signupModel.DeviceType,
           status = Status.ACTIVE.ToString()
         };
-        var device = _accountDeviceService.Add(accountDevice, false);
+        var device = await _accountDeviceService.AddAsync(accountDevice);
 
         var accountProfile = new AccountProfile {
           account_id = account.id,
@@ -84,7 +84,7 @@ namespace Core.Application.Services {
           profile_type = signupModel.AccountType.ToString().ToLower(),
           status = Status.ACTIVE.ToString()
         };
-        _accountProfileService.Add(accountProfile, false);
+        await _accountProfileService.AddAsync(accountProfile);
 
         await PostgresContext.SaveChangesAsync();
         transaction.Complete();
