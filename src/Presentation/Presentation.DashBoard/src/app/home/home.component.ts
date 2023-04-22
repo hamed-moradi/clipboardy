@@ -11,7 +11,7 @@ import { Router, NavigationEnd } from '@angular/router';
 import { NgwWowService } from 'ngx-wow';
 import { Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
-import { IClipBoard } from '../clipBoard/clipBoard.model';
+import { IClipBoard } from '../clipBoard/IClipBoard';
 import { ColorUsedService } from '../shared/services/color-used.service';
 
 @Component({

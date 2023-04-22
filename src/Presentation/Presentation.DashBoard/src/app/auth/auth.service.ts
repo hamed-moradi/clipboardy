@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { BehaviorSubject } from 'rxjs';
-import { User } from './user';
+import { IUser } from './IUser';
 
 @Injectable()
 export class AuthService {
@@ -18,12 +18,12 @@ export class AuthService {
   login() {
     this.loggedIn.next(true);
     this.router.navigate(['/']);
-    localStorage.setItem('token', 'testAuth');
   }
 
   logout() {
     this.loggedIn.next(false);
     this.router.navigate(['/auth/login']);
     localStorage.removeItem('token');
+    localStorage.removeItem('expiresAt');
   }
 }

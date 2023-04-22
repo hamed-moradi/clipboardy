@@ -7,7 +7,6 @@ import { AppRoutingModule } from './app.routing.module';
 import { NgwWowModule } from 'ngx-wow';
 
 import { AppComponent } from './app.component';
-import { SignupComponent } from './signup/signup.component';
 import { ProfileComponent } from './profile/profile.component';
 import { NavbarComponent } from './shared/navbar/navbar.component';
 import { FooterComponent } from './shared/footer/footer.component';
@@ -21,7 +20,6 @@ import { ModalComponent } from './shared/modals/modal/modal.component';
 @NgModule({
   declarations: [
     AppComponent,
-    SignupComponent,
     ProfileComponent,
     NavbarComponent,
     FooterComponent,

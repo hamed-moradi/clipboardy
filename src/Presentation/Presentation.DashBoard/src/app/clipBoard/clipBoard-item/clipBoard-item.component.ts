@@ -12,7 +12,7 @@ import { debounceTime } from 'rxjs/operators';
 
 import { ColorUsedService } from '../../shared/services/color-used.service';
 import { MobileViewService } from 'src/app/shared/services/mobile-view.service';
-import { IClipBoard } from '../clipBoard.model';
+import { IClipBoard } from '../IClipBoard';
 
 @Component({
   selector: 'app-clipBoard-item',

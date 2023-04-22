@@ -15,7 +15,7 @@ import { BehaviorSubject, fromEvent, map, Observable, of } from 'rxjs';
 import { tap, take, takeWhile } from 'rxjs/operators';
 
 import { ClipBoardService } from './clipBoard.service';
-import { IClipBoard } from './clipBoard.model';
+import { IClipBoard } from './IClipBoard';
 import { ColorUsedService } from '../shared/services/color-used.service';
 import { MobileViewService } from '../shared/services/mobile-view.service';
 
@@ -51,7 +51,8 @@ export class ClipBoardComponent implements OnInit, AfterViewInit {
     },
 
     {
-      content: 'test Amir',
+      content:
+        'One common means to help one convey information and the audience stay on track is through the incorporation of text in a legible font size and type.[9] According to the article "Prepare and Deliver an Effective Presentation",[10] effective presentations typically use serif fonts (e.g. Times New Roman, Garamond, Baskerville, etc.) for the smaller text and sans serif fonts (e.g. Helvetica, Futura, Arial, etc.) for headings and larger text. The typefaces are used along with type size to improve readability for the audience. A combination of these typefaces can also be used to create emphasis. The majority of the fonts within a presentation are kept simple to aid in readability. Font styles, like bold, italic, and underline, are used to highlight important points. It is possible to emphasize text and still maintain its readability by using contrasting colors. For example, black words on a white background emphasize the text being displayed but still helps maintain its readability.[11] Text that contrasts with the background of a slide also enhances visibility. Readability and visibility enhance a presentation experience, which contributes to the effectiveness of it.[citation needed] Certain colors are also associated with specific emotions and the proper application of these colors adds to the effectiveness of a presentation through the creation of an immersive experience for an audience.',
     },
   ]);
 

@@ -1,8 +1,12 @@
-import { Component } from '@angular/core';
+import { Component, ErrorHandler } from '@angular/core';
 import { AuthService } from '../../../auth/auth.service';
+import { SignUpService } from '../../services/sign-up.service';
 import { ColorUsedService } from '../../../shared/services/color-used.service';
 import { NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
+import { Observable } from 'rxjs';
+import { SignInService } from '../../services/sign-in.service';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-modal',
@@ -12,7 +16,9 @@ import { Router } from '@angular/router';
 export class ModalComponent {
   constructor(
     private colorUsed: ColorUsedService,
-    private authService: AuthService
+    private authService: AuthService,
+    private signUpService: SignUpService,
+    private signInService: SignInService
   ) {}
   pink: string = this.colorUsed.pink;
   lightPink: string = this.colorUsed.lightPink;
@@ -21,22 +27,45 @@ export class ModalComponent {
   violet: string = this.colorUsed.violet;
   blue: string = this.colorUsed.blue;
 
-  hasToken: boolean;
+  //SignIn Method
   onSignInForm(SignInuserForm: NgForm) {
-    console.log(SignInuserForm.valid);
-    if (SignInuserForm.valid) {
-      console.log(SignInuserForm.value);
-      this.authService.login();
-      console.log(
-        'modal SignIn' + ' ' + this.authService.isLoggedIn.getValue()
-      );
+    console.log(SignInuserForm.form.valid);
+    console.log(SignInuserForm.form.controls);
+    if (SignInuserForm.form.valid) {
+      console.log(this.authService.isLoggedIn);
+      this.signInService
+        .signIn(
+          SignInuserForm.value.usernameInput,
+          SignInuserForm.value.passwordInput,
+          SignInuserForm.value.rememberMe
+        )
+        .subscribe({
+          // handle successful sign-up response
+          next: (response) => console.log(response),
+          // handle sign-up error
+          error: (e) => console.error(e),
+        });
+    } else {
+      // Display error message and highlight invalid input field
+      alert('Please fill all fields');
     }
   }
 
+  //SignUp Method
   onSignUpForm(SignUpuserForm: NgForm) {
     if (SignUpuserForm.valid) {
-      console.log(SignUpuserForm);
-      console.log(SignUpuserForm.value);
+      this.signUpService
+        .signUp(
+          SignUpuserForm.value.usernameInput,
+          SignUpuserForm.value.passwordInput,
+          SignUpuserForm.value.confirmPasswordInput
+        )
+        .subscribe({
+          // handle successful sign-up response
+          next: (response) => console.log(response),
+          // handle sign-up error
+          error: (e) => console.error(e),
+        });
     }
   }
 

@@ -4,3 +4,13 @@
 .modal-body{
 text-align: center;
 }
+
+.form-check-input[type="checkbox"]:checked {
+  background-color: #1ec8a3;
+  border-color:  #1ec8a3;
+}
+
+fieldset{
+  margin-left: 40px !important;
+  margin-right: 40px !important;
+}
