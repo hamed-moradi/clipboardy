@@ -177,8 +177,8 @@ namespace Core.Application.Services {
           p => p.account_id == account.id && p.device_key == signinModel.DeviceKey);
 
         if(accountDevice == null) {
-          // create new device for account
-          var device = _accountDeviceService.Add(new AccountDevice {
+            // create new device for account
+            accountDevice = _accountDeviceService.Add(new AccountDevice {
             account_id = accountProfile.account_id,
             device_key = signinModel.DeviceKey,
             device_name = signinModel.DeviceName,
