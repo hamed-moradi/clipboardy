@@ -1,0 +1,17 @@
+.dialog-addToClipBoard{
+  position: fixed;
+  min-width: 420px;
+  background-color: snow;
+  top: 40%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+
+.mdc-dialog__title{
+  padding: 3px !important;
+  margin: 0px !important;
+  margin-bottom: 20px !important;
+  font-family: sans-serif !important;
+
+}

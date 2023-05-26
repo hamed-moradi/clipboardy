@@ -9,7 +9,7 @@ import {
   ElementRef,
   AfterViewInit,
 } from '@angular/core';
-import { DOCUMENT } from '@angular/common';
+import { DOCUMENT, IMAGE_CONFIG } from '@angular/common';
 import { NgForm } from '@angular/forms';
 import { BehaviorSubject, fromEvent, map, Observable, of } from 'rxjs';
 import { tap, take, takeWhile } from 'rxjs/operators';
@@ -18,6 +18,8 @@ import { ClipBoardService } from './clipBoard.service';
 import { IClipBoard } from './IClipBoard';
 import { ColorUsedService } from '../shared/services/color-used.service';
 import { MobileViewService } from '../shared/services/mobile-view.service';
+import { MatDialog } from '@angular/material/dialog';
+import { AddToClipboardModalComponent } from '../shared/modals/add-to-clipboard-modal/add-to-clipboard-modal.component';
 
 @Component({
   selector: 'app-clipBoard',
@@ -33,7 +35,8 @@ export class ClipBoardComponent implements OnInit, AfterViewInit {
   constructor(
     private clipBoardService: ClipBoardService,
     private colorUsedService: ColorUsedService,
-    private mobileViewService: MobileViewService
+    private mobileViewService: MobileViewService,
+    public dialog: MatDialog
   ) {}
 
   violet: string = this.colorUsedService.violet;
@@ -66,7 +69,6 @@ export class ClipBoardComponent implements OnInit, AfterViewInit {
       .subscribe(
         (getClipBoardResult) => (this.clipBoards = getClipBoardResult)
       ); */
-
     //************OLD*********** */
     /*  this.dataTest
       .pipe(
@@ -77,7 +79,6 @@ export class ClipBoardComponent implements OnInit, AfterViewInit {
       .subscribe({
         next: (getClipBoardResult) => (this.clipBoards = getClipBoardResult),
       }); */
-
     this.onclipBoards();
   }
 
@@ -92,6 +93,15 @@ export class ClipBoardComponent implements OnInit, AfterViewInit {
         this.mobileViewService.resizeEvent(newButtonClipBoardElement, 'd-grid');
       }
     });
+    console.log(this.clipBoards);
+  }
+
+  openDialog() {
+    this.dialog.open(AddToClipboardModalComponent, {
+      //height: '370px',
+      //width: '470px',
+      //position: { right: '0px', top: '0px' },
+    });
   }
 
   onclipBoards() {
@@ -103,20 +113,21 @@ export class ClipBoardComponent implements OnInit, AfterViewInit {
   }
 
   // Add Clipboard to list
-  onAddClipBoardList(content: NgForm) {
-    let newContent = content.value;
-    this.clipBoards.push(newContent);
+  onAddClipBoardList(content: NgForm, clipBoards: IClipBoard[]) {
+    var newContent = content.value;
 
     /*this.clipBoardService.postClipBoard(content).subscribe((r) => {
       console.log(r);
     });
     */
-    content.form.reset();
+
+    clipBoards.push(newContent); // Add new content
+    this.clipBoards = clipBoards;
     console.log(this.clipBoards);
   }
 
   // Search method
-  onClipBoardSerachList(searchQuery: NgForm) {
+  onClipBoardSearchList(searchQuery: NgForm) {
     if (
       searchQuery.value.searchQuery === undefined ||
       searchQuery.value.searchQuery === ''

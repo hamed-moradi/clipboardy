@@ -14,6 +14,12 @@ import { HomeRoutingModule } from './home.routing.module';
 import { ColorUsedService } from '../shared/services/color-used.service';
 import { SpinnerComponent } from '../shared/spinner/spinner/spinner.component';
 import { MobileViewService } from '../shared/services/mobile-view.service';
+import { AddToClipboardModalComponent } from '../shared/modals/add-to-clipboard-modal/add-to-clipboard-modal.component';
+import {
+  MAT_DIALOG_DATA,
+  MatDialogModule,
+  MatDialogRef,
+} from '@angular/material/dialog';
 
 // define a function that creates a renderer for the module
 export function rendererFactory(rendererFactory: RendererFactory2) {
@@ -29,12 +35,14 @@ export function rendererFactory(rendererFactory: RendererFactory2) {
     InfiniteScrollModule,
     HttpClientModule,
     ClipboardModule,
+    MatDialogModule,
   ],
   declarations: [
     HomeComponent,
     ClipBoardComponent,
     ClipBoardItemComponent,
     SpinnerComponent,
+    AddToClipboardModalComponent,
   ],
   exports: [HomeComponent],
   providers: [
@@ -46,7 +54,16 @@ export function rendererFactory(rendererFactory: RendererFactory2) {
 
     ColorUsedService,
     MobileViewService,
+    ClipBoardComponent,
     Clipboard,
+    {
+      provide: MatDialogRef,
+      useValue: {},
+    },
+    {
+      provide: MAT_DIALOG_DATA,
+      useValue: {},
+    },
   ],
 })
 export class HomeModule {}

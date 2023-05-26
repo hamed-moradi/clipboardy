@@ -2,9 +2,12 @@ import { ConstantPool } from '@angular/compiler';
 import {
   Component,
   ElementRef,
+  EventEmitter,
   OnDestroy,
   OnInit,
+  Output,
   Renderer2,
+  ViewChild,
 } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { Router, NavigationEnd } from '@angular/router';
@@ -13,6 +16,7 @@ import { Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
 import { IClipBoard } from '../clipBoard/IClipBoard';
 import { ColorUsedService } from '../shared/services/color-used.service';
+import { ClipBoardComponent } from '../clipBoard/clipBoard.component';
 
 @Component({
   selector: 'app-home',
@@ -21,6 +25,8 @@ import { ColorUsedService } from '../shared/services/color-used.service';
 })
 export class HomeComponent implements OnInit, OnDestroy {
   clipBoards: IClipBoard[];
+
+  @ViewChild(ClipBoardComponent) clipBoardComponent: ClipBoardComponent;
 
   private wowSubscription: Subscription;
 
