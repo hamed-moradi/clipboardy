@@ -1,0 +1,8 @@
+.dialog-signIn{
+  position: fixed;
+  min-width: 420px;
+  background-color: snow;
+  top: 40%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}

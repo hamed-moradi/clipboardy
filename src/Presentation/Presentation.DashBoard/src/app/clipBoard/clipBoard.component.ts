@@ -96,12 +96,8 @@ export class ClipBoardComponent implements OnInit, AfterViewInit {
     console.log(this.clipBoards);
   }
 
-  openDialog() {
-    this.dialog.open(AddToClipboardModalComponent, {
-      //height: '370px',
-      //width: '470px',
-      //position: { right: '0px', top: '0px' },
-    });
+  openAddToClipBoardDialog() {
+    this.dialog.open(AddToClipboardModalComponent);
   }
 
   onclipBoards() {

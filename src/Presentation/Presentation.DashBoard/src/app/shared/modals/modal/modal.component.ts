@@ -27,30 +27,6 @@ export class ModalComponent {
   violet: string = this.colorUsed.violet;
   blue: string = this.colorUsed.blue;
 
-  //SignIn Method
-  onSignInForm(SignInuserForm: NgForm) {
-    console.log(SignInuserForm.form.valid);
-    console.log(SignInuserForm.form.controls);
-    if (SignInuserForm.form.valid) {
-      console.log(this.authService.isLoggedIn);
-      this.signInService
-        .signIn(
-          SignInuserForm.value.usernameInput,
-          SignInuserForm.value.passwordInput,
-          SignInuserForm.value.rememberMe
-        )
-        .subscribe({
-          // handle successful sign-up response
-          next: (response) => console.log(response),
-          // handle sign-up error
-          error: (e) => console.error(e),
-        });
-    } else {
-      // Display error message and highlight invalid input field
-      alert('Please fill all fields');
-    }
-  }
-
   //SignUp Method
   onSignUpForm(SignUpuserForm: NgForm) {
     if (SignUpuserForm.valid) {

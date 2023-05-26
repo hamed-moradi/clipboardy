@@ -15,6 +15,8 @@ import { ColorUsedService } from '../shared/services/color-used.service';
 import { SpinnerComponent } from '../shared/spinner/spinner/spinner.component';
 import { MobileViewService } from '../shared/services/mobile-view.service';
 import { AddToClipboardModalComponent } from '../shared/modals/add-to-clipboard-modal/add-to-clipboard-modal.component';
+import { SignInModalComponent } from '../shared/modals/signIn-modal/sign-in-modal/sign-in-modal.component';
+
 import {
   MAT_DIALOG_DATA,
   MatDialogModule,
@@ -43,6 +45,7 @@ export function rendererFactory(rendererFactory: RendererFactory2) {
     ClipBoardItemComponent,
     SpinnerComponent,
     AddToClipboardModalComponent,
+    SignInModalComponent,
   ],
   exports: [HomeComponent],
   providers: [

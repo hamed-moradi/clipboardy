@@ -32,7 +32,7 @@ export class AddToClipboardModalComponent implements OnInit {
   violet: string = this.colorUsed.violet;
   blue: string = this.colorUsed.blue;
 
-  onKeyDown(event: KeyboardEvent) {
+  onEnterPress(event: KeyboardEvent) {
     if (event.key === 'Enter') {
       this.close();
     }

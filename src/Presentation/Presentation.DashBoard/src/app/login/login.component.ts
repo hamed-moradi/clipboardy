@@ -4,6 +4,8 @@ import { NgwWowService } from 'ngx-wow';
 import { Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
 import { ColorUsedService } from '../shared/services/color-used.service';
+import { MatDialog } from '@angular/material/dialog';
+import { SignInModalComponent } from '../shared/modals/signIn-modal/sign-in-modal/sign-in-modal.component';
 
 @Component({
   selector: 'app-login',
@@ -16,7 +18,8 @@ export class LoginComponent implements OnInit {
   constructor(
     private router: Router,
     private colorUsedService: ColorUsedService,
-    private wowService: NgwWowService
+    private wowService: NgwWowService,
+    public dialog: MatDialog
   ) {
     this.router.events
       .pipe(filter((event) => event instanceof NavigationEnd))
@@ -41,6 +44,10 @@ export class LoginComponent implements OnInit {
         // do whatever you want with revealed element
       }
     );
+  }
+
+  openSignInDialog() {
+    this.dialog.open(SignInModalComponent);
   }
 
   ngOnDestroy() {

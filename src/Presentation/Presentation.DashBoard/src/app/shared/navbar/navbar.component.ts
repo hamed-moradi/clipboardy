@@ -6,6 +6,8 @@ import { filter, Subscription } from 'rxjs';
 import { ColorUsedService } from '../../shared/services/color-used.service';
 import { AuthService } from '../../auth/auth.service';
 import { __values } from 'tslib';
+import { MatDialog } from '@angular/material/dialog';
+import { SignInModalComponent } from '../modals/signIn-modal/sign-in-modal/sign-in-modal.component';
 
 @Component({
   selector: 'app-navbar',
@@ -24,7 +26,8 @@ export class NavbarComponent implements OnInit {
     private renderer: Renderer2,
     private element: ElementRef,
     private colorUsed: ColorUsedService,
-    public authService: AuthService
+    public authService: AuthService,
+    public dialog: MatDialog
   ) {}
 
   pink: string = this.colorUsed.pink;
@@ -62,6 +65,9 @@ export class NavbarComponent implements OnInit {
       });
   }
 
+  openSignInDialog() {
+    this.dialog.open(SignInModalComponent);
+  }
   scrollToContactUs(event: Event) {
     event.preventDefault();
     const contactUs = document.getElementById('contactUs')!;

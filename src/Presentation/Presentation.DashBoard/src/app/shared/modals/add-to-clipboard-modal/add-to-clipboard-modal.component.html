@@ -21,7 +21,7 @@
             placeholder="Enter text to add the clipboard"
             style="max-height: 200px; min-height: 200px"
             (keydown.enter)="onAddClipBoardList(content)"
-            (keydown)="onKeyDown($event)"
+            (keydown)="onEnterPress($event)"
             autoFocus
             ngModel
           ></textarea>
