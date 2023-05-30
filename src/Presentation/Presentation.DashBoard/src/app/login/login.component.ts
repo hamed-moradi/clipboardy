@@ -4,7 +4,7 @@ import { NgwWowService } from 'ngx-wow';
 import { Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
 import { ColorUsedService } from '../shared/services/color-used.service';
-import { MatDialog } from '@angular/material/dialog';
+import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { SignInModalComponent } from '../shared/modals/signIn-modal/sign-in-modal/sign-in-modal.component';
 
 @Component({
@@ -47,7 +47,12 @@ export class LoginComponent implements OnInit {
   }
 
   openSignInDialog() {
-    this.dialog.open(SignInModalComponent);
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.autoFocus = true;
+    //dialogConfig.disableClose = true;
+    dialogConfig.hasBackdrop = true;
+
+    this.dialog.open(SignInModalComponent, dialogConfig);
   }
 
   ngOnDestroy() {

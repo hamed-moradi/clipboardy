@@ -1,9 +1,13 @@
 import { Component } from '@angular/core';
 import { NgForm } from '@angular/forms';
-import { MatDialogRef } from '@angular/material/dialog';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { AuthService } from 'src/app/auth/auth.service';
 import { ColorUsedService } from 'src/app/shared/services/color-used.service';
 import { SignInService } from 'src/app/shared/services/sign-in.service';
+import { SignUpModalComponent } from '../../modal/sign-up-modal/sign-up-modal.component';
+import { ForgotPasswordModalComponent } from '../../modal/forgot-password-modal/forgot-password-modal.component';
+import { MessagesService } from 'src/app/shared/services/messages.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-sign-in-modal',
@@ -15,7 +19,11 @@ export class SignInModalComponent {
     private colorUsed: ColorUsedService,
     private authService: AuthService,
     private signInService: SignInService,
-    private dialogRef: MatDialogRef<SignInModalComponent> // Inject MatDialogRef
+    private messages: MessagesService,
+    private matSnackBar: MatSnackBar,
+    private signUpDialog: MatDialog,
+    private forgotPasswordDialog: MatDialog,
+    private signIndialogRef: MatDialogRef<SignInModalComponent> // Inject MatDialogRef
   ) {}
   pink: string = this.colorUsed.pink;
   lightPink: string = this.colorUsed.lightPink;
@@ -24,6 +32,8 @@ export class SignInModalComponent {
   violet: string = this.colorUsed.violet;
   blue: string = this.colorUsed.blue;
 
+  fillAlert: void;
+  minLenghtMessage: string = this.messages.lengthInfoMessage;
   //SignIn Method
   onSignInForm(SignInuserForm: NgForm) {
     console.log(SignInuserForm.form.valid);
@@ -42,19 +52,37 @@ export class SignInModalComponent {
           // handle sign-up error
           error: (e) => console.error(e),
         });
+      this.closeSignInDialog();
     } else {
       // Display error message and highlight invalid input field
-      alert('Please fill all fields');
+      this.fillAlert = alert(this.messages.fillAllFieldsMessage);
     }
   }
 
-  close() {
-    this.dialogRef.close(); // Close the dialog
+  closeSignInDialog() {
+    this.signIndialogRef.close(); // Close the dialog
   }
 
   onEnterPress(event: KeyboardEvent) {
     if (event.key === 'Enter') {
-      this.close();
+      this.closeSignInDialog();
     }
+  }
+
+  openSignUpDialog() {
+    this.signUpDialog.open(SignUpModalComponent);
+  }
+
+  openForgotPasswordDialog() {
+    console.log('forgot password func');
+    this.forgotPasswordDialog.open(ForgotPasswordModalComponent);
+  }
+
+  showMessage(message: string) {
+    this.matSnackBar.open(message, 'Close', {
+      duration: 2000, // Duration for the popup to be visible (in milliseconds)
+      horizontalPosition: 'center', // Position of the popup horizontally
+      verticalPosition: 'top', // Position of the popup vertically
+    });
   }
 }

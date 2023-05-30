@@ -23,7 +23,7 @@
             or Sign in with credentials
           </span>
 
-          <fieldset>
+          <fieldset class="mx-3">
             <!-- Username -->
             <div class="input-group d-flex justify-content-center mb-1">
               <input
@@ -32,6 +32,9 @@
                 class="form-control"
                 name="usernameInput"
                 placeholder="Username"
+                required
+                [ngbTooltip]="minLenghtMessage"
+                minlength="3"
                 ngModel
               />
               <span
@@ -51,7 +54,9 @@
                 name="passwordInput"
                 placeholder="Password"
                 (kedown.enter)="onSignInForm(SignInuserForm)"
-                (keydown)="onEnterPress($event)"
+                [ngbTooltip]="minLenghtMessage"
+                minlength="3"
+                required
                 ngModel
               />
               <span
@@ -69,7 +74,6 @@
                 class="form-check-input"
                 id="rememberMe"
                 name="rememberMe"
-                required
                 ngModel
               />
               <label class="form-check-label d-flex" for="rememberMe">
@@ -83,46 +87,35 @@
             style="font-size: small"
           >
             <a
-              data-bs-toggle="modal"
-              href="#modalForgotPassword"
+              href="javascript:void(0)"
               [ngStyle]="{ color: orange }"
-              data-bs-dismiss="modal"
+              (click)="openForgotPasswordDialog(); closeSignInDialog()"
               >Forgot Password?</a
             >
           </p>
         </div>
         <div mat-dialog-actions class="d-flex justify-content-center mb-2">
-          <div class="d-flex justify-content-center">
-            <button
-              type="button"
-              class="btn btn-secondary"
-              data-bs-dismiss="modal"
-            >
-              Close
-            </button>
-            <span class="mx-1"></span>
-            <button
-              type="submit"
-              class="btn"
-              [ngStyle]="{
-                backgroundColor: violet
-              }"
-              style="color: aliceblue"
-              data-bs-dismiss="modal"
-            >
-              Sign In
-            </button>
-          </div>
-          <div class="d-flex justify-content-center align-items-center my-2">
-            <a
-              href=""
-              data-bs-toggle="modal"
-              data-bs-target="#modalSignUpForm"
-              [ngStyle]="{ color: blue }"
-              data-bs-dismiss="modal"
-              >Don't have account?</a
-            >
-          </div>
+          <button
+            type="button"
+            class="btn btn-secondary"
+            (click)="closeSignInDialog()"
+          >
+            Close
+          </button>
+          <span class="mx-1"></span>
+          <button
+            type="submit"
+            class="btn"
+            [ngStyle]="{
+              backgroundColor: violet
+            }"
+            style="color: aliceblue"
+          >
+            Sign In
+          </button>
+        </div>
+        <div class="d-flex justify-content-center align-items-center my-2">
+          <a href="" [ngStyle]="{ color: blue }">Don't have account?</a>
         </div>
       </div>
     </div>

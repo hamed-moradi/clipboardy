@@ -37,6 +37,7 @@
     <button
       type="submit"
       class="btn"
+      #AddToClipboardButton
       [ngStyle]="{
         backgroundColor: violet
       }"
@@ -44,8 +45,25 @@
       mat-button
       mat-dialog-close
       (click)="onAddClipBoardList(content)"
+      *ngIf="isBigWidth"
     >
       Add To Clipboard List
+    </button>
+
+    <button
+      type="submit"
+      class="btn"
+      #AddToClipboardButton
+      [ngStyle]="{
+        backgroundColor: violet
+      }"
+      style="color: aliceblue"
+      mat-button
+      mat-dialog-close
+      (click)="onAddClipBoardList(content)"
+      *ngIf="!isBigWidth"
+    >
+      Add
     </button>
   </div>
 </div>

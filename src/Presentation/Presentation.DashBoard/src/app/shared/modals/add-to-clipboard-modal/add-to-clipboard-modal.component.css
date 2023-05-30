@@ -1,6 +1,9 @@
 .dialog-addToClipBoard{
   position: fixed;
-  min-width: 420px;
+  min-width: 450px;
+  max-width:450px ;
+  min-height: 350px;
+  max-height: 350px;
   background-color: snow;
   top: 40%;
   left: 50%;
@@ -14,4 +17,42 @@
   margin-bottom: 20px !important;
   font-family: sans-serif !important;
 
+}
+
+.mdc-dialog__content{
+  padding: 10px !important;
+  margin-left: 20px !important;
+  margin-right: 20px !important;
+
+}
+
+@media  (max-width:500px){
+
+  .dialog-addToClipBoard{
+    position: fixed;
+    min-width: 250px;
+    max-width:250px ;
+    min-height: 150px;
+    max-height: 150px;
+    border-radius: 10px !important;
+    background-color: snow;
+    top: 40%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+
+  .mdc-dialog__title{
+    padding: 0px !important;
+    margin: 0px !important;
+    margin-bottom: 20px !important;
+    font-family: sans-serif !important;
+
+  }
+
+  .mdc-dialog__content{
+    padding: 0px !important;
+    margin-left: 0px !important;
+    margin-right: 0px !important;
+
+  }
 }

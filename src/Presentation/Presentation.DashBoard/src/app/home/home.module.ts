@@ -7,6 +7,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { HomeComponent } from './home.component';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 import { ClipboardModule } from 'ngx-clipboard';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 import { ClipBoardComponent } from '../clipBoard/clipBoard.component';
 import { ClipBoardItemComponent } from '../clipBoard/clipBoard-item/clipBoard-item.component';
@@ -22,6 +23,9 @@ import {
   MatDialogModule,
   MatDialogRef,
 } from '@angular/material/dialog';
+import { ForgotPasswordModalComponent } from '../shared/modals/modal/forgot-password-modal/forgot-password-modal.component';
+import { SignUpModalComponent } from '../shared/modals/modal/sign-up-modal/sign-up-modal.component';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 
 // define a function that creates a renderer for the module
 export function rendererFactory(rendererFactory: RendererFactory2) {
@@ -38,6 +42,8 @@ export function rendererFactory(rendererFactory: RendererFactory2) {
     HttpClientModule,
     ClipboardModule,
     MatDialogModule,
+    MatSnackBarModule,
+    MatTooltipModule,
   ],
   declarations: [
     HomeComponent,
@@ -46,6 +52,8 @@ export function rendererFactory(rendererFactory: RendererFactory2) {
     SpinnerComponent,
     AddToClipboardModalComponent,
     SignInModalComponent,
+    ForgotPasswordModalComponent,
+    SignUpModalComponent,
   ],
   exports: [HomeComponent],
   providers: [

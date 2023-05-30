@@ -44,11 +44,4 @@ export class ModalComponent {
         });
     }
   }
-
-  onForgotPassword(ForgotPasswordForm: NgForm) {
-    if (ForgotPasswordForm.valid) {
-      console.log(ForgotPasswordForm);
-      console.log(ForgotPasswordForm.value);
-    }
-  }
 }

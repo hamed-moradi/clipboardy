@@ -1,4 +1,4 @@
-.dialog-signIn{
+.dialog-signUp{
   position: fixed;
   min-width: 450px;
   max-width:450px ;
@@ -8,11 +8,4 @@
   top: 40%;
   left: 50%;
   transform: translate(-50%, -50%);
-}
-
-/* Adjust the position and width of the tooltip */
-.dialog-signIn .mat-tooltip {
-  position: absolute;
-  top: -30px;
-  max-width: 200px;
 }
