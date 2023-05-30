@@ -7,7 +7,7 @@ import { ColorUsedService } from '../../shared/services/color-used.service';
 import { AuthService } from '../../auth/auth.service';
 import { __values } from 'tslib';
 import { MatDialog } from '@angular/material/dialog';
-import { SignInModalComponent } from '../modals/signIn-modal/sign-in-modal/sign-in-modal.component';
+import { SignInModalComponent } from '../modals/sign-in-modal/sign-in-modal.component';
 
 @Component({
   selector: 'app-navbar',

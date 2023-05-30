@@ -68,7 +68,7 @@
             </div>
 
             <!-- Remember Me CheckBox -->
-            <div class="form-check mt-1">
+            <div class="form-check mt-2">
               <input
                 type="checkbox"
                 class="form-check-input"
@@ -115,7 +115,12 @@
           </button>
         </div>
         <div class="d-flex justify-content-center align-items-center my-2">
-          <a href="" [ngStyle]="{ color: blue }">Don't have account?</a>
+          <a
+            href="javascript:void(0)"
+            [ngStyle]="{ color: blue }"
+            (click)="openSignUpDialog(); closeSignInDialog()"
+            >Don't have account?
+          </a>
         </div>
       </div>
     </div>

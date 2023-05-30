@@ -1,25 +1,25 @@
-import { Component, ErrorHandler } from '@angular/core';
-import { AuthService } from '../../../auth/auth.service';
-import { SignUpService } from '../../services/sign-up.service';
-import { ColorUsedService } from '../../../shared/services/color-used.service';
+import { Component } from '@angular/core';
 import { NgForm } from '@angular/forms';
-import { Router } from '@angular/router';
-import { Observable } from 'rxjs';
-import { SignInService } from '../../services/sign-in.service';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { MatDialogRef } from '@angular/material/dialog';
+import { AuthService } from 'src/app/auth/auth.service';
+import { ColorUsedService } from 'src/app/shared/services/color-used.service';
+import { SignUpService } from 'src/app/shared/services/sign-up.service';
+import { MessagesService } from '../../services/messages.service';
 
 @Component({
-  selector: 'app-modal',
-  templateUrl: './modal.component.html',
-  styleUrls: ['./modal.component.css'],
+  selector: 'app-sign-up-modal',
+  templateUrl: './sign-up-modal.component.html',
+  styleUrls: ['./sign-up-modal.component.css'],
 })
-export class ModalComponent {
+export class SignUpModalComponent {
   constructor(
     private colorUsed: ColorUsedService,
     private authService: AuthService,
     private signUpService: SignUpService,
-    private signInService: SignInService
+    private messageService: MessagesService,
+    private signUpdialogRef: MatDialogRef<SignUpModalComponent> // Inject MatDialogRef
   ) {}
+
   pink: string = this.colorUsed.pink;
   lightPink: string = this.colorUsed.lightPink;
   orange: string = this.colorUsed.orange;
@@ -27,9 +27,11 @@ export class ModalComponent {
   violet: string = this.colorUsed.violet;
   blue: string = this.colorUsed.blue;
 
+  minLenghtMessage = this.messageService.lengthInfoMessage;
   //SignUp Method
   onSignUpForm(SignUpuserForm: NgForm) {
     if (SignUpuserForm.valid) {
+      console.log('signUp work!');
       this.signUpService
         .signUp(
           SignUpuserForm.value.usernameInput,
@@ -42,6 +44,12 @@ export class ModalComponent {
           // handle sign-up error
           error: (e) => console.error(e),
         });
+    } else {
+      alert(this.messageService.fillAllFieldsMessage);
     }
+  }
+
+  closeSignUpDialog() {
+    this.signUpdialogRef.close();
   }
 }

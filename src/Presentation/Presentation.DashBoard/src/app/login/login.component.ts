@@ -5,8 +5,7 @@ import { Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
 import { ColorUsedService } from '../shared/services/color-used.service';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
-import { SignInModalComponent } from '../shared/modals/signIn-modal/sign-in-modal/sign-in-modal.component';
-
+import { SignInModalComponent } from '../shared/modals/sign-in-modal/sign-in-modal.component';
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',

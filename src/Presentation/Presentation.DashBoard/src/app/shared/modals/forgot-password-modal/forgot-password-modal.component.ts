@@ -4,6 +4,7 @@ import { MatDialogRef } from '@angular/material/dialog';
 import { AuthService } from 'src/app/auth/auth.service';
 import { ColorUsedService } from 'src/app/shared/services/color-used.service';
 import { SignUpService } from 'src/app/shared/services/sign-up.service';
+import { MessagesService } from '../../services/messages.service';
 
 @Component({
   selector: 'app-forgot-password-modal',
@@ -15,7 +16,8 @@ export class ForgotPasswordModalComponent {
     private colorUsed: ColorUsedService,
     private authService: AuthService,
     private signUpService: SignUpService,
-    private dialogRef: MatDialogRef<ForgotPasswordModalComponent> // Inject MatDialogRef
+    private messageService: MessagesService,
+    private forgotPassworddialogRef: MatDialogRef<ForgotPasswordModalComponent> // Inject MatDialogRef
   ) {}
 
   pink: string = this.colorUsed.pink;
@@ -25,20 +27,18 @@ export class ForgotPasswordModalComponent {
   violet: string = this.colorUsed.violet;
   blue: string = this.colorUsed.blue;
 
+  minLenghtMessage = this.messageService.lengthInfoMessage;
   onForgotPassword(ForgotPasswordForm: NgForm) {
+    console.log('forgot work!');
     if (ForgotPasswordForm.valid) {
       console.log(ForgotPasswordForm);
       console.log(ForgotPasswordForm.value);
+    } else {
+      alert(this.messageService.fillAllFieldsMessage);
     }
   }
 
-  close() {
-    this.dialogRef.close(); // Close the dialog
-  }
-
-  onEnterPress(event: KeyboardEvent) {
-    if (event.key === 'Enter') {
-      this.close();
-    }
+  closeForgotPassworddialog() {
+    this.forgotPassworddialogRef.close(); // Close the dialog
   }
 }

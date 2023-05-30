@@ -15,7 +15,6 @@ import { LoginComponent } from './login/login.component';
 import { ColorUsedService } from './shared/services/color-used.service';
 import { AuthService } from './auth/auth.service';
 import { AuthGuard } from './auth/auth.guard';
-import { ModalComponent } from './shared/modals/modal/modal.component';
 
 @NgModule({
   declarations: [
@@ -24,7 +23,6 @@ import { ModalComponent } from './shared/modals/modal/modal.component';
     NavbarComponent,
     FooterComponent,
     LoginComponent,
-    ModalComponent,
   ],
   imports: [
     BrowserModule,

@@ -16,15 +16,15 @@ import { ColorUsedService } from '../shared/services/color-used.service';
 import { SpinnerComponent } from '../shared/spinner/spinner/spinner.component';
 import { MobileViewService } from '../shared/services/mobile-view.service';
 import { AddToClipboardModalComponent } from '../shared/modals/add-to-clipboard-modal/add-to-clipboard-modal.component';
-import { SignInModalComponent } from '../shared/modals/signIn-modal/sign-in-modal/sign-in-modal.component';
+import { SignInModalComponent } from '../shared/modals/sign-in-modal/sign-in-modal.component';
 
 import {
   MAT_DIALOG_DATA,
   MatDialogModule,
   MatDialogRef,
 } from '@angular/material/dialog';
-import { ForgotPasswordModalComponent } from '../shared/modals/modal/forgot-password-modal/forgot-password-modal.component';
-import { SignUpModalComponent } from '../shared/modals/modal/sign-up-modal/sign-up-modal.component';
+import { ForgotPasswordModalComponent } from '../shared/modals/forgot-password-modal/forgot-password-modal.component';
+import { SignUpModalComponent } from '../shared/modals/sign-up-modal/sign-up-modal.component';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 
 // define a function that creates a renderer for the module
