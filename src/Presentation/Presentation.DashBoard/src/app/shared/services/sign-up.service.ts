@@ -18,10 +18,10 @@ export class SignUpService {
     //URL
     const baseURL: string = 'http://localhost:2020';
 
-    console.log(this.generateDeviceKey());
+    console.log(this.DeviceKey());
     //headers
     const headers = new HttpHeaders({
-      deviceKey: this.generateDeviceKey(),
+      deviceKey: this.DeviceKey(),
       deviceName: navigator.userAgent,
       deviceType: this.getDeviceType(),
     });
@@ -48,7 +48,7 @@ export class SignUpService {
       );
   }
 
-  private generateDeviceKey(): string {
+  private DeviceKey(): string {
     const userAgent = navigator.userAgent;
     const hash = this.hashString(userAgent);
     return hash;

@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { RouterModule } from '@angular/router';
-import { HttpClientModule } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { HomeComponent } from './home.component';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 import { ClipboardModule } from 'ngx-clipboard';
@@ -26,6 +26,7 @@ import {
 import { ForgotPasswordModalComponent } from '../shared/modals/forgot-password-modal/forgot-password-modal.component';
 import { SignUpModalComponent } from '../shared/modals/sign-up-modal/sign-up-modal.component';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { InterceptorService } from '../shared/services/interceptor.service';
 
 // define a function that creates a renderer for the module
 export function rendererFactory(rendererFactory: RendererFactory2) {
@@ -62,7 +63,11 @@ export function rendererFactory(rendererFactory: RendererFactory2) {
       useFactory: rendererFactory,
       deps: [RendererFactory2],
     },
-
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: InterceptorService,
+      multi: true,
+    },
     ColorUsedService,
     MobileViewService,
     ClipBoardComponent,

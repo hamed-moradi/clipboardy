@@ -16,7 +16,7 @@ export class ClipBoardService {
     return this.http.get(this.baseURL + '/api/clipboard/get');
   }
 
-  AddtClipBoard(content: string): Observable<any> {
+  AddToClipBoard(content: string): Observable<any> {
     return this.http.post(this.baseURL + '/api/clipboard/add', content);
   }
 }

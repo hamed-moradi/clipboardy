@@ -21,13 +21,6 @@ export class SignInService {
     //URL
     const baseURL: string = 'http://localhost:2020';
 
-    //headers
-    const headers = new HttpHeaders({
-      deviceKey: this.generateDeviceKey(),
-      deviceName: navigator.userAgent,
-      deviceType: this.getDeviceType(),
-    });
-
     //body
     const body: IUser = {
       AccountKey,
@@ -36,48 +29,18 @@ export class SignInService {
     };
 
     this.authService.login();
+
     return this.httpClient
-      .post<{ success: boolean; expiresAt: string; token: string }>(
+      .post<{ success: boolean; expiresAt: string; authorization: string }>(
         baseURL + '/api/account/signin',
-        body,
-        { headers: headers }
+        body
       )
       .pipe(
         tap((response) => {
           //store the expiresAt and token values in localStorage
           localStorage.setItem('expiresAt', response.expiresAt);
-          localStorage.setItem('token', response.token);
+          localStorage.setItem('authorization', response.authorization);
         })
       );
-  }
-
-  private generateDeviceKey(): string {
-    const userAgent = navigator.userAgent;
-    const hash = this.hashString(userAgent);
-    return hash;
-  }
-
-  private hashString(str: string): string {
-    let hash = 0;
-    if (str.length == 0) {
-      return hash.toString();
-    }
-    for (let i = 0; i < str.length; i++) {
-      let char = str.charCodeAt(i);
-      hash = (hash << 5) - hash + char;
-      hash = hash & hash; // Convert to 32bit integer
-    }
-    return hash.toString();
-  }
-
-  private getDeviceType(): string {
-    const userAgent = navigator.userAgent;
-    if (/iPad|iPhone|iPod/.test(userAgent)) {
-      return 'iOS';
-    } else if (/Android/.test(userAgent)) {
-      return 'Android';
-    } else {
-      return 'PC';
-    }
   }
 }

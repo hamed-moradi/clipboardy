@@ -3,7 +3,7 @@ import { ColorUsedService } from '../../services/color-used.service';
 import { NgForm } from '@angular/forms';
 import { ClipBoardComponent } from 'src/app/clipBoard/clipBoard.component';
 import { IClipBoard } from 'src/app/clipBoard/IClipBoard';
-import { fromEvent, tap } from 'rxjs';
+import { fromEvent, map, tap } from 'rxjs';
 import { MatDialogRef } from '@angular/material/dialog';
 import { MobileViewService } from '../../services/mobile-view.service';
 
@@ -38,20 +38,25 @@ export class AddToClipboardModalComponent implements OnInit {
   violet: string = this.colorUsed.violet;
   blue: string = this.colorUsed.blue;
 
-  onEnterPress(event: KeyboardEvent) {
+  /*   onEnterPress(event: KeyboardEvent) {
     if (event.key === 'Enter') {
       this.close();
     }
-  }
+  } */
   onAddClipBoardList(content: NgForm) {
-    this.clipBoardComponent.dataTest$
-      .pipe(tap((r) => console.log(r)))
-      .subscribe((getClipBoardResult) => {
-        this.clipBoards = getClipBoardResult;
-      });
+    this.clipBoardComponent.clipBoardService
+      .getClipBoard()
+      .pipe(
+        map((get) => get.list),
+        tap((r) => console.log(r))
+      )
+      .subscribe(
+        (getClipBoardResult) => (this.clipBoards = getClipBoardResult)
+      );
 
     this.clipBoardComponent.onAddClipBoardList(content, this.clipBoards);
     content.form.reset();
+    this.close();
   }
 
   ngAfterViewInit(): void {
