@@ -13,7 +13,7 @@ import { FooterComponent } from './shared/footer/footer.component';
 import { HomeModule } from './home/home.module';
 import { LoginComponent } from './login/login.component';
 import { ColorUsedService } from './shared/services/color-used.service';
-import { AuthService } from './auth/auth.service';
+import { AuthService } from './shared/services/auth.service';
 import { AuthGuard } from './auth/auth.guard';
 
 @NgModule({

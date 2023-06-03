@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { AuthService } from 'src/app/auth/auth.service';
+import { AuthService } from 'src/app/shared/services/auth.service';
 import { ColorUsedService } from 'src/app/shared/services/color-used.service';
 import { SignInService } from 'src/app/shared/services/sign-in.service';
 import { SignUpModalComponent } from '../sign-up-modal/sign-up-modal.component';
@@ -34,8 +34,6 @@ export class SignInModalComponent {
   minLenghtMessage: string = this.messageService.lengthInfoMessage;
   //SignIn Method
   onSignInForm(SignInuserForm: NgForm) {
-    console.log(SignInuserForm.form.valid);
-    console.log(SignInuserForm.form.controls);
     if (SignInuserForm.form.valid) {
       console.log(this.authService.isLoggedIn);
       this.signInService
@@ -46,7 +44,10 @@ export class SignInModalComponent {
         )
         .subscribe({
           // handle successful sign-up response
-          next: (response) => console.log(response),
+          next: (response) => {
+            console.log(response),
+              this.authService.login(localStorage.getItem('token')!);
+          },
           // handle sign-up error
           error: (e) => console.error(e),
         });

@@ -44,7 +44,7 @@
         <!-- Sign In -->
         <li
           class="nav-item hover-underline-animation"
-          *ngIf="(authService.isLoggedIn | async) === false"
+          *ngIf="!(authService.isLoggedIn | async)"
         >
           <a
             class="nav-link nav-link-icon"
@@ -58,7 +58,7 @@
         <!-- Sign Out -->
         <li
           class="nav-item hover-underline-animation"
-          *ngIf="(authService.isLoggedIn | async) === true"
+          *ngIf="authService.isLoggedIn | async"
         >
           <a class="nav-link nav-link-icon" type="button" (click)="onSignOut()">
             <span class="nav-link --text">Sign out</span>

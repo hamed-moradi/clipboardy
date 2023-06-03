@@ -21,12 +21,17 @@ export class InterceptorService implements HttpInterceptor {
   }
 
   private createHeaders(): HttpHeaders {
-    const headers = new HttpHeaders({
+    let headers = new HttpHeaders({
       deviceKey: this.getDeviceKey(),
       deviceName: navigator.userAgent,
       deviceType: this.getDeviceType(),
-      authorization: localStorage.getItem('token')!,
     });
+
+    const token = localStorage.getItem('token');
+    if (token) {
+      headers = headers.set('authorization', token);
+    }
+
     return headers;
   }
 

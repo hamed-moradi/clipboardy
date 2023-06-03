@@ -2,7 +2,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, tap } from 'rxjs';
 import { IUser } from 'src/app/auth/IUser';
-import { AuthService } from 'src/app/auth/auth.service';
+import { AuthService } from 'src/app/shared/services/auth.service';
 
 @Injectable({
   providedIn: 'root',
@@ -28,10 +28,10 @@ export class SignInService {
       RememberMe,
     };
 
-    this.authService.login();
+    this.authService.login(localStorage.getItem('token'));
 
     return this.httpClient
-      .post<{ success: boolean; expiresAt: string; authorization: string }>(
+      .post<{ success: boolean; expiresAt: string; token: string }>(
         baseURL + '/api/account/signin',
         body
       )
@@ -39,7 +39,7 @@ export class SignInService {
         tap((response) => {
           //store the expiresAt and token values in localStorage
           localStorage.setItem('expiresAt', response.expiresAt);
-          localStorage.setItem('authorization', response.authorization);
+          localStorage.setItem('token', response.token);
         })
       );
   }

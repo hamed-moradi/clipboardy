@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
-import { AuthService } from 'src/app/auth/auth.service';
+import { AuthService } from 'src/app/shared/services/auth.service';
 import { ColorUsedService } from 'src/app/shared/services/color-used.service';
 import { SignUpService } from 'src/app/shared/services/sign-up.service';
 import { MessagesService } from '../../services/messages.service';

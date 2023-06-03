@@ -4,7 +4,7 @@ import { Location } from '@angular/common';
 import { filter, Subscription } from 'rxjs';
 
 import { ColorUsedService } from '../../shared/services/color-used.service';
-import { AuthService } from '../../auth/auth.service';
+import { AuthService } from '../services/auth.service';
 import { __values } from 'tslib';
 import { MatDialog } from '@angular/material/dialog';
 import { SignInModalComponent } from '../modals/sign-in-modal/sign-in-modal.component';
