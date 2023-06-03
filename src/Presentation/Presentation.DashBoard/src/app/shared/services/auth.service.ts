@@ -55,8 +55,6 @@ export class AuthService {
       return false; // Token has expired
     }
 
-    // Perform additional token validation if needed
-
     return true; // Token is valid
   }
 }

@@ -44,17 +44,7 @@ export class AddToClipboardModalComponent implements OnInit {
     }
   } */
   onAddClipBoardList(content: NgForm) {
-    this.clipBoardComponent.clipBoardService
-      .getClipBoard()
-      .pipe(
-        map((get) => get.list),
-        tap((r) => console.log(r))
-      )
-      .subscribe(
-        (getClipBoardResult) => (this.clipBoards = getClipBoardResult)
-      );
-
-    this.clipBoardComponent.onAddClipBoardList(content, this.clipBoards);
+    this.clipBoardComponent.onAddClipBoardList(content);
     content.form.reset();
     this.close();
   }

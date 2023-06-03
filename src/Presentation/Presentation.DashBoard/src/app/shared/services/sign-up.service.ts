@@ -3,12 +3,16 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { IUser } from 'src/app/auth/IUser';
 import { Observable, tap } from 'rxjs';
 import { Tab } from 'bootstrap';
+import { AuthService } from './auth.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class SignUpService {
-  constructor(private httpClient: HttpClient) {}
+  constructor(
+    private httpClient: HttpClient,
+    private authService: AuthService
+  ) {}
 
   signUp(
     AccountKey: string,
@@ -18,14 +22,6 @@ export class SignUpService {
     //URL
     const baseURL: string = 'http://localhost:2020';
 
-    console.log(this.DeviceKey());
-    //headers
-    const headers = new HttpHeaders({
-      deviceKey: this.DeviceKey(),
-      deviceName: navigator.userAgent,
-      deviceType: this.getDeviceType(),
-    });
-
     //body
     const body: IUser = {
       AccountKey,
@@ -33,11 +29,12 @@ export class SignUpService {
       ConfirmPassword,
     };
 
+    this.authService.login(localStorage.getItem('token'));
+
     return this.httpClient
       .post<{ success: boolean; expiresAt: string; token: string }>(
         baseURL + '/api/account/signup',
-        body,
-        { headers: headers }
+        body
       )
       .pipe(
         tap((response) => {
@@ -46,35 +43,5 @@ export class SignUpService {
           localStorage.setItem('token', response.token);
         })
       );
-  }
-
-  private DeviceKey(): string {
-    const userAgent = navigator.userAgent;
-    const hash = this.hashString(userAgent);
-    return hash;
-  }
-
-  private hashString(str: string): string {
-    let hash = 0;
-    if (str.length == 0) {
-      return hash.toString();
-    }
-    for (let i = 0; i < str.length; i++) {
-      let char = str.charCodeAt(i);
-      hash = (hash << 5) - hash + char;
-      hash = hash & hash; // Convert to 32bit integer
-    }
-    return hash.toString();
-  }
-
-  private getDeviceType(): string {
-    const userAgent = navigator.userAgent;
-    if (/iPad|iPhone|iPod/.test(userAgent)) {
-      return 'iOS';
-    } else if (/Android/.test(userAgent)) {
-      return 'Android';
-    } else {
-      return 'PC';
-    }
   }
 }
