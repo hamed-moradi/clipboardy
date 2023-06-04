@@ -20,6 +20,7 @@ import { ColorUsedService } from '../shared/services/color-used.service';
 import { MobileViewService } from '../shared/services/mobile-view.service';
 import { MatDialog } from '@angular/material/dialog';
 import { AddToClipboardModalComponent } from '../shared/modals/add-to-clipboard-modal/add-to-clipboard-modal.component';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-clipBoard',
@@ -37,7 +38,8 @@ export class ClipBoardComponent implements OnInit, AfterViewInit {
     public clipBoardService: ClipBoardService,
     private colorUsedService: ColorUsedService,
     private mobileViewService: MobileViewService,
-    public dialog: MatDialog
+    public dialog: MatDialog,
+    private router: Router
   ) {
     this.clipBoardService
       .getClipBoard()
@@ -78,7 +80,8 @@ export class ClipBoardComponent implements OnInit, AfterViewInit {
     var newContent = content.value;
 
     this.clipBoardService.AddToClipBoard(newContent).subscribe(() => {
-      // Trigger an update after adding a new clipboard item
+      // Reload the page after adding a new clipboard item
+      window.location.reload();
     });
   }
 
