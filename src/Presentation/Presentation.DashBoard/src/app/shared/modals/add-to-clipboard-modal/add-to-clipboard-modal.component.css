@@ -29,11 +29,12 @@
 @media  (max-width:500px){
 
   .dialog-addToClipBoard{
+    margin-top: 55px !important;
     position: fixed;
-    min-width: 250px;
-    max-width:250px ;
-    min-height: 150px;
-    max-height: 150px;
+    min-width: 345px;
+    max-width:345px ;
+    min-height: 390px;
+    max-height: 390px;
     border-radius: 10px !important;
     background-color: snow;
     top: 40%;

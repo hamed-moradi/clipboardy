@@ -22,8 +22,8 @@
   .dialog-signIn{
     margin-top: 55px !important;
     position: fixed;
-    min-width: 350px;
-    max-width:350px ;
+    min-width: 300px;
+    max-width:300px ;
     min-height: 350px;
     max-height: 350px;
     border-radius: 10px !important;

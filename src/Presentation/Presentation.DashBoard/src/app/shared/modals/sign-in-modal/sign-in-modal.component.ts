@@ -7,6 +7,7 @@ import { SignInService } from 'src/app/shared/services/sign-in.service';
 import { SignUpModalComponent } from '../sign-up-modal/sign-up-modal.component';
 import { ForgotPasswordModalComponent } from '../forgot-password-modal/forgot-password-modal.component';
 import { MessagesService } from 'src/app/shared/services/messages.service';
+import { ErrorModalComponent } from '../error-modal/error-modal.component';
 
 @Component({
   selector: 'app-sign-in-modal',
@@ -21,8 +22,9 @@ export class SignInModalComponent {
     private messageService: MessagesService,
     private signUpDialog: MatDialog,
     private forgotPasswordDialog: MatDialog,
-    private signIndialogRef: MatDialogRef<SignInModalComponent>,
-    private signUpdialogRef: MatDialogRef<SignUpModalComponent>
+    private signInDialogRef: MatDialogRef<SignInModalComponent>,
+    private signUpDialogRef: MatDialogRef<SignUpModalComponent>,
+    private errorDialog: MatDialog
   ) {}
   pink: string = this.colorUsed.pink;
   lightPink: string = this.colorUsed.lightPink;
@@ -49,7 +51,17 @@ export class SignInModalComponent {
               this.authService.login(localStorage.getItem('token')!);
           },
           // handle sign-up error
-          error: (e) => console.error(e),
+          error: (errMes) => {
+            console.error(errMes),
+              console.error(errMes.error.title),
+              // Show error dialog
+              this.errorDialog.open(ErrorModalComponent, {
+                data: {
+                  message: 'An error occurred during sign-in.',
+                  error: errMes.error.title,
+                },
+              });
+          },
         });
       this.closeSignInDialog();
     } else {
@@ -59,7 +71,7 @@ export class SignInModalComponent {
   }
 
   closeSignInDialog() {
-    this.signIndialogRef.close(); // Close the dialog
+    this.signInDialogRef.close(); // Close the dialog
   }
 
   onEnterPress(event: KeyboardEvent) {
@@ -73,7 +85,7 @@ export class SignInModalComponent {
   }
 
   closeSignUpDialog() {
-    this.signUpdialogRef.close(); // Close the dialog
+    this.signUpDialogRef.close(); // Close the dialog
   }
 
   openForgotPasswordDialog() {

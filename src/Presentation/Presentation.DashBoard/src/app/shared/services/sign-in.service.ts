@@ -1,8 +1,10 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, tap } from 'rxjs';
+import { MatDialog } from '@angular/material/dialog';
+import { Observable, catchError, tap, throwError } from 'rxjs';
 import { IUser } from 'src/app/auth/IUser';
 import { AuthService } from 'src/app/shared/services/auth.service';
+import { ErrorModalComponent } from '../modals/error-modal/error-modal.component';
 
 @Injectable({
   providedIn: 'root',
@@ -10,7 +12,8 @@ import { AuthService } from 'src/app/shared/services/auth.service';
 export class SignInService {
   constructor(
     private httpClient: HttpClient,
-    private authService: AuthService
+    private authService: AuthService,
+    private dialog: MatDialog
   ) {}
 
   signIn(
@@ -40,7 +43,19 @@ export class SignInService {
           //store the expiresAt and token values in localStorage
           localStorage.setItem('expiresAt', response.expiresAt);
           localStorage.setItem('token', response.token);
+          console.log(response.success);
         })
+        /*      catchError((error) => {
+          // Handle and display the error
+          console.error(error);
+
+          // Show error dialog
+          this.dialog.open(ErrorModalComponent, {
+            data: {
+              message: 'An error occurred during sign-in.' + error,
+            },
+          });
+        }) */
       );
   }
 }

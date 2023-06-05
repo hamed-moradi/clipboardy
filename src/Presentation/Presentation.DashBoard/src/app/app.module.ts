@@ -15,6 +15,8 @@ import { LoginComponent } from './login/login.component';
 import { ColorUsedService } from './shared/services/color-used.service';
 import { AuthService } from './shared/services/auth.service';
 import { AuthGuard } from './auth/auth.guard';
+import { ErrorModalComponent } from './shared/modals/error-modal/error-modal.component';
+import { MatDialogModule } from '@angular/material/dialog';
 
 @NgModule({
   declarations: [
@@ -23,6 +25,7 @@ import { AuthGuard } from './auth/auth.guard';
     NavbarComponent,
     FooterComponent,
     LoginComponent,
+    ErrorModalComponent,
   ],
   imports: [
     BrowserModule,
@@ -32,6 +35,7 @@ import { AuthGuard } from './auth/auth.guard';
     AppRoutingModule,
     NgwWowModule,
     HomeModule,
+    MatDialogModule,
   ],
   providers: [ColorUsedService, AuthService, AuthGuard],
   bootstrap: [AppComponent],

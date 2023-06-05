@@ -1,0 +1,39 @@
+<div class="dialog-Error">
+  <div class="container-fluid d-flex justify-content-center align-items-center">
+    <i
+      class="fa fa-2x fa-exclamation-circle mx-2"
+      aria-hidden="true"
+      style="color: darkred"
+    ></i>
+    <h2 mat-dialog-title>Error!</h2>
+  </div>
+
+  <div mat-dialog-content>
+    <form #Error="ngForm">
+      <fieldset>
+        <div>
+          <textarea
+            type="text"
+            class="form-control modal-open"
+            style="max-height: 200px; min-height: 200px"
+            name="Error"
+            autoFocus
+            readonly
+            [(ngModel)]="data.error"
+          >
+          </textarea>
+        </div>
+      </fieldset>
+    </form>
+  </div>
+  <div mat-dialog-actions class="d-flex justify-content-center my-1">
+    <button
+      mat-button
+      mat-dialog-close
+      class="btn btn-secondary mx-2"
+      (click)="closeErrorDialog()"
+    >
+      Close
+    </button>
+  </div>
+</div>
