@@ -1,4 +1,5 @@
-<div class="dialog-addToClipBoard">
+<!-- Add To ClipBoard -->
+<div class="dialog-addToClipBoard" *ngIf="!isEditMode">
   <div class="container-fluid d-flex justify-content-center align-items-center">
     <i
       class="fa fa-clipboard fa-2x mx-1"
@@ -63,6 +64,75 @@
       *ngIf="!isBigWidth"
     >
       Add
+    </button>
+  </div>
+</div>
+
+<!-- Edit ClipBoard -->
+<div class="dialog-addToClipBoard" *ngIf="isEditMode">
+  <div class="container-fluid d-flex justify-content-center align-items-center">
+    <i
+      class="fa fa-clipboard fa-2x mx-1"
+      aria-hidden="true"
+      [ngStyle]="{ color: pink }"
+    >
+    </i>
+    <h2 mat-dialog-title>Edit Text</h2>
+  </div>
+
+  <div mat-dialog-content>
+    <form #content="ngForm">
+      <fieldset>
+        <div>
+          <textarea
+            type="text"
+            id="content"
+            class="form-control modal-open"
+            name="content"
+            style="max-height: 275px; min-height: 275px"
+            (keydown.enter)="onAddClipBoardList(content)"
+            autoFocus
+            ngModel
+          ></textarea>
+        </div>
+      </fieldset>
+    </form>
+  </div>
+  <div mat-dialog-actions class="d-flex justify-content-center mb-2">
+    <button mat-button mat-dialog-close class="btn btn-secondary mx-2">
+      Close
+    </button>
+
+    <button
+      type="submit"
+      class="btn"
+      #AddToClipboardButton
+      [ngStyle]="{
+        backgroundColor: violet
+      }"
+      style="color: aliceblue"
+      mat-button
+      mat-dialog-close
+      (click)="onAddClipBoardList(content)"
+      *ngIf="isBigWidth"
+    >
+      Edit
+    </button>
+
+    <button
+      type="submit"
+      class="btn"
+      #AddToClipboardButton
+      [ngStyle]="{
+        backgroundColor: violet
+      }"
+      style="color: aliceblue"
+      mat-button
+      mat-dialog-close
+      (click)="onAddClipBoardList(content)"
+      *ngIf="!isBigWidth"
+    >
+      Edit
     </button>
   </div>
 </div>

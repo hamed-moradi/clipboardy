@@ -76,14 +76,12 @@
             </span>
           </div>
         </fieldset>
-        <div mat-dialog-actions class="d-flex justify-content-center mt-3">
-          <button
-            type="button"
-            class="btn btn-secondary mx-1"
-            (click)="closeSignUpDialog()"
-          >
-            Close
-          </button>
+        <div
+          mat-dialog-actions
+          mat-dialog-close
+          class="d-flex justify-content-center mt-3"
+        >
+          <button type="button" class="btn btn-secondary mx-1">Close</button>
 
           <button
             type="submit"

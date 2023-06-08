@@ -21,6 +21,7 @@ import { MobileViewService } from '../shared/services/mobile-view.service';
 import { MatDialog } from '@angular/material/dialog';
 import { AddToClipboardModalComponent } from '../shared/modals/add-to-clipboard-modal/add-to-clipboard-modal.component';
 import { Router } from '@angular/router';
+import { ErrorModalComponent } from '../shared/modals/error-modal/error-modal.component';
 
 @Component({
   selector: 'app-clipBoard',
@@ -39,6 +40,7 @@ export class ClipBoardComponent implements OnInit, AfterViewInit {
     private colorUsedService: ColorUsedService,
     private mobileViewService: MobileViewService,
     public dialog: MatDialog,
+    private errorDialog: MatDialog,
     private router: Router
   ) {
     this.clipBoardService
@@ -79,9 +81,25 @@ export class ClipBoardComponent implements OnInit, AfterViewInit {
   onAddClipBoardList(content: NgForm) {
     var newContent = content.value;
 
-    this.clipBoardService.AddToClipBoard(newContent).subscribe(() => {
-      // Reload the page after adding a new clipboard item
-      window.location.reload();
+    this.clipBoardService.AddToClipBoard(newContent).subscribe({
+      // handle successful sign-up response
+      next: (response) => {
+        console.log(response),
+          // Reload the page after adding a new clipboard item
+          window.location.reload();
+      },
+      // handle error
+      error: (errMes) => {
+        console.error(errMes),
+          console.error(errMes.error.title),
+          // Show error dialog
+          this.errorDialog.open(ErrorModalComponent, {
+            data: {
+              message: 'An error occurred during Add content to clipboard.',
+              error: errMes.error.title,
+            },
+          });
+      },
     });
   }
 

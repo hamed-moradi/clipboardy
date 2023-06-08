@@ -71,6 +71,7 @@ export function rendererFactory(rendererFactory: RendererFactory2) {
     ColorUsedService,
     MobileViewService,
     ClipBoardComponent,
+    ClipBoardItemComponent,
     Clipboard,
     {
       provide: MatDialogRef,
