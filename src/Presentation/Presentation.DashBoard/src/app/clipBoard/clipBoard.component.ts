@@ -8,32 +8,32 @@ import {
   ViewChild,
   ElementRef,
   AfterViewInit,
-} from '@angular/core';
-import { DOCUMENT, IMAGE_CONFIG } from '@angular/common';
-import { NgForm } from '@angular/forms';
-import { BehaviorSubject, fromEvent, map, Observable, of, Subject } from 'rxjs';
-import { tap, take, takeWhile, switchMap, takeUntil } from 'rxjs/operators';
+} from "@angular/core";
+import { DOCUMENT, IMAGE_CONFIG } from "@angular/common";
+import { NgForm } from "@angular/forms";
+import { BehaviorSubject, fromEvent, map, Observable, of, Subject } from "rxjs";
+import { tap, take, takeWhile, switchMap, takeUntil } from "rxjs/operators";
 
-import { ClipBoardService } from '../shared/services/clipBoard.service';
-import { IClipBoard } from './IClipBoard';
-import { ColorUsedService } from '../shared/services/color-used.service';
-import { MobileViewService } from '../shared/services/mobile-view.service';
-import { MatDialog } from '@angular/material/dialog';
-import { AddToClipboardModalComponent } from '../shared/modals/add-to-clipboard-modal/add-to-clipboard-modal.component';
-import { Router } from '@angular/router';
-import { ErrorModalComponent } from '../shared/modals/error-modal/error-modal.component';
+import { ClipBoardService } from "../shared/services/clipBoard.service";
+import { IClipBoard } from "./IClipBoard";
+import { ColorUsedService } from "../shared/services/color-used.service";
+import { MobileViewService } from "../shared/services/mobile-view.service";
+import { MatDialog } from "@angular/material/dialog";
+import { AddOrEditClipboardComponent } from "../shared/modals/addOrEditClipboard-modal/addOrEditClipboard-modal.component";
+import { Router } from "@angular/router";
+import { ErrorModalComponent } from "../shared/modals/error-modal/error-modal.component";
 
 @Component({
-  selector: 'app-clipBoard',
-  templateUrl: './clipBoard.component.html',
-  styleUrls: ['./clipBoard.component.css'],
+  selector: "app-clipBoard",
+  templateUrl: "./clipBoard.component.html",
+  styleUrls: ["./clipBoard.component.css"],
 })
 export class ClipBoardComponent implements OnInit, AfterViewInit {
   clipBoards: IClipBoard[];
 
   finished: boolean = true;
 
-  @ViewChild('newButtonClipBoard') myElementRef: ElementRef;
+  @ViewChild("newButtonClipBoard") myElementRef: ElementRef;
 
   constructor(
     public clipBoardService: ClipBoardService,
@@ -63,18 +63,18 @@ export class ClipBoardComponent implements OnInit, AfterViewInit {
   ngAfterViewInit(): void {
     if (window.innerWidth < 500) {
       const newButtonClipBoardElement = this.myElementRef.nativeElement;
-      this.mobileViewService.resizeEvent(newButtonClipBoardElement, 'd-grid');
+      this.mobileViewService.resizeEvent(newButtonClipBoardElement, "d-grid");
     }
-    fromEvent(window, 'resize').subscribe(() => {
+    fromEvent(window, "resize").subscribe(() => {
       if (window.innerWidth < 500) {
         const newButtonClipBoardElement = this.myElementRef.nativeElement;
-        this.mobileViewService.resizeEvent(newButtonClipBoardElement, 'd-grid');
+        this.mobileViewService.resizeEvent(newButtonClipBoardElement, "d-grid");
       }
     });
   }
 
   openAddToClipBoardDialog() {
-    this.dialog.open(AddToClipboardModalComponent);
+    this.dialog.open(AddOrEditClipboardComponent);
   }
 
   // Add Clipboard to list
@@ -95,7 +95,7 @@ export class ClipBoardComponent implements OnInit, AfterViewInit {
           // Show error dialog
           this.errorDialog.open(ErrorModalComponent, {
             data: {
-              message: 'An error occurred during Add content to clipboard.',
+              message: "An error occurred during Add content to clipboard.",
               error: errMes.error.title,
             },
           });
@@ -107,7 +107,7 @@ export class ClipBoardComponent implements OnInit, AfterViewInit {
   onClipBoardSearchList(searchQuery: NgForm) {
     if (
       searchQuery.value.searchQuery === undefined ||
-      searchQuery.value.searchQuery === ''
+      searchQuery.value.searchQuery === ""
     ) {
       return this.clipBoards;
     } else {
