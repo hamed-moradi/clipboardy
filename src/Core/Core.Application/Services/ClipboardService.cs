@@ -17,12 +17,6 @@ namespace Core.Application.Services
     public class ClipboardService : BaseService<Clipboard>, IClipboardService
     {
 
-        #region
-
-        public ClipboardService()
-        {
-        }
-        #endregion
 
         public async Task<Clipboard> GetClipboardByID(int id)
         {
@@ -74,6 +68,14 @@ namespace Core.Application.Services
             }
 
             return (null, 0, 0);
+        }
+
+        public async Task DeleteClipboard(int id)
+        {
+            var foundClipboard = await GetClipboardByID(id);
+            if (foundClipboard is not null)
+                Entity.Remove(foundClipboard);
+
         }
     }
 }

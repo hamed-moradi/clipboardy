@@ -40,6 +40,7 @@ namespace Core.Application.Interfaces
     {
         Task<(List<ClipboardViewModel> List, int TotalCount, int PageCount)> GetPagingAsync(ClipboardGetBindingModel collection);
         Task<Clipboard> GetClipboardByID(int id);
+        Task DeleteClipboard(int id);
     }
 
     //public interface IContentTypeService: IGenericService<ContentType> {

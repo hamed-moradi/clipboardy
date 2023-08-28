@@ -86,5 +86,26 @@ namespace Presentation.WebApi.Controllers
                 return Problem(ex.Message);
             }
         }
+
+        [HttpDelete("delete")]
+        public async Task<IActionResult> Delete([FromQuery] int id )
+        {
+            try {
+                var idIsValid = int.TryParse(id.ToString(), out id);
+                if(idIsValid)
+                {
+                    await _clipboardService.DeleteClipboard(id);
+                    await _clipboardService.SaveAsync();
+                    return Ok();
+                }
+                else
+                    return BadRequest();
+            }
+
+            catch (Exception ex) {
+                Log.Error(ex, ex.Source);
+                return Problem(ex.Message);
+            }
+        }
     }
 }
