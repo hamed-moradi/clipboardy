@@ -4,6 +4,8 @@ using Core.Domain.Entities;
 using Microsoft.AspNetCore.Mvc;
 using Serilog;
 using System;
+using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Presentation.WebApi.Controllers
@@ -73,12 +75,10 @@ namespace Presentation.WebApi.Controllers
                     return BadRequest(_localizer["SizeExceeded"]); // "Content is too long!"
                 }
 
-                var model = await _clipboardService.GetClipboardByID(CurrentAccount.Id);
-
-                model.Content = ClipboardViewModel.Content;
-
+                var model = await _clipboardService.GetClipboardByID(ClipboardViewModel.Id);
+                model.content = Convert.ToBase64String(Encoding.UTF8.GetBytes(ClipboardViewModel.Content));               
                 await _clipboardService.SaveAsync();
-                return Ok(model.Content);
+                return Ok();
             }
             catch (Exception ex)
             {

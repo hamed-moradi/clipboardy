@@ -24,16 +24,15 @@ namespace Core.Application.Services
         }
         #endregion
 
-        public async Task<ClipboardViewModel> GetClipboardByID(int id)
+        public async Task<Clipboard> GetClipboardByID(int id)
         {
-            var query = await Entity.FirstOrDefaultAsync(x => x.id == id);
-            if (query is null)
+            var clipboard = await Entity.FirstOrDefaultAsync(x => x.id == id);
+            if (clipboard is null)
             {
-                return new ClipboardViewModel();
+                return null;
             }
 
-            var result = _mapper.Map<ClipboardViewModel>(query);
-            return result;
+            return clipboard;
 
         }
 

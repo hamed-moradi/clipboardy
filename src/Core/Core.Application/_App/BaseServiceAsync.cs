@@ -17,7 +17,18 @@ namespace Core.Application._App {
       return entity;
     }
 
-    public async Task<int> SaveAsync(CancellationToken cancellationToken = default) =>
-      await PostgresContext.SaveChangesAsync(cancellationToken);
+    public async Task<int> SaveAsync(CancellationToken cancellationToken = default)
+        {
+            try
+            {
+               return await PostgresContext.SaveChangesAsync(cancellationToken);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                throw;
+            }
+        }
+    
   }
 }
