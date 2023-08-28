@@ -5,7 +5,6 @@ import {
   ViewChild,
   ElementRef,
   AfterViewInit,
-
 } from "@angular/core";
 import * as bootstrap from "bootstrap";
 import { fromEvent } from "rxjs";
@@ -121,10 +120,13 @@ export class ClipBoardItemComponent implements OnInit, AfterViewInit {
   }
 
   openEditClipBoardDialog() {
-
     console.log("open dialog Edit");
-    this.editDialog.open(AddOrEditClipboardComponent);
-
+    this.editDialog.open(AddOrEditClipboardComponent, {
+      data: {
+        content: this.clipBoard.content,
+        id: this.clipBoard.id,
+      },
+    });
 
     this.editMOdeService.setIsEditMode(true);
     this.editDialog.afterAllClosed.subscribe(() => {
