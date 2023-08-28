@@ -1,0 +1,44 @@
+.dialog-signUp{
+  position: fixed;
+  min-width: 450px;
+  max-width:450px ;
+  min-height: 350px;
+  max-height: 350px;
+  background-color: snow;
+  top: 40%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+@media  (max-width:500px){
+
+  .dialog-signUp{
+    margin-top: 55px !important;
+    position: fixed;
+    min-width: 300px;
+    max-width:300px ;
+    min-height: 350px;
+    max-height: 350px;
+    border-radius: 10px !important;
+    background-color: snow;
+    top: 40%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+
+  .mdc-dialog__title{
+    padding: 0px !important;
+    margin: 0px !important;
+    margin-bottom: 20px !important;
+    font-family: sans-serif !important;
+
+  }
+
+  .mdc-dialog__content{
+    padding: 0px !important;
+    margin-left: 0px !important;
+    margin-right: 0px !important;
+
+  }
+}
+

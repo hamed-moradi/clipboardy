@@ -12,7 +12,10 @@ import { debounceTime } from 'rxjs/operators';
 
 import { ColorUsedService } from '../../shared/services/color-used.service';
 import { MobileViewService } from 'src/app/shared/services/mobile-view.service';
-import { IClipBoard } from '../clipBoard.model';
+import { IClipBoard } from '../IClipBoard';
+import { AddToClipboardModalComponent } from 'src/app/shared/modals/add-to-clipboard-modal/add-to-clipboard-modal.component';
+import { MatDialog } from '@angular/material/dialog';
+import { DataSharingService } from 'src/app/shared/services/data-sharing.service';
 
 @Component({
   selector: 'app-clipBoard-item',
@@ -33,7 +36,9 @@ export class ClipBoardItemComponent implements OnInit, AfterViewInit {
 
   constructor(
     private colorUsedService: ColorUsedService,
-    private mobileViewService: MobileViewService
+    private mobileViewService: MobileViewService,
+    private editDialog: MatDialog,
+    private editMOdeService: DataSharingService
   ) {}
 
   violet: string = this.colorUsedService.violet;
@@ -44,6 +49,7 @@ export class ClipBoardItemComponent implements OnInit, AfterViewInit {
   green: string = this.colorUsedService.green;
 
   isBigContent: boolean = false;
+  isEditDialogOpen: boolean = false;
 
   ngOnInit(): void {
     /*  const tooltipTriggerList = [].slice.call(
@@ -108,13 +114,19 @@ export class ClipBoardItemComponent implements OnInit, AfterViewInit {
 
       // Copy the content inside the content field
       navigator.clipboard.writeText(copyContent);
-      // Alert the copied content
-      //alert('Copied the content: ' + copyContent);
-      //  console.log(copyContent);
+
+      // tooltip copied content
     }
   }
 
-  onClickEditClipBoard(event: Event) {}
+  openEditClipBoardDialog() {
+    this.editDialog.open(AddToClipboardModalComponent);
+
+    this.editMOdeService.setIsEditMode(true);
+    this.editDialog.afterAllClosed.subscribe(() => {
+      this.editMOdeService.setIsEditMode(false);
+    });
+  }
 
   onClickDeleteClipBoard() {}
 }

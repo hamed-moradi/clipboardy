@@ -4,7 +4,10 @@ import { Location } from '@angular/common';
 import { filter, Subscription } from 'rxjs';
 
 import { ColorUsedService } from '../../shared/services/color-used.service';
-import { AuthService } from '../../auth/auth.service';
+import { AuthService } from '../services/auth.service';
+import { __values } from 'tslib';
+import { MatDialog } from '@angular/material/dialog';
+import { SignInModalComponent } from '../modals/sign-in-modal/sign-in-modal.component';
 
 @Component({
   selector: 'app-navbar',
@@ -23,7 +26,8 @@ export class NavbarComponent implements OnInit {
     private renderer: Renderer2,
     private element: ElementRef,
     private colorUsed: ColorUsedService,
-    private authService: AuthService
+    public authService: AuthService,
+    public dialog: MatDialog
   ) {}
 
   pink: string = this.colorUsed.pink;
@@ -61,21 +65,16 @@ export class NavbarComponent implements OnInit {
       });
   }
 
-  isHome() {
-    var titlee = this.location.prepareExternalUrl(this.location.path());
-
-    if (titlee === '#/home') {
-      return true;
-    } else {
-      return false;
-    }
+  openSignInDialog() {
+    this.dialog.open(SignInModalComponent);
   }
-  isDocumentation() {
-    var titlee = this.location.prepareExternalUrl(this.location.path());
-    if (titlee === '#/documentation') {
-      return true;
-    } else {
-      return false;
-    }
+  scrollToContactUs(event: Event) {
+    event.preventDefault();
+    const contactUs = document.getElementById('contactUs')!;
+    contactUs.scrollIntoView({ behavior: 'smooth' });
+  }
+
+  onSignOut() {
+    this.authService.logout();
   }
 }

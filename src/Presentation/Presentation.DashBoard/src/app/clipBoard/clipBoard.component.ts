@@ -9,15 +9,19 @@ import {
   ElementRef,
   AfterViewInit,
 } from '@angular/core';
-import { DOCUMENT } from '@angular/common';
+import { DOCUMENT, IMAGE_CONFIG } from '@angular/common';
 import { NgForm } from '@angular/forms';
-import { BehaviorSubject, fromEvent, map, Observable, of } from 'rxjs';
-import { tap, take, takeWhile } from 'rxjs/operators';
+import { BehaviorSubject, fromEvent, map, Observable, of, Subject } from 'rxjs';
+import { tap, take, takeWhile, switchMap, takeUntil } from 'rxjs/operators';
 
-import { ClipBoardService } from './clipBoard.service';
-import { IClipBoard } from './clipBoard.model';
+import { ClipBoardService } from '../shared/services/clipBoard.service';
+import { IClipBoard } from './IClipBoard';
 import { ColorUsedService } from '../shared/services/color-used.service';
 import { MobileViewService } from '../shared/services/mobile-view.service';
+import { MatDialog } from '@angular/material/dialog';
+import { AddToClipboardModalComponent } from '../shared/modals/add-to-clipboard-modal/add-to-clipboard-modal.component';
+import { Router } from '@angular/router';
+import { ErrorModalComponent } from '../shared/modals/error-modal/error-modal.component';
 
 @Component({
   selector: 'app-clipBoard',
@@ -26,15 +30,26 @@ import { MobileViewService } from '../shared/services/mobile-view.service';
 })
 export class ClipBoardComponent implements OnInit, AfterViewInit {
   clipBoards: IClipBoard[];
+
   finished: boolean = true;
 
   @ViewChild('newButtonClipBoard') myElementRef: ElementRef;
 
   constructor(
-    private clipBoardService: ClipBoardService,
+    public clipBoardService: ClipBoardService,
     private colorUsedService: ColorUsedService,
-    private mobileViewService: MobileViewService
-  ) {}
+    private mobileViewService: MobileViewService,
+    public dialog: MatDialog,
+    private errorDialog: MatDialog,
+    private router: Router
+  ) {
+    this.clipBoardService
+      .getClipBoard()
+      .pipe(map((get) => get.list))
+      .subscribe(
+        (getClipBoardResult) => (this.clipBoards = getClipBoardResult)
+      );
+  }
 
   violet: string = this.colorUsedService.violet;
   pink: string = this.colorUsedService.pink;
@@ -44,42 +59,7 @@ export class ClipBoardComponent implements OnInit, AfterViewInit {
 
   isSearched: boolean = false;
 
-  dataTest$: Observable<IClipBoard[]> = of([
-    {
-      content:
-        'The idea of a body so big that even light could not escape was briefly proposed by English astronomical pioneer and clergyman John Michell in a letter published in November 1784. Michell s simplistic calculations assumed such a body might have the same density as the Sun, and concluded that one would form when a star s diameter exceeds the Sun s by a factor of 500, and its surface escape velocity exceeds the usual speed of light. Michell referred to these bodies as dark stars.[13] He correctly noted that such supermassive but non-radiating bodies might be detectable through their gravitational effects on nearby visible bodies.[8][14][15] Scholars of the time were initially excited by the proposal that giant but invisible "dark stars" might be hiding in plain view, but enthusiasm dampened when the wavelike nature of light became apparent in the early nineteenth century,[16] as if light were a wave rather than a particle, it was unclear what, if any, influence gravity would have on escaping light waves.[8][15]',
-    },
-
-    {
-      content: 'test Amir',
-    },
-  ]);
-
-  ngOnInit(): void {
-    /*  this.clipBoardService
-      .getClipBoard()
-      .pipe(
-        map((get) => get.list),
-        tap((r) => console.log(r))
-      )
-      .subscribe(
-        (getClipBoardResult) => (this.clipBoards = getClipBoardResult)
-      ); */
-
-    //************OLD*********** */
-    /*  this.dataTest
-      .pipe(
-        map((list) => list),
-
-        tap((r) => console.log(r))
-      )
-      .subscribe({
-        next: (getClipBoardResult) => (this.clipBoards = getClipBoardResult),
-      }); */
-
-    this.onclipBoards();
-  }
-
+  ngOnInit(): void {}
   ngAfterViewInit(): void {
     if (window.innerWidth < 500) {
       const newButtonClipBoardElement = this.myElementRef.nativeElement;
@@ -93,40 +73,50 @@ export class ClipBoardComponent implements OnInit, AfterViewInit {
     });
   }
 
-  onclipBoards() {
-    this.dataTest$
-      .pipe(tap((r) => console.log(r)))
-      .subscribe((getClipBoardResult) => {
-        this.clipBoards = getClipBoardResult;
-      });
+  openAddToClipBoardDialog() {
+    this.dialog.open(AddToClipboardModalComponent);
   }
 
   // Add Clipboard to list
   onAddClipBoardList(content: NgForm) {
-    let newContent = content.value;
-    this.clipBoards.push(newContent);
+    var newContent = content.value;
 
-    /*this.clipBoardService.postClipBoard(content).subscribe((r) => {
-      console.log(r);
+    this.clipBoardService.AddToClipBoard(newContent).subscribe({
+      // handle successful sign-up response
+      next: (response) => {
+        console.log(response),
+          // Reload the page after adding a new clipboard item
+          window.location.reload();
+      },
+      // handle error
+      error: (errMes) => {
+        console.error(errMes),
+          console.error(errMes.error.title),
+          // Show error dialog
+          this.errorDialog.open(ErrorModalComponent, {
+            data: {
+              message: 'An error occurred during Add content to clipboard.',
+              error: errMes.error.title,
+            },
+          });
+      },
     });
-    */
-    content.form.reset();
-    console.log(this.clipBoards);
   }
 
   // Search method
-  onClipBoardSerachList(searchQuery: NgForm) {
+  onClipBoardSearchList(searchQuery: NgForm) {
     if (
       searchQuery.value.searchQuery === undefined ||
       searchQuery.value.searchQuery === ''
     ) {
       return this.clipBoards;
     } else {
-      var clipBoardFilterd = this.clipBoards.filter((clipBoard) => {
-        return clipBoard.content
+      var clipBoardFilterd = this.clipBoards.filter((clipBoard: IClipBoard) =>
+        clipBoard.content
           .toLowerCase()
-          .includes(searchQuery.value.searchQuery.toLowerCase());
-      });
+          .includes(searchQuery.value.searchQuery.toLowerCase())
+      );
+
       return clipBoardFilterd;
     }
   }

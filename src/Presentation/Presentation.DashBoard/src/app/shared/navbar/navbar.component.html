@@ -1,4 +1,4 @@
-<nav class="navbar navbar-expand-lg fixed-top top-nav-collapse">
+<nav id="nav" class="navbar navbar-expand-lg fixed-top top-nav-collapse">
   <div class="container-fluid">
     <div class="row">
       <div class="col-2 mx-2">
@@ -32,23 +32,40 @@
         </li>
 
         <li class="nav-item hover-underline-animation">
-          <a class="nav-link nav-link-icon" href="javascript:void(0)">
-            <span class="nav-link --text">About Us</span>
+          <a
+            class="nav-link nav-link-icon"
+            href="#"
+            (click)="scrollToContactUs($event)"
+          >
+            <span class="nav-link --text">Contact US</span>
           </a>
         </li>
 
-        <li class="nav-item hover-underline-animation">
+        <!-- Sign In -->
+        <li
+          class="nav-item hover-underline-animation"
+          *ngIf="!(authService.isLoggedIn | async)"
+        >
           <a
             class="nav-link nav-link-icon"
             type="button"
-            data-bs-toggle="modal"
-            data-bs-target="#modalSignInForm"
+            (click)="openSignInDialog()"
           >
             <span class="nav-link --text">Sign in</span>
+          </a>
+        </li>
+
+        <!-- Sign Out -->
+        <li
+          class="nav-item hover-underline-animation"
+          *ngIf="authService.isLoggedIn | async"
+        >
+          <a class="nav-link nav-link-icon" type="button" (click)="onSignOut()">
+            <span class="nav-link --text">Sign out</span>
           </a>
         </li>
       </ul>
     </div>
   </div>
 </nav>
-<app-modal></app-modal>
+<!-- <app-modal></app-modal> -->

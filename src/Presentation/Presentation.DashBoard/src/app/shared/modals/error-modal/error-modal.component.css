@@ -1,0 +1,66 @@
+.dialog-Error{
+  position: fixed;
+  min-width: 450px;
+  max-width:450px ;
+  min-height: 350px;
+  max-height: 350px;
+  background-color: snow;
+  top: 40%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+/* .modal-open{
+  min-width: 420px !important;
+  max-width:420px !important;
+  min-height: 300px !important;
+  max-height: 300px !important;
+}
+ */
+
+.mdc-dialog__title{
+  padding: 3px !important;
+  margin: 0px !important;
+  margin-bottom: 20px !important;
+  font-family: sans-serif !important;
+
+}
+
+.mdc-dialog__content{
+  padding: 10px !important;
+  margin-left: 20px !important;
+  margin-right: 20px !important;
+
+}
+
+@media  (max-width:500px){
+
+  .dialog-Error{
+    margin-top: 55px !important;
+    position: fixed;
+    min-width: 300px;
+    max-width:300px ;
+    min-height: 350px;
+    max-height: 350px;
+    border-radius: 10px !important;
+    background-color: snow;
+    top: 40%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+
+  .mdc-dialog__title{
+    padding: 0px !important;
+    margin: 0px !important;
+    margin-bottom: 20px !important;
+    font-family: sans-serif !important;
+
+  }
+
+  .mdc-dialog__content{
+    padding: 2px !important;
+    margin-left: 2px !important;
+    margin-right: 2px !important;
+
+  }
+}

@@ -4,8 +4,8 @@ import { BrowserModule } from '@angular/platform-browser';
 import { Routes, RouterModule } from '@angular/router';
 
 import { ProfileComponent } from './profile/profile.component';
-import { SignupComponent } from './signup/signup.component';
 import { LoginComponent } from './login/login.component';
+import { FooterComponent } from './shared/footer/footer.component';
 
 const routes: Routes = [
   {
@@ -13,7 +13,6 @@ const routes: Routes = [
     loadChildren: () => import('./home/home.module').then((m) => m.HomeModule),
   },
   { path: 'user-profile', component: ProfileComponent },
-  { path: 'register', component: SignupComponent },
   { path: 'auth/login', component: LoginComponent },
   { path: '', redirectTo: 'home', pathMatch: 'full' },
 ];

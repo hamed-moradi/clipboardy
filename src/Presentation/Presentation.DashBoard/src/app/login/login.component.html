@@ -36,14 +36,13 @@
 
               <button
                 class="btn btn-outline-dark wow bounceInUp"
-                data-wow-duration="4s"
+                data-wow-duration="3s"
                 data-wow-delay="0.8s"
                 type="button"
                 [ngStyle]="{
                   hover: violet
                 }"
-                data-bs-toggle="modal"
-                data-bs-target="#modalSignInForm"
+                (click)="openSignInDialog()"
               >
                 <span class="mx-2" style="font-size: x-large">GET STARTED</span>
               </button>

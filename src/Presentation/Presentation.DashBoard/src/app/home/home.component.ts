@@ -1,12 +1,22 @@
 import { ConstantPool } from '@angular/compiler';
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  EventEmitter,
+  OnDestroy,
+  OnInit,
+  Output,
+  Renderer2,
+  ViewChild,
+} from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { Router, NavigationEnd } from '@angular/router';
 import { NgwWowService } from 'ngx-wow';
 import { Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
-import { IClipBoard } from '../clipBoard/clipBoard.model';
+import { IClipBoard } from '../clipBoard/IClipBoard';
 import { ColorUsedService } from '../shared/services/color-used.service';
+import { ClipBoardComponent } from '../clipBoard/clipBoard.component';
 
 @Component({
   selector: 'app-home',
@@ -16,10 +26,14 @@ import { ColorUsedService } from '../shared/services/color-used.service';
 export class HomeComponent implements OnInit, OnDestroy {
   clipBoards: IClipBoard[];
 
+  @ViewChild(ClipBoardComponent) clipBoardComponent: ClipBoardComponent;
+
   private wowSubscription: Subscription;
 
   constructor(
     private router: Router,
+    private renderer: Renderer2,
+    private elementRef: ElementRef,
     private colorUsedService: ColorUsedService,
     private wowService: NgwWowService
   ) {
@@ -46,6 +60,29 @@ export class HomeComponent implements OnInit, OnDestroy {
         // do whatever you want with revealed element
       }
     );
+
+    this.renderer.listen('window', 'scroll', () => {
+      const scrollTop =
+        window.pageYOffset ||
+        document.documentElement.scrollTop ||
+        document.body.scrollTop ||
+        0;
+      const scrollTopButton =
+        this.elementRef.nativeElement.querySelector('#scrollTopButton');
+
+      if (scrollTop >= 500) {
+        scrollTopButton.style.display = 'block';
+        this.renderer.addClass(scrollTopButton, 'scrollTop');
+      } else {
+        scrollTopButton.style.display = 'none';
+        this.renderer.removeClass(scrollTopButton, 'scrollTop');
+      }
+    });
+  }
+
+  scrollToTop(event: Event) {
+    event.preventDefault();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
   ngOnDestroy() {

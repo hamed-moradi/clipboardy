@@ -1,0 +1,126 @@
+<!-- Modal SignIn Form -->
+<div class="dialog-signIn">
+  <form (ngSubmit)="onSignInForm(SignInuserForm)" #SignInuserForm="ngForm">
+    <div mat-dialog-content>
+      <div class="modal-content">
+        <div
+          class="modal-header d-flex justify-content-center align-items-center"
+        >
+          <span style="font-size: medium">Sign In with</span>
+          <a href="javascript:void(0)" class="btn btn-neutral btn-icon">
+            <span class="btn-inner--icon">
+              <img src="./assets/img/icons/common/google.svg" />
+            </span>
+            <span class="btn-inner--text">Google</span>
+          </a>
+        </div>
+
+        <div class="modal-body">
+          <span
+            class="d-flex justify-content-center my-1"
+            id="modalSignInFormLabel"
+          >
+            or Sign in with credentials
+          </span>
+
+          <fieldset class="mx-3">
+            <!-- Username -->
+            <div class="input-group d-flex justify-content-center mb-1">
+              <input
+                type="text"
+                id="usernameInput"
+                class="form-control"
+                name="usernameInput"
+                placeholder="Username"
+                required
+                [ngbTooltip]="minLenghtMessage"
+                minlength="3"
+                ngModel
+              />
+              <span
+                class="input-group-text"
+                [ngStyle]="{ backgroundColor: green }"
+              >
+                <i class="fa fa-user" aria-hidden="true"></i>
+              </span>
+            </div>
+
+            <!-- Password -->
+            <div class="input-group d-flex justify-content-center">
+              <input
+                type="password"
+                id="passwordInput"
+                class="form-control"
+                name="passwordInput"
+                placeholder="Password"
+                (kedown.enter)="onSignInForm(SignInuserForm)"
+                [ngbTooltip]="minLenghtMessage"
+                minlength="3"
+                required
+                ngModel
+              />
+              <span
+                class="input-group-text"
+                [ngStyle]="{ backgroundColor: green }"
+              >
+                <i class="fa fa-lock" aria-hidden="true"></i>
+              </span>
+            </div>
+
+            <!-- Remember Me CheckBox -->
+            <div class="form-check mt-2">
+              <input
+                type="checkbox"
+                class="form-check-input"
+                id="rememberMe"
+                name="rememberMe"
+                ngModel
+              />
+              <label class="form-check-label d-flex" for="rememberMe">
+                Remember Me
+              </label>
+            </div>
+          </fieldset>
+
+          <p
+            class="d-flex justify-content-center my-1"
+            style="font-size: small"
+          >
+            <a
+              href="javascript:void(0)"
+              [ngStyle]="{ color: orange }"
+              (click)="openForgotPasswordDialog(); closeSignInDialog()"
+              >Forgot Password?</a
+            >
+          </p>
+        </div>
+        <div
+          mat-dialog-actions
+          mat-dialog-close
+          class="d-flex justify-content-center mb-2"
+        >
+          <button type="button" class="btn btn-secondary">Close</button>
+          <span class="mx-1"></span>
+          <button
+            type="submit"
+            class="btn"
+            [ngStyle]="{
+              backgroundColor: violet
+            }"
+            style="color: aliceblue"
+          >
+            Sign In
+          </button>
+        </div>
+        <div class="d-flex justify-content-center align-items-center my-2">
+          <a
+            href="javascript:void(0)"
+            [ngStyle]="{ color: blue }"
+            (click)="openSignUpDialog(); closeSignInDialog()"
+            >Don't have account?
+          </a>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>
