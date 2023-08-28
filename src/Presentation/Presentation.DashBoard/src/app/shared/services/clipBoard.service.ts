@@ -24,4 +24,19 @@ export class ClipBoardService {
     const body = { content, id };
     return this.http.put(this.baseURL + "/api/clipboard/update", body);
   }
+
+  DeleteClipBoard(id: number | undefined): Observable<any> {
+    // Check if the id is defined and is a number
+    if (id !== undefined && typeof id === "number") {
+      // Use the params option to pass the id as a query parameter
+      let httpParams = new HttpParams().set("id", id.toString());
+      return this.http.delete(this.baseURL + "/api/clipboard/delete", {
+        params: httpParams,
+      });
+    } else {
+      // Handle the case when the id is undefined or not a number
+      const err = new Error("test");
+      return throwError(() => err);
+    }
+  }
 }

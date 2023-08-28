@@ -16,6 +16,7 @@ import { IClipBoard } from "../IClipBoard";
 import { AddOrEditClipboardComponent } from "src/app/shared/modals/addOrEditClipboard-modal/addOrEditClipboard-modal.component";
 import { MatDialog } from "@angular/material/dialog";
 import { DataSharingService } from "src/app/shared/services/data-sharing.service";
+import { ClipBoardService } from "src/app/shared/services/clipBoard.service";
 
 @Component({
   selector: "app-clipBoard-item",
@@ -38,7 +39,8 @@ export class ClipBoardItemComponent implements OnInit, AfterViewInit {
     private colorUsedService: ColorUsedService,
     private mobileViewService: MobileViewService,
     private editDialog: MatDialog,
-    private editMOdeService: DataSharingService
+    private editMOdeService: DataSharingService,
+    private clipBoardService: ClipBoardService
   ) {}
 
   violet: string = this.colorUsedService.violet;
@@ -134,5 +136,21 @@ export class ClipBoardItemComponent implements OnInit, AfterViewInit {
     });
   }
 
-  onClickDeleteClipBoard() {}
+  // Delete Clipboard
+  onDeleteClipBoard(event: Event) {
+    if (event != null) {
+      console.log(this.clipBoard.id);
+      this.clipBoardService.DeleteClipBoard(this.clipBoard.id).subscribe({
+        // handle successful sign-up response
+        next: (response) => {
+          console.log(response),
+            // Reload the page after adding a new clipboard item
+
+            window.location.reload();
+        },
+      });
+    } else {
+      alert("خطا");
+    }
+  }
 }

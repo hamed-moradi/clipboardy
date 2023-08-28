@@ -123,7 +123,33 @@ export class ClipBoardComponent implements OnInit, AfterViewInit {
           // Show error dialog
           this.errorDialog.open(ErrorModalComponent, {
             data: {
-              message: "An error occurred during Add content to clipboard.",
+              message: "An error occurred during Edit content clipboard.",
+
+              error: errMes.error.title,
+            },
+          });
+      },
+    });
+  }
+
+  // Delete Clipboard
+  onDeleteClipBoard(id: number) {
+    this.clipBoardService.DeleteClipBoard(id).subscribe({
+      // handle successful sign-up response
+      next: (response) => {
+        console.log(response),
+          // Reload the page after adding a new clipboard item
+
+          window.location.reload();
+      },
+      // handle error
+      error: (errMes) => {
+        console.error(errMes),
+          console.error(errMes.error.title),
+          // Show error dialog
+          this.errorDialog.open(ErrorModalComponent, {
+            data: {
+              message: "An error occurred during Delete content clipboard.",
 
               error: errMes.error.title,
             },
