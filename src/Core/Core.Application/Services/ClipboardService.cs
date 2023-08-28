@@ -12,47 +12,69 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Core.Application.Services {
-  public class ClipboardService: BaseService<Clipboard>, IClipboardService {
-    #region
+namespace Core.Application.Services
+{
+    public class ClipboardService : BaseService<Clipboard>, IClipboardService
+    {
 
-    public ClipboardService() {
+        #region
+
+        public ClipboardService()
+        {
+        }
+        #endregion
+
+        public async Task<ClipboardViewModel> GetClipboardByID(int id)
+        {
+            var query = await Entity.FirstOrDefaultAsync(x => x.id == id);
+            if (query is null)
+            {
+                return new ClipboardViewModel();
+            }
+
+            var result = _mapper.Map<ClipboardViewModel>(query);
+            return result;
+
+        }
+
+        public async Task<(List<ClipboardViewModel> List, int TotalCount, int PageCount)> GetPagingAsync(
+      ClipboardGetBindingModel collection)
+        {
+
+            var query = Entity.Where(p => p.account_id == collection.AccountId);
+
+            if (collection.TypeId.HasValue)
+            {
+                query = query.Where(p => p.type_id == collection.TypeId);
+            }
+
+            if (collection.TypeId.HasValue &&
+              collection.TypeId == ContentTypeEnum.txt.ToInt() &&
+              !string.IsNullOrWhiteSpace(collection.Content))
+            {
+
+                var keywords = Convert.FromBase64String(collection.Content);
+                query = query.Where(p => Encoding.UTF8.GetString(Convert.FromBase64String(p.content)).Contains(collection.Content));
+            }
+
+            if (collection.FromDate.HasValue && collection.ToDate.HasValue)
+            {
+                query = query.Where(p => p.inserted_at >= collection.FromDate && p.inserted_at <= collection.ToDate);
+            }
+
+            var totalCount = query.Count();
+            if (totalCount > 0)
+            {
+                var pageCount = (int)Math.Ceiling((decimal)totalCount / collection.Take);
+
+                query = query.OrderByField(collection.OrderBy, collection.Order.ToLower() == "asc");
+                query = query.Skip(collection.Skip).Take(collection.Take);
+
+                var result = _mapper.Map<List<ClipboardViewModel>>(await query.ToListAsync());
+                return (result, totalCount, pageCount);
+            }
+
+            return (null, 0, 0);
+        }
     }
-    #endregion
-
-    public async Task<(List<ClipboardViewModel> List, int TotalCount, int PageCount)> GetPagingAsync(
-      ClipboardGetBindingModel collection) {
-
-      var query = Entity.Where(p => p.account_id == collection.AccountId);
-
-      if(collection.TypeId.HasValue) {
-        query = query.Where(p => p.type_id == collection.TypeId);
-      }
-
-      if(collection.TypeId.HasValue &&
-        collection.TypeId == ContentTypeEnum.txt.ToInt() &&
-        !string.IsNullOrWhiteSpace(collection.Content)) {
-
-        var keywords = Convert.FromBase64String(collection.Content);
-        query = query.Where(p => Encoding.UTF8.GetString(Convert.FromBase64String(p.content)).Contains(collection.Content));
-      }
-
-      if(collection.FromDate.HasValue && collection.ToDate.HasValue) {
-        query = query.Where(p => p.inserted_at >= collection.FromDate && p.inserted_at <= collection.ToDate);
-      }
-
-      var totalCount = query.Count();
-      if(totalCount > 0) {
-        var pageCount = (int)Math.Ceiling((decimal)totalCount / collection.Take);
-
-        query = query.OrderByField(collection.OrderBy, collection.Order.ToLower() == "asc");
-        query = query.Skip(collection.Skip).Take(collection.Take);
-
-        var result = _mapper.Map<List<ClipboardViewModel>>(await query.ToListAsync());
-        return (result, totalCount, pageCount);
-      }
-
-      return (null, 0, 0);
-    }
-  }
 }
