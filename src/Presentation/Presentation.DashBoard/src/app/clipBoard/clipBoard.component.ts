@@ -8,7 +8,6 @@ import {
   ViewChild,
   ElementRef,
   AfterViewInit,
-
 } from "@angular/core";
 import { DOCUMENT, IMAGE_CONFIG } from "@angular/common";
 import { NgForm } from "@angular/forms";
@@ -23,7 +22,6 @@ import { MatDialog } from "@angular/material/dialog";
 import { AddOrEditClipboardComponent } from "../shared/modals/addOrEditClipboard-modal/addOrEditClipboard-modal.component";
 import { Router } from "@angular/router";
 import { ErrorModalComponent } from "../shared/modals/error-modal/error-modal.component";
-
 
 @Component({
   selector: "app-clipBoard",
@@ -76,9 +74,7 @@ export class ClipBoardComponent implements OnInit, AfterViewInit {
   }
 
   openAddToClipBoardDialog() {
-
     this.dialog.open(AddOrEditClipboardComponent);
-
   }
 
   // Add Clipboard to list
@@ -99,8 +95,61 @@ export class ClipBoardComponent implements OnInit, AfterViewInit {
           // Show error dialog
           this.errorDialog.open(ErrorModalComponent, {
             data: {
-
               message: "An error occurred during Add content to clipboard.",
+
+              error: errMes.error.title,
+            },
+          });
+      },
+    });
+  }
+
+  // Edit Clipboard
+  onUpdateClipBoard(editedContent: NgForm, id: number) {
+    var editedContentValue = String(Object.values(editedContent.value)[0]);
+
+    this.clipBoardService.UpdateClipBoard(editedContentValue, id).subscribe({
+      // handle successful sign-up response
+      next: (response) => {
+        console.log(response),
+          // Reload the page after adding a new clipboard item
+
+          window.location.reload();
+      },
+      // handle error
+      error: (errMes) => {
+        console.error(errMes),
+          console.error(errMes.error.title),
+          // Show error dialog
+          this.errorDialog.open(ErrorModalComponent, {
+            data: {
+              message: "An error occurred during Edit content clipboard.",
+
+              error: errMes.error.title,
+            },
+          });
+      },
+    });
+  }
+
+  // Delete Clipboard
+  onDeleteClipBoard(id: number) {
+    this.clipBoardService.DeleteClipBoard(id).subscribe({
+      // handle successful sign-up response
+      next: (response) => {
+        console.log(response),
+          // Reload the page after adding a new clipboard item
+
+          window.location.reload();
+      },
+      // handle error
+      error: (errMes) => {
+        console.error(errMes),
+          console.error(errMes.error.title),
+          // Show error dialog
+          this.errorDialog.open(ErrorModalComponent, {
+            data: {
+              message: "An error occurred during Delete content clipboard.",
 
               error: errMes.error.title,
             },

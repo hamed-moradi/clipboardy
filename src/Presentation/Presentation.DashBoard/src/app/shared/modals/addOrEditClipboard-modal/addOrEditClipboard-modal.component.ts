@@ -1,10 +1,16 @@
-import { Component, ElementRef, OnInit, ViewChild } from "@angular/core";
+import {
+  Component,
+  ElementRef,
+  Inject,
+  OnInit,
+  ViewChild,
+} from "@angular/core";
 import { ColorUsedService } from "../../services/color-used.service";
 import { NgForm } from "@angular/forms";
 import { ClipBoardComponent } from "src/app/clipBoard/clipBoard.component";
 import { IClipBoard } from "src/app/clipBoard/IClipBoard";
 import { fromEvent, map, tap } from "rxjs";
-import { MatDialogRef } from "@angular/material/dialog";
+import { MAT_DIALOG_DATA, MatDialogRef } from "@angular/material/dialog";
 import { MobileViewService } from "../../services/mobile-view.service";
 import { ClipBoardItemComponent } from "src/app/clipBoard/clipBoard-item/clipBoard-item.component";
 import { DataSharingService } from "../../services/data-sharing.service";
@@ -18,19 +24,20 @@ export class AddOrEditClipboardComponent implements OnInit {
   constructor(
     private colorUsed: ColorUsedService,
     private clipBoardComponent: ClipBoardComponent,
-    private clipBoardItemComponent: ClipBoardItemComponent,
     private editModeService: DataSharingService,
     private mobileViewService: MobileViewService,
-    private dialogRef: MatDialogRef<AddOrEditClipboardComponent> // Inject MatDialogRef
+    private dialogRef: MatDialogRef<AddOrEditClipboardComponent>, // Inject MatDialogRef
+    @Inject(MAT_DIALOG_DATA) public data: any
   ) {}
 
   @ViewChild("AddToClipboardButton")
   AddToClipboardElementRef: ElementRef;
 
+  editedContentModel = this.data;
+
   isBigWidth: boolean;
   clipBoards: IClipBoard[] = [];
   isEditMode: boolean;
-  clipBoardContent = this.clipBoardItemComponent.clipBoard.content;
 
   pink: string = this.colorUsed.pink;
   lightPink: string = this.colorUsed.lightPink;
@@ -58,8 +65,16 @@ export class AddOrEditClipboardComponent implements OnInit {
     this.close();
   }
 
-  onEditlipBoard(selectedContent: NgForm) {
-    console.log(selectedContent);
+  EditClipBoard(editedContent: NgForm) {
+    console.log(this.editedContentModel.id);
+    console.log(editedContent.value);
+
+    this.clipBoardComponent.onUpdateClipBoard(
+      editedContent,
+      this.editedContentModel.id
+    );
+    editedContent.form.reset();
+    this.close();
   }
 
   ngAfterViewInit(): void {

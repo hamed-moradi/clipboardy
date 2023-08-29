@@ -72,7 +72,7 @@
 
 <!-- Edit ClipBoard -->
 <div class="dialog-addOrEditClipBoard" *ngIf="isEditMode">
-  <form #selectedContent="ngForm">
+  <form #editedContent="ngForm">
     <div
       class="container-fluid d-flex justify-content-center align-items-center"
     >
@@ -90,14 +90,13 @@
         <div>
           <textarea
             type="text"
-            id="selectedContent"
+            id="editedContent"
             class="form-control modal-open"
-            name="selectedContent"
-            [value]="clipBoardContent"
+            name="editedContent"
             style="max-height: 275px; min-height: 275px"
-            (keydown.enter)="onEditlipBoard(selectedContent)"
+            (keydown.enter)="EditClipBoard(editedContent)"
             autoFocus
-            ngModel
+            [ngModel]="editedContentModel.content"
           ></textarea>
         </div>
       </fieldset>
@@ -117,7 +116,7 @@
         style="color: aliceblue"
         mat-button
         mat-dialog-close
-        (click)="onEditlipBoard(selectedContent)"
+        (click)="EditClipBoard(editedContent)"
         *ngIf="isBigWidth"
       >
         Edit
@@ -133,7 +132,7 @@
         style="color: aliceblue"
         mat-button
         mat-dialog-close
-        (click)="onEditlipBoard(selectedContent)"
+        (click)="EditClipBoard(editedContent)"
         *ngIf="!isBigWidth"
       >
         Edit

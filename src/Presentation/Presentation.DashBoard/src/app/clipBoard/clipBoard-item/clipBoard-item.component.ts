@@ -5,7 +5,6 @@ import {
   ViewChild,
   ElementRef,
   AfterViewInit,
-
 } from "@angular/core";
 import * as bootstrap from "bootstrap";
 import { fromEvent } from "rxjs";
@@ -17,6 +16,7 @@ import { IClipBoard } from "../IClipBoard";
 import { AddOrEditClipboardComponent } from "src/app/shared/modals/addOrEditClipboard-modal/addOrEditClipboard-modal.component";
 import { MatDialog } from "@angular/material/dialog";
 import { DataSharingService } from "src/app/shared/services/data-sharing.service";
+import { ClipBoardService } from "src/app/shared/services/clipBoard.service";
 
 @Component({
   selector: "app-clipBoard-item",
@@ -39,7 +39,8 @@ export class ClipBoardItemComponent implements OnInit, AfterViewInit {
     private colorUsedService: ColorUsedService,
     private mobileViewService: MobileViewService,
     private editDialog: MatDialog,
-    private editMOdeService: DataSharingService
+    private editMOdeService: DataSharingService,
+    private clipBoardService: ClipBoardService
   ) {}
 
   violet: string = this.colorUsedService.violet;
@@ -121,10 +122,13 @@ export class ClipBoardItemComponent implements OnInit, AfterViewInit {
   }
 
   openEditClipBoardDialog() {
-
     console.log("open dialog Edit");
-    this.editDialog.open(AddOrEditClipboardComponent);
-
+    this.editDialog.open(AddOrEditClipboardComponent, {
+      data: {
+        content: this.clipBoard.content,
+        id: this.clipBoard.id,
+      },
+    });
 
     this.editMOdeService.setIsEditMode(true);
     this.editDialog.afterAllClosed.subscribe(() => {
@@ -132,5 +136,21 @@ export class ClipBoardItemComponent implements OnInit, AfterViewInit {
     });
   }
 
-  onClickDeleteClipBoard() {}
+  // Delete Clipboard
+  onDeleteClipBoard(event: Event) {
+    if (event != null) {
+      console.log(this.clipBoard.id);
+      this.clipBoardService.DeleteClipBoard(this.clipBoard.id).subscribe({
+        // handle successful sign-up response
+        next: (response) => {
+          console.log(response),
+            // Reload the page after adding a new clipboard item
+
+            window.location.reload();
+        },
+      });
+    } else {
+      alert("خطا");
+    }
+  }
 }
