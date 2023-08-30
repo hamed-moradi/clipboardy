@@ -38,8 +38,7 @@
           "
           readonly
           ngbTooltip="Copied to ClipBoard!"
-          [autoClose]="true"
-          triggers="manual"
+          [animation]="true"
           #t="ngbTooltip"
           [positionTarget]="ClipboardItemsCopyButton"
           placement="bottom"
@@ -63,8 +62,11 @@
               }"
               style="color: aliceblue"
               placement="bottom"
-              ngbTooltip="Copy to ClipBoard"
-              (click)="onClickCopyToClipBoard($event)"
+              ngbTooltip="Copied to ClipBoard!"
+              [autoClose]="true"
+              triggers="manual"
+              #t="ngbTooltip"
+              (click)="onClickCopyToClipBoard($event); t.open()"
             >
               <i class="fa fa-files-o" aria-hidden="true"></i>
             </button>

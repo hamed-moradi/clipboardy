@@ -21,7 +21,7 @@ import { ClipBoardService } from "src/app/shared/services/clipBoard.service";
 @Component({
   selector: "app-clipBoard-item",
   templateUrl: "./clipBoard-item.component.html",
-  styleUrls: ["./clipBoard-item.component.css"],
+  styleUrls: ["./clipBoard-item.component.scss"],
 })
 export class ClipBoardItemComponent implements OnInit, AfterViewInit {
   @Input() clipBoard: IClipBoard;

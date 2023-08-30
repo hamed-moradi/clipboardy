@@ -1,15 +1,15 @@
-import { Component } from '@angular/core';
-import { NgForm } from '@angular/forms';
-import { MatDialogRef } from '@angular/material/dialog';
-import { AuthService } from 'src/app/shared/services/auth.service';
-import { ColorUsedService } from 'src/app/shared/services/color-used.service';
-import { SignUpService } from 'src/app/shared/services/sign-up.service';
-import { MessagesService } from '../../services/messages.service';
+import { Component } from "@angular/core";
+import { NgForm } from "@angular/forms";
+import { MatDialogRef } from "@angular/material/dialog";
+import { AuthService } from "src/app/shared/services/auth.service";
+import { ColorUsedService } from "src/app/shared/services/color-used.service";
+import { SignUpService } from "src/app/shared/services/sign-up.service";
+import { MessagesService } from "../../services/messages.service";
 
 @Component({
-  selector: 'app-forgot-password-modal',
-  templateUrl: './forgot-password-modal.component.html',
-  styleUrls: ['./forgot-password-modal.component.css'],
+  selector: "app-forgot-password-modal",
+  templateUrl: "./forgot-password-modal.component.html",
+  styleUrls: ["./forgot-password-modal.component.scss"],
 })
 export class ForgotPasswordModalComponent {
   constructor(
@@ -29,7 +29,7 @@ export class ForgotPasswordModalComponent {
 
   minLenghtMessage = this.messageService.lengthInfoMessage;
   onForgotPassword(ForgotPasswordForm: NgForm) {
-    console.log('forgot work!');
+    console.log("forgot work!");
     if (ForgotPasswordForm.valid) {
       console.log(ForgotPasswordForm);
       console.log(ForgotPasswordForm.value);

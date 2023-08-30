@@ -18,7 +18,7 @@ import { DataSharingService } from "../../services/data-sharing.service";
 @Component({
   selector: "addOrEditClipboard-modal",
   templateUrl: "./addOrEditClipboard-modal.component.html",
-  styleUrls: ["./addOrEditClipboard-modal.component.css"],
+  styleUrls: ["./addOrEditClipboard-modal.component.scss"],
 })
 export class AddOrEditClipboardComponent implements OnInit {
   constructor(
