@@ -1,12 +1,16 @@
 @import "/src/assets/vendor/font-awesome/css/font-awesome.min.css";
 
-.h1, .h2, .h3, .h4, .h5, .h6 {
+.h1,
+.h2,
+.h3,
+.h4,
+.h5,
+.h6 {
   font-family: "Poppins", sans-serif;
   font-weight: 400;
   margin: 0 0 20px 0;
   padding: 0;
 }
-
 
 /*--------------------------------------------------------------
 # Hero Section
@@ -45,12 +49,12 @@
   text-align: center;
 }
 
-.hero-clipBoardItems{
-  top:250px;
+.hero-clipBoardItems {
+  top: 250px;
   position: relative;
 }
 
-.hero-bold{
+.hero-bold {
   margin: 30px 0 10px 0;
   font-weight: 700;
   line-height: 56px;
@@ -64,12 +68,10 @@
   font-size: 24px;
 }
 
-.hero .btn-outline-dark:hover{
-  background-color:#930086;
-  border:2px solid #930086;
+.hero .btn-outline-dark:hover {
+  background-color: #930086;
+  border: 2px solid #930086;
 }
-
-
 
 @media (max-width: 768px) {
   .hero h1 {
@@ -77,36 +79,33 @@
     line-height: 36px;
   }
 
+  .hero-search {
+    position: relative;
+    top: 200px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    text-align: center;
+  }
 
-.hero-search {
-  position: relative;
-  top: 200px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
-  text-align: center;
+  .hero-newButton {
+    position: relative;
+    top: 210px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .hero-clipBoardItems {
+    top: 250px;
+    position: relative;
+  }
 }
 
-.hero-newButton {
-  position: relative;
-  top: 210px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
-  text-align: center;
-}
-
-
-.hero-clipBoardItems{
-  top:250px;
-  position: relative;
-}
-}
-
-@media (max-width:499px) {
-
+@media (max-width: 499px) {
   .hero-search {
     position: relative;
     top: 130px;
@@ -117,7 +116,7 @@
     text-align: center;
   }
 
-  .hero-newButton  {
+  .hero-newButton {
     position: relative;
     top: 140px;
     display: flex;
@@ -127,10 +126,8 @@
     text-align: center;
   }
 
-  .hero-clipBoardItems{
-    top:165px;
+  .hero-clipBoardItems {
+    top: 165px;
     position: relative;
-
   }
 }
-

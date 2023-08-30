@@ -1,15 +1,15 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
-import { Router, NavigationEnd } from '@angular/router';
-import { NgwWowService } from 'ngx-wow';
-import { Subscription } from 'rxjs';
-import { filter } from 'rxjs/operators';
-import { ColorUsedService } from '../shared/services/color-used.service';
-import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
-import { SignInModalComponent } from '../shared/modals/sign-in-modal/sign-in-modal.component';
+import { Component, OnDestroy, OnInit } from "@angular/core";
+import { Router, NavigationEnd } from "@angular/router";
+import { NgwWowService } from "ngx-wow";
+import { Subscription } from "rxjs";
+import { filter } from "rxjs/operators";
+import { ColorUsedService } from "../shared/services/color-used.service";
+import { MatDialog, MatDialogConfig } from "@angular/material/dialog";
+import { SignInModalComponent } from "../shared/modals/sign-in-modal/sign-in-modal.component";
 @Component({
-  selector: 'app-login',
-  templateUrl: './login.component.html',
-  styleUrls: ['./login.component.css'],
+  selector: "app-login",
+  templateUrl: "./login.component.html",
+  styleUrls: ["./login.component.scss"],
 })
 export class LoginComponent implements OnInit {
   private wowSubscription: Subscription;

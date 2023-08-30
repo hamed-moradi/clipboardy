@@ -26,7 +26,7 @@ import { ErrorModalComponent } from "../shared/modals/error-modal/error-modal.co
 @Component({
   selector: "app-clipBoard",
   templateUrl: "./clipBoard.component.html",
-  styleUrls: ["./clipBoard.component.css"],
+  styleUrls: ["./clipBoard.component.scss"],
 })
 export class ClipBoardComponent implements OnInit, AfterViewInit {
   clipBoards: IClipBoard[];

@@ -1,18 +1,18 @@
-import { Component } from '@angular/core';
-import { NgForm } from '@angular/forms';
-import { MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { AuthService } from 'src/app/shared/services/auth.service';
-import { ColorUsedService } from 'src/app/shared/services/color-used.service';
-import { SignInService } from 'src/app/shared/services/sign-in.service';
-import { SignUpModalComponent } from '../sign-up-modal/sign-up-modal.component';
-import { ForgotPasswordModalComponent } from '../forgot-password-modal/forgot-password-modal.component';
-import { MessagesService } from 'src/app/shared/services/messages.service';
-import { ErrorModalComponent } from '../error-modal/error-modal.component';
+import { Component } from "@angular/core";
+import { NgForm } from "@angular/forms";
+import { MatDialog, MatDialogRef } from "@angular/material/dialog";
+import { AuthService } from "src/app/shared/services/auth.service";
+import { ColorUsedService } from "src/app/shared/services/color-used.service";
+import { SignInService } from "src/app/shared/services/sign-in.service";
+import { SignUpModalComponent } from "../sign-up-modal/sign-up-modal.component";
+import { ForgotPasswordModalComponent } from "../forgot-password-modal/forgot-password-modal.component";
+import { MessagesService } from "src/app/shared/services/messages.service";
+import { ErrorModalComponent } from "../error-modal/error-modal.component";
 
 @Component({
-  selector: 'app-sign-in-modal',
-  templateUrl: './sign-in-modal.component.html',
-  styleUrls: ['./sign-in-modal.component.css'],
+  selector: "app-sign-in-modal",
+  templateUrl: "./sign-in-modal.component.html",
+  styleUrls: ["./sign-in-modal.component.scss"],
 })
 export class SignInModalComponent {
   constructor(
@@ -48,7 +48,7 @@ export class SignInModalComponent {
           // handle successful sign-up response
           next: (response) => {
             console.log(response),
-              this.authService.login(localStorage.getItem('token')!);
+              this.authService.login(localStorage.getItem("token")!);
           },
           // handle sign-up error
           error: (errMes) => {
@@ -57,7 +57,7 @@ export class SignInModalComponent {
               // Show error dialog
               this.errorDialog.open(ErrorModalComponent, {
                 data: {
-                  message: 'An error occurred during sign-in.',
+                  message: "An error occurred during sign-in.",
                   error: errMes.error.title,
                 },
               });
@@ -75,7 +75,7 @@ export class SignInModalComponent {
   }
 
   onEnterPress(event: KeyboardEvent) {
-    if (event.key === 'Enter') {
+    if (event.key === "Enter") {
       this.closeSignInDialog();
     }
   }

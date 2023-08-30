@@ -1,15 +1,15 @@
-import { Component } from '@angular/core';
-import { NgForm } from '@angular/forms';
-import { MatDialogRef } from '@angular/material/dialog';
-import { AuthService } from 'src/app/shared/services/auth.service';
-import { ColorUsedService } from 'src/app/shared/services/color-used.service';
-import { SignUpService } from 'src/app/shared/services/sign-up.service';
-import { MessagesService } from '../../services/messages.service';
+import { Component } from "@angular/core";
+import { NgForm } from "@angular/forms";
+import { MatDialogRef } from "@angular/material/dialog";
+import { AuthService } from "src/app/shared/services/auth.service";
+import { ColorUsedService } from "src/app/shared/services/color-used.service";
+import { SignUpService } from "src/app/shared/services/sign-up.service";
+import { MessagesService } from "../../services/messages.service";
 
 @Component({
-  selector: 'app-sign-up-modal',
-  templateUrl: './sign-up-modal.component.html',
-  styleUrls: ['./sign-up-modal.component.css'],
+  selector: "app-sign-up-modal",
+  templateUrl: "./sign-up-modal.component.html",
+  styleUrls: ["./sign-up-modal.component.scss"],
 })
 export class SignUpModalComponent {
   constructor(
@@ -31,7 +31,7 @@ export class SignUpModalComponent {
   //SignUp Method
   onSignUpForm(SignUpuserForm: NgForm) {
     if (SignUpuserForm.valid) {
-      console.log('signUp work!');
+      console.log("signUp work!");
       this.signUpService
         .signUp(
           SignUpuserForm.value.usernameInput,
