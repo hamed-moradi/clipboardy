@@ -5,12 +5,16 @@ import { Observable, throwError } from "rxjs";
 
 import { map, catchError } from "rxjs/operators";
 import { environment } from "src/environments/environment.prod";
+=======
+
 
 @Injectable({
   providedIn: "root",
 })
 export class ClipBoardService {
+
   baseURL: string = environment.baseUrl;
+
 
   constructor(private http: HttpClient) {}
 
