@@ -63,9 +63,9 @@ export class HomeComponent implements OnInit, OnDestroy {
 
     this.renderer.listen("window", "scroll", () => {
       const scrollTop =
-        window.pageYOffset ||
         document.documentElement.scrollTop ||
         document.body.scrollTop ||
+        window.scrollY ||
         0;
       const scrollTopButton =
         this.elementRef.nativeElement.querySelector("#scrollTopButton");

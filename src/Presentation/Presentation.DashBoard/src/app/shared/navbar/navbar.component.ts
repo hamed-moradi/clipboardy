@@ -52,7 +52,7 @@ export class NavbarComponent implements OnInit {
       .subscribe((event) => {
         this.renderer.listen("window", "scroll", (event) => {
           const number = window.scrollY;
-          if (number > 150 || window.pageYOffset > 150) {
+          if (number > 150 || window.scrollY > 150) {
             // add logic
             navbar.classList.add("headroom--not-top");
             navbar.classList.remove("p-4");
