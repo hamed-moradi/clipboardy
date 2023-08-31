@@ -4,17 +4,12 @@ import { HttpClient, HttpParams, HttpHeaders } from "@angular/common/http";
 import { Observable, throwError } from "rxjs";
 
 import { map, catchError } from "rxjs/operators";
-import { environment } from "src/environments/environment.prod";
-=======
-
 
 @Injectable({
   providedIn: "root",
 })
 export class ClipBoardService {
-
-  baseURL: string = environment.baseUrl;
-
+  baseURL: string = "http://localhost:2020";
 
   constructor(private http: HttpClient) {}
 

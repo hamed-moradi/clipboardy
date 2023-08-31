@@ -1,4 +1,3 @@
-
 import { NgModule, Renderer2, RendererFactory2 } from "@angular/core";
 import { CommonModule } from "@angular/common";
 import { FormsModule } from "@angular/forms";
@@ -19,18 +18,16 @@ import { MobileViewService } from "../shared/services/mobile-view.service";
 import { AddOrEditClipboardComponent } from "../shared/modals/addOrEditClipboard-modal/addOrEditClipboard-modal.component";
 import { SignInModalComponent } from "../shared/modals/sign-in-modal/sign-in-modal.component";
 
-
 import {
   MAT_DIALOG_DATA,
   MatDialogModule,
   MatDialogRef,
-
 } from "@angular/material/dialog";
 import { ForgotPasswordModalComponent } from "../shared/modals/forgot-password-modal/forgot-password-modal.component";
 import { SignUpModalComponent } from "../shared/modals/sign-up-modal/sign-up-modal.component";
 import { MatSnackBarModule } from "@angular/material/snack-bar";
 import { InterceptorService } from "../shared/services/interceptor.service";
-
+import { ClipBoardService } from "../shared/services/clipBoard.service";
 
 // define a function that creates a renderer for the module
 export function rendererFactory(rendererFactory: RendererFactory2) {
@@ -76,6 +73,7 @@ export function rendererFactory(rendererFactory: RendererFactory2) {
     },
     ColorUsedService,
     MobileViewService,
+    ClipBoardService,
     ClipBoardComponent,
     ClipBoardItemComponent,
     Clipboard,
