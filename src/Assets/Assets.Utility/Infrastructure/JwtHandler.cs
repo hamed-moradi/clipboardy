@@ -43,11 +43,12 @@ namespace Assets.Utility.Infrastructure {
       return string.Join(".", token);
     }
 
-    public SigninViewModel Bearer(ClaimsIdentity claims, DateTime? expires = null) {
+    public SigninViewModel Bearer(ClaimsIdentity claims, DateTime? expires = null , bool rememberMe = false ) {
       var expiresAt = expires ?? DateTime.UtcNow.AddMonths(1);
       return new SigninViewModel {
         Token = $"Bearer {Create(claims, expiresAt)}",
-        ExpiresAt = expiresAt
+        ExpiresAt = expiresAt,
+        RememberMe = rememberMe
       };
     }
 
