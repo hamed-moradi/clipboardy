@@ -5,34 +5,32 @@ import {
   ViewChild,
   ElementRef,
   AfterViewInit,
-} from "@angular/core";
-import * as bootstrap from "bootstrap";
-import { fromEvent } from "rxjs";
-import { debounceTime } from "rxjs/operators";
+} from '@angular/core';
+import { fromEvent } from 'rxjs';
 
-import { ColorUsedService } from "../../shared/services/color-used.service";
-import { MobileViewService } from "src/app/shared/services/mobile-view.service";
-import { IClipBoard } from "../IClipBoard";
-import { AddOrEditClipboardComponent } from "src/app/shared/modals/addOrEditClipboard-modal/addOrEditClipboard-modal.component";
-import { MatDialog } from "@angular/material/dialog";
-import { DataSharingService } from "src/app/shared/services/data-sharing.service";
-import { ClipBoardService } from "src/app/shared/services/clipBoard.service";
+import { ColorUsedService } from '../../shared/services/color-used.service';
+import { MobileViewService } from 'src/app/shared/services/mobile-view.service';
+import { IClipBoard } from '../IClipBoard';
+import { AddOrEditClipboardComponent } from 'src/app/shared/modals/addOrEditClipboard-modal/addOrEditClipboard-modal.component';
+import { MatDialog } from '@angular/material/dialog';
+import { DataSharingService } from 'src/app/shared/services/data-sharing.service';
+import { ClipBoardService } from 'src/app/shared/services/clipBoard.service';
 
 @Component({
-  selector: "app-clipBoard-item",
-  templateUrl: "./clipBoard-item.component.html",
-  styleUrls: ["./clipBoard-item.component.scss"],
+  selector: 'app-clipBoard-item',
+  templateUrl: './clipBoard-item.component.html',
+  styleUrls: ['./clipBoard-item.component.scss'],
 })
 export class ClipBoardItemComponent implements OnInit, AfterViewInit {
   @Input() clipBoard: IClipBoard;
 
-  @ViewChild("ClipboardItemsCopyButton")
+  @ViewChild('ClipboardItemsCopyButton')
   ClipboardItemsCopyButtonElementRef: ElementRef;
 
-  @ViewChild("ClipboardItemsEditButton")
+  @ViewChild('ClipboardItemsEditButton')
   ClipboardItemsEditButtonElementRef: ElementRef;
 
-  @ViewChild("ClipboardItemsDeleteButton")
+  @ViewChild('ClipboardItemsDeleteButton')
   ClipboardItemsDeleteButtonElementRef: ElementRef;
 
   constructor(
@@ -78,31 +76,31 @@ export class ClipBoardItemComponent implements OnInit, AfterViewInit {
     if (window.innerWidth < 500) {
       this.mobileViewService.resizeEvent(
         ClipboardItemsCopyButtonElement,
-        "flex-fill"
+        'flex-fill'
       );
       this.mobileViewService.resizeEvent(
         ClipboardItemsEditButtonElement,
-        "flex-fill"
+        'flex-fill'
       );
       this.mobileViewService.resizeEvent(
         ClipboardItemsDeleteButtonElement,
-        "flex-fill"
+        'flex-fill'
       );
     }
 
-    fromEvent(window, "resize").subscribe(() => {
+    fromEvent(window, 'resize').subscribe(() => {
       if (window.innerWidth < 500) {
         this.mobileViewService.resizeEvent(
           ClipboardItemsCopyButtonElement,
-          "flex-fill"
+          'flex-fill'
         );
         this.mobileViewService.resizeEvent(
           ClipboardItemsEditButtonElement,
-          "flex-fill"
+          'flex-fill'
         );
         this.mobileViewService.resizeEvent(
           ClipboardItemsDeleteButtonElement,
-          "flex-fill"
+          'flex-fill'
         );
       }
     });
@@ -122,7 +120,7 @@ export class ClipBoardItemComponent implements OnInit, AfterViewInit {
   }
 
   openEditClipBoardDialog() {
-    console.log("open dialog Edit");
+    console.log('open dialog Edit');
     this.editDialog.open(AddOrEditClipboardComponent, {
       data: {
         content: this.clipBoard.content,
@@ -150,7 +148,7 @@ export class ClipBoardItemComponent implements OnInit, AfterViewInit {
         },
       });
     } else {
-      alert("خطا");
+      alert('خطا');
     }
   }
 }
