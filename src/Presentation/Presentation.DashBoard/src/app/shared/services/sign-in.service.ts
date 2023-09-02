@@ -1,13 +1,13 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Injectable } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
-import { Observable, catchError, tap, throwError } from 'rxjs';
-import { IUser } from 'src/app/auth/IUser';
-import { AuthService } from 'src/app/shared/services/auth.service';
-import { ErrorModalComponent } from '../modals/error-modal/error-modal.component';
-
+import { HttpClient, HttpHeaders } from "@angular/common/http";
+import { Injectable } from "@angular/core";
+import { MatDialog } from "@angular/material/dialog";
+import { Observable, catchError, tap, throwError } from "rxjs";
+import { IUser } from "src/app/auth/IUser";
+import { AuthService } from "src/app/shared/services/auth.service";
+import { ErrorModalComponent } from "../modals/error-modal/error-modal.component";
+import { SignInModalComponent } from "../modals/sign-in-modal/sign-in-modal.component";
 @Injectable({
-  providedIn: 'root',
+  providedIn: "root",
 })
 export class SignInService {
   constructor(
@@ -22,7 +22,7 @@ export class SignInService {
     RememberMe: boolean
   ): Observable<{ success: boolean }> {
     //URL
-    const baseURL: string = 'http://localhost:2020';
+    const baseURL: string = "http://localhost:2020";
 
     //body
     const body: IUser = {
@@ -31,18 +31,25 @@ export class SignInService {
       RememberMe,
     };
 
-    this.authService.login(localStorage.getItem('token'));
+    const rememberMe = body.RememberMe?.valueOf();
+
+    this.authService.login(localStorage.getItem("token"));
 
     return this.httpClient
       .post<{ success: boolean; expiresAt: string; token: string }>(
-        baseURL + '/api/account/signin',
+        baseURL + "/api/account/signin",
         body
       )
       .pipe(
         tap((response) => {
           //store the expiresAt and token values in localStorage
-          localStorage.setItem('expiresAt', response.expiresAt);
-          localStorage.setItem('token', response.token);
+          localStorage.setItem("expiresAt", response.expiresAt);
+          localStorage.setItem("token", response.token);
+
+          console.log(rememberMe);
+          //store the RemmeberMe values in localStorage
+          localStorage.setItem("RememberMe", String(rememberMe));
+          console.log("set remmeber");
           console.log(response.success);
         })
         /*      catchError((error) => {

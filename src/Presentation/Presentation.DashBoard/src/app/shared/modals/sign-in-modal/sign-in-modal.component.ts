@@ -42,7 +42,7 @@ export class SignInModalComponent {
         .signIn(
           SignInuserForm.value.usernameInput,
           SignInuserForm.value.passwordInput,
-          SignInuserForm.value.rememberMe
+          Boolean(SignInuserForm.value.rememberMe)
         )
         .subscribe({
           // handle successful sign-up response

@@ -1,6 +1,6 @@
-import { Injectable } from '@angular/core';
-import { Router } from '@angular/router';
-import { BehaviorSubject, Observable, from, of, tap } from 'rxjs';
+import { Injectable } from "@angular/core";
+import { Router } from "@angular/router";
+import { BehaviorSubject, Observable, from, of, tap } from "rxjs";
 
 @Injectable()
 export class AuthService {
@@ -11,20 +11,22 @@ export class AuthService {
   }
 
   constructor(private router: Router) {
-    const initialLoginStatus = localStorage.getItem('token') !== null;
+    const initialLoginStatus = localStorage.getItem("token") !== null;
     this.isLoggedInSubject = new BehaviorSubject<boolean>(initialLoginStatus);
-    console.log('constructor isLoggedInSubject', this.isLoggedInSubject);
+    console.log("constructor isLoggedInSubject", this.isLoggedInSubject);
   }
 
   login(token: string | null): Observable<boolean> {
-    console.log('login method called with token:', token);
+    console.log("login method called with token:", token);
     // Logic for validating the token and logging the user in
     const isValidToken = this.validateToken(token);
+
+    //var isCheckedRememberMe = localStorage.getItem("RememberMe");
 
     if (isValidToken) {
       // Token is valid, mark the user as logged in
       this.isLoggedInSubject.next(true);
-      this.router.navigate(['/home']);
+      this.router.navigate(["/home"]);
 
       return of(true);
     } else {
@@ -36,19 +38,20 @@ export class AuthService {
 
   logout(): void {
     this.isLoggedInSubject.next(false);
-    this.router.navigate(['/auth/login']);
-    localStorage.removeItem('token');
-    localStorage.removeItem('expiresAt');
+    this.router.navigate(["/auth/login"]);
+    localStorage.removeItem("token");
+    localStorage.removeItem("expiresAt");
+    localStorage.removeItem("RememberMe");
   }
 
   private validateToken(token: string | null): boolean {
-    console.log('validateToken method called with token:', token);
+    console.log("validateToken method called with token:", token);
 
     if (!token) {
       return false; // Token is not provided or null
     }
 
-    const expirationDate = new Date(localStorage.getItem('expiresAt')!);
+    const expirationDate = new Date(localStorage.getItem("expiresAt")!);
     const currentDate = new Date();
 
     if (currentDate > expirationDate) {

@@ -1,14 +1,14 @@
-import { Injectable } from '@angular/core';
+import { Injectable } from "@angular/core";
 import {
   ActivatedRouteSnapshot,
   CanActivate,
   Router,
   RouterStateSnapshot,
-} from '@angular/router';
-import { Observable } from 'rxjs';
-import { map, take, tap } from 'rxjs/operators';
+} from "@angular/router";
+import { Observable } from "rxjs";
+import { map, take, tap } from "rxjs/operators";
 
-import { AuthService } from '../shared/services/auth.service';
+import { AuthService } from "../shared/services/auth.service";
 
 @Injectable()
 export class AuthGuard implements CanActivate {
@@ -23,11 +23,11 @@ export class AuthGuard implements CanActivate {
       tap((r) => console.log(r)),
       map((isLoggedIn) => {
         if (isLoggedIn) {
-          console.log('User is logged in');
+          console.log("User is logged in");
           return true;
         } else {
-          console.log('User is not logged in');
-          this.router.navigate(['auth/login']);
+          console.log("User is not logged in");
+          this.router.navigate(["auth/login"]);
           return false;
         }
       })
