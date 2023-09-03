@@ -17,9 +17,10 @@
 --------------------------------------------------------------*/
 .hero {
   width: 100%;
-//  height: 300vh;
+  // height: 100vh;
   height: 100%;
-  background: repeat url("../src/assets/img/theme/home.jpg") top center ;
+  min-height: 620px;
+  background: repeat url("../src/assets/img/theme/home.jpg") top center;
 
   background-size: cover;
   position: relative;
@@ -56,7 +57,7 @@
   position: relative;
 }
 
-.marginTop-Items{
+.marginTop-Items {
   margin-top: 250px;
 }
 
@@ -110,10 +111,9 @@
     position: relative;
   }
 
-  .marginTop-Items{
+  .marginTop-Items {
     margin-top: 250px;
   }
-
 }
 
 @media (max-width: 499px) {
@@ -142,8 +142,7 @@
     position: relative;
   }
 
-  .marginTop-Items{
+  .marginTop-Items {
     margin-top: 250px;
   }
-
 }

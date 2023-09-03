@@ -1,3 +1,4 @@
+import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { Router } from "@angular/router";
 import { BehaviorSubject, Observable, from, of, tap } from "rxjs";
@@ -23,11 +24,16 @@ export class AuthService {
 
     //var isCheckedRememberMe = localStorage.getItem("RememberMe");
 
+    const rememberMe = localStorage.getItem("rememberMe");
+
+    /*  if (rememberMe && rememberMe == "false") {
+      this.router.navigate(["/auth/login"]);
+    } */
+
     if (isValidToken) {
       // Token is valid, mark the user as logged in
       this.isLoggedInSubject.next(true);
       this.router.navigate(["/home"]);
-
       return of(true);
     } else {
       // Token is invalid, mark the user as not logged in

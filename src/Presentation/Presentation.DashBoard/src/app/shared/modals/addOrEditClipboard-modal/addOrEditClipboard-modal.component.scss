@@ -1,13 +1,14 @@
 .dialog-addOrEditClipBoard {
-  position: fixed;
+  position: fixed !important;
   min-width: 450px;
   max-width: 450px;
   min-height: 425px;
   max-height: 425px;
   background-color: snow;
-  top: 40%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+
+  top: 50% !important;
+  left: 50% !important;
+  transform: translate(-50%, -50%) !important;
 }
 
 .mdc-dialog__title {

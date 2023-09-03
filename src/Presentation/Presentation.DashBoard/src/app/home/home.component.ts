@@ -1,4 +1,4 @@
-import { ConstantPool } from '@angular/compiler';
+import { ConstantPool } from "@angular/compiler";
 import {
   Component,
   ElementRef,
@@ -8,20 +8,21 @@ import {
   Output,
   Renderer2,
   ViewChild,
-} from '@angular/core';
-import { NgForm } from '@angular/forms';
-import { Router, NavigationEnd } from '@angular/router';
-import { NgwWowService } from 'ngx-wow';
-import { Subscription } from 'rxjs';
-import { filter } from 'rxjs/operators';
-import { IClipBoard } from '../clipBoard/IClipBoard';
-import { ColorUsedService } from '../shared/services/color-used.service';
-import { ClipBoardComponent } from '../clipBoard/clipBoard.component';
+} from "@angular/core";
+import { NgForm } from "@angular/forms";
+import { Router, NavigationEnd } from "@angular/router";
+import { NgwWowService } from "ngx-wow";
+import { Subscription } from "rxjs";
+import { count, filter } from "rxjs/operators";
+import { IClipBoard } from "../clipBoard/IClipBoard";
+import { ColorUsedService } from "../shared/services/color-used.service";
+import { ClipBoardComponent } from "../clipBoard/clipBoard.component";
+import { SignInService } from "../shared/services/sign-in.service";
 
 @Component({
-  selector: 'app-home',
-  templateUrl: './home.component.html',
-  styleUrls: ['./home.component.scss'],
+  selector: "app-home",
+  templateUrl: "./home.component.html",
+  styleUrls: ["./home.component.scss"],
 })
 export class HomeComponent implements OnInit, OnDestroy {
   clipBoards: IClipBoard[];
@@ -35,7 +36,8 @@ export class HomeComponent implements OnInit, OnDestroy {
     private renderer: Renderer2,
     private elementRef: ElementRef,
     private colorUsedService: ColorUsedService,
-    private wowService: NgwWowService
+    private wowService: NgwWowService,
+    private signInService: SignInService
   ) {
     this.router.events
       .pipe(filter((event) => event instanceof NavigationEnd))
@@ -61,28 +63,28 @@ export class HomeComponent implements OnInit, OnDestroy {
       }
     );
 
-    this.renderer.listen('window', 'scroll', () => {
+    this.renderer.listen("window", "scroll", () => {
       const scrollTop =
         document.documentElement.scrollTop ||
         document.body.scrollTop ||
         window.scrollY ||
         0;
       const scrollTopButton =
-        this.elementRef.nativeElement.querySelector('#scrollTopButton');
+        this.elementRef.nativeElement.querySelector("#scrollTopButton");
 
       if (scrollTop >= 500) {
-        scrollTopButton.style.display = 'block';
-        this.renderer.addClass(scrollTopButton, 'scrollTop');
+        scrollTopButton.style.display = "block";
+        this.renderer.addClass(scrollTopButton, "scrollTop");
       } else {
-        scrollTopButton.style.display = 'none';
-        this.renderer.removeClass(scrollTopButton, 'scrollTop');
+        scrollTopButton.style.display = "none";
+        this.renderer.removeClass(scrollTopButton, "scrollTop");
       }
     });
   }
 
   scrollToTop(event: Event) {
     event.preventDefault();
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    window.scrollTo({ top: 0, behavior: "smooth" });
   }
 
   ngOnDestroy() {
