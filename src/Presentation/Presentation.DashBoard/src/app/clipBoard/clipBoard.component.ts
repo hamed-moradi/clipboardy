@@ -8,31 +8,31 @@ import {
   ViewChild,
   ElementRef,
   AfterViewInit,
-} from "@angular/core";
-import { NgForm } from "@angular/forms";
-import { fromEvent, map } from "rxjs";
+} from '@angular/core';
+import { NgForm } from '@angular/forms';
+import { fromEvent, map } from 'rxjs';
 
-import { ClipBoardService } from "../shared/services/clipBoard.service";
-import { IClipBoard } from "./IClipBoard";
-import { ColorUsedService } from "../shared/services/color-used.service";
-import { MobileViewService } from "../shared/services/mobile-view.service";
-import { MatDialog } from "@angular/material/dialog";
-import { AddOrEditClipboardComponent } from "../shared/modals/addOrEditClipboard-modal/addOrEditClipboard-modal.component";
-import { Router } from "@angular/router";
-import { ErrorModalComponent } from "../shared/modals/error-modal/error-modal.component";
-import { NoopScrollStrategy } from "@angular/cdk/overlay";
+import { ClipBoardService } from '../shared/services/clipBoard.service';
+import { IClipBoard } from './IClipBoard';
+import { ColorUsedService } from '../shared/services/color-used.service';
+import { MobileViewService } from '../shared/services/mobile-view.service';
+import { MatDialog } from '@angular/material/dialog';
+import { AddOrEditClipboardComponent } from '../shared/modals/addOrEditClipboard-modal/addOrEditClipboard-modal.component';
+import { Router } from '@angular/router';
+import { ErrorModalComponent } from '../shared/modals/error-modal/error-modal.component';
+import { NoopScrollStrategy } from '@angular/cdk/overlay';
 
 @Component({
-  selector: "app-clipBoard",
-  templateUrl: "./clipBoard.component.html",
-  styleUrls: ["./clipBoard.component.scss"],
+  selector: 'app-clipBoard',
+  templateUrl: './clipBoard.component.html',
+  styleUrls: ['./clipBoard.component.scss'],
 })
 export class ClipBoardComponent implements OnInit, AfterViewInit {
   clipBoards: IClipBoard[];
 
   finished: boolean = true;
 
-  @ViewChild("newButtonClipBoard") myElementRef: ElementRef;
+  @ViewChild('newButtonClipBoard') myElementRef: ElementRef;
 
   constructor(
     public clipBoardService: ClipBoardService,
@@ -42,12 +42,12 @@ export class ClipBoardComponent implements OnInit, AfterViewInit {
     private errorDialog: MatDialog,
     private router: Router
   ) {
-    this.clipBoardService
-      .getClipBoard()
+    /*  this.clipBoardService
+      .getClipBoard(this.skip, this.take)
       .pipe(map((get) => get.list))
       .subscribe(
         (getClipBoardResult) => (this.clipBoards = getClipBoardResult)
-      );
+      ); */
   }
 
   violet: string = this.colorUsedService.violet;
@@ -58,16 +58,21 @@ export class ClipBoardComponent implements OnInit, AfterViewInit {
 
   isSearched: boolean = false;
 
-  ngOnInit(): void {}
+  skip: number = 0;
+  take: number = 9;
+
+  ngOnInit(): void {
+    this.onScrollDown();
+  }
   ngAfterViewInit(): void {
     if (window.innerWidth < 500) {
       const newButtonClipBoardElement = this.myElementRef.nativeElement;
-      this.mobileViewService.resizeEvent(newButtonClipBoardElement, "d-grid");
+      this.mobileViewService.resizeEvent(newButtonClipBoardElement, 'd-grid');
     }
-    fromEvent(window, "resize").subscribe(() => {
+    fromEvent(window, 'resize').subscribe(() => {
       if (window.innerWidth < 500) {
         const newButtonClipBoardElement = this.myElementRef.nativeElement;
-        this.mobileViewService.resizeEvent(newButtonClipBoardElement, "d-grid");
+        this.mobileViewService.resizeEvent(newButtonClipBoardElement, 'd-grid');
       }
     });
   }
@@ -101,7 +106,7 @@ export class ClipBoardComponent implements OnInit, AfterViewInit {
           // Show error dialog
           this.errorDialog.open(ErrorModalComponent, {
             data: {
-              message: "An error occurred during Add content to clipboard.",
+              message: 'An error occurred during Add content to clipboard.',
 
               error: errMes.error.title,
             },
@@ -129,7 +134,7 @@ export class ClipBoardComponent implements OnInit, AfterViewInit {
           // Show error dialog
           this.errorDialog.open(ErrorModalComponent, {
             data: {
-              message: "An error occurred during Edit content clipboard.",
+              message: 'An error occurred during Edit content clipboard.',
 
               error: errMes.error.title,
             },
@@ -155,7 +160,7 @@ export class ClipBoardComponent implements OnInit, AfterViewInit {
           // Show error dialog
           this.errorDialog.open(ErrorModalComponent, {
             data: {
-              message: "An error occurred during Delete content clipboard.",
+              message: 'An error occurred during Delete content clipboard.',
 
               error: errMes.error.title,
             },
@@ -168,8 +173,9 @@ export class ClipBoardComponent implements OnInit, AfterViewInit {
   onClipBoardSearchList(searchQuery: NgForm) {
     if (
       searchQuery.value.searchQuery === undefined ||
-      searchQuery.value.searchQuery === ""
+      searchQuery.value.searchQuery === ''
     ) {
+      //console.log(this.clipBoards);
       return this.clipBoards;
     } else {
       var clipBoardFilterd = this.clipBoards.filter((clipBoard: IClipBoard) =>
@@ -182,7 +188,14 @@ export class ClipBoardComponent implements OnInit, AfterViewInit {
     }
   }
 
-  /*   onScroll() {
-    console.log('scrolled');
-  } */
+  onScrollDown() {
+    this.take++;
+
+    this.clipBoardService
+      .getClipBoard(this.skip, this.take)
+      .pipe(map((get) => get.list))
+      .subscribe(
+        (getClipBoardResult) => (this.clipBoards = getClipBoardResult)
+      );
+  }
 }

@@ -55,7 +55,7 @@
     </div>
 
     <!-- Clipboard List Item-->
-    <div class="marginTop-Items">
+    <div class="marginTop-Items" infinite-scroll (scrolled)="onScrollDown()">
       <app-clipBoard-item
         *ngFor="let clipBoardEl of onClipBoardSearchList(searchQuery)"
         [clipBoard]="clipBoardEl"
