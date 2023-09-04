@@ -1,4 +1,5 @@
-﻿using Core.Domain._App;
+﻿using Assets.Model.Base;
+using Core.Domain._App;
 using System;
 using System.Linq.Expressions;
 using System.Threading;
@@ -9,5 +10,5 @@ namespace Core.Application.Interfaces {
     Task<TEntity> FirstAsync(Expression<Func<TEntity, bool>> expression);
     Task<TEntity> AddAsync(TEntity entity, bool autoSave = true);
     Task<int> SaveAsync(CancellationToken cancellationToken = default);
-  }
+    }
 }

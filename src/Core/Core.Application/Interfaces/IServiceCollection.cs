@@ -18,6 +18,7 @@ namespace Core.Application.Interfaces
         Task<IServiceResult> SignupAsync(SignupBindingModel signupModel);
         //Task<IServiceResult> ExternalSignupAsync(ExternalUserBindingModel externalUser);
         Task<IServiceResult> SigninAsync(SigninBindingModel signinModel);
+        Task<IServiceResult> GetAccountService(int accountId);
         //Task<IServiceResult> ExternalSigninAsync(ExternalUserBindingModel externalUser, AccountProfileResult accountProfile);
     }
 
