@@ -31,7 +31,7 @@ export class SignInService {
       RememberMe,
     };
 
-    this.authService.login(localStorage.getItem("token"));
+    // this.authService.login(localStorage.getItem("token"));
 
     return this.httpClient
       .post<{

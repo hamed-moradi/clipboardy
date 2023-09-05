@@ -61,15 +61,7 @@
         [clipBoard]="clipBoardEl"
       >
       </app-clipBoard-item>
+      <app-spinner *ngIf="isLoading"></app-spinner>
     </div>
   </div>
 </section>
-
-<!-- <div
-  infiniteScroll
-  [infiniteScrollDistance]="1000"
-  [infiniteScrollThrottle]="20"
-  (scrolled)="onScroll()"
-></div>
- -->
-<app-spinner *ngIf="!finished"> </app-spinner>
