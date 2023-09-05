@@ -10,6 +10,7 @@
     </div>
 
     <button
+      id="navButton"
       class="navbar-toggler"
       type="button"
       data-bs-toggle="collapse"
@@ -26,13 +27,21 @@
     >
       <ul class="navbar-nav align-items-lg-center">
         <li class="nav-item hover-underline-animation">
-          <a class="nav-link nav-link-icon" routerLink="/home">
+          <a
+            class="nav-link nav-link-icon"
+            routerLink="/home"
+            (click)="onCollopseNavbar()"
+          >
             <span class="nav-link --text">Home</span>
           </a>
         </li>
 
         <li class="nav-item hover-underline-animation">
-          <a class="nav-link nav-link-icon" routerLink="/contactUs">
+          <a
+            class="nav-link nav-link-icon"
+            routerLink="/contactUs"
+            (click)="onCollopseNavbar()"
+          >
             <span class="nav-link --text">Contact US</span>
           </a>
         </li>
@@ -45,7 +54,7 @@
           <a
             class="nav-link nav-link-icon"
             type="button"
-            (click)="openSignInDialog()"
+            (click)="openSignInDialog(); onCollopseNavbar()"
           >
             <span class="nav-link --text">Sign in</span>
           </a>
@@ -56,7 +65,11 @@
           class="nav-item hover-underline-animation"
           *ngIf="authService.isLoggedIn | async"
         >
-          <a class="nav-link nav-link-icon" type="button" (click)="onSignOut()">
+          <a
+            class="nav-link nav-link-icon"
+            type="button"
+            (click)="onSignOut(); onCollopseNavbar()"
+          >
             <span class="nav-link --text">Sign out</span>
           </a>
         </li>

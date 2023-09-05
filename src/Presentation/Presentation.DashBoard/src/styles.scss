@@ -117,6 +117,9 @@
 }
 
 @media (max-width: 499px) {
+  .container-fluid {
+    --bs-gutter-x: 0;
+  }
   .hero-search {
     position: relative;
     top: 130px;

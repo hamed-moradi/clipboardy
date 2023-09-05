@@ -60,7 +60,7 @@ export class ClipBoardComponent implements OnInit, AfterViewInit {
   isLoading: boolean = false;
 
   skip: number = 0;
-  take: number = 9;
+  take: number = 0;
 
   ngOnInit(): void {
     this.onScrollDown();
@@ -191,6 +191,7 @@ export class ClipBoardComponent implements OnInit, AfterViewInit {
 
   onScrollDown() {
     var pageCount: number = 0;
+
     this.take = this.take + 10;
 
     this.isLoading = true;
