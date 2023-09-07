@@ -1,5 +1,16 @@
 @import "/src/assets/vendor/font-awesome/css/font-awesome.min.css";
 
+/* -------------------------------------------------------
+# Dark Mode
+---------------------------------------------------------- */
+.dark-theme {
+  h3 {
+    color: white;
+    background-color: cornflowerblue;
+  }
+}
+
+/* ------------------------------------------------------------- */
 .h1,
 .h2,
 .h3,

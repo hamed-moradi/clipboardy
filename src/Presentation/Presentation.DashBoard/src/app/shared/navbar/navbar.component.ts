@@ -75,7 +75,6 @@ export class NavbarComponent implements OnInit {
   onCollopseNavbar() {
     const navbarButtonCollopse = document.getElementById("navButton");
     const navbarCollopse = document.getElementById("navbarNav");
-    console.log("aria");
     navbarButtonCollopse?.setAttribute("aria-expanded", "false");
     navbarButtonCollopse?.setAttribute("class", "navbar-toggler collapsed");
 
@@ -83,5 +82,17 @@ export class NavbarComponent implements OnInit {
       "class",
       "navbar-collapse col-2 justify-content-end collapse"
     );
+  }
+
+  onChangeThemeColor() {
+    console.log("theme1");
+    const body = document.getElementsByTagName("body")[0];
+    if (body.classList.contains("dark-theme")) {
+      body.classList.remove("dark-theme");
+    } else {
+      body.classList.add("dark-theme");
+    }
+    console.log("theme2");
+    return true;
   }
 }
