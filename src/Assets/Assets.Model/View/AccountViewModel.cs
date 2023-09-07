@@ -10,11 +10,6 @@ namespace Assets.Model.View
         public bool RememberMe { get; set; }
     }
 
-    public class GetRememberMeViewModel : IBaseViewModel
-    {
-        public bool RememberMe { get; set; }
-    }
-
     public class ChangeForgotenPasswordViewModel : IBaseViewModel
     {
         public string Username { get; set; }

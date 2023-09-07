@@ -24,12 +24,10 @@ namespace Assets.Utility.Infrastructure {
     }
     #endregion
 
-    public string Create(ClaimsIdentity claims, DateTime expires,bool rememberMe) {
-      claims.AddClaim(new Claim(type: "rememberMe", value: rememberMe.ToString()));
-
+    public string Create(ClaimsIdentity claims, DateTime expires) {
       var tokenDescriptor = new SecurityTokenDescriptor {
         Issuer = _appSetting.Authentication.Issuer,
-        Audience = _appSetting.Authentication.Audience,        
+        Audience = _appSetting.Authentication.Audience,
         Expires = expires,
         Subject = claims,
         SigningCredentials = new SigningCredentials(
@@ -45,12 +43,10 @@ namespace Assets.Utility.Infrastructure {
       return string.Join(".", token);
     }
 
-        
-
-    public SigninViewModel Bearer(ClaimsIdentity claims,  bool rememberMe = false , DateTime? expires = null ) {
+    public SigninViewModel Bearer(ClaimsIdentity claims, DateTime? expires = null , bool rememberMe = false ) {
       var expiresAt = expires ?? DateTime.UtcNow.AddMonths(1);
       return new SigninViewModel {
-        Token = $"Bearer {Create(claims, expiresAt,rememberMe)}",
+        Token = $"Bearer {Create(claims, expiresAt)}",
         ExpiresAt = expiresAt,
         RememberMe = rememberMe
       };

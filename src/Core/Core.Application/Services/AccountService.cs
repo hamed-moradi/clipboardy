@@ -7,7 +7,6 @@ using Assets.Utility.Infrastructure;
 using Core.Application._App;
 using Core.Application.Interfaces;
 using Core.Domain.Entities;
-using Newtonsoft.Json.Linq;
 using Serilog;
 using System;
 using System.Threading.Tasks;
@@ -169,18 +168,6 @@ namespace Core.Application.Services
             //}
         }
 
-        public async Task<IServiceResult> GetAccountService(int accountId)
-        {            
-            var account = First(p => p.id == accountId);
-            if(account is not null)
-                return  Ok(new GetRememberMeViewModel()
-                {
-                    RememberMe = account.rememberMe
-                });
-
-            return BadRequest();
-        }
-
         public async Task<IServiceResult> SigninAsync(SigninBindingModel signinModel)
         {
             var now = DateTime.UtcNow;
@@ -242,8 +229,8 @@ namespace Core.Application.Services
                 transaction.Complete();
 
                 SigninViewModel token = _jwtHandler.Bearer(
-                    new AccountHeaderModel(accountProfile.account_id, accountDevice.id, signinModel.AccountKey, now, account.rememberMe)
-                  .ToClaimsIdentity(), account.rememberMe);
+                    new AccountHeaderModel(accountProfile.account_id, accountDevice.id, signinModel.AccountKey, now)
+                  .ToClaimsIdentity());
 
                 return Ok(token);
             }
