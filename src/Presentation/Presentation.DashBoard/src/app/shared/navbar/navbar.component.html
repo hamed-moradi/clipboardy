@@ -26,15 +26,25 @@
       id="navbarNav"
     >
       <ul class="navbar-nav align-items-lg-center">
-        <li class="nav-item hover-underline-animation">
-          <a
-            type="button"
-            class="nav-link nav-link-icon"
-            (click)="onChangeThemeColor()"
-          >
-            <i class="fa fa-moon-o fa-lg" aria-hidden="true"></i>
-          </a>
+        <li class="nav-item d-flex" style="direction: rtl">
+          <div class="form-check form-switch mt-1">
+            <input
+              class="form-check-input"
+              style="margin-top: 0.4rem"
+              type="checkbox"
+              id="darkModeToggle"
+              [(ngModel)]="isDarkModeEnabled"
+              (change)="onChangeThemeColor()"
+            />
+
+            <img
+              class="darkModeIcon"
+              src="../../../assets/img/theme/dark-mode.png"
+            />
+          </div>
         </li>
+
+        <li class="nav-item hover-underline-animation"></li>
 
         <li class="nav-item hover-underline-animation">
           <a

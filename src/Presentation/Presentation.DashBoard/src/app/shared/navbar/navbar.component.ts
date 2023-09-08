@@ -1,18 +1,18 @@
-import { Component, OnInit, Renderer2, ElementRef } from "@angular/core";
-import { Router, NavigationEnd } from "@angular/router";
-import { Location } from "@angular/common";
-import { filter, Subscription } from "rxjs";
+import { Component, OnInit, Renderer2, ElementRef } from '@angular/core';
+import { Router, NavigationEnd } from '@angular/router';
+import { Location } from '@angular/common';
+import { filter, Subscription } from 'rxjs';
 
-import { ColorUsedService } from "../../shared/services/color-used.service";
-import { AuthService } from "../services/auth.service";
-import { __values } from "tslib";
-import { MatDialog } from "@angular/material/dialog";
-import { SignInModalComponent } from "../modals/sign-in-modal/sign-in-modal.component";
+import { ColorUsedService } from '../../shared/services/color-used.service';
+import { AuthService } from '../services/auth.service';
+import { __values } from 'tslib';
+import { MatDialog } from '@angular/material/dialog';
+import { SignInModalComponent } from '../modals/sign-in-modal/sign-in-modal.component';
 
 @Component({
-  selector: "app-navbar",
-  templateUrl: "./navbar.component.html",
-  styleUrls: ["./navbar.component.scss"],
+  selector: 'app-navbar',
+  templateUrl: './navbar.component.html',
+  styleUrls: ['./navbar.component.scss'],
 })
 export class NavbarComponent implements OnInit {
   public isCollapsed = true;
@@ -38,28 +38,35 @@ export class NavbarComponent implements OnInit {
   blue: string = this.colorUsed.blue;
 
   navbarMobility: boolean = false;
+  isDarkModeEnabled: boolean = false;
 
   ngOnInit() {
+    // Initialize dark mode based on the initial state
+    console.log(this.isDarkModeEnabled + 'ngOnInit');
+    if (this.isDarkModeEnabled) {
+      this.enableDarkMode();
+    }
+
     var navbar: HTMLElement =
       this.element.nativeElement.children[0].children[0];
 
     //add p-4 bootstrap calss into container-fluid
-    navbar.classList.add("p-4");
+    navbar.classList.add('p-4');
 
-    //add headroom--not-top calss into container-fluid
+    //add headroomNoTop calss into container-fluid
     this._router = this.router.events
       .pipe(filter((event) => event instanceof NavigationEnd))
       .subscribe((event) => {
-        this.renderer.listen("window", "scroll", (event) => {
+        this.renderer.listen('window', 'scroll', (event) => {
           const number = window.scrollY;
           if (number > 150 || window.scrollY > 150) {
             // add logic
-            navbar.classList.add("headroom--not-top");
-            navbar.classList.remove("p-4");
+            navbar.classList.add('headroomNoTop');
+            navbar.classList.remove('p-4');
           } else {
             // remove logic
-            navbar.classList.remove("headroom--not-top");
-            navbar.classList.add("p-4");
+            navbar.classList.remove('headroomNoTop');
+            navbar.classList.add('p-4');
           }
         });
       });
@@ -73,26 +80,55 @@ export class NavbarComponent implements OnInit {
     this.authService.logout();
   }
   onCollopseNavbar() {
-    const navbarButtonCollopse = document.getElementById("navButton");
-    const navbarCollopse = document.getElementById("navbarNav");
-    navbarButtonCollopse?.setAttribute("aria-expanded", "false");
-    navbarButtonCollopse?.setAttribute("class", "navbar-toggler collapsed");
+    const navbarButtonCollopse = document.getElementById('navButton');
+    const navbarCollopse = document.getElementById('navbarNav');
+    navbarButtonCollopse?.setAttribute('aria-expanded', 'false');
+    navbarButtonCollopse?.setAttribute('class', 'navbar-toggler collapsed');
 
     navbarCollopse?.setAttribute(
-      "class",
-      "navbar-collapse col-2 justify-content-end collapse"
+      'class',
+      'navbar-collapse col-2 justify-content-end collapse'
     );
   }
 
   onChangeThemeColor() {
-    console.log("theme1");
-    const body = document.getElementsByTagName("body")[0];
-    if (body.classList.contains("dark-theme")) {
-      body.classList.remove("dark-theme");
+    console.log(this.isDarkModeEnabled + 'onChangeTheme');
+    const body = document.getElementsByTagName('body')[0];
+    if (this.isDarkModeEnabled === false) {
+      body.classList.remove('dark-theme');
+      const hero = document.querySelector('.hero') as HTMLElement | null;
+      if (hero) {
+        hero.style.backgroundImage = 'url("assets/img/theme/home.jpg")';
+      }
     } else {
-      body.classList.add("dark-theme");
+      body.classList.add('dark-theme');
+      const hero = document.querySelector('.hero') as HTMLElement | null;
+      if (hero) {
+        hero.style.backgroundImage = 'url("assets/img/theme/dark-home.jpg")';
+      }
+
+      const headroomNoTop = document.querySelector(
+        '.headroomNoTop'
+      ) as HTMLElement | null;
+      if (headroomNoTop) {
+        headroomNoTop.style.backgroundColor = this.violet;
+      }
     }
-    console.log("theme2");
-    return true;
+  }
+
+  private enableDarkMode() {
+    const body = document.getElementsByTagName('body')[0];
+    body.classList.add('dark-theme');
+    const hero = document.querySelector('.hero') as HTMLElement | null;
+    if (hero) {
+      hero.style.backgroundImage = 'url("assets/img/theme/dark-home.jpg")';
+    }
+
+    const headroomNoTop = document.querySelector(
+      '.headroomNoTop'
+    ) as HTMLElement | null;
+    if (headroomNoTop) {
+      headroomNoTop.style.backgroundColor = this.violet;
+    }
   }
 }

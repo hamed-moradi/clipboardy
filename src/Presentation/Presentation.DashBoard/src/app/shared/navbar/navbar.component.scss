@@ -5,7 +5,7 @@
 .top-nav-collapse {
   background-color: transparent !important;
 }
-.headroom--not-top {
+.headroomNoTop {
   background-color: #fffaff !important;
   transition: all 450ms cubic-bezier(0.42, 0, 0.34, 0.64);
   padding-top: 3px;
@@ -26,6 +26,7 @@
 .logo-brand {
   height: 75px;
 }
+
 
 @media screen and (min-width: 992px) {
   .hover-underline-animation {
@@ -61,8 +62,9 @@
   .container-fluid {
     padding: 3px !important;
   }
-  .headroom--not-top {
+  .headroomNoTop {
     background-color: #fffaff !important;
+    background-color: #741b74 !important;
     transition: all 450ms cubic-bezier(0.42, 0, 0.34, 0.64);
     padding-top: 3px;
   }
@@ -100,7 +102,7 @@
   .container-fluid {
     padding: 3px !important;
   }
-  .headroom--not-top {
+  .headroomNoTop{
     background-color: #fffaff !important;
     transition: all 450ms cubic-bezier(0.42, 0, 0.34, 0.64);
     padding-top: 3px;
