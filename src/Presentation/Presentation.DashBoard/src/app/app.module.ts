@@ -33,6 +33,8 @@ import { ClipBoardService } from "./shared/services/clipBoard.service";
 import { InfiniteScrollModule } from "ngx-infinite-scroll";
 import { ContactUsComponent } from "./shared/contact-us/contact-us.component";
 import { SpinnerComponent } from "./shared/spinner/spinner.component";
+import { MatButtonModule } from "@angular/material/button";
+import { MatCardModule } from "@angular/material/card";
 
 // define a function that creates a renderer for the module
 export function rendererFactory(rendererFactory: RendererFactory2) {
@@ -65,6 +67,8 @@ export function rendererFactory(rendererFactory: RendererFactory2) {
     NgwWowModule,
     MatDialogModule,
     InfiniteScrollModule,
+    MatCardModule,
+    MatButtonModule,
   ],
   providers: [
     ColorUsedService,
