@@ -36,6 +36,7 @@ export class NavbarComponent implements OnInit {
   green: string = this.colorUsed.green;
   violet: string = this.colorUsed.violet;
   blue: string = this.colorUsed.blue;
+  white: string = this.colorUsed.white;
 
   navbarMobility: boolean = false;
   isDarkModeEnabled: boolean = false;
@@ -59,14 +60,64 @@ export class NavbarComponent implements OnInit {
       .subscribe((event) => {
         this.renderer.listen('window', 'scroll', (event) => {
           const number = window.scrollY;
+
+          const headroomNoTop = document.querySelector(
+            '.headroomNoTop'
+          ) as HTMLElement | null;
+
+          const containerFluid = document.querySelector(
+            '#containerFluid'
+          ) as HTMLElement | null;
+
+          const homeButton = document.querySelector(
+            '#homeButton'
+          ) as HTMLElement | null;
+
           if (number > 150 || window.scrollY > 150) {
-            // add logic
+            // not In top of page
             navbar.classList.add('headroomNoTop');
             navbar.classList.remove('p-4');
+
+            if (headroomNoTop) {
+              if (this.isDarkModeEnabled) {
+                headroomNoTop.style.backgroundColor = this.orange;
+              } else {
+                headroomNoTop.style.backgroundColor = this.white;
+              }
+            }
+
+            if (homeButton) {
+              if (this.isDarkModeEnabled) {
+                homeButton.style.color = this.white;
+              } else {
+                homeButton.style.removeProperty('color');
+              }
+            }
           } else {
-            // remove logic
+            // top of page
+
             navbar.classList.remove('headroomNoTop');
             navbar.classList.add('p-4');
+
+            //Remove backGroundColor from navBar
+            if (containerFluid)
+              containerFluid.style.removeProperty('background-color');
+
+            /*
+            if (headroomNoTop) {
+              if (this.isDarkModeEnabled) {
+                headroomNoTop.style.backgroundColor = this.orange;
+              } else {
+                headroomNoTop.style.backgroundColor = this.white;
+              } */
+
+            if (homeButton) {
+              if (this.isDarkModeEnabled) {
+                homeButton.style.color = this.white;
+              } else {
+                homeButton.style.removeProperty('color');
+              }
+            }
           }
         });
       });
@@ -106,29 +157,16 @@ export class NavbarComponent implements OnInit {
       if (hero) {
         hero.style.backgroundImage = 'url("assets/img/theme/dark-home.jpg")';
       }
-
-      const headroomNoTop = document.querySelector(
-        '.headroomNoTop'
-      ) as HTMLElement | null;
-      if (headroomNoTop) {
-        headroomNoTop.style.backgroundColor = this.violet;
-      }
     }
   }
 
   private enableDarkMode() {
     const body = document.getElementsByTagName('body')[0];
     body.classList.add('dark-theme');
+
     const hero = document.querySelector('.hero') as HTMLElement | null;
     if (hero) {
       hero.style.backgroundImage = 'url("assets/img/theme/dark-home.jpg")';
-    }
-
-    const headroomNoTop = document.querySelector(
-      '.headroomNoTop'
-    ) as HTMLElement | null;
-    if (headroomNoTop) {
-      headroomNoTop.style.backgroundColor = this.violet;
     }
   }
 }
