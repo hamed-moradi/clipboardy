@@ -69,10 +69,6 @@ export class NavbarComponent implements OnInit {
             '#containerFluid'
           ) as HTMLElement | null;
 
-          const homeButton = document.querySelector(
-            '#homeButton'
-          ) as HTMLElement | null;
-
           if (number > 150 || window.scrollY > 150) {
             // not In top of page
             navbar.classList.add('headroomNoTop');
@@ -80,17 +76,9 @@ export class NavbarComponent implements OnInit {
 
             if (headroomNoTop) {
               if (this.isDarkModeEnabled) {
-                headroomNoTop.style.backgroundColor = this.orange;
+                headroomNoTop.style.backgroundColor = this.violet;
               } else {
                 headroomNoTop.style.backgroundColor = this.white;
-              }
-            }
-
-            if (homeButton) {
-              if (this.isDarkModeEnabled) {
-                homeButton.style.color = this.white;
-              } else {
-                homeButton.style.removeProperty('color');
               }
             }
           } else {
@@ -111,13 +99,13 @@ export class NavbarComponent implements OnInit {
                 headroomNoTop.style.backgroundColor = this.white;
               } */
 
-            if (homeButton) {
+            /*  if (this.homeButton) {
               if (this.isDarkModeEnabled) {
-                homeButton.style.color = this.white;
+                this.homeButton.style.color = this.white;
               } else {
-                homeButton.style.removeProperty('color');
+                this.homeButton.style.removeProperty('color');
               }
-            }
+            } */
           }
         });
       });
@@ -143,30 +131,185 @@ export class NavbarComponent implements OnInit {
   }
 
   onChangeThemeColor() {
-    console.log(this.isDarkModeEnabled + 'onChangeTheme');
+    const hero = document.querySelector('.hero') as HTMLElement | null;
     const body = document.getElementsByTagName('body')[0];
+
+    const headroomNoTop = document.querySelector(
+      '.headroomNoTop'
+    ) as HTMLElement | null;
+
+    const logoImg = document.querySelector('#logoImg') as HTMLElement | null;
+
+    const logoBrand = document.querySelector(
+      '#logoBrand'
+    ) as HTMLElement | null;
+
+    const homeButton = document.querySelector(
+      '#homeButton'
+    ) as HTMLElement | null;
+
+    const contactUsButton = document.querySelector(
+      '#contactUsButton'
+    ) as HTMLElement | null;
+
+    const signInButton = document.querySelector(
+      '#signInButton'
+    ) as HTMLElement | null;
+
+    const signOutButton = document.querySelector(
+      '#signOutButton'
+    ) as HTMLElement | null;
+
+    const darkIcon = document.querySelector('#darkIcon') as HTMLElement | null;
+
+    //dark Mode is disabled
     if (this.isDarkModeEnabled === false) {
       body.classList.remove('dark-theme');
-      const hero = document.querySelector('.hero') as HTMLElement | null;
+
       if (hero) {
         hero.style.backgroundImage = 'url("assets/img/theme/home.jpg")';
       }
+
+      if (headroomNoTop) {
+        headroomNoTop.style.backgroundColor = this.white;
+      }
+
+      if (logoImg) {
+        logoImg.style.removeProperty('background-image');
+      }
+
+      if (logoBrand) {
+        logoBrand.style.removeProperty('color');
+      }
+
+      if (homeButton) {
+        homeButton.style.removeProperty('color');
+      }
+
+      if (contactUsButton) {
+        contactUsButton.style.removeProperty('color');
+      }
+
+      if (signInButton) {
+        signInButton.style.removeProperty('color');
+      }
+
+      if (signOutButton) {
+        signOutButton.style.removeProperty('color');
+      }
+
+      if (darkIcon) {
+        darkIcon.style.removeProperty('background-color');
+        darkIcon.style.removeProperty('border-radius');
+      }
+
+      //dark Mode Enabled
     } else {
       body.classList.add('dark-theme');
-      const hero = document.querySelector('.hero') as HTMLElement | null;
+
+      console.log(hero);
       if (hero) {
         hero.style.backgroundImage = 'url("assets/img/theme/dark-home.jpg")';
+      }
+
+      if (headroomNoTop) {
+        headroomNoTop.style.backgroundColor = this.violet;
+      }
+
+      if (logoImg) {
+        logoImg.style.backgroundImage =
+          'url("assets/img/Logo/clipBoardyWhite.png")';
+      }
+
+      if (logoBrand) {
+        logoBrand.style.color = this.white;
+      }
+
+      if (homeButton) {
+        homeButton.style.color = this.white;
+      }
+
+      if (contactUsButton) {
+        contactUsButton.style.color = this.white;
+      }
+
+      if (signInButton) {
+        signInButton.style.color = this.white;
+      }
+
+      if (signOutButton) {
+        signOutButton.style.color = this.white;
+      }
+
+      if (darkIcon) {
+        darkIcon.style.backgroundColor = this.white;
+        darkIcon.style.borderRadius = '12px';
       }
     }
   }
 
   private enableDarkMode() {
+    const hero = document.querySelector('.hero') as HTMLElement | null;
     const body = document.getElementsByTagName('body')[0];
+
+    const logoImg = document.querySelector('#logoImg') as HTMLElement | null;
+
+    const logoBrand = document.querySelector(
+      '#logoBrand'
+    ) as HTMLElement | null;
+
+    const homeButton = document.querySelector(
+      '#homeButton'
+    ) as HTMLElement | null;
+
+    const contactUsButton = document.querySelector(
+      '#contactUsButton'
+    ) as HTMLElement | null;
+
+    const signInButton = document.querySelector(
+      '#signInButton'
+    ) as HTMLElement | null;
+
+    const signOutButton = document.querySelector(
+      '#signOutButton'
+    ) as HTMLElement | null;
+
+    const darkIcon = document.querySelector('#darkIcon') as HTMLElement | null;
+
     body.classList.add('dark-theme');
 
-    const hero = document.querySelector('.hero') as HTMLElement | null;
     if (hero) {
       hero.style.backgroundImage = 'url("assets/img/theme/dark-home.jpg")';
+    }
+
+    if (logoImg) {
+      logoImg.style.backgroundImage =
+        'url("assets/img/Logo/clipBoardyWhite.png")';
+    }
+
+    if (logoBrand) {
+      logoBrand.style.color = this.white;
+    }
+
+    if (homeButton) {
+      homeButton.style.color = this.white;
+    }
+
+    if (contactUsButton) {
+      contactUsButton.style.color = this.white;
+    }
+
+    if (signInButton) {
+      signInButton.style.color = this.white;
+    }
+
+    if (signOutButton) {
+      signOutButton.style.color = this.white;
+    }
+
+    if (darkIcon) {
+      darkIcon.style.backgroundColor = this.white;
+      darkIcon.style.borderRadius = '12px';
     }
   }
 }

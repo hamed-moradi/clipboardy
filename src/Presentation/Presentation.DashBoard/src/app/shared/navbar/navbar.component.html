@@ -2,10 +2,10 @@
   <div id="containerFluid" class="container-fluid">
     <div class="row">
       <div class="col-2 mx-2">
-        <img class="logo-brand" src="../../../assets/img/Logo/clipBoardy.png" />
+        <img id="logoImg" class="logo-brand" />
       </div>
       <div class="col-8" [ngStyle]="{ color: violet }">
-        <p class="navbar-bold">CLIPBOARDY</p>
+        <p id="logoBrand" class="navbar-bold">CLIPBOARDY</p>
       </div>
     </div>
 
@@ -38,6 +38,7 @@
             />
 
             <img
+              id="darkIcon"
               class="darkModeIcon"
               src="../../../assets/img/theme/dark-mode.png"
             />
@@ -60,7 +61,7 @@
             routerLink="/contactUs"
             (click)="onCollopseNavbar()"
           >
-            <span class="nav-link --text">Contact US</span>
+            <span id="contactUsButton" class="nav-link --text">Contact US</span>
           </a>
         </li>
 
@@ -74,7 +75,7 @@
             type="button"
             (click)="openSignInDialog(); onCollopseNavbar()"
           >
-            <span class="nav-link --text">Sign in</span>
+            <span id="signInButton" class="nav-link --text">Sign in</span>
           </a>
         </li>
 
@@ -88,7 +89,7 @@
             type="button"
             (click)="onSignOut(); onCollopseNavbar()"
           >
-            <span class="nav-link --text">Sign out</span>
+            <span id="signOutButton" class="nav-link --text">Sign out</span>
           </a>
         </li>
       </ul>
