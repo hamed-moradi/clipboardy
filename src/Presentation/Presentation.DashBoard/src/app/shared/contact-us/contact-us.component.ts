@@ -2,6 +2,7 @@ import {
   AfterViewInit,
   Component,
   ElementRef,
+  OnInit,
   Renderer2,
   ViewChild,
 } from "@angular/core";
@@ -13,11 +14,22 @@ import { MatCardModule } from "@angular/material/card";
   templateUrl: "./contact-us.component.html",
   styleUrls: ["./contact-us.component.scss"],
 })
-export class ContactUsComponent implements AfterViewInit {
+export class ContactUsComponent implements OnInit, AfterViewInit {
   @ViewChild("ContactUs")
   ContactUsElementRef: ElementRef;
 
   constructor(private renderer: Renderer2) {}
+
+  ngOnInit(): void {
+    const contactUs = document.querySelector(
+      ".container"
+    ) as HTMLElement | null;
+
+    if (window.innerWidth > 600) {
+      if (contactUs) contactUs.classList.add("d-flex");
+    }
+  }
+
   ngAfterViewInit(): void {
     const ContactUsElement = this.ContactUsElementRef.nativeElement;
 
