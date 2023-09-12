@@ -134,6 +134,10 @@ export class NavbarComponent implements OnInit {
     const hero = document.querySelector(".hero") as HTMLElement | null;
     const body = document.getElementsByTagName("body")[0];
 
+    const changeTheme = document.querySelector(
+      ".changetheme"
+    ) as HTMLElement | null;
+
     const headroomNoTop = document.querySelector(
       ".headroomNoTop"
     ) as HTMLElement | null;
@@ -165,6 +169,10 @@ export class NavbarComponent implements OnInit {
     //dark Mode is disabled
     if (this.isDarkModeEnabled === false) {
       body.classList.remove("dark-theme");
+
+      if (changeTheme) {
+        changeTheme.style.color = "#000000";
+      }
 
       if (hero) {
         hero.style.backgroundImage = 'url("assets/img/theme/home.jpg")';
@@ -207,7 +215,10 @@ export class NavbarComponent implements OnInit {
     } else {
       body.classList.add("dark-theme");
 
-      console.log(hero);
+      if (changeTheme) {
+        changeTheme.style.color = "#EAE6F0";
+      }
+
       if (hero) {
         hero.style.backgroundImage = 'url("assets/img/theme/dark-home.jpg")';
       }
@@ -254,6 +265,10 @@ export class NavbarComponent implements OnInit {
 
     const logoImg = document.querySelector("#logoImg") as HTMLElement | null;
 
+    const changeTheme = document.querySelector(
+      ".changetheme"
+    ) as HTMLElement | null;
+
     const logoBrand = document.querySelector(
       "#logoBrand"
     ) as HTMLElement | null;
@@ -277,6 +292,10 @@ export class NavbarComponent implements OnInit {
     const darkIcon = document.querySelector("#darkIcon") as HTMLElement | null;
 
     body.classList.add("dark-theme");
+
+    if (changeTheme) {
+      changeTheme.style.color = "#EAE6F0";
+    }
 
     if (hero) {
       hero.style.backgroundImage = 'url("assets/img/theme/dark-home.jpg")';
