@@ -40,6 +40,16 @@
   position: relative;
 }
 
+.logoImgClass {
+  background: url("../src/assets/img/logo/clipBoardy.png");
+  background-size: cover;
+  position: absolute;
+  width: 68px;
+}
+
+#logoBrand {
+  margin-left: 73px;
+}
 /* @media (min-width: 1024px) {
   .hero {
     background-attachment: fixed;
