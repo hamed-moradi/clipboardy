@@ -138,6 +138,10 @@ export class NavbarComponent implements OnInit {
       ".changetheme"
     ) as HTMLElement | null;
 
+    const btnGetStart = document.querySelector(
+      "#btnGetStart"
+    ) as HTMLElement | null;
+
     const headroomNoTop = document.querySelector(
       ".headroomNoTop"
     ) as HTMLElement | null;
@@ -176,6 +180,11 @@ export class NavbarComponent implements OnInit {
 
       if (hero) {
         hero.style.backgroundImage = 'url("assets/img/theme/home.jpg")';
+      }
+
+      if (btnGetStart) {
+        btnGetStart.classList.remove("btn-light");
+        btnGetStart.classList.add("btn-outline-dark");
       }
 
       if (headroomNoTop) {
@@ -221,6 +230,11 @@ export class NavbarComponent implements OnInit {
 
       if (hero) {
         hero.style.backgroundImage = 'url("assets/img/theme/dark-home.jpg")';
+      }
+
+      if (btnGetStart) {
+        btnGetStart.classList.remove("btn-outline-dark");
+        btnGetStart.classList.add("btn-light");
       }
 
       if (headroomNoTop) {
@@ -269,6 +283,10 @@ export class NavbarComponent implements OnInit {
       ".changetheme"
     ) as HTMLElement | null;
 
+    const btnGetStart = document.querySelector(
+      "#btnGetStart"
+    ) as HTMLElement | null;
+
     const logoBrand = document.querySelector(
       "#logoBrand"
     ) as HTMLElement | null;
@@ -299,6 +317,11 @@ export class NavbarComponent implements OnInit {
 
     if (hero) {
       hero.style.backgroundImage = 'url("assets/img/theme/dark-home.jpg")';
+    }
+
+    if (btnGetStart) {
+      btnGetStart.classList.remove("btn-outline-dark");
+      btnGetStart.classList.add("btn-light");
     }
 
     if (logoImg) {
