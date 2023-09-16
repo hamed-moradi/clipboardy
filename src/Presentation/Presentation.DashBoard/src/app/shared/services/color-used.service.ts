@@ -13,4 +13,5 @@ export class ColorUsedService {
   public green: string = '#1ec8a3';
   public gray: string = '#808080';
   public white: string = '#EAE6F0';
+  public black: string = '#000000';
 }

@@ -1,11 +1,7 @@
 <nav id="nav" class="navbar navbar-expand-lg fixed-top top-nav-collapse">
   <div id="containerFluid" class="container-fluid">
     <div class="mx-2">
-      <div id="logoImg" class="logoImgClass"></div>
-
-      <div class="col-8" [ngStyle]="{ color: violet }">
-        <p id="logoBrand" class="navbar-bold">CLIPBOARDY</p>
-      </div>
+      <img id="logoImg" class="logoImgClass" [src]="getLogoSrc()" />
     </div>
 
     <button
@@ -48,9 +44,19 @@
           <a
             class="nav-link nav-link-icon"
             routerLink="/home"
+            [ngStyle]="{
+              color: this.isDarkModeEnabled ? this.white : ''
+            }"
             (click)="onCollopseNavbar()"
           >
-            <span id="homeButton" class="nav-link --text">Home</span>
+            <span
+              id="homeButton"
+              class="nav-link --text"
+              [ngStyle]="{
+                color: this.isDarkModeEnabled ? this.white : ''
+              }"
+              >Home</span
+            >
           </a>
         </li>
 
@@ -58,9 +64,19 @@
           <a
             class="nav-link nav-link-icon"
             routerLink="/contactUs"
+            [ngStyle]="{
+              color: this.isDarkModeEnabled ? this.white : ''
+            }"
             (click)="onCollopseNavbar()"
           >
-            <span id="contactUsButton" class="nav-link --text">Contact US</span>
+            <span
+              id="contactUsButton"
+              class="nav-link --text"
+              [ngStyle]="{
+                color: this.isDarkModeEnabled ? this.white : ''
+              }"
+              >Contact US</span
+            >
           </a>
         </li>
 
@@ -73,8 +89,18 @@
             class="nav-link nav-link-icon"
             type="button"
             (click)="openSignInDialog(); onCollopseNavbar()"
+            [ngStyle]="{
+              color: this.isDarkModeEnabled ? this.white : ''
+            }"
           >
-            <span id="signInButton" class="nav-link --text">Sign in</span>
+            <span
+              id="signInButton"
+              class="nav-link --text"
+              [ngStyle]="{
+                color: this.isDarkModeEnabled ? this.white : ''
+              }"
+              >Sign in</span
+            >
           </a>
         </li>
 
@@ -86,9 +112,19 @@
           <a
             class="nav-link nav-link-icon"
             type="button"
+            [ngStyle]="{
+              color: this.isDarkModeEnabled ? this.white : ''
+            }"
             (click)="onSignOut(); onCollopseNavbar()"
           >
-            <span id="signOutButton" class="nav-link --text">Sign out</span>
+            <span
+              id="signOutButton"
+              class="nav-link --text"
+              [ngStyle]="{
+                color: this.isDarkModeEnabled ? this.white : '#6c757d'
+              }"
+              >Sign out</span
+            >
           </a>
         </li>
       </ul>
