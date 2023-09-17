@@ -1,16 +1,16 @@
-import { AfterViewInit, Component, OnDestroy, OnInit } from '@angular/core';
-import { Router, NavigationEnd } from '@angular/router';
-import { NgwWowService } from 'ngx-wow';
-import { Subscription } from 'rxjs';
-import { debounceTime, filter } from 'rxjs/operators';
-import { ColorUsedService } from '../shared/services/color-used.service';
-import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
-import { SignInModalComponent } from '../shared/modals/sign-in-modal/sign-in-modal.component';
-import { NavbarComponent } from '../shared/navbar/navbar.component';
+import { AfterViewInit, Component, OnDestroy, OnInit } from "@angular/core";
+import { Router, NavigationEnd } from "@angular/router";
+import { NgwWowService } from "ngx-wow";
+import { Subscription } from "rxjs";
+import { debounceTime, filter } from "rxjs/operators";
+import { ColorUsedService } from "../shared/services/color-used.service";
+import { MatDialog, MatDialogConfig } from "@angular/material/dialog";
+import { SignInModalComponent } from "../shared/modals/sign-in-modal/sign-in-modal.component";
+import { NavbarComponent } from "../shared/navbar/navbar.component";
 @Component({
-  selector: 'app-login',
-  templateUrl: './login.component.html',
-  styleUrls: ['./login.component.scss'],
+  selector: "app-login",
+  templateUrl: "./login.component.html",
+  styleUrls: ["./login.component.scss"],
 })
 export class LoginComponent implements OnInit {
   private wowSubscription: Subscription;
@@ -40,7 +40,7 @@ export class LoginComponent implements OnInit {
   black: string = this.colorUsedService.black;
 
   darkModeToggle = document.querySelector(
-    '#darkModeToggle'
+    "#darkModeToggle"
   ) as HTMLElement | null;
 
   ngOnInit() {
@@ -53,19 +53,19 @@ export class LoginComponent implements OnInit {
 
     // handel dark mode after logout ....
     const changeTheme = document.querySelector(
-      '.changetheme'
+      ".changetheme"
     ) as HTMLElement | null;
 
     const btnGetStart = document.querySelector(
-      '#btnGetStart'
+      "#btnGetStart"
     ) as HTMLElement | null;
 
-    const hero = document.querySelector('.hero') as HTMLElement | null;
+    const hero = document.querySelector(".hero") as HTMLElement | null;
 
-    console.log(this.darkModeToggle?.getAttribute('ng-reflect-model'));
+    console.log(this.darkModeToggle?.getAttribute("ng-reflect-model"));
 
     //in dark mode
-    if (this.darkModeToggle?.getAttribute('ng-reflect-model') == 'true') {
+    if (this.darkModeToggle?.getAttribute("ng-reflect-model") == "true") {
       if (changeTheme) {
         changeTheme.style.color = this.white;
       }
@@ -75,8 +75,8 @@ export class LoginComponent implements OnInit {
       }
 
       if (btnGetStart) {
-        btnGetStart.classList.remove('btn-outline-dark');
-        btnGetStart.classList.add('btn-light');
+        btnGetStart.classList.remove("btn-outline-dark");
+        btnGetStart.classList.add("btn-light");
       }
 
       // in light mode
@@ -90,19 +90,19 @@ export class LoginComponent implements OnInit {
       }
 
       if (btnGetStart) {
-        btnGetStart.classList.remove('btn-light');
-        btnGetStart.classList.add('btn-outline-dark');
+        btnGetStart.classList.remove("btn-light");
+        btnGetStart.classList.add("btn-outline-dark");
       }
     }
   }
 
   openSignInDialog() {
-    const dialogConfig = new MatDialogConfig();
+    /* const dialogConfig = new MatDialogConfig();
     dialogConfig.autoFocus = true;
     //dialogConfig.disableClose = true;
-    dialogConfig.hasBackdrop = true;
+    dialogConfig.hasBackdrop = true; */
 
-    this.dialog.open(SignInModalComponent, dialogConfig);
+    this.dialog.open(SignInModalComponent);
   }
 
   ngOnDestroy() {

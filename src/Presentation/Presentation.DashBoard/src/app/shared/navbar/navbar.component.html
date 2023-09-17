@@ -7,6 +7,9 @@
     <button
       id="navButton"
       class="navbar-toggler"
+      [ngStyle]="{
+        backgroundColor: this.isDarkModeEnabled ? this.white : ''
+      }"
       type="button"
       data-bs-toggle="collapse"
       data-bs-target="#navbarNav"
@@ -30,6 +33,7 @@
               id="darkModeToggle"
               [(ngModel)]="isDarkModeEnabled"
               (change)="onChangeThemeColor()"
+              (click)="onCollopseNavbar()"
             />
 
             <img

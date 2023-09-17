@@ -27,6 +27,11 @@
   height: 75px;
 }
 
+.form-check-input:checked {
+  background-color: #ff4db2;
+  border-color: #ff4db2;
+}
+
 @media screen and (min-width: 992px) {
   .hover-underline-animation {
     display: inline-block;
@@ -55,7 +60,7 @@
 
 @media screen and (max-width: 600px) {
   .top-nav-collapse {
-    background-color: #fffaff !important;
+    background-color: transparent !important;
   }
 
   .container-fluid {
@@ -95,7 +100,7 @@
   }
 
   .top-nav-collapse {
-    background-color: #fffaff !important;
+    background-color: transparent !important;
   }
 
   .container-fluid {
