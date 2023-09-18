@@ -31,25 +31,26 @@ export class SignInService {
       RememberMe,
     };
 
-    // this.authService.login(localStorage.getItem("token"));
-
     return this.httpClient
       .post<{
         success: boolean;
         expiresAt: string;
         token: string;
-        rememberMe: boolean;
       }>(baseURL + "/api/account/signin", body)
       .pipe(
         tap((response) => {
-          //store the expiresAt and token values in localStorage
-          localStorage.setItem("expiresAt", response.expiresAt);
-          localStorage.setItem("token", response.token);
+          if (body.RememberMe) {
+            //store the expiresAt and token values in localStorage
 
-          //store the RemmeberMe values in localStorage
-          localStorage.setItem("rememberMe", String(response.rememberMe));
-          console.log("set remmeber");
-          console.log(response.rememberMe);
+            localStorage.setItem("token", response.token);
+
+            console.log("set remmeber");
+            console.log(body.RememberMe);
+          } else {
+            //store the expiresAt and token values in sessionStorage
+
+            sessionStorage.setItem("token", response.token);
+          }
         })
         /*      catchError((error) => {
           // Handle and display the error

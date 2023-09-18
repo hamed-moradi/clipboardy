@@ -1,5 +1,5 @@
 <!-- Add To ClipBoard -->
-<div class="dialog-addOrEditClipBoard" *ngIf="!isEditMode">
+<div class="dialog-addOrEditClipBoard" style="z-index: 1" *ngIf="!isEditMode">
   <form #content="ngForm">
     <div
       class="container-fluid d-flex justify-content-center align-items-center"
@@ -22,7 +22,7 @@
             class="form-control modal-open"
             name="content"
             placeholder="Enter text to add the clipboard"
-            style="max-height: 275px; min-height: 275px"
+            style="max-height: 205px; min-height: 205px"
             (keydown.enter)="onAddClipBoardList(content)"
             ngModel
           ></textarea>
@@ -30,9 +30,7 @@
       </fieldset>
     </div>
     <div mat-dialog-actions class="d-flex justify-content-center mb-2">
-      <button mat-button mat-dialog-close class="btn btn-secondary mx-2">
-        Close
-      </button>
+      <button mat-dialog-close class="btn btn-secondary mx-2">Close</button>
 
       <button
         type="submit"
@@ -70,7 +68,7 @@
 </div>
 
 <!-- Edit ClipBoard -->
-<div class="dialog-addOrEditClipBoard" *ngIf="isEditMode">
+<div class="dialog-addOrEditClipBoard" style="z-index: 1" *ngIf="isEditMode">
   <form #editedContent="ngForm">
     <div
       class="container-fluid d-flex justify-content-center align-items-center"
@@ -92,7 +90,7 @@
             id="editedContent"
             class="form-control modal-open"
             name="editedContent"
-            style="max-height: 275px; min-height: 275px"
+            style="max-height: 205px; min-height: 205px"
             (keydown.enter)="EditClipBoard(editedContent)"
             autoFocus
             [ngModel]="editedContentModel.content"
@@ -101,9 +99,7 @@
       </fieldset>
     </div>
     <div mat-dialog-actions class="d-flex justify-content-center mb-2">
-      <button mat-button mat-dialog-close class="btn btn-secondary mx-2">
-        Close
-      </button>
+      <button mat-dialog-close class="btn btn-secondary mx-2">Close</button>
 
       <button
         type="submit"

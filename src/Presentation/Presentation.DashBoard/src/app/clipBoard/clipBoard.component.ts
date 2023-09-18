@@ -21,6 +21,7 @@ import { AddOrEditClipboardComponent } from "../shared/modals/addOrEditClipboard
 import { Router } from "@angular/router";
 import { ErrorModalComponent } from "../shared/modals/error-modal/error-modal.component";
 import { NoopScrollStrategy } from "@angular/cdk/overlay";
+import { NavbarComponent } from "../shared/navbar/navbar.component";
 
 @Component({
   selector: "app-clipBoard",
@@ -40,6 +41,7 @@ export class ClipBoardComponent implements OnInit, AfterViewInit {
     private mobileViewService: MobileViewService,
     public dialog: MatDialog,
     private errorDialog: MatDialog,
+    private navbarComponent: NavbarComponent,
     private router: Router
   ) {}
 
@@ -58,6 +60,10 @@ export class ClipBoardComponent implements OnInit, AfterViewInit {
   skip: number = 0;
   take: number = 0;
 
+  darkModeToggle = document.querySelector(
+    "#darkModeToggle"
+  ) as HTMLElement | null;
+
   ngOnInit(): void {
     this.onScrollDown();
 
@@ -68,12 +74,8 @@ export class ClipBoardComponent implements OnInit, AfterViewInit {
 
     const hero = document.querySelector(".hero") as HTMLElement | null;
 
-    var darkModeToggle = document.querySelector(
-      "#darkModeToggle"
-    ) as HTMLElement | null;
-
     //in dark mode
-    if (darkModeToggle?.getAttribute("ng-reflect-model") == "true") {
+    if (this.darkModeToggle?.getAttribute("ng-reflect-model") == "true") {
       if (changeTheme) {
         changeTheme.style.color = this.white;
       }
@@ -124,10 +126,18 @@ export class ClipBoardComponent implements OnInit, AfterViewInit {
 
     this.clipBoardService.AddToClipBoard(newContent).subscribe({
       // handle successful sign-up response
-      next: (response) => {
-        console.log(response),
-          // Reload the page after adding a new clipboard item
+      next: () => {
+        // Reload the page after adding a new clipboard item
+        if (localStorage.getItem("isDarkMode") == "true") {
+          console.log(this.navbarComponent.onChangeDarkMode);
           window.location.reload();
+          this.navbarComponent.onChangeThemeColor();
+
+          console.log(this.navbarComponent.onChangeDarkMode);
+        } else {
+          window.location.reload();
+          console.log(this.darkModeToggle?.getAttribute("ng-reflect-model"));
+        }
       },
       // handle error
       error: (errMes) => {

@@ -94,20 +94,30 @@
             >
           </p>
         </div>
-        <div mat-dialog-actions mat-dialog-close align="center" class="mb-2">
-          <button type="button" class="btn btn-secondary">Close</button>
-          <span class="mx-1"></span>
-          <button
-            type="submit"
-            class="btn"
-            [ngStyle]="{
-              backgroundColor: violet
-            }"
-            style="color: aliceblue"
-          >
-            Sign In
-          </button>
+        <div class="row my-1" align="center">
+          <div class="col">
+            <button type="button" class="btn btn-secondary" mat-dialog-close>
+              Close
+            </button>
+            <span class="mx-1"></span>
+            <button
+              type="submit"
+              class="btn"
+              [ngStyle]="{
+                backgroundColor: violet
+              }"
+              style="color: aliceblue"
+            >
+              Sign In
+            </button>
+          </div>
         </div>
+        <!--  <div
+          mat-dialog-actions
+          mat-dialog-close
+          align="center"
+          class="mb-2"
+        ></div> -->
         <div class="d-flex justify-content-center align-items-center my-2">
           <a
             href="javascript:void(0)"

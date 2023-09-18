@@ -48,7 +48,10 @@ export class SignInModalComponent {
           // handle successful sign-up response
           next: (response) => {
             console.log(response),
-              this.authService.login(localStorage.getItem("token")!);
+              this.authService.login(
+                localStorage.getItem("token")! ||
+                  sessionStorage.getItem("token")!
+              );
           },
           // handle sign-up error
           error: (errMes) => {

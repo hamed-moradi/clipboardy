@@ -1,12 +1,12 @@
-import { Injectable } from '@angular/core';
+import { Injectable } from "@angular/core";
 import {
   HttpInterceptor,
   HttpRequest,
   HttpHandler,
   HttpEvent,
   HttpHeaders,
-} from '@angular/common/http';
-import { Observable } from 'rxjs';
+} from "@angular/common/http";
+import { Observable } from "rxjs";
 
 @Injectable()
 export class InterceptorService implements HttpInterceptor {
@@ -27,9 +27,10 @@ export class InterceptorService implements HttpInterceptor {
       deviceType: this.getDeviceType(),
     });
 
-    const token = localStorage.getItem('token');
+    const token =
+      localStorage.getItem("token") || sessionStorage.getItem("token");
     if (token) {
-      headers = headers.set('authorization', token);
+      headers = headers.set("authorization", token);
     }
 
     return headers;
@@ -57,11 +58,11 @@ export class InterceptorService implements HttpInterceptor {
   private getDeviceType(): string {
     const userAgent = navigator.userAgent;
     if (/iPad|iPhone|iPod/.test(userAgent)) {
-      return 'iOS';
+      return "iOS";
     } else if (/Android/.test(userAgent)) {
-      return 'Android';
+      return "Android";
     } else {
-      return 'PC';
+      return "PC";
     }
   }
 }

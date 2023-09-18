@@ -12,16 +12,18 @@ export class AuthService {
   }
 
   constructor(private router: Router, private httpClient: HttpClient) {
-    const initialLoginStatus = localStorage.getItem("token") !== null;
+    const initialLoginStatus =
+      (localStorage.getItem("token") || sessionStorage.getItem("token")) !==
+      null;
     this.isLoggedInSubject = new BehaviorSubject<boolean>(initialLoginStatus);
     console.log("constructor isLoggedInSubject", this.isLoggedInSubject);
   }
 
   login(token: string | null): Observable<boolean> {
-    console.log("login method called with token:", token);
     // Logic for validating the token and logging the user in
     const isValidToken = this.validateToken(token);
 
+    console.log("login method called with token:", isValidToken);
     if (isValidToken) {
       // Token is valid, mark the user as logged in
       this.isLoggedInSubject.next(true);
@@ -39,7 +41,9 @@ export class AuthService {
     this.router.navigate(["/auth/login"]);
     localStorage.removeItem("token");
     localStorage.removeItem("expiresAt");
-    localStorage.removeItem("RememberMe");
+
+    sessionStorage.removeItem("token");
+    sessionStorage.removeItem("expiresAt");
   }
 
   private validateToken(token: string | null): boolean {
@@ -49,21 +53,13 @@ export class AuthService {
       return false; // Token is not provided or null
     }
 
-    const expirationDate = new Date(localStorage.getItem("expiresAt")!);
-    const currentDate = new Date();
+    const EpochTimeStampOfcurrentDate = new Date().getTime() / 1000;
+    const JWT = token;
+    const jwtPayload = JSON.parse(window.atob(JWT.split(".")[1]));
 
-    if (currentDate > expirationDate) {
+    if (EpochTimeStampOfcurrentDate > jwtPayload.exp) {
       return false; // Token has expired
     }
-
-    /*  const baseURL: string = "http://localhost:2020";
-    var isCheckedRememberMe = this.httpClient.get(
-      baseURL + "/api/Account/CheckRememberMe"
-    );
-    console.log(isCheckedRememberMe);
-    if (isCheckedRememberMe) {
-      return false;
-    } */
 
     return true; // Token is valid
   }

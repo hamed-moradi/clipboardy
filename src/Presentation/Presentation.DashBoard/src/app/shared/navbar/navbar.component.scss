@@ -112,3 +112,9 @@
     padding-top: 3px;
   }
 }
+@media screen and (max-width: 394px) {
+  .navbar {
+    --bs-navbar-toggler-padding-x: 0 !important;
+    --bs-navbar-toggler-padding-y: 0 !important;
+  }
+}

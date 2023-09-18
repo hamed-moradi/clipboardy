@@ -40,13 +40,19 @@ export class NavbarComponent implements OnInit {
   black: string = this.colorUsed.black;
 
   navbarMobility: boolean = false;
-  isDarkModeEnabled: boolean = false;
+  onChangeDarkMode: boolean;
 
   ngOnInit() {
+    if (localStorage.getItem("isDarkMode") == "true") this.onChangeThemeColor();
+    //localStorage.setItem("isDarkMode", String(this.onChangeDarkMode));
+
     // Initialize dark mode based on the initial state
-    console.log(this.isDarkModeEnabled + "ngOnInit");
-    if (this.isDarkModeEnabled) {
+    console.log(this.onChangeDarkMode + "ngOnInit");
+    if (this.onChangeDarkMode) {
       this.enableDarkMode();
+
+      /*      console.log(this.onChangeDarkMode + "ssssssss");
+      localStorage.setItem("isDarkMode", String(this.onChangeDarkMode)); */
     }
 
     var navbar: HTMLElement =
@@ -76,7 +82,7 @@ export class NavbarComponent implements OnInit {
             navbar.classList.remove("p-4");
 
             if (headroomNoTop) {
-              if (this.isDarkModeEnabled) {
+              if (this.onChangeDarkMode) {
                 headroomNoTop.style.backgroundColor = this.violet;
               } else {
                 headroomNoTop.style.backgroundColor = this.white;
@@ -94,14 +100,14 @@ export class NavbarComponent implements OnInit {
 
             /*
             if (headroomNoTop) {
-              if (this.isDarkModeEnabled) {
+              if (this.onChangeDarkMode) {
                 headroomNoTop.style.backgroundColor = this.orange;
               } else {
                 headroomNoTop.style.backgroundColor = this.white;
               } */
 
             /*  if (this.homeButton) {
-              if (this.isDarkModeEnabled) {
+              if (this.onChangeDarkMode) {
                 this.homeButton.style.color = this.white;
               } else {
                 this.homeButton.style.removeProperty('color');
@@ -132,6 +138,9 @@ export class NavbarComponent implements OnInit {
   }
 
   onChangeThemeColor() {
+    console.log(this.onChangeDarkMode);
+    localStorage.setItem("isDarkMode", String(this.onChangeDarkMode));
+
     const hero = document.querySelector(".hero") as HTMLElement | null;
     const body = document.getElementsByTagName("body")[0];
 
@@ -156,7 +165,7 @@ export class NavbarComponent implements OnInit {
     const darkIcon = document.querySelector("#darkIcon") as HTMLElement | null;
 
     //dark Mode is disabled
-    if (this.isDarkModeEnabled === false) {
+    if (this.onChangeDarkMode === false) {
       body.classList.remove("dark-theme");
 
       if (changeTheme) {
@@ -278,7 +287,7 @@ export class NavbarComponent implements OnInit {
 
   //dynamic logo
   getLogoSrc(): string {
-    return this.isDarkModeEnabled
+    return this.onChangeDarkMode
       ? "/assets/img/logo/clipBoardyWhite.png"
       : "/assets/img/logo/clipBoardy.png";
   }

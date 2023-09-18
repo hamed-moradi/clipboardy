@@ -1,9 +1,9 @@
 .dialog-addOrEditClipBoard {
   position: fixed !important;
-  min-width: 450px;
+  min-width: 400px;
   max-width: 450px;
-  min-height: 425px;
-  max-height: 425px;
+  min-height: 350px;
+  max-height: 350px;
   border-radius: 10px;
   background-color: snow;
 
@@ -23,6 +23,9 @@
   padding: 10px !important;
   margin-left: 20px !important;
   margin-right: 20px !important;
+}
+.mdc-dialog__actions {
+  padding: 0px !important;
 }
 
 @media (max-width: 500px) {
