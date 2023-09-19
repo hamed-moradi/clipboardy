@@ -18,7 +18,7 @@ namespace Assets.Model.Binding
     {
         public string AccountKey { get; set; }
         public string Password { get; set; }
-        public bool RememberMe { get; set; }
+
         public string DeviceKey { get; set; }
         public string DeviceName { get; set; }
         public string DeviceType { get; set; }

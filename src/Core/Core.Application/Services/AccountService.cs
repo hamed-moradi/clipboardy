@@ -223,7 +223,6 @@ namespace Core.Application.Services
 
                 // set last signed in at
                 account.last_signedin_at = DateTime.UtcNow;
-                account.rememberMe = signinModel.RememberMe;
 
                 await PostgresContext.SaveChangesAsync();
                 transaction.Complete();

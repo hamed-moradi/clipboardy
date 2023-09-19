@@ -15,7 +15,6 @@ namespace Core.Domain.Entities
         [MaxLength(256)]
         public string password { get; set; }
         public string status { get; set; }
-        public bool rememberMe { get; set; }
         public DateTime? last_signedin_at { get; set; }
         public DateTime inserted_at { get; set; }
     }
