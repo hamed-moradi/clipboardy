@@ -85,6 +85,19 @@
   .logoImgClass {
     height: 65px;
   }
+  .top-nav-collapse {
+    background-color: #930086 !important;
+  }
+  .nav-link {
+    color: #eae6f0 !important ;
+  }
+  .navbar-toggler {
+    background-color: #eae6f0 !important ;
+  }
+  .darkModeIcon {
+    background-color: #eae6f0;
+    border-radius: 12px;
+  }
 }
 
 @media screen and (max-width: 394px) {
@@ -94,13 +107,12 @@
     text-transform: uppercase;
     margin-top: 0.55rem;
   }
+  .top-nav-collapse {
+    background-color: #930086 !important;
+  }
 
   .logoImgClass {
     height: 40px;
-  }
-
-  .top-nav-collapse {
-    background-color: transparent !important;
   }
 
   .container-fluid {
@@ -111,10 +123,34 @@
     transition: all 450ms cubic-bezier(0.42, 0, 0.34, 0.64);
     padding-top: 3px;
   }
+  .nav-link {
+    color: #eae6f0 !important ;
+  }
+  .navbar-toggler {
+    background-color: #eae6f0 !important ;
+  }
+  .darkModeIcon {
+    background-color: #eae6f0;
+    border-radius: 12px;
+  }
 }
 @media screen and (max-width: 394px) {
   .navbar {
     --bs-navbar-toggler-padding-x: 0 !important;
     --bs-navbar-toggler-padding-y: 0 !important;
+  }
+
+  .top-nav-collapse {
+    background-color: #930086 !important;
+  }
+  .nav-link {
+    color: #eae6f0 !important ;
+  }
+  .navbar-toggler {
+    background-color: #eae6f0 !important ;
+  }
+  .darkModeIcon {
+    background-color: #eae6f0;
+    border-radius: 12px;
   }
 }

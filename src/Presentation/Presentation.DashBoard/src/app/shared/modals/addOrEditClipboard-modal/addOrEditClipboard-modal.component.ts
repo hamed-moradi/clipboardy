@@ -4,20 +4,20 @@ import {
   Inject,
   OnInit,
   ViewChild,
-} from '@angular/core';
-import { ColorUsedService } from '../../services/color-used.service';
-import { NgForm } from '@angular/forms';
-import { ClipBoardComponent } from 'src/app/clipBoard/clipBoard.component';
-import { IClipBoard } from 'src/app/clipBoard/IClipBoard';
-import { fromEvent, map, tap } from 'rxjs';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { MobileViewService } from '../../services/mobile-view.service';
-import { DataSharingService } from '../../services/data-sharing.service';
+} from "@angular/core";
+import { ColorUsedService } from "../../services/color-used.service";
+import { NgForm } from "@angular/forms";
+import { ClipBoardComponent } from "src/app/clipBoard/clipBoard.component";
+import { IClipBoard } from "src/app/clipBoard/IClipBoard";
+import { fromEvent, map, tap } from "rxjs";
+import { MAT_DIALOG_DATA, MatDialogRef } from "@angular/material/dialog";
+import { MobileViewService } from "../../services/mobile-view.service";
+import { DataSharingService } from "../../services/data-sharing.service";
 
 @Component({
-  selector: 'addOrEditClipboard-modal',
-  templateUrl: './addOrEditClipboard-modal.component.html',
-  styleUrls: ['./addOrEditClipboard-modal.component.scss'],
+  selector: "addOrEditClipboard-modal",
+  templateUrl: "./addOrEditClipboard-modal.component.html",
+  styleUrls: ["./addOrEditClipboard-modal.component.scss"],
 })
 export class AddOrEditClipboardComponent implements OnInit {
   constructor(
@@ -29,8 +29,11 @@ export class AddOrEditClipboardComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {}
 
-  @ViewChild('AddToClipboardButton')
+  @ViewChild("AddToClipboardButton")
   AddToClipboardElementRef: ElementRef;
+
+  @ViewChild("EditClipboardButton")
+  EditClipboardElementRef: ElementRef;
 
   editedContentModel = this.data;
 
@@ -77,27 +80,40 @@ export class AddOrEditClipboardComponent implements OnInit {
   }
 
   ngAfterViewInit(): void {
-    const AddToClipboardButtonElement =
+    /*  const AddToClipboardButtonElement =
       this.AddToClipboardElementRef.nativeElement;
+
+    const EditClipboardButtonElement =
+      this.EditClipboardElementRef.nativeElement;
 
     if (window.innerWidth < 500) {
       this.mobileViewService.resizeEvent(
         AddToClipboardButtonElement,
-        'flex-fill'
+        "flex-fill"
       );
-    }
 
-    fromEvent(window, 'resize').subscribe(() => {
-      if (window.innerWidth < 500) {
-        this.mobileViewService.resizeEvent(
-          AddToClipboardButtonElement,
-          'flex-fill'
-        );
+      this.mobileViewService.resizeEvent(
+        EditClipboardButtonElement,
+        "flex-fill"
+      );
 
-        this.isBigWidth = false;
-      } else {
-        this.isBigWidth = true;
-      }
-    });
+      fromEvent(window, "resize").subscribe(() => {
+        if (window.innerWidth < 500) {
+          this.mobileViewService.resizeEvent(
+            AddToClipboardButtonElement,
+            "flex-fill"
+          );
+
+          this.mobileViewService.resizeEvent(
+            EditClipboardButtonElement,
+            "flex-fill"
+          );
+
+          this.isBigWidth = false;
+        } else {
+          this.isBigWidth = true;
+        }
+      });
+    } */
   }
 }

@@ -131,6 +131,7 @@ export class ClipBoardComponent implements OnInit, AfterViewInit {
         if (localStorage.getItem("isDarkMode") == "true") {
           console.log(this.navbarComponent.onChangeDarkMode);
           window.location.reload();
+          this.navbarComponent.onChangeDarkMode = true;
           this.navbarComponent.onChangeThemeColor();
 
           console.log(this.navbarComponent.onChangeDarkMode);

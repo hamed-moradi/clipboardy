@@ -1,7 +1,7 @@
 import { Component, OnInit, Renderer2, ElementRef } from "@angular/core";
 import { Router, NavigationEnd } from "@angular/router";
 import { Location } from "@angular/common";
-import { filter, Subscription } from "rxjs";
+import { filter, fromEvent, Subscription } from "rxjs";
 
 import { ColorUsedService } from "../../shared/services/color-used.service";
 import { AuthService } from "../services/auth.service";
@@ -40,15 +40,20 @@ export class NavbarComponent implements OnInit {
   black: string = this.colorUsed.black;
 
   navbarMobility: boolean = false;
-  onChangeDarkMode: boolean;
+  onChangeDarkMode: boolean = false;
+
+  logoImg = document.querySelector("#logoImg") as HTMLElement | null;
 
   ngOnInit() {
-    if (localStorage.getItem("isDarkMode") == "true") this.onChangeThemeColor();
+    if (localStorage.getItem("isDarkMode") == "true") {
+      this.onChangeDarkMode = true;
+      this.onChangeThemeColor();
+    }
     //localStorage.setItem("isDarkMode", String(this.onChangeDarkMode));
 
     // Initialize dark mode based on the initial state
-    console.log(this.onChangeDarkMode + "ngOnInit");
-    if (this.onChangeDarkMode) {
+    console.log(this.onChangeDarkMode + "" + "ngOnInit");
+    if (this.onChangeDarkMode === true) {
       this.enableDarkMode();
 
       /*      console.log(this.onChangeDarkMode + "ssssssss");
@@ -84,9 +89,9 @@ export class NavbarComponent implements OnInit {
             if (headroomNoTop) {
               if (this.onChangeDarkMode) {
                 headroomNoTop.style.backgroundColor = this.violet;
-              } else {
+              } /* else {
                 headroomNoTop.style.backgroundColor = this.white;
-              }
+              } */
             }
           } else {
             // top of page
@@ -156,8 +161,6 @@ export class NavbarComponent implements OnInit {
       ".headroomNoTop"
     ) as HTMLElement | null;
 
-    /*     const logoImg = document.querySelector('#logoImg') as HTMLElement | null;
-     */
     const logoBrand = document.querySelector(
       "#logoBrand"
     ) as HTMLElement | null;
@@ -287,8 +290,23 @@ export class NavbarComponent implements OnInit {
 
   //dynamic logo
   getLogoSrc(): string {
-    return this.onChangeDarkMode
+    if (this.onChangeDarkMode) {
+      const logo = "/assets/img/logo/clipBoardyWhite.png";
+      return logo;
+    } else {
+      const logo = "/assets/img/logo/clipBoardy.png";
+      const logoWhite = "/assets/img/logo/clipBoardyWhite.png";
+
+      if (window.innerWidth < 500) {
+        this.logoImg?.setAttribute("src", logoWhite);
+        return logoWhite;
+      }
+
+      return logo;
+    }
+
+    /* return this.onChangeDarkMode
       ? "/assets/img/logo/clipBoardyWhite.png"
-      : "/assets/img/logo/clipBoardy.png";
+      : "/assets/img/logo/clipBoardy.png"; */
   }
 }
