@@ -2,10 +2,10 @@
   position: fixed !important;
   min-width: 400px;
   max-width: 450px;
-  min-height: 350px;
+  min-height: 361px;
   max-height: 350px;
   border-radius: 10px;
-  background-color: snow;
+  background-color: #EAE6F0;
 
   top: 50% !important;
   left: 50% !important;
@@ -15,7 +15,7 @@
 .mdc-dialog__title {
   padding: 3px !important;
   margin: 0px !important;
-  margin-bottom: 20px !important;
+  //margin-bottom: 20px !important;
   font-family: sans-serif !important;
 }
 
@@ -37,7 +37,7 @@
     //min-height: 390px;
     //max-height: 390px;
     border-radius: 10px !important;
-    background-color: snow;
+    background-color: #EAE6F0;
     top: 52%;
     left: 50%;
     transform: translate(-50%, -50%);
@@ -69,7 +69,7 @@
     position: fixed;
     min-width: 217px;
     border-radius: 10px !important;
-    background-color: snow;
+    background-color: #EAE6F0;
     top: 52%;
     left: 50%;
     transform: translate(-50%, -50%);
@@ -82,7 +82,7 @@
   .mdc-dialog__title {
     padding: 0px !important;
     margin: 0px !important;
-    margin-bottom: 20px !important;
+//    margin-bottom: 20px !important;
     font-family: sans-serif !important;
   }
 
@@ -104,7 +104,7 @@
     min-width: 450px;
     min-height: 60px;
     border-radius: 10px !important;
-    background-color: snow;
+    background-color: #EAE6F0;
     top: 52%;
     left: 50%;
     transform: translate(-50%, -50%);
@@ -136,3 +136,4 @@
     width: 98% !important;
   }
 }
+

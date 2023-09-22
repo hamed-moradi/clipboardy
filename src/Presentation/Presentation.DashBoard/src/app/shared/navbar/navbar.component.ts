@@ -1,18 +1,18 @@
-import { Component, OnInit, Renderer2, ElementRef } from "@angular/core";
-import { Router, NavigationEnd } from "@angular/router";
-import { Location } from "@angular/common";
-import { filter, fromEvent, Subscription } from "rxjs";
+import { Component, OnInit, Renderer2, ElementRef } from '@angular/core';
+import { Router, NavigationEnd } from '@angular/router';
+import { Location } from '@angular/common';
+import { filter, fromEvent, Subscription } from 'rxjs';
 
-import { ColorUsedService } from "../../shared/services/color-used.service";
-import { AuthService } from "../services/auth.service";
-import { __values } from "tslib";
-import { MatDialog } from "@angular/material/dialog";
-import { SignInModalComponent } from "../modals/sign-in-modal/sign-in-modal.component";
+import { ColorUsedService } from '../../shared/services/color-used.service';
+import { AuthService } from '../services/auth.service';
+import { __values } from 'tslib';
+import { MatDialog } from '@angular/material/dialog';
+import { SignInModalComponent } from '../modals/sign-in-modal/sign-in-modal.component';
 
 @Component({
-  selector: "app-navbar",
-  templateUrl: "./navbar.component.html",
-  styleUrls: ["./navbar.component.scss"],
+  selector: 'app-navbar',
+  templateUrl: './navbar.component.html',
+  styleUrls: ['./navbar.component.scss'],
 })
 export class NavbarComponent implements OnInit {
   public isCollapsed = true;
@@ -42,17 +42,17 @@ export class NavbarComponent implements OnInit {
   navbarMobility: boolean = false;
   onChangeDarkMode: boolean = false;
 
-  logoImg = document.querySelector("#logoImg") as HTMLElement | null;
+  logoImg = document.querySelector('#logoImg') as HTMLElement | null;
 
   ngOnInit() {
-    if (localStorage.getItem("isDarkMode") == "true") {
+    if (localStorage.getItem('isDarkMode') == 'true') {
       this.onChangeDarkMode = true;
       this.onChangeThemeColor();
     }
     //localStorage.setItem("isDarkMode", String(this.onChangeDarkMode));
 
     // Initialize dark mode based on the initial state
-    console.log(this.onChangeDarkMode + "" + "ngOnInit");
+    console.log(this.onChangeDarkMode + '' + 'ngOnInit');
     if (this.onChangeDarkMode === true) {
       this.enableDarkMode();
 
@@ -64,27 +64,27 @@ export class NavbarComponent implements OnInit {
       this.element.nativeElement.children[0].children[0];
 
     //add p-4 bootstrap calss into container-fluid
-    navbar.classList.add("p-4");
+    navbar.classList.add('p-4');
 
     //add headroomNoTop calss into container-fluid
     this._router = this.router.events
       .pipe(filter((event) => event instanceof NavigationEnd))
       .subscribe((event) => {
-        this.renderer.listen("window", "scroll", (event) => {
+        this.renderer.listen('window', 'scroll', (event) => {
           const number = window.scrollY;
 
           const headroomNoTop = document.querySelector(
-            ".headroomNoTop"
+            '.headroomNoTop'
           ) as HTMLElement | null;
 
           const containerFluid = document.querySelector(
-            "#containerFluid"
+            '#containerFluid'
           ) as HTMLElement | null;
 
           if (number > 150 || window.scrollY > 150) {
             // not In top of page
-            navbar.classList.add("headroomNoTop");
-            navbar.classList.remove("p-4");
+            navbar.classList.add('headroomNoTop');
+            navbar.classList.remove('p-4');
 
             if (headroomNoTop) {
               if (this.onChangeDarkMode) {
@@ -96,12 +96,12 @@ export class NavbarComponent implements OnInit {
           } else {
             // top of page
 
-            navbar.classList.remove("headroomNoTop");
-            navbar.classList.add("p-4");
+            navbar.classList.remove('headroomNoTop');
+            navbar.classList.add('p-4');
 
             //Remove backGroundColor from navBar
             if (containerFluid)
-              containerFluid.style.removeProperty("background-color");
+              containerFluid.style.removeProperty('background-color');
 
             /*
             if (headroomNoTop) {
@@ -131,45 +131,45 @@ export class NavbarComponent implements OnInit {
     this.authService.logout();
   }
   onCollopseNavbar() {
-    const navbarButtonCollopse = document.getElementById("navButton");
-    const navbarCollopse = document.getElementById("navbarNav");
-    navbarButtonCollopse?.setAttribute("aria-expanded", "false");
-    navbarButtonCollopse?.setAttribute("class", "navbar-toggler collapsed");
+    const navbarButtonCollopse = document.getElementById('navButton');
+    const navbarCollopse = document.getElementById('navbarNav');
+    navbarButtonCollopse?.setAttribute('aria-expanded', 'false');
+    navbarButtonCollopse?.setAttribute('class', 'navbar-toggler collapsed');
 
     navbarCollopse?.setAttribute(
-      "class",
-      "navbar-collapse col-2 justify-content-end collapse"
+      'class',
+      'navbar-collapse col-2 justify-content-end collapse'
     );
   }
 
   onChangeThemeColor() {
     console.log(this.onChangeDarkMode);
-    localStorage.setItem("isDarkMode", String(this.onChangeDarkMode));
+    localStorage.setItem('isDarkMode', String(this.onChangeDarkMode));
 
-    const hero = document.querySelector(".hero") as HTMLElement | null;
-    const body = document.getElementsByTagName("body")[0];
+    const hero = document.querySelector('.hero') as HTMLElement | null;
+    const body = document.getElementsByTagName('body')[0];
 
     const changeTheme = document.querySelector(
-      ".changetheme"
+      '.changetheme'
     ) as HTMLElement | null;
 
     const btnGetStart = document.querySelector(
-      "#btnGetStart"
+      '#btnGetStart'
     ) as HTMLElement | null;
 
     const headroomNoTop = document.querySelector(
-      ".headroomNoTop"
+      '.headroomNoTop'
     ) as HTMLElement | null;
 
     const logoBrand = document.querySelector(
-      "#logoBrand"
+      '#logoBrand'
     ) as HTMLElement | null;
 
-    const darkIcon = document.querySelector("#darkIcon") as HTMLElement | null;
+    const darkIcon = document.querySelector('#darkIcon') as HTMLElement | null;
 
     //dark Mode is disabled
     if (this.onChangeDarkMode === false) {
-      body.classList.remove("dark-theme");
+      body.classList.remove('dark-theme');
 
       if (changeTheme) {
         changeTheme.style.color = this.black;
@@ -180,8 +180,8 @@ export class NavbarComponent implements OnInit {
       }
 
       if (btnGetStart) {
-        btnGetStart.classList.remove("btn-light");
-        btnGetStart.classList.add("btn-outline-dark");
+        btnGetStart.classList.remove('btn-light');
+        btnGetStart.classList.add('btn-outline-dark');
       }
 
       if (headroomNoTop) {
@@ -193,17 +193,17 @@ export class NavbarComponent implements OnInit {
       } */
 
       if (logoBrand) {
-        logoBrand.style.removeProperty("color");
+        logoBrand.style.removeProperty('color');
       }
 
       if (darkIcon) {
-        darkIcon.style.removeProperty("background-color");
-        darkIcon.style.removeProperty("border-radius");
+        darkIcon.style.removeProperty('background-color');
+        darkIcon.style.removeProperty('border-radius');
       }
 
       //dark Mode Enabled
     } else {
-      body.classList.add("dark-theme");
+      body.classList.add('dark-theme');
 
       if (changeTheme) {
         changeTheme.style.color = this.white;
@@ -214,8 +214,8 @@ export class NavbarComponent implements OnInit {
       }
 
       if (btnGetStart) {
-        btnGetStart.classList.remove("btn-outline-dark");
-        btnGetStart.classList.add("btn-light");
+        btnGetStart.classList.remove('btn-outline-dark');
+        btnGetStart.classList.add('btn-light');
       }
 
       if (headroomNoTop) {
@@ -233,35 +233,35 @@ export class NavbarComponent implements OnInit {
 
       if (darkIcon) {
         darkIcon.style.backgroundColor = this.white;
-        darkIcon.style.borderRadius = "12px";
+        darkIcon.style.borderRadius = '12px';
       }
     }
   }
 
   private enableDarkMode() {
-    const hero = document.querySelector(".hero") as HTMLElement | null;
-    const body = document.getElementsByTagName("body")[0];
+    const hero = document.querySelector('.hero') as HTMLElement | null;
+    const body = document.getElementsByTagName('body')[0];
 
     /*     const logoImg = document.querySelector('#logoImg') as HTMLElement | null;
      */
     const changeTheme = document.querySelector(
-      ".changetheme"
+      '.changetheme'
     ) as HTMLElement | null;
 
     const btnGetStart = document.querySelector(
-      "#btnGetStart"
+      '#btnGetStart'
     ) as HTMLElement | null;
 
     const logoBrand = document.querySelector(
-      "#logoBrand"
+      '#logoBrand'
     ) as HTMLElement | null;
 
-    const darkIcon = document.querySelector("#darkIcon") as HTMLElement | null;
+    const darkIcon = document.querySelector('#darkIcon') as HTMLElement | null;
 
-    body.classList.add("dark-theme");
+    body.classList.add('dark-theme');
 
     if (changeTheme) {
-      changeTheme.style.color = "#EAE6F0";
+      changeTheme.style.color = '#EAE6F0';
     }
 
     if (hero) {
@@ -269,8 +269,8 @@ export class NavbarComponent implements OnInit {
     }
 
     if (btnGetStart) {
-      btnGetStart.classList.remove("btn-outline-dark");
-      btnGetStart.classList.add("btn-light");
+      btnGetStart.classList.remove('btn-outline-dark');
+      btnGetStart.classList.add('btn-light');
     }
 
     /*    if (logoImg) {
@@ -284,21 +284,21 @@ export class NavbarComponent implements OnInit {
 
     if (darkIcon) {
       darkIcon.style.backgroundColor = this.white;
-      darkIcon.style.borderRadius = "12px";
+      darkIcon.style.borderRadius = '12px';
     }
   }
 
   //dynamic logo
   getLogoSrc(): string {
     if (this.onChangeDarkMode) {
-      const logo = "/assets/img/logo/clipBoardyWhite.png";
+      const logo = '/assets/img/logo/clipBoardyWhite.png';
       return logo;
     } else {
-      const logo = "/assets/img/logo/clipBoardy.png";
-      const logoWhite = "/assets/img/logo/clipBoardyWhite.png";
+      const logo = '/assets/img/logo/clipBoardy.png';
+      const logoWhite = '/assets/img/logo/clipBoardyWhite.png';
 
       if (window.innerWidth < 500) {
-        this.logoImg?.setAttribute("src", logoWhite);
+        this.logoImg?.setAttribute('src', logoWhite);
         return logoWhite;
       }
 
