@@ -6,6 +6,8 @@ by editing this MSBuild file. In order to learn more about this please visit htt
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <TimeStampOfAssociatedLegacyPublishXmlFile />
-    <_PublishTargetUrl>D:\Publish\SenderReceiver</_PublishTargetUrl>
+    <_PublishTargetUrl>E:\me\publish</_PublishTargetUrl>
+    <History>True|2023-09-25T13:03:49.4397616Z;False|2023-09-25T16:30:40.8659650+03:30;</History>
+    <LastFailureDetails />
   </PropertyGroup>
 </Project>

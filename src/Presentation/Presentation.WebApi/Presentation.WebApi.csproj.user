@@ -9,5 +9,6 @@
     <WebStackScaffolding_IsPartialViewSelected>True</WebStackScaffolding_IsPartialViewSelected>
     <WebStackScaffolding_IsReferencingScriptLibrariesSelected>False</WebStackScaffolding_IsReferencingScriptLibrariesSelected>
     <WebStackScaffolding_LayoutPageFile>~/Views/Shared/_layout.cshtml</WebStackScaffolding_LayoutPageFile>
+    <NameOfLastUsedPublishProfile>E:\me\src\Presentation\Presentation.WebApi\Properties\PublishProfiles\hamed.pubxml</NameOfLastUsedPublishProfile>
   </PropertyGroup>
 </Project>
