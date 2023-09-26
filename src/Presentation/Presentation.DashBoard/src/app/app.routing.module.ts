@@ -1,19 +1,20 @@
-import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { BrowserModule } from '@angular/platform-browser';
-import { Routes, RouterModule } from '@angular/router';
+import { NgModule } from "@angular/core";
+import { CommonModule } from "@angular/common";
+import { BrowserModule } from "@angular/platform-browser";
+import { Routes, RouterModule } from "@angular/router";
 
-import { LoginComponent } from './login/login.component';
-import { FooterComponent } from './shared/footer/footer.component';
-import { HomeComponent } from './home/home.component';
-import { AuthGuard } from './auth/auth.guard';
-import { ContactUsComponent } from './shared/contact-us/contact-us.component';
+import { LoginComponent } from "./login/login.component";
+import { FooterComponent } from "./shared/footer/footer.component";
+import { HomeComponent } from "./home/home.component";
+import { AuthGuard } from "./auth/auth.guard";
+import { ContactUsComponent } from "./shared/contact-us/contact-us.component";
 
 const routes: Routes = [
-  { path: 'home', component: HomeComponent, canActivate: [AuthGuard] },
-  { path: 'auth/login', component: LoginComponent },
-  { path: 'contactUs', component: ContactUsComponent },
-  { path: '', redirectTo: 'home', pathMatch: 'full' },
+  { path: "home", component: HomeComponent, canActivate: [AuthGuard] },
+  { path: "auth/login", component: LoginComponent },
+  { path: "contactUs", component: ContactUsComponent },
+  { path: "**", redirectTo: "home", pathMatch: "full" },
+  { path: "", redirectTo: "home", pathMatch: "full" },
 ];
 
 @NgModule({
