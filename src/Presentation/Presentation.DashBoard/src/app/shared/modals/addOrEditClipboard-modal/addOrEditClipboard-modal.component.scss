@@ -33,6 +33,7 @@
     margin-top: 55px !important;
     position: fixed;
     min-width: 345px;
+    min-height: 300px !important;
     max-width: 345px;
     //min-height: 390px;
     //max-height: 390px;
@@ -41,42 +42,6 @@
     top: 52%;
     left: 50%;
     transform: translate(-50%, -50%);
-  }
-
-  .mdc-dialog__title {
-    padding: 0px !important;
-    margin: 0px !important;
-    margin-bottom: 20px !important;
-    font-family: sans-serif !important;
-  }
-
-  .mdc-dialog__content {
-    padding: 0px !important;
-    margin-left: 0px !important;
-    margin-right: 0px !important;
-  }
-  .form-control {
-    margin-left: 3px !important;
-    width: 98% !important;
-  }
-}
-
-@media (max-width: 350px) {
-  .dialog-addOrEditClipBoard {
-    min-height: 300px;
-    margin-left: -5px;
-    margin-top: 25px !important;
-    position: fixed;
-    min-width: 217px;
-    border-radius: 10px !important;
-    background-color: #EAE6F0;
-    top: 52%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-  }
-  #content {
-    max-height: 200px !important;
-    min-height: 200px !important;
   }
 
   .mdc-dialog__title {
@@ -97,33 +62,33 @@
   }
 }
 
-@media (max-width: 500px) and (orientation: landscape) {
+
+@media (max-width: 350px) {
   .dialog-addOrEditClipBoard {
-    margin-top: 40px !important;
+    min-height: 300px;
+    margin-left: 0px !important;
+    margin-top: 25px !important;
     position: fixed;
-    min-width: 450px;
-    min-height: 60px;
+    min-width: 217px;
     border-radius: 10px !important;
     background-color: #EAE6F0;
     top: 52%;
     left: 50%;
     transform: translate(-50%, -50%);
   }
-
   #content {
-    max-height: 30px !important;
-    min-height: 30px !important;
+    max-height: 200px !important;
+    min-height: 200px !important;
   }
-  #editedContent {
-    max-height: 30px !important;
-    min-height: 30px !important;
-  }
-
+.fa-clipboard{
+  font-size: x-large;
+}
   .mdc-dialog__title {
     padding: 0px !important;
     margin: 0px !important;
-    margin-bottom: 20px !important;
+//    margin-bottom: 20px !important;
     font-family: sans-serif !important;
+    font-size: small;
   }
 
   .mdc-dialog__content {

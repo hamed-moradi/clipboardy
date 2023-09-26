@@ -66,7 +66,51 @@ export class NavbarComponent implements OnInit {
     //add p-4 bootstrap calss into container-fluid
     navbar.classList.add('p-4');
 
+    /*   window.addEventListener('scroll', () => {
+      // keep track of previous scroll position
+      let prevScrollPos = window.scrollY;
+
+      window.addEventListener('scroll', () => {
+        // current scroll position
+        const currentScrollPos = window.scrollY;
+
+        if (prevScrollPos > currentScrollPos) {
+          // user has scrolled up
+          navbar.classList.add('show');
+        } else {
+          // user has scrolled down
+          navbar.classList.remove('show');
+        }
+
+        // update previous scroll position
+        prevScrollPos = currentScrollPos;
+      });
+    });
+ */
+
     //add headroomNoTop calss into container-fluid
+    this._router = this.router.events
+      .pipe(filter((event) => event instanceof NavigationEnd))
+      .subscribe((event) => {
+        this.renderer.listen('window', 'scroll', (event) => {
+          let prevScrollPos = window.scrollY;
+
+          const currentScrollPos = window.scrollY;
+
+          if (prevScrollPos > currentScrollPos) {
+            // user has scrolled up
+            navbar.classList.add('show');
+          } else {
+            // user has scrolled down
+            navbar.classList.remove('show');
+          }
+
+          // update previous scroll position
+          prevScrollPos = currentScrollPos;
+        });
+      });
+
+    /*   //add headroomNoTop calss into container-fluid
     this._router = this.router.events
       .pipe(filter((event) => event instanceof NavigationEnd))
       .subscribe((event) => {
@@ -89,9 +133,7 @@ export class NavbarComponent implements OnInit {
             if (headroomNoTop) {
               if (this.onChangeDarkMode) {
                 headroomNoTop.style.backgroundColor = this.violet;
-              } /* else {
-                headroomNoTop.style.backgroundColor = this.white;
-              } */
+              }
             }
           } else {
             // top of page
@@ -103,24 +145,9 @@ export class NavbarComponent implements OnInit {
             if (containerFluid)
               containerFluid.style.removeProperty('background-color');
 
-            /*
-            if (headroomNoTop) {
-              if (this.onChangeDarkMode) {
-                headroomNoTop.style.backgroundColor = this.orange;
-              } else {
-                headroomNoTop.style.backgroundColor = this.white;
-              } */
-
-            /*  if (this.homeButton) {
-              if (this.onChangeDarkMode) {
-                this.homeButton.style.color = this.white;
-              } else {
-                this.homeButton.style.removeProperty('color');
               }
-            } */
-          }
         });
-      });
+      }); */
   }
 
   openSignInDialog() {

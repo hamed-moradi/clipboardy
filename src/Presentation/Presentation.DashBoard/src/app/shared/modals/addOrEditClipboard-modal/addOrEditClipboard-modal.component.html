@@ -2,7 +2,7 @@
 <div class="dialog-addOrEditClipBoard" style="z-index: 1" *ngIf="!isEditMode">
   <form #content="ngForm">
     <div
-      class="container-fluid d-flex justify-content-center align-items-center"
+      class="container-fluid d-flex justify-content-center align-items-center mt-2"
     >
       <i
         class="fa fa-clipboard fa-2x mx-1"
@@ -10,7 +10,12 @@
         [ngStyle]="{ color: pink }"
       >
       </i>
-      <h2 mat-dialog-title>Add to the Clipboard list</h2>
+      <h2
+        mat-dialog-title
+        class="d-flex justify-content-center align-items-center"
+      >
+        Add to the Clipboard list
+      </h2>
     </div>
 
     <div mat-dialog-content>
@@ -22,7 +27,7 @@
             class="form-control modal-open"
             name="content"
             placeholder="Enter text to add the clipboard"
-            style="max-height: 205px; min-height: 205px"
+            style="max-height: 224px; min-height: 224px"
             (keydown.enter)="onAddClipBoardList(content)"
             ngModel
           ></textarea>
@@ -71,7 +76,7 @@
 <div class="dialog-addOrEditClipBoard" style="z-index: 1" *ngIf="isEditMode">
   <form #editedContent="ngForm">
     <div
-      class="container-fluid d-flex justify-content-center align-items-center"
+      class="container-fluid d-flex justify-content-center align-items-center mt-2"
     >
       <i
         class="fa fa-clipboard fa-2x mx-1"
@@ -79,7 +84,12 @@
         [ngStyle]="{ color: pink }"
       >
       </i>
-      <h4 mat-dialog-title>Edit Text</h4>
+      <h4
+        mat-dialog-title
+        class="d-flex justify-content-center align-items-center"
+      >
+        Edit Text
+      </h4>
     </div>
 
     <div mat-dialog-content>
@@ -90,7 +100,7 @@
             id="editedContent"
             class="form-control modal-open"
             name="editedContent"
-            style="max-height: 205px; min-height: 205px"
+            style="max-height: 224px; min-height: 224px"
             (keydown.enter)="EditClipBoard(editedContent)"
             autoFocus
             [ngModel]="editedContentModel.content"
