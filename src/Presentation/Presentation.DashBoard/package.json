@@ -32,7 +32,7 @@
     "jw-bootstrap-switch-ng2": "^2.0.5",
     "ng2-nouislider": "^1.8.3",
     "ngx-clipboard": "^16.0.0",
-    "ngx-infinite-scroll": "^16.0.0",
+    "ngx-infinite-scroll": "^15.0.0",
     "ngx-wow": "^2.0.1",
     "nouislider": "^15.6.1",
     "rxjs": "~7.5.0",
