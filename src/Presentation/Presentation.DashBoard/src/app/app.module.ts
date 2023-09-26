@@ -36,6 +36,7 @@ import { SpinnerComponent } from "./shared/spinner/spinner.component";
 import { MatButtonModule } from "@angular/material/button";
 import { MatCardModule } from "@angular/material/card";
 import { environment } from "src/environments/environment";
+import { ServiceWorkerModule } from "@angular/service-worker";
 
 // define a function that creates a renderer for the module
 export function rendererFactory(rendererFactory: RendererFactory2) {
@@ -70,6 +71,10 @@ export function rendererFactory(rendererFactory: RendererFactory2) {
     InfiniteScrollModule,
     MatCardModule,
     MatButtonModule,
+
+    ServiceWorkerModule.register("ngsw-worker.js", {
+      enabled: environment.production,
+    }),
   ],
   providers: [
     ColorUsedService,

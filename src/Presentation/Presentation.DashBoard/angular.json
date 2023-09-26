@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "ClipBoardy-Project": {
+    "clipboardy-project": {
       "projectType": "application",
       "schematics": {},
       "root": "",
@@ -14,7 +14,8 @@
           "builder": "@angular-devkit/build-angular:browser",
 
           "options": {
-            "outputPath": "dist/ClipBoardy-project",
+            "serviceWorker": true,
+            "outputPath": "dist/clipboardy-project",
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": "src/polyfills.ts",
@@ -72,10 +73,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "browserTarget": "ClipBoardy-Project:build:production"
+              "browserTarget": "clipboardy-project:build:production"
             },
             "development": {
-              "browserTarget": "ClipBoardy-Project:build:development"
+              "browserTarget": "clipboardy-project:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -83,7 +84,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "ClipBoardy-Project:build"
+            "browserTarget": "clipboardy-project:build"
           }
         },
         "test": {
