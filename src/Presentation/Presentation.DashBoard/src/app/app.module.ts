@@ -35,7 +35,6 @@ import { ContactUsComponent } from "./shared/contact-us/contact-us.component";
 import { SpinnerComponent } from "./shared/spinner/spinner.component";
 import { MatButtonModule } from "@angular/material/button";
 import { MatCardModule } from "@angular/material/card";
-import { ServiceWorkerModule } from "@angular/service-worker";
 import { environment } from "src/environments/environment";
 
 // define a function that creates a renderer for the module
@@ -71,9 +70,6 @@ export function rendererFactory(rendererFactory: RendererFactory2) {
     InfiniteScrollModule,
     MatCardModule,
     MatButtonModule,
-    ServiceWorkerModule.register("ngsw-worker.js", {
-      enabled: environment.production,
-    }),
   ],
   providers: [
     ColorUsedService,
