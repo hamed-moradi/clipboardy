@@ -60,10 +60,6 @@ export class ClipBoardComponent implements OnInit, AfterViewInit {
   skip: number = 0;
   take: number = 0;
 
-  darkModeToggle = document.querySelector(
-    "#darkModeToggle"
-  ) as HTMLElement | null;
-
   ngOnInit(): void {
     this.onScrollDown();
 
@@ -75,7 +71,7 @@ export class ClipBoardComponent implements OnInit, AfterViewInit {
     const hero = document.querySelector(".hero") as HTMLElement | null;
 
     //in dark mode
-    if (this.darkModeToggle?.getAttribute("ng-reflect-model") == "true") {
+    if (localStorage.getItem("isDarkMode") == "true") {
       if (changeTheme) {
         changeTheme.style.color = this.white;
       }
@@ -129,7 +125,6 @@ export class ClipBoardComponent implements OnInit, AfterViewInit {
       next: () => {
         // Reload the page after adding a new clipboard item
         if (localStorage.getItem("isDarkMode") == "true") {
-          console.log(this.navbarComponent.onChangeDarkMode);
           window.location.reload();
           this.navbarComponent.onChangeDarkMode = true;
           this.navbarComponent.onChangeThemeColor();
@@ -137,7 +132,6 @@ export class ClipBoardComponent implements OnInit, AfterViewInit {
           console.log(this.navbarComponent.onChangeDarkMode);
         } else {
           window.location.reload();
-          console.log(this.darkModeToggle?.getAttribute("ng-reflect-model"));
         }
       },
       // handle error
@@ -163,10 +157,10 @@ export class ClipBoardComponent implements OnInit, AfterViewInit {
     this.clipBoardService.UpdateClipBoard(editedContentValue, id).subscribe({
       // handle successful sign-up response
       next: (response) => {
-        console.log(response),
-          // Reload the page after adding a new clipboard item
+        // console.log(response),
+        // Reload the page after adding a new clipboard item
 
-          window.location.reload();
+        window.location.reload();
       },
       // handle error
       error: (errMes) => {
@@ -189,10 +183,10 @@ export class ClipBoardComponent implements OnInit, AfterViewInit {
     this.clipBoardService.DeleteClipBoard(id).subscribe({
       // handle successful sign-up response
       next: (response) => {
-        console.log(response),
-          // Reload the page after adding a new clipboard item
+        // console.log(response),
+        // Reload the page after adding a new clipboard item
 
-          window.location.reload();
+        window.location.reload();
       },
       // handle error
       error: (errMes) => {

@@ -122,7 +122,7 @@ export class ClipBoardItemComponent implements OnInit, AfterViewInit {
   }
 
   openEditClipBoardDialog() {
-    console.log("open dialog Edit");
+    // console.log("open dialog Edit");
     this.editDialog.open(AddOrEditClipboardComponent, {
       backdropClass: "true",
       data: {

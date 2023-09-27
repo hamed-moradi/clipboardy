@@ -37,7 +37,7 @@ export class SignInModalComponent {
   //SignIn Method
   onSignInForm(SignInuserForm: NgForm) {
     if (SignInuserForm.form.valid) {
-      console.log(this.authService.isLoggedIn);
+      // console.log(this.authService.isLoggedIn);
       this.signInService
         .signIn(
           SignInuserForm.value.usernameInput,
@@ -47,11 +47,10 @@ export class SignInModalComponent {
         .subscribe({
           // handle successful sign-up response
           next: (response) => {
-            console.log(response),
-              this.authService.login(
-                localStorage.getItem("token")! ||
-                  sessionStorage.getItem("token")!
-              );
+            //console.log(response),
+            this.authService.login(
+              localStorage.getItem("token")! || sessionStorage.getItem("token")!
+            );
           },
           // handle sign-up error
           error: (errMes) => {

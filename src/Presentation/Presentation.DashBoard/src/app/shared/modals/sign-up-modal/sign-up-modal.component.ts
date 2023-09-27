@@ -31,7 +31,7 @@ export class SignUpModalComponent {
   //SignUp Method
   onSignUpForm(SignUpuserForm: NgForm) {
     if (SignUpuserForm.valid) {
-      console.log("signUp work!");
+      // console.log("signUp work!");
       this.signUpService
         .signUp(
           SignUpuserForm.value.usernameInput,
@@ -40,7 +40,7 @@ export class SignUpModalComponent {
         )
         .subscribe({
           // handle successful sign-up response
-          next: (response) => console.log(response),
+          // next: (response) => console.log(response),
           // handle sign-up error
           error: (e) => console.error(e),
         });

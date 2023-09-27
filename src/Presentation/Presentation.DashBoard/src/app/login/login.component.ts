@@ -39,10 +39,6 @@ export class LoginComponent implements OnInit {
   white: string = this.colorUsedService.white;
   black: string = this.colorUsedService.black;
 
-  darkModeToggle = document.querySelector(
-    "#darkModeToggle"
-  ) as HTMLElement | null;
-
   ngOnInit() {
     // you can subscribe to WOW observable to react when an element is revealed
     this.wowSubscription = this.wowService.itemRevealed$.subscribe(
@@ -62,10 +58,8 @@ export class LoginComponent implements OnInit {
 
     const hero = document.querySelector(".hero") as HTMLElement | null;
 
-    console.log(this.darkModeToggle?.getAttribute("ng-reflect-model"));
-
     //in dark mode
-    if (this.darkModeToggle?.getAttribute("ng-reflect-model") == "true") {
+    if (localStorage.getItem("isDarkMode") == "true") {
       if (changeTheme) {
         changeTheme.style.color = this.white;
       }

@@ -43,9 +43,6 @@ export class SignInService {
             //store the expiresAt and token values in localStorage
 
             localStorage.setItem("token", response.token);
-
-            console.log("set remmeber");
-            console.log(body.RememberMe);
           } else {
             //store the expiresAt and token values in sessionStorage
 

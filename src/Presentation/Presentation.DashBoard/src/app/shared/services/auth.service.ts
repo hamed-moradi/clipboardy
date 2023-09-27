@@ -16,14 +16,14 @@ export class AuthService {
       (localStorage.getItem("token") || sessionStorage.getItem("token")) !==
       null;
     this.isLoggedInSubject = new BehaviorSubject<boolean>(initialLoginStatus);
-    console.log("constructor isLoggedInSubject", this.isLoggedInSubject);
+    // console.log("constructor isLoggedInSubject", this.isLoggedInSubject);
   }
 
   login(token: string | null): Observable<boolean> {
     // Logic for validating the token and logging the user in
     const isValidToken = this.validateToken(token);
 
-    console.log("login method called with token:", isValidToken);
+    //console.log("login method called with token:", isValidToken);
     if (isValidToken) {
       // Token is valid, mark the user as logged in
       this.isLoggedInSubject.next(true);
@@ -47,7 +47,7 @@ export class AuthService {
   }
 
   private validateToken(token: string | null): boolean {
-    console.log("validateToken method called with token:", token);
+    //console.log("validateToken method called with token:", token);
 
     if (!token) {
       return false; // Token is not provided or null

@@ -5,18 +5,18 @@ import {
   OnInit,
   Renderer2,
   ViewChild,
-} from '@angular/core';
-import { MatButtonModule } from '@angular/material/button';
-import { MatCardModule } from '@angular/material/card';
-import { ColorUsedService } from '../services/color-used.service';
+} from "@angular/core";
+import { MatButtonModule } from "@angular/material/button";
+import { MatCardModule } from "@angular/material/card";
+import { ColorUsedService } from "../services/color-used.service";
 
 @Component({
-  selector: 'app-contact-us',
-  templateUrl: './contact-us.component.html',
-  styleUrls: ['./contact-us.component.scss'],
+  selector: "app-contact-us",
+  templateUrl: "./contact-us.component.html",
+  styleUrls: ["./contact-us.component.scss"],
 })
 export class ContactUsComponent implements OnInit, AfterViewInit {
-  @ViewChild('ContactUs')
+  @ViewChild("ContactUs")
   ContactUsElementRef: ElementRef;
 
   constructor(
@@ -27,24 +27,20 @@ export class ContactUsComponent implements OnInit, AfterViewInit {
   white: string = this.colorService.white;
   black: string = this.colorService.black;
 
-  darkModeToggle = document.querySelector(
-    '#darkModeToggle'
-  ) as HTMLElement | null;
-
   ngOnInit(): void {
-    const hero = document.querySelector('.hero') as HTMLElement | null;
+    const hero = document.querySelector(".hero") as HTMLElement | null;
 
     const contactUs = document.querySelector(
-      '.container'
+      ".container"
     ) as HTMLElement | null;
 
     if (window.innerWidth > 600) {
-      if (contactUs) contactUs.classList.add('d-flex');
+      if (contactUs) contactUs.classList.add("d-flex");
     }
 
     // handel dark mode
     const changeTheme = document.querySelector(
-      '.changetheme'
+      ".changetheme"
     ) as HTMLElement | null;
 
     /*  const ImgContactUS = document.querySelector(
@@ -52,7 +48,7 @@ export class ContactUsComponent implements OnInit, AfterViewInit {
     ) as HTMLElement | null; */
 
     //in dark mode
-    if (this.darkModeToggle?.getAttribute('ng-reflect-model') == 'true') {
+    if (localStorage.getItem("isDarkMode") == "true") {
       if (hero) {
         hero.style.backgroundImage = 'url("assets/img/theme/dark-home.jpg")';
       }
@@ -67,8 +63,8 @@ export class ContactUsComponent implements OnInit, AfterViewInit {
       // in light mode
     } else {
       if (hero) {
-        hero.style.removeProperty('background-image');
-        hero.style.removeProperty('background');
+        hero.style.removeProperty("background-image");
+        hero.style.removeProperty("background");
       }
 
       if (changeTheme) {
@@ -83,22 +79,22 @@ export class ContactUsComponent implements OnInit, AfterViewInit {
   ngAfterViewInit(): void {
     const ContactUsElement = this.ContactUsElementRef.nativeElement;
 
-    this.renderer.addClass(ContactUsElement, 'justify-content-center');
-    this.renderer.listen(window, 'resize', (event) => {
+    this.renderer.addClass(ContactUsElement, "justify-content-center");
+    this.renderer.listen(window, "resize", (event) => {
       const newWidth = event.target.innerWidth;
       if (newWidth > 600) {
-        this.renderer.addClass(ContactUsElement, 'justify-content-center');
+        this.renderer.addClass(ContactUsElement, "justify-content-center");
       } else {
-        this.renderer.removeClass(ContactUsElement, 'justify-content-center');
+        this.renderer.removeClass(ContactUsElement, "justify-content-center");
       }
 
-      this.renderer.addClass(ContactUsElement, 'd-flex');
-      this.renderer.listen(window, 'resize', (event) => {
+      this.renderer.addClass(ContactUsElement, "d-flex");
+      this.renderer.listen(window, "resize", (event) => {
         const newWidth = event.target.innerWidth;
         if (newWidth > 600) {
-          this.renderer.addClass(ContactUsElement, 'd-flex');
+          this.renderer.addClass(ContactUsElement, "d-flex");
         } else {
-          this.renderer.removeClass(ContactUsElement, 'd-flex');
+          this.renderer.removeClass(ContactUsElement, "d-flex");
         }
       });
     });

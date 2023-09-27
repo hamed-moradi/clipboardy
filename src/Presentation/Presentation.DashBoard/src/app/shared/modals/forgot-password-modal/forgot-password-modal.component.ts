@@ -31,8 +31,8 @@ export class ForgotPasswordModalComponent {
   onForgotPassword(ForgotPasswordForm: NgForm) {
     console.log("forgot work!");
     if (ForgotPasswordForm.valid) {
-      console.log(ForgotPasswordForm);
-      console.log(ForgotPasswordForm.value);
+      //console.log(ForgotPasswordForm);
+      //console.log(ForgotPasswordForm.value);
     } else {
       alert(this.messageService.fillAllFieldsMessage);
     }

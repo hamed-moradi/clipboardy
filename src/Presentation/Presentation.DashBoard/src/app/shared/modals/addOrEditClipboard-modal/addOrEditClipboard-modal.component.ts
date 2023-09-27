@@ -68,8 +68,8 @@ export class AddOrEditClipboardComponent implements OnInit {
   }
 
   EditClipBoard(editedContent: NgForm) {
-    console.log(this.editedContentModel.id);
-    console.log(editedContent.value);
+    //console.log(this.editedContentModel.id);
+    //console.log(editedContent.value);
 
     this.clipBoardComponent.onUpdateClipBoard(
       editedContent,
