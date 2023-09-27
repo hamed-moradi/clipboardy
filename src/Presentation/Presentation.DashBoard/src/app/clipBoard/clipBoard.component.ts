@@ -19,9 +19,9 @@ import { MobileViewService } from "../shared/services/mobile-view.service";
 import { MatDialog } from "@angular/material/dialog";
 import { AddOrEditClipboardComponent } from "../shared/modals/addOrEditClipboard-modal/addOrEditClipboard-modal.component";
 import { Router } from "@angular/router";
-import { ErrorModalComponent } from "../shared/modals/error-modal/error-modal.component";
 import { NoopScrollStrategy } from "@angular/cdk/overlay";
 import { NavbarComponent } from "../shared/navbar/navbar.component";
+import Swal from "sweetalert2";
 
 @Component({
   selector: "app-clipBoard",
@@ -40,7 +40,6 @@ export class ClipBoardComponent implements OnInit, AfterViewInit {
     private colorUsedService: ColorUsedService,
     private mobileViewService: MobileViewService,
     public dialog: MatDialog,
-    private errorDialog: MatDialog,
     private navbarComponent: NavbarComponent,
     private router: Router
   ) {}
@@ -137,14 +136,11 @@ export class ClipBoardComponent implements OnInit, AfterViewInit {
       // handle error
       error: (errMes) => {
         console.error(errMes),
-          console.error(errMes.error.title),
-          // Show error dialog
-          this.errorDialog.open(ErrorModalComponent, {
-            data: {
-              message: "An error occurred during Add content to clipboard.",
-
-              error: errMes.error.title,
-            },
+          Swal.fire({
+            title: "Error!",
+            text: errMes.error.detail,
+            icon: "error",
+            confirmButtonColor: this.violet,
           });
       },
     });
@@ -164,42 +160,13 @@ export class ClipBoardComponent implements OnInit, AfterViewInit {
       },
       // handle error
       error: (errMes) => {
-        console.error(errMes),
-          console.error(errMes.error.title),
-          // Show error dialog
-          this.errorDialog.open(ErrorModalComponent, {
-            data: {
-              message: "An error occurred during Edit content clipboard.",
-
-              error: errMes.error.title,
-            },
-          });
-      },
-    });
-  }
-
-  // Delete Clipboard
-  onDeleteClipBoard(id: number) {
-    this.clipBoardService.DeleteClipBoard(id).subscribe({
-      // handle successful sign-up response
-      next: (response) => {
-        // console.log(response),
-        // Reload the page after adding a new clipboard item
-
-        window.location.reload();
-      },
-      // handle error
-      error: (errMes) => {
-        console.error(errMes),
-          console.error(errMes.error.title),
-          // Show error dialog
-          this.errorDialog.open(ErrorModalComponent, {
-            data: {
-              message: "An error occurred during Delete content clipboard.",
-
-              error: errMes.error.title,
-            },
-          });
+        //console.error(errMes),
+        Swal.fire({
+          title: "Error!",
+          text: errMes.error.detail,
+          icon: "error",
+          confirmButtonColor: this.violet,
+        });
       },
     });
   }

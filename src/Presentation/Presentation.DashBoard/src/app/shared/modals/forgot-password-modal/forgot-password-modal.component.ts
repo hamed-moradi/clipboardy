@@ -5,6 +5,7 @@ import { AuthService } from "src/app/shared/services/auth.service";
 import { ColorUsedService } from "src/app/shared/services/color-used.service";
 import { SignUpService } from "src/app/shared/services/sign-up.service";
 import { MessagesService } from "../../services/messages.service";
+import Swal from "sweetalert2";
 
 @Component({
   selector: "app-forgot-password-modal",
@@ -34,7 +35,12 @@ export class ForgotPasswordModalComponent {
       //console.log(ForgotPasswordForm);
       //console.log(ForgotPasswordForm.value);
     } else {
-      alert(this.messageService.fillAllFieldsMessage);
+      Swal.fire({
+        title: "attention!",
+        text: this.messageService.fillAllFieldsMessage,
+        icon: "warning",
+        confirmButtonColor: this.violet,
+      });
     }
   }
 

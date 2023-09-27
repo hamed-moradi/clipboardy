@@ -13,7 +13,6 @@ import { LoginComponent } from "./login/login.component";
 import { ColorUsedService } from "./shared/services/color-used.service";
 import { AuthService } from "./shared/services/auth.service";
 import { AuthGuard } from "./auth/auth.guard";
-import { ErrorModalComponent } from "./shared/modals/error-modal/error-modal.component";
 import {
   MAT_DIALOG_DATA,
   MatDialogModule,
@@ -51,7 +50,6 @@ export function rendererFactory(rendererFactory: RendererFactory2) {
     HomeComponent,
     ClipBoardComponent,
     ClipBoardItemComponent,
-    ErrorModalComponent,
     AddOrEditClipboardComponent,
     SignInModalComponent,
     ForgotPasswordModalComponent,

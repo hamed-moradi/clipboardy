@@ -5,6 +5,7 @@ import { AuthService } from "src/app/shared/services/auth.service";
 import { ColorUsedService } from "src/app/shared/services/color-used.service";
 import { SignUpService } from "src/app/shared/services/sign-up.service";
 import { MessagesService } from "../../services/messages.service";
+import Swal from "sweetalert2";
 
 @Component({
   selector: "app-sign-up-modal",
@@ -42,10 +43,23 @@ export class SignUpModalComponent {
           // handle successful sign-up response
           // next: (response) => console.log(response),
           // handle sign-up error
-          error: (e) => console.error(e),
+          error: (errMes) => {
+            //console.error(errMes),
+            Swal.fire({
+              title: "Error!",
+              text: errMes.error,
+              icon: "error",
+              confirmButtonColor: this.violet,
+            });
+          },
         });
     } else {
-      alert(this.messageService.fillAllFieldsMessage);
+      Swal.fire({
+        title: "attention!",
+        text: this.messageService.fillAllFieldsMessage,
+        icon: "warning",
+        confirmButtonColor: this.violet,
+      });
     }
   }
 

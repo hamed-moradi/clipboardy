@@ -151,19 +151,28 @@ export class ClipBoardItemComponent implements OnInit, AfterViewInit {
         confirmButtonText: "Yes, delete it!",
       }).then((result) => {
         if (result.isConfirmed) {
-          this.clipBoardService
-            .DeleteClipBoard(this.clipBoard.id)
-            .subscribe({});
-
-          Swal.fire(
-            "Deleted!",
-            "Your file has been deleted.",
-            "success"
-          ).finally(() => window.location.reload());
+          this.clipBoardService.DeleteClipBoard(this.clipBoard.id).subscribe({
+            // handle successful sign-up response
+            next: () => {
+              Swal.fire(
+                "Deleted!",
+                "Your file has been deleted.",
+                "success"
+              ).finally(() => window.location.reload());
+            },
+            // handle error
+            error: (errMes) => {
+              console.error(errMes),
+                Swal.fire({
+                  title: "Error!",
+                  text: errMes.error.detail,
+                  icon: "error",
+                  confirmButtonColor: this.violet,
+                });
+            },
+          });
         }
       });
-    } else {
-      alert("خطا");
     }
   }
 }
