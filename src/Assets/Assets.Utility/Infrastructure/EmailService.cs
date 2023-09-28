@@ -41,7 +41,7 @@ namespace Assets.Utility.Infrastructure {
           smtp.UseDefaultCredentials = false;
           smtp.Credentials = new NetworkCredential(_appSetting.SmtpConfig.Username, _appSetting.SmtpConfig.Password);
           smtp.EnableSsl = true;
-          //smtp.DeliveryMethod = SmtpDeliveryMethod.Network;
+          smtp.DeliveryMethod = SmtpDeliveryMethod.Network;
           await smtp.SendMailAsync(mail);
         }
 
