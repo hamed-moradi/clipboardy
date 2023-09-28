@@ -47,7 +47,7 @@ export class SignUpModalComponent {
             //console.error(errMes),
             Swal.fire({
               title: "Error!",
-              text: errMes.error,
+              text: errMes.error.value,
               icon: "error",
               confirmButtonColor: this.violet,
             });
