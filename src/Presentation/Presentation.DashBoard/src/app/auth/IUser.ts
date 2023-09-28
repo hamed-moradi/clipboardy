@@ -1,6 +1,7 @@
 export interface IUser {
-  AccountKey: string;
+  AccountKey?: string;
   Password: string;
   ConfirmPassword?: string;
   RememberMe?: boolean;
+  oldPassword?: string;
 }

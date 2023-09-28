@@ -84,6 +84,27 @@
           </a>
         </li>
 
+        <!-- change password -->
+        <li *ngIf="hasToken" class="nav-item hover-underline-animation">
+          <a
+            class="nav-link nav-link-icon"
+            [ngStyle]="{
+              color: this.onChangeDarkMode ? this.white : ''
+            }"
+            (click)="openChangePasswordDialog(); onCollopseNavbar()"
+          >
+            <span
+              id="changePasswordButton"
+              class="nav-link --text"
+              type="button"
+              [ngStyle]="{
+                color: this.onChangeDarkMode ? this.white : ''
+              }"
+              >Change password</span
+            >
+          </a>
+        </li>
+
         <!-- Sign In -->
         <li
           class="nav-item hover-underline-animation"

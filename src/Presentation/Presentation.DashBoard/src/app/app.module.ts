@@ -36,6 +36,7 @@ import { MatButtonModule } from "@angular/material/button";
 import { MatCardModule } from "@angular/material/card";
 import { environment } from "src/environments/environment";
 import { ServiceWorkerModule } from "@angular/service-worker";
+import { ChangePasswordModalComponent } from "./shared/modals/change-password-modal/change-password-modal.component";
 
 // define a function that creates a renderer for the module
 export function rendererFactory(rendererFactory: RendererFactory2) {
@@ -54,6 +55,7 @@ export function rendererFactory(rendererFactory: RendererFactory2) {
     SignInModalComponent,
     ForgotPasswordModalComponent,
     SignUpModalComponent,
+    ChangePasswordModalComponent,
     ContactUsComponent,
     SpinnerComponent,
   ],

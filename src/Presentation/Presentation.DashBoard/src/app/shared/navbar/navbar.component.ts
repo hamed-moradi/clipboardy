@@ -8,6 +8,7 @@ import { AuthService } from "../services/auth.service";
 import { __values } from "tslib";
 import { MatDialog } from "@angular/material/dialog";
 import { SignInModalComponent } from "../modals/sign-in-modal/sign-in-modal.component";
+import { ChangePasswordModalComponent } from "../modals/change-password-modal/change-password-modal.component";
 
 @Component({
   selector: "app-navbar",
@@ -43,6 +44,9 @@ export class NavbarComponent implements OnInit {
   onChangeDarkMode: boolean = false;
 
   logoImg = document.querySelector("#logoImg") as HTMLElement | null;
+
+  hasToken: string | any =
+    localStorage.getItem("token") || sessionStorage.getItem("token");
 
   ngOnInit() {
     if (localStorage.getItem("isDarkMode") == "true") {
@@ -152,6 +156,10 @@ export class NavbarComponent implements OnInit {
 
   openSignInDialog() {
     this.dialog.open(SignInModalComponent);
+  }
+
+  openChangePasswordDialog() {
+    this.dialog.open(ChangePasswordModalComponent);
   }
 
   onSignOut() {
