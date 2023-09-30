@@ -49,4 +49,9 @@ namespace Assets.Model.Binding
         public string Username { get; set; }
         public string Code { get; set; }
     }
+
+    public class ForgetResetPasswordBindingModel : IBaseBindingModel
+    {
+        public string Username { get; set;}
+    }
 }

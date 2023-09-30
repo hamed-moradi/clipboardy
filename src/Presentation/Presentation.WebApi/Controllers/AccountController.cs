@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Caching.Memory;
+using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json;
 using Serilog;
 using System;
@@ -313,15 +314,15 @@ namespace Presentation.WebApi.Controllers
             return Ok(result);
         }
 
-        [HttpGet, AllowAnonymous, Route("ForgetPasswordRequested")]
-        public async Task<IActionResult> ForgetPasswordRequestedAsync([FromQuery] string username)
+        [HttpPost, AllowAnonymous, Route("ForgetPasswordRequested")]
+        public async Task<IActionResult> ForgetPasswordRequestedAsync([FromBody] ForgetResetPasswordBindingModel forgetResetPasswordBindingModel)
         {
-            if (string.IsNullOrEmpty(username))
+            if (string.IsNullOrEmpty(forgetResetPasswordBindingModel.Username))
             {
                 return BadRequest(_localizer[DataTransferer.DefectiveEntry().Message]);
             }
 
-            var accountProfile = await _accountProfileService.FirstAsync(x => x.linked_key == username);
+            var accountProfile = await _accountProfileService.FirstAsync(x => x.linked_key == forgetResetPasswordBindingModel.Username);
             if (accountProfile is null)
             {
                 return BadRequest(_localizer[DataTransferer.UserNotFound().Message]);
@@ -349,7 +350,7 @@ namespace Presentation.WebApi.Controllers
 
             var emailservice = await _emailService.SendAsync(new EmailModel
             {
-                Address = username,
+                Address = forgetResetPasswordBindingModel.Username,
                 Subject = _localizer[DataTransferer.ForgotPasswordEmailSubject().Message],
                 IsBodyHtml = true,
                 Body = $"<p>{DataTransferer.ForgotPasswordEmailBody().Message}</p>" +
@@ -369,69 +370,69 @@ namespace Presentation.WebApi.Controllers
         }
 
 
-        [HttpPost, AllowAnonymous, Route("forgotpassword")]
-        public async Task<IActionResult> ForgotPasswordAsync([FromBody] ForgotPasswordBindingModel collection)
-        {
-            Log.Debug($"ForgotPassword => {JsonConvert.SerializeObject(collection)}");
+        //[HttpPost, AllowAnonymous, Route("forgotpassword")]
+        //public async Task<IActionResult> ForgotPasswordAsync([FromBody] ForgotPasswordBindingModel collection)
+        //{
+        //    Log.Debug($"ForgotPassword => {JsonConvert.SerializeObject(collection)}");
 
-            if (string.IsNullOrEmpty(collection?.Username))
-            {
-                return BadRequest(_localizer[DataTransferer.DefectiveEmailOrCellPhone().Message]);
-            }
-            collection.Username = collection.Username.Trim();
+        //    if (string.IsNullOrEmpty(collection?.Username))
+        //    {
+        //        return BadRequest(_localizer[DataTransferer.DefectiveEmailOrCellPhone().Message]);
+        //    }
+        //    collection.Username = collection.Username.Trim();
 
-            try
-            {
-                //var query = new AccountProfileGetFirstSchema { LinkedId = collection.Username };
-                //if(collection.Username.IsPhoneNumber()) {
-                //  query.TypeId = AccountProfileType.Phone.ToInt();
-                //}
-                //else if(new EmailAddressAttribute().IsValid(collection.Username)) {
-                //  query.TypeId = AccountProfileType.Email.ToInt();
-                //}
-                //else {
-                //  return BadRequest(_localizer[DataTransferer.InvalidEmailOrCellPhone().Message]);
-                //}
+        //    try
+        //    {
+        //        //var query = new AccountProfileGetFirstSchema { LinkedId = collection.Username };
+        //        //if(collection.Username.IsPhoneNumber()) {
+        //        //  query.TypeId = AccountProfileType.Phone.ToInt();
+        //        //}
+        //        //else if(new EmailAddressAttribute().IsValid(collection.Username)) {
+        //        //  query.TypeId = AccountProfileType.Email.ToInt();
+        //        //}
+        //        //else {
+        //        //  return BadRequest(_localizer[DataTransferer.InvalidEmailOrCellPhone().Message]);
+        //        //}
 
-                //var accountProfile = await _accountProfileService.FirstAsync(query).ConfigureAwait(true);
-                //if(accountProfile == null) {
-                //  if(query.TypeId == AccountProfileType.Phone.ToInt())
-                //    return BadRequest(_localizer[DataTransferer.PhoneNotFound().Message]);
+        //        //var accountProfile = await _accountProfileService.FirstAsync(query).ConfigureAwait(true);
+        //        //if(accountProfile == null) {
+        //        //  if(query.TypeId == AccountProfileType.Phone.ToInt())
+        //        //    return BadRequest(_localizer[DataTransferer.PhoneNotFound().Message]);
 
-                //  if(query.TypeId == AccountProfileType.Email.ToInt())
-                //    return BadRequest(_localizer[DataTransferer.EmailNotFound().Message]);
-                //}
+        //        //  if(query.TypeId == AccountProfileType.Email.ToInt())
+        //        //    return BadRequest(_localizer[DataTransferer.EmailNotFound().Message]);
+        //        //}
 
-                //var token = _randomMaker.NewToken();
-                //var username = Convert.ToBase64String(Encoding.UTF8.GetBytes(collection.Username));
-                //var changepassurl = $"clipboardy.com/api/account/changepasswordrequested?username={username}&token={token}";
-                //_memoryCache.Set(username, token, DateTime.Now.AddMinutes(10));
+        //        //var token = _randomMaker.NewToken();
+        //        //var username = Convert.ToBase64String(Encoding.UTF8.GetBytes(collection.Username));
+        //        //var changepassurl = $"clipboardy.com/api/account/changepasswordrequested?username={username}&token={token}";
+        //        //_memoryCache.Set(username, token, DateTime.Now.AddMinutes(10));
 
-                //if(query.TypeId == AccountProfileType.Phone.ToInt()) {
-                //  await _smsService.SendAsync(new SMSModel {
-                //    PhoneNo = accountProfile.LinkedId,
-                //    TextBody = $"{DataTransferer.ForgotPasswordSMSBody().Message} \r\n {changepassurl}"
-                //  }).ConfigureAwait(false);
-                //}
-                //else {
-                //  await _emailService.SendAsync(new EmailModel {
-                //    Address = accountProfile.LinkedId,
-                //    Subject = _localizer[DataTransferer.ForgotPasswordEmailSubject().Message],
-                //    IsBodyHtml = true,
-                //    Body = $"<p>{DataTransferer.ForgotPasswordEmailBody().Message}</p>" +
-                //          $"<p>{changepassurl}</p>"
-                //  }).ConfigureAwait(false);
-                //}
+        //        //if(query.TypeId == AccountProfileType.Phone.ToInt()) {
+        //        //  await _smsService.SendAsync(new SMSModel {
+        //        //    PhoneNo = accountProfile.LinkedId,
+        //        //    TextBody = $"{DataTransferer.ForgotPasswordSMSBody().Message} \r\n {changepassurl}"
+        //        //  }).ConfigureAwait(false);
+        //        //}
+        //        //else {
+        //        //  await _emailService.SendAsync(new EmailModel {
+        //        //    Address = accountProfile.LinkedId,
+        //        //    Subject = _localizer[DataTransferer.ForgotPasswordEmailSubject().Message],
+        //        //    IsBodyHtml = true,
+        //        //    Body = $"<p>{DataTransferer.ForgotPasswordEmailBody().Message}</p>" +
+        //        //          $"<p>{changepassurl}</p>"
+        //        //  }).ConfigureAwait(false);
+        //        //}
 
-                //return Ok(changepassurl);
-                return Ok();
-            }
-            catch (Exception ex)
-            {
-                Log.Error(ex, ex.Source);
-                return Problem(_localizer[DataTransferer.SomethingWentWrong().Message]);
-            }
-        }
+        //        //return Ok(changepassurl);
+        //        return Ok();
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        Log.Error(ex, ex.Source);
+        //        return Problem(_localizer[DataTransferer.SomethingWentWrong().Message]);
+        //    }
+        //}
 
         [HttpPost, Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme), Route("activationrequest")]
         public async Task<ActionResult> ActivationRequestAsync()
