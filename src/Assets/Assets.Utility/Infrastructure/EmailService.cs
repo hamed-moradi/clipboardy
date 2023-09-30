@@ -46,7 +46,7 @@ namespace Assets.Utility.Infrastructure
 
                 using (var smtp = new SmtpClient(_appSetting.SmtpConfig.Host, _appSetting.SmtpConfig.Port))
                 {
-                    smtp.UseDefaultCredentials = true;
+                    smtp.UseDefaultCredentials = false;
                     smtp.Credentials = new NetworkCredential(_appSetting.SmtpConfig.Username, _appSetting.SmtpConfig.Password);
                     smtp.EnableSsl = true;
                     smtp.DeliveryMethod = SmtpDeliveryMethod.Network;
