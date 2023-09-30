@@ -50,8 +50,16 @@ namespace Assets.Model.Binding
         public string Code { get; set; }
     }
 
-    public class ForgetResetPasswordBindingModel : IBaseBindingModel
+    public class ForgotResetPasswordBindingModel : IBaseBindingModel
     {
         public string Username { get; set;}
     }
+
+    public class ResetPasswordBindingModel
+    {
+        public string Password { get; set; }
+        public string ConfirmPassword { get; set; }
+        public string Token { get; set; } 
+    }
 }
+

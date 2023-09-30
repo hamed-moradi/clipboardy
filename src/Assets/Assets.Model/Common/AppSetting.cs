@@ -22,7 +22,7 @@ namespace Assets.Model.Common
         public ConnectionString ConnectionStrings { get; set; }
         public SmtpConfig SmtpConfig { get; set; }
         public SMSConfig SMSConfig { get; set; }
-        public ForgetResetPasswordConfig ForgetResetPasswordConfig { get; set; }
+        public ForgotResetPasswordConfig ForgotResetPasswordConfig { get; set; }
     }
 
     public class Authentication
@@ -74,9 +74,9 @@ namespace Assets.Model.Common
     }
 
     public class MailChimpConfig { }
-    public class ForgetResetPasswordConfig
+    public class ForgotResetPasswordConfig
     {
-        public string ForgetBaseUrl { get; set; }
+        public string ForgotBaseUrl { get; set; }
         public int ExpireDate { get; set; }
     }
 }

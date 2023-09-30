@@ -82,6 +82,8 @@ namespace Assets.Utility.Infrastructure {
     #region sms
     public static IServiceResult ForgotPasswordSMSBody(object data = null) { return new ServiceResult(0, nameof(ForgotPasswordSMSBody), data); }
     public static IServiceResult ActivationCodeSMSBody(object data = null) { return new ServiceResult(0, nameof(ActivationCodeSMSBody), data); }
-    #endregion
-  }
+        #endregion
+
+      
+    }
 }

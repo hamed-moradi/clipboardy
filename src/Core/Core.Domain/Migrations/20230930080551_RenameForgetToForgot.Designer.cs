@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Core.Domain.Migrations
 {
     [DbContext(typeof(PostgresContext))]
-    [Migration("20230927144150_AddEpireDateAndForgetPasswordTokenToEntityAccount")]
-    partial class AddEpireDateAndForgetPasswordTokenToEntityAccount
+    [Migration("20230930080551_RenameForgetToForgot")]
+    partial class RenameForgetToForgot
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -33,10 +33,10 @@ namespace Core.Domain.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("id"));
 
-                    b.Property<DateTime>("expireDateForgetPasswordResetToken")
+                    b.Property<DateTime>("expireDateForgotPasswordResetToken")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<string>("forgetPasswordResetToken")
+                    b.Property<string>("forgotPasswordResetToken")
                         .HasColumnType("text");
 
                     b.Property<DateTime>("inserted_at")

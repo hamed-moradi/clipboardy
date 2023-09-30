@@ -14,6 +14,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json;
+using RestSharp;
 using Serilog;
 using System;
 using System.ComponentModel.DataAnnotations;
@@ -314,15 +315,15 @@ namespace Presentation.WebApi.Controllers
             return Ok(result);
         }
 
-        [HttpPost, AllowAnonymous, Route("ForgetPasswordRequested")]
-        public async Task<IActionResult> ForgetPasswordRequestedAsync([FromBody] ForgetResetPasswordBindingModel forgetResetPasswordBindingModel)
+        [HttpPost, AllowAnonymous, Route("ForgotPasswordRequested")]
+        public async Task<IActionResult> forgotPasswordRequestedAsync([FromBody] ForgotResetPasswordBindingModel forgotResetPasswordBindingModel)
         {
-            if (string.IsNullOrEmpty(forgetResetPasswordBindingModel.Username))
+            if (string.IsNullOrEmpty(forgotResetPasswordBindingModel.Username))
             {
                 return BadRequest(_localizer[DataTransferer.DefectiveEntry().Message]);
             }
 
-            var accountProfile = await _accountProfileService.FirstAsync(x => x.linked_key == forgetResetPasswordBindingModel.Username);
+            var accountProfile = await _accountProfileService.FirstAsync(x => x.linked_key == forgotResetPasswordBindingModel.Username);
             if (accountProfile is null)
             {
                 return BadRequest(_localizer[DataTransferer.UserNotFound().Message]);
@@ -337,24 +338,24 @@ namespace Presentation.WebApi.Controllers
             // generate a random token
             string token = PasswordUtils.GenerateBase64(length: 64);
             string hashedToken = PasswordUtils.EncryptWithSha256(token);
-            DateTime expireDate = DateTime.UtcNow.AddMinutes(_appSetting.ForgetResetPasswordConfig.ExpireDate);
+            DateTime expireDate = DateTime.UtcNow.AddMinutes(_appSetting.ForgotResetPasswordConfig.ExpireDate);
 
             // persist the token in database
-            account.forgetPasswordResetToken = hashedToken;
-            account.expireDateForgetPasswordResetToken = expireDate;
+            account.forgotPasswordResetToken = hashedToken;
+            account.expireDateForgotPasswordResetToken = expireDate;
             await _accountService.SaveAsync();
 
             // send the reset URL to the user via email
-            string baseUrl = _appSetting.ForgetResetPasswordConfig.ForgetBaseUrl; // this host can be your front-end
-            string forgetPasswordUrl = $"{baseUrl}/forgetpassword?token={token}";
+            string baseUrl = _appSetting.ForgotResetPasswordConfig.ForgotBaseUrl; // this host can be your front-end
+            string forgotPasswordUrl = $"{baseUrl}/resetPassword?token={account.forgotPasswordResetToken}";
 
             var emailservice = await _emailService.SendAsync(new EmailModel
             {
-                Address = forgetResetPasswordBindingModel.Username,
+                Address = forgotResetPasswordBindingModel.Username,
                 Subject = _localizer[DataTransferer.ForgotPasswordEmailSubject().Message],
                 IsBodyHtml = true,
                 Body = $"<p>{DataTransferer.ForgotPasswordEmailBody().Message}</p>" +
-                          $"<p>{forgetPasswordUrl}</p>"
+                          $"<p>{forgotPasswordUrl}</p>"
             });
 
 
@@ -484,6 +485,43 @@ namespace Presentation.WebApi.Controllers
             //  return Problem();
             //}
             return Ok();
+        }
+
+        [HttpPost , AllowAnonymous , Route("resetPassword")]
+        public async Task<IActionResult> ResetPasswordAsync([FromBody] ResetPasswordBindingModel resetPassword)
+        {
+            if(string.IsNullOrEmpty(resetPassword.Password) || string.IsNullOrEmpty(resetPassword.ConfirmPassword)
+                 || string.IsNullOrEmpty(resetPassword.Token)) 
+            {
+                return BadRequest(_localizer[DataTransferer.BadRequest().Message]);
+            }
+
+            if(resetPassword.Password != resetPassword.ConfirmPassword)
+            {
+                return BadRequest(_localizer[DataTransferer.PasswordsMissmatch().Message]);
+            }
+
+            var account =  await _accountService.FirstAsync(x => x.forgotPasswordResetToken == resetPassword.Token);
+
+            if(account is null)
+            {
+                return BadRequest(_localizer[DataTransferer.UserNotFound().Message]);
+            }
+
+         
+
+            try
+            {
+                account.password = _cryptograph.RNG(resetPassword.Password);
+               await _accountService.SaveAsync();
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex, ex.Source);
+                return Problem();
+            }
+
         }
 
         [HttpPost, Authorize, Route("activateaccount")]
