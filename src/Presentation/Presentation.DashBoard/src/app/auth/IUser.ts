@@ -4,4 +4,5 @@ export interface IUser {
   ConfirmPassword?: string;
   RememberMe?: boolean;
   oldPassword?: string;
+  resetPassToken?: string;
 }
