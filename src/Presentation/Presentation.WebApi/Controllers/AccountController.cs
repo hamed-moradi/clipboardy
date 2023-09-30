@@ -18,6 +18,7 @@ using RestSharp;
 using Serilog;
 using System;
 using System.ComponentModel.DataAnnotations;
+using System.Globalization;
 using System.Net.Mail;
 using System.Text;
 using System.Threading.Tasks;
@@ -338,11 +339,21 @@ namespace Presentation.WebApi.Controllers
             // generate a random token
             string token = PasswordUtils.GenerateBase64(length: 64);
             string hashedToken = PasswordUtils.EncryptWithSha256(token);
-            DateTime expireDate = DateTime.UtcNow.AddMinutes(_appSetting.ForgotResetPasswordConfig.ExpireDate);
+            //DateTime expireDate = DateTime.Now.AddMinutes(10);
+
+            DateTime utcNow = DateTime.UtcNow;
+
+            // Convert UTC time to Iran Standard Time (IRST)
+            TimeZoneInfo iranTimeZone = TimeZoneInfo.FindSystemTimeZoneById("Iran Standard Time");
+            DateTime expireDate = TimeZoneInfo.ConvertTimeFromUtc(utcNow, iranTimeZone);
+
+            // Specify DateTimeKind.Utc
+            expireDate = DateTime.SpecifyKind(expireDate, DateTimeKind.Utc);
 
             // persist the token in database
             account.forgotPasswordResetToken = hashedToken;
             account.expireDateForgotPasswordResetToken = expireDate;
+
             await _accountService.SaveAsync();
 
             // send the reset URL to the user via email
@@ -491,7 +502,7 @@ namespace Presentation.WebApi.Controllers
         public async Task<IActionResult> ResetPasswordAsync([FromBody] ResetPasswordBindingModel resetPassword)
         {
             if(string.IsNullOrEmpty(resetPassword.Password) || string.IsNullOrEmpty(resetPassword.ConfirmPassword)
-                 || string.IsNullOrEmpty(resetPassword.Token)) 
+                 || string.IsNullOrEmpty(resetPassword.resetPassToken)) 
             {
                 return BadRequest(_localizer[DataTransferer.BadRequest().Message]);
             }
@@ -501,7 +512,7 @@ namespace Presentation.WebApi.Controllers
                 return BadRequest(_localizer[DataTransferer.PasswordsMissmatch().Message]);
             }
 
-            var account =  await _accountService.FirstAsync(x => x.forgotPasswordResetToken == resetPassword.Token);
+            var account =  await _accountService.FirstAsync(x => x.forgotPasswordResetToken == resetPassword.resetPassToken);
 
             if(account is null)
             {

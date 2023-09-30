@@ -30,7 +30,7 @@ namespace Core.Domain.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("id"));
 
-                    b.Property<DateTime>("expireDateForgotPasswordResetToken")
+                    b.Property<DateTimeOffset>("expireDateForgotPasswordResetToken")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("forgotPasswordResetToken")
