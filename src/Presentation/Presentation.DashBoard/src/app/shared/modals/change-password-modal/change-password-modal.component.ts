@@ -5,7 +5,7 @@ import { AuthService } from "src/app/shared/services/auth.service";
 import { ColorUsedService } from "src/app/shared/services/color-used.service";
 import { MessagesService } from "../../services/messages.service";
 import Swal from "sweetalert2";
-import { ChangePasswordService } from "../../services/changePassword.service";
+import { ChangePasswordService } from "src/app/shared/services/change-password.service";
 @Component({
   selector: "app-change-password-modal",
   templateUrl: "./change-password-modal.component.html",

@@ -15,8 +15,8 @@ export class ChangePasswordService {
   ) {}
 
   changePassword(
-    oldPassword: string,
     Password: string,
+    NewPassword: string,
     ConfirmPassword: string
   ): Observable<{ success: boolean }> {
     //URL
@@ -24,8 +24,8 @@ export class ChangePasswordService {
 
     //body
     const body: IUser = {
-      oldPassword,
       Password,
+      NewPassword,
       ConfirmPassword,
     };
 

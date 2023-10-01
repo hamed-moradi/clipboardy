@@ -1,9 +1,9 @@
 import { Component } from "@angular/core";
 import { NgForm } from "@angular/forms";
 import { MatDialogRef } from "@angular/material/dialog";
-import { AuthService } from "src/app/shared/services/auth.service";
+import { ForgotPasswordService } from "src/app/shared/services/forgot-password.service";
+
 import { ColorUsedService } from "src/app/shared/services/color-used.service";
-import { SignUpService } from "src/app/shared/services/sign-up.service";
 import { MessagesService } from "../../services/messages.service";
 import Swal from "sweetalert2";
 
@@ -15,8 +15,7 @@ import Swal from "sweetalert2";
 export class ForgotPasswordModalComponent {
   constructor(
     private colorUsed: ColorUsedService,
-    private authService: AuthService,
-    private signUpService: SignUpService,
+    private ForgotPasswordService: ForgotPasswordService,
     private messageService: MessagesService,
     private forgotPassworddialogRef: MatDialogRef<ForgotPasswordModalComponent> // Inject MatDialogRef
   ) {}
@@ -30,8 +29,27 @@ export class ForgotPasswordModalComponent {
 
   minLenghtMessage = this.messageService.lengthInfoMessage;
   onForgotPassword(ForgotPasswordForm: NgForm) {
-    console.log("forgot work!");
+    console.log(ForgotPasswordForm.value.emailInput);
     if (ForgotPasswordForm.valid) {
+      this.ForgotPasswordService.forgotPassword(
+        ForgotPasswordForm.value.emailInput
+      ).subscribe({
+        next: () => {
+          Swal.fire(
+            "An url sent to your email  ",
+            "Please check your email for reset password.",
+            "success"
+          );
+        },
+        error: (ErrMsg) => {
+          Swal.fire({
+            title: "error",
+            text: ErrMsg.error.value,
+            icon: "error",
+            confirmButtonColor: this.violet,
+          });
+        },
+      });
       //console.log(ForgotPasswordForm);
       //console.log(ForgotPasswordForm.value);
     } else {
