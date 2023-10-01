@@ -14,7 +14,7 @@ const routes: Routes = [
   { path: "home", component: HomeComponent, canActivate: [AuthGuard] },
   { path: "auth/login", component: LoginComponent },
   { path: "contactUs", component: ContactUsComponent },
-  { path: "resetPassword", component: ResetPasswordComponent },
+  { path: "resetPassword", component: LoginComponent },
   { path: "**", redirectTo: "home", pathMatch: "full" },
   { path: "", redirectTo: "home", pathMatch: "full" },
 ];

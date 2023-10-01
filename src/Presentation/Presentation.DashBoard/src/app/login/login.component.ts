@@ -4,9 +4,14 @@ import { NgwWowService } from "ngx-wow";
 import { Subscription } from "rxjs";
 import { debounceTime, filter } from "rxjs/operators";
 import { ColorUsedService } from "../shared/services/color-used.service";
-import { MatDialog, MatDialogConfig } from "@angular/material/dialog";
+import {
+  MatDialog,
+  MatDialogConfig,
+  MatDialogRef,
+} from "@angular/material/dialog";
 import { SignInModalComponent } from "../shared/modals/sign-in-modal/sign-in-modal.component";
 import { NavbarComponent } from "../shared/navbar/navbar.component";
+import { ResetPasswordComponent } from "../shared/reset-password/reset-password.component";
 @Component({
   selector: "app-login",
   templateUrl: "./login.component.html",
@@ -19,7 +24,8 @@ export class LoginComponent implements OnInit {
     private router: Router,
     private colorUsedService: ColorUsedService,
     private wowService: NgwWowService,
-    public dialog: MatDialog
+    private dialog: MatDialog,
+    private resetPasswordDialogRef: MatDialogRef<ResetPasswordComponent>
   ) {
     this.router.events
       .pipe(filter((event) => event instanceof NavigationEnd))
@@ -40,6 +46,11 @@ export class LoginComponent implements OnInit {
   black: string = this.colorUsedService.black;
 
   ngOnInit() {
+    if (this.router.parseUrl(this.router.url).queryParams["token"])
+      this.resetPasswordDialogRef = this.dialog.open(ResetPasswordComponent, {
+        // Optionally, you can specify dialog settings here
+      });
+
     // you can subscribe to WOW observable to react when an element is revealed
     this.wowSubscription = this.wowService.itemRevealed$.subscribe(
       (item: HTMLElement) => {

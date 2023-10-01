@@ -1,7 +1,6 @@
 import { Component, OnInit } from "@angular/core";
 import { NgForm } from "@angular/forms";
 import { MatDialogRef } from "@angular/material/dialog";
-import { AuthService } from "src/app/shared/services/auth.service";
 import { ColorUsedService } from "src/app/shared/services/color-used.service";
 import { MessagesService } from "src/app/shared/services/messages.service";
 import Swal from "sweetalert2";
@@ -16,11 +15,10 @@ import { Router } from "@angular/router";
 export class ResetPasswordComponent implements OnInit {
   constructor(
     private colorUsed: ColorUsedService,
-    private authService: AuthService,
     private resetPasswordService: ResetPasswordService,
     private messageService: MessagesService,
-    private router: Router,
-    private resetPasswordDialogRef: MatDialogRef<ResetPasswordComponent> // Inject MatDialogRef
+    private resetPasswordDialogRef: MatDialogRef<ResetPasswordComponent>,
+    private router: Router // private resetPasswordDialogRef: MatDialogRef<ResetPasswordComponent> // Inject MatDialogRef
   ) {}
 
   pink: string = this.colorUsed.pink;
@@ -49,10 +47,6 @@ export class ResetPasswordComponent implements OnInit {
       if (changeTheme) {
         changeTheme.style.color = this.white;
       }
-
-      /*  if (ImgContactUS) {
-        ImgContactUS.setAttribute("src", "assets/img/theme/contactUS.png");
-      } */
 
       // in light mode
     } else {
