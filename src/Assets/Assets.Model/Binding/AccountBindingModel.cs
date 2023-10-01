@@ -52,7 +52,7 @@ namespace Assets.Model.Binding
 
     public class ForgotResetPasswordBindingModel : IBaseBindingModel
     {
-        public string Username { get; set;}
+        public string AccountKey { get; set;}
     }
 
     public class ResetPasswordBindingModel
@@ -61,5 +61,6 @@ namespace Assets.Model.Binding
         public string ConfirmPassword { get; set; }
         public string resetPassToken { get; set; } 
     }
+
 }
 

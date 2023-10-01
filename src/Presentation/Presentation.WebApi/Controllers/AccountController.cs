@@ -21,7 +21,9 @@ using System.ComponentModel.DataAnnotations;
 using System.Globalization;
 using System.Net.Mail;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
+using System.Web.Http.Results;
 
 namespace Presentation.WebApi.Controllers
 {
@@ -186,27 +188,34 @@ namespace Presentation.WebApi.Controllers
                     return BadRequest(_localizer[DataTransferer.PasswordsMissmatch().Message]);
                 }
 
-                //var account = await _accountService.FirstAsync(new AccountGetFirstSchema {
-                //  Id = CurrentAccount.Id
-                //}).ConfigureAwait(true);
+                var account = await _accountService.FirstAsync(a => a.id == CurrentAccount.Id);
 
-                //if(account == null) {
-                //  return BadRequest(_localizer[DataTransferer.UserNotFound().Message]);
-                //}
+                if (account == null)
+                {
+                    return BadRequest(_localizer[DataTransferer.UserNotFound().Message]);
+                }
 
-                //if(_cryptograph.IsEqual(collection.Password, account.Password)) {
-                //  await _accountService.UpdateAsync(new AccountUpdateSchema {
-                //    Id = account.Id.Value,
-                //    Password = _cryptograph.RNG(collection.NewPassword)
-                //  }).ConfigureAwait(false);
-
-                //  return Ok(_localizer[DataTransferer.PasswordChanged().Message]);
-                //}
-                //else {
-                //  return Unauthorized(_localizer[DataTransferer.WrongPassword().Message]);
-                //}
+                account.password = _cryptograph.RNG(collection.NewPassword);
+                await _accountService.SaveAsync();
 
                 return Ok();
+
+                //if (_cryptograph.IsEqual(collection.Password, account.password))
+                //{
+                //    await _accountService.UpdateAsync(new AccountUpdateSchema
+                //    {
+                //        Id = account.Id.Value,
+                //        Password = _cryptograph.RNG(collection.NewPassword)
+                //    }).ConfigureAwait(false);
+
+                //    return Ok(_localizer[DataTransferer.PasswordChanged().Message]);
+                //}
+                //else
+                //{
+                //    return Unauthorized(_localizer[DataTransferer.WrongPassword().Message]);
+                //}
+
+                //return Ok();
             }
             catch (Exception ex)
             {
@@ -215,88 +224,88 @@ namespace Presentation.WebApi.Controllers
             }
         }
 
-        [HttpPost, AllowAnonymous, Route("changeforgotenpassword")]
-        public async Task<IActionResult> ChangeForgotenPasswordAsync([FromBody] ChangeForgotenPasswordBindingModel collection)
-        {
-            Log.Debug($"ChangeForgotenPassword => {JsonConvert.SerializeObject(collection)}");
+        //[HttpPost, AllowAnonymous, Route("changeforgotenpassword")]
+        //public async Task<IActionResult> ChangeForgotenPasswordAsync([FromBody] ChangeForgotenPasswordBindingModel collection)
+        //{
+        //    Log.Debug($"ChangeForgotenPassword => {JsonConvert.SerializeObject(collection)}");
 
-            try
-            {
-                if (string.IsNullOrEmpty(collection?.Username))
-                {
-                    return BadRequest(_localizer[DataTransferer.DefectiveEmailOrCellPhone().Message]);
-                }
-                collection.Username = collection.Username.Trim();
+        //    try
+        //    {
+        //        if (string.IsNullOrEmpty(collection?.Username))
+        //        {
+        //            return BadRequest(_localizer[DataTransferer.DefectiveEmailOrCellPhone().Message]);
+        //        }
+        //        collection.Username = collection.Username.Trim();
 
-                if (string.IsNullOrEmpty(collection.NewPassword) && string.IsNullOrEmpty(collection.ConfirmPassword))
-                {
-                    return BadRequest(_localizer[DataTransferer.DefectivePassword().Message]);
-                }
+        //        if (string.IsNullOrEmpty(collection.NewPassword) && string.IsNullOrEmpty(collection.ConfirmPassword))
+        //        {
+        //            return BadRequest(_localizer[DataTransferer.DefectivePassword().Message]);
+        //        }
 
-                if (collection.NewPassword != collection.ConfirmPassword)
-                {
-                    return BadRequest(_localizer[DataTransferer.PasswordsMissmatch().Message]);
-                }
+        //        if (collection.NewPassword != collection.ConfirmPassword)
+        //        {
+        //            return BadRequest(_localizer[DataTransferer.PasswordsMissmatch().Message]);
+        //        }
 
-                if (string.IsNullOrWhiteSpace(collection.Token))
-                {
-                    return BadRequest(_localizer[DataTransferer.UnofficialRequest().Message]);
-                }
+        //        if (string.IsNullOrWhiteSpace(collection.Token))
+        //        {
+        //            return BadRequest(_localizer[DataTransferer.UnofficialRequest().Message]);
+        //        }
 
-                //var query = new AccountProfileGetFirstSchema { LinkedId = collection.Username };
-                //if(collection.Username.IsPhoneNumber()) {
-                //  query.TypeId = AccountProfileType.Phone.ToInt();
-                //}
-                //else if(new EmailAddressAttribute().IsValid(collection.Username)) {
-                //  query.TypeId = AccountProfileType.Email.ToInt();
-                //}
-                //else {
-                //  return BadRequest(_localizer[DataTransferer.InvalidEmailOrCellPhone().Message]);
-                //}
+        //        //var query = new AccountProfileGetFirstSchema { LinkedId = collection.Username };
+        //        //if(collection.Username.IsPhoneNumber()) {
+        //        //  query.TypeId = AccountProfileType.Phone.ToInt();
+        //        //}
+        //        //else if(new EmailAddressAttribute().IsValid(collection.Username)) {
+        //        //  query.TypeId = AccountProfileType.Email.ToInt();
+        //        //}
+        //        //else {
+        //        //  return BadRequest(_localizer[DataTransferer.InvalidEmailOrCellPhone().Message]);
+        //        //}
 
-                //var accountProfile = await _accountProfileService.FirstAsync(query).ConfigureAwait(true);
-                //if(accountProfile == null) {
-                //  if(query.TypeId == AccountProfileType.Phone.ToInt())
-                //    return BadRequest(_localizer[DataTransferer.PhoneNotFound().Message]);
+        //        //var accountProfile = await _accountProfileService.FirstAsync(query).ConfigureAwait(true);
+        //        //if(accountProfile == null) {
+        //        //  if(query.TypeId == AccountProfileType.Phone.ToInt())
+        //        //    return BadRequest(_localizer[DataTransferer.PhoneNotFound().Message]);
 
-                //  if(query.TypeId == AccountProfileType.Email.ToInt())
-                //    return BadRequest(_localizer[DataTransferer.EmailNotFound().Message]);
-                //}
+        //        //  if(query.TypeId == AccountProfileType.Email.ToInt())
+        //        //    return BadRequest(_localizer[DataTransferer.EmailNotFound().Message]);
+        //        //}
 
-                //var cachedToken = _memoryCache.Get(collection.Username);
-                //if(cachedToken == null) {
-                //  return BadRequest(_localizer[DataTransferer.ChangingPasswordWithoutToken().Message]);
-                //}
+        //        //var cachedToken = _memoryCache.Get(collection.Username);
+        //        //if(cachedToken == null) {
+        //        //  return BadRequest(_localizer[DataTransferer.ChangingPasswordWithoutToken().Message]);
+        //        //}
 
-                //var account = await _accountService.FirstAsync(new AccountGetFirstSchema {
-                //  Id = accountProfile.AccountId.Value
-                //}).ConfigureAwait(true);
+        //        //var account = await _accountService.FirstAsync(new AccountGetFirstSchema {
+        //        //  Id = accountProfile.AccountId.Value
+        //        //}).ConfigureAwait(true);
 
-                //if(account == null) {
-                //  return BadRequest(_localizer[DataTransferer.UserNotFound().Message]);
-                //}
+        //        //if(account == null) {
+        //        //  return BadRequest(_localizer[DataTransferer.UserNotFound().Message]);
+        //        //}
 
-                //if(collection.Token != cachedToken.ToString()) {
-                //  Log.Warning($"Account => {account}, AccountProfile => {accountProfile}, It tried to change its password with a wrong 'ForgotPasswordToken'");
-                //  return BadRequest(_localizer[DataTransferer.ChangingPasswordWithWrongToken().Message]);
-                //}
+        //        //if(collection.Token != cachedToken.ToString()) {
+        //        //  Log.Warning($"Account => {account}, AccountProfile => {accountProfile}, It tried to change its password with a wrong 'ForgotPasswordToken'");
+        //        //  return BadRequest(_localizer[DataTransferer.ChangingPasswordWithWrongToken().Message]);
+        //        //}
 
-                //_memoryCache.Remove(collection.Username);
+        //        //_memoryCache.Remove(collection.Username);
 
-                //await _accountService.UpdateAsync(new AccountUpdateSchema {
-                //  Id = account.Id.Value,
-                //  Password = _cryptograph.RNG(collection.NewPassword)
-                //}).ConfigureAwait(false);
+        //        //await _accountService.UpdateAsync(new AccountUpdateSchema {
+        //        //  Id = account.Id.Value,
+        //        //  Password = _cryptograph.RNG(collection.NewPassword)
+        //        //}).ConfigureAwait(false);
 
-                //return Ok(_localizer[DataTransferer.PasswordChanged().Message]);
-                return Ok();
-            }
-            catch (Exception ex)
-            {
-                Log.Error(ex, ex.Source);
-                return Problem(_localizer[DataTransferer.SomethingWentWrong().Message]);
-            }
-        }
+        //        //return Ok(_localizer[DataTransferer.PasswordChanged().Message]);
+        //        return Ok();
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        Log.Error(ex, ex.Source);
+        //        return Problem(_localizer[DataTransferer.SomethingWentWrong().Message]);
+        //    }
+        //}
 
         [HttpGet, AllowAnonymous, Route("changepasswordrequested")]
         public async Task<IActionResult> ChangePasswordRequestedAsync([FromQuery] string username, [FromQuery] string token)
@@ -317,25 +326,13 @@ namespace Presentation.WebApi.Controllers
         }
 
         [HttpPost, AllowAnonymous, Route("ForgotPasswordRequested")]
-        public async Task<IActionResult> forgotPasswordRequestedAsync([FromBody] ForgotResetPasswordBindingModel forgotResetPasswordBindingModel)
+        public async Task<IActionResult> ForgotPasswordRequestedAsync([FromBody] ForgotResetPasswordBindingModel forgotResetPasswordBindingModel)
         {
-            if (string.IsNullOrEmpty(forgotResetPasswordBindingModel.Username))
+            if (string.IsNullOrEmpty(forgotResetPasswordBindingModel.AccountKey))
             {
                 return BadRequest(_localizer[DataTransferer.DefectiveEntry().Message]);
             }
 
-            var accountProfile = await _accountProfileService.FirstAsync(x => x.linked_key == forgotResetPasswordBindingModel.Username);
-            if (accountProfile is null)
-            {
-                return BadRequest(_localizer[DataTransferer.UserNotFound().Message]);
-            }
-
-            var account = await _accountService.FirstAsync(x => x.id == accountProfile.account_id);
-            if (account is null)
-            {
-                return BadRequest(_localizer[DataTransferer.UserNotFound().Message]);
-            }
-            
             // generate a random token
             string token = PasswordUtils.GenerateBase64(length: 64);
             string hashedToken = PasswordUtils.EncryptWithSha256(token);
@@ -350,35 +347,55 @@ namespace Presentation.WebApi.Controllers
             // Specify DateTimeKind.Utc
             expireDate = DateTime.SpecifyKind(expireDate, DateTimeKind.Utc);
 
-            // persist the token in database
-            account.forgotPasswordResetToken = hashedToken;
-            account.expireDateForgotPasswordResetToken = expireDate;
-
-            await _accountService.SaveAsync();
-
-            // send the reset URL to the user via email
-            string baseUrl = _appSetting.ForgotResetPasswordConfig.ForgotBaseUrl; // this host can be your front-end
-            string forgotPasswordUrl = $"{baseUrl}/resetPassword?token={account.forgotPasswordResetToken}";
-
-            var emailservice = await _emailService.SendAsync(new EmailModel
+            try
             {
-                Address = forgotResetPasswordBindingModel.Username,
-                Subject = _localizer[DataTransferer.ForgotPasswordEmailSubject().Message],
-                IsBodyHtml = true,
-                Body = $"<p>{DataTransferer.ForgotPasswordEmailBody().Message}</p>" +
-                          $"<p>{forgotPasswordUrl}</p>"
-            });
+                var accountProfile = await _accountProfileService.FirstAsync(x => x.linked_key == forgotResetPasswordBindingModel.AccountKey);
+                if (accountProfile is null)
+                {
+                    return BadRequest(_localizer[DataTransferer.UserNotFound().Message]);
+                }
+
+                var account = await _accountService.FirstAsync(x => x.id == accountProfile.account_id);
+                if (account is null)
+                {
+                    return BadRequest(_localizer[DataTransferer.UserNotFound().Message]);
+                }
+
+                // persist the token in database
+                account.forgotPasswordResetToken = hashedToken;
+                account.expireDateForgotPasswordResetToken = expireDate;
 
 
-            if(emailservice.Code == 200)
-            {
-                return Ok();
+                await _accountService.SaveAsync();
+
+                // send the reset URL to the user via email
+                string baseUrl = _appSetting.ForgotResetPasswordConfig.ForgotBaseUrl; // this host can be your front-end
+                string forgotPasswordUrl = $"{baseUrl}/resetPassword?token={account.forgotPasswordResetToken}";
+
+                var emailservice = await _emailService.SendAsync(new EmailModel
+                {
+                    Address = forgotResetPasswordBindingModel.AccountKey,
+                    Subject = _localizer[DataTransferer.ForgotPasswordEmailSubject().Message],
+                    IsBodyHtml = true,
+                    Body = $"<p>{DataTransferer.ForgotPasswordEmailBody().Message}</p>" +
+                              $"<p>{forgotPasswordUrl}</p>"
+                });
+
+
+                if (emailservice.Code == 200)
+                {
+                    return Ok(CancellationToken.None);
+                }
+                else
+                {
+                    return BadRequest(_localizer[DataTransferer.InternalServerError().Message]);                    
+                }
             }
-            else
+            catch (Exception ex)
             {
-                return BadRequest();
+                Log.Error(ex, ex.Source);
+                return Problem(_localizer[DataTransferer.SomethingWentWrong().Message]);
             }
-           
         }
 
 
@@ -534,6 +551,14 @@ namespace Presentation.WebApi.Controllers
             }
 
         }
+
+        //[HttpPut , Authorize , Route("changePassword")]
+        //public async Task<IActionResult> ChangePasswordAsync([FromBody] ChangePasswordBindingModel changePassword)
+        //{
+
+        //    Console.WriteLine(accountkey);
+        //}
+
 
         [HttpPost, Authorize, Route("activateaccount")]
         public async Task<ActionResult> ActivateAccountAsync([FromBody] ActivateAccountBindingModel collection)
