@@ -1,16 +1,16 @@
-import { Component } from "@angular/core";
-import { NgForm } from "@angular/forms";
-import { MatDialogRef } from "@angular/material/dialog";
-import { AuthService } from "src/app/shared/services/auth.service";
-import { ColorUsedService } from "src/app/shared/services/color-used.service";
-import { SignUpService } from "src/app/shared/services/sign-up.service";
-import { MessagesService } from "../../services/messages.service";
-import Swal from "sweetalert2";
+import { Component } from '@angular/core';
+import { NgForm } from '@angular/forms';
+import { MatDialogRef } from '@angular/material/dialog';
+import { AuthService } from 'src/app/shared/services/auth.service';
+import { ColorUsedService } from 'src/app/shared/services/color-used.service';
+import { SignUpService } from 'src/app/shared/services/sign-up.service';
+import { MessagesService } from '../../services/messages.service';
+import Swal from 'sweetalert2';
 
 @Component({
-  selector: "app-sign-up-modal",
-  templateUrl: "./sign-up-modal.component.html",
-  styleUrls: ["./sign-up-modal.component.scss"],
+  selector: 'app-sign-up-modal',
+  templateUrl: './sign-up-modal.component.html',
+  styleUrls: ['./sign-up-modal.component.scss'],
 })
 export class SignUpModalComponent {
   constructor(
@@ -43,21 +43,28 @@ export class SignUpModalComponent {
           // handle successful sign-up response
           // next: (response) => console.log(response),
           // handle sign-up error
+          next: () => {
+            Swal.fire(
+              'Registeration',
+              'Congratulations, your account has been successfully created.',
+              'success'
+            );
+          },
           error: (errMes) => {
             //console.error(errMes),
             Swal.fire({
-              title: "Error!",
+              title: 'Error!',
               text: errMes.error.value,
-              icon: "error",
+              icon: 'error',
               confirmButtonColor: this.violet,
             });
           },
         });
     } else {
       Swal.fire({
-        title: "attention!",
+        title: 'attention!',
         text: this.messageService.fillAllFieldsMessage,
-        icon: "warning",
+        icon: 'warning',
         confirmButtonColor: this.violet,
       });
     }
