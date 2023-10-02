@@ -34,10 +34,10 @@ export class ResetPasswordService {
 
     return this.httpClient
       .post<{ success: boolean }>(baseURL + "/api/account/resetPassword", body)
-      .pipe(
-        tap((response) => {
+      .pipe
+      /*   tap((response) => {
           console.log(response);
-        })
-      );
+        }) */
+      ();
   }
 }

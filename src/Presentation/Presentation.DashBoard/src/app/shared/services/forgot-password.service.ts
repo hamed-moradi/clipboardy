@@ -23,10 +23,10 @@ export class ForgotPasswordService {
         baseURL + "/api/account/ForgotPasswordRequested",
         body
       )
-      .pipe(
-        tap((response) => {
+      .pipe
+      /*  tap((response) => {
           console.log(response);
-        })
-      );
+        }) */
+      ();
   }
 }
