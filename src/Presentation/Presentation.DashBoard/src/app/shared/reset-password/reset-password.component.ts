@@ -78,6 +78,10 @@ export class ResetPasswordComponent implements OnInit {
           // handle successful resetPassword response
           // next: (response) => console.log(response),
           // handle resetPassword error
+
+          next: () => {
+            Swal.fire("Password reset Done!", "", "success");
+          },
           error: (errMes) => {
             //console.error(errMes),
             Swal.fire({
