@@ -45,9 +45,6 @@ export class NavbarComponent implements OnInit {
 
   logoImg = document.querySelector("#logoImg") as HTMLElement | null;
 
-  hasToken: string | any =
-    localStorage.getItem("token") || sessionStorage.getItem("token");
-
   ngOnInit() {
     if (localStorage.getItem("isDarkMode") == "true") {
       this.onChangeDarkMode = true;

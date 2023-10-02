@@ -85,7 +85,10 @@
         </li>
 
         <!-- change password -->
-        <li *ngIf="hasToken" class="nav-item hover-underline-animation">
+        <li
+          *ngIf="authService.isLoggedIn | async"
+          class="nav-item hover-underline-animation"
+        >
           <a
             class="nav-link nav-link-icon"
             [ngStyle]="{
