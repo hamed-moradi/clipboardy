@@ -43,6 +43,10 @@ export class ChangePasswordModalComponent {
           // handle successful sign-up response
           // next: (response) => console.log(response),
           // handle sign-up error
+
+          next: () => {
+            Swal.fire("Password changed!", "", "success");
+          },
           error: (errMes) => {
             //console.error(errMes),
             Swal.fire({

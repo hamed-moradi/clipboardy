@@ -188,7 +188,7 @@ namespace Presentation.WebApi.Controllers
                     return BadRequest(_localizer[DataTransferer.PasswordsMissmatch().Message]);
                 }
 
-                var account = await _accountService.FirstAsync(a => a.id == CurrentAccount.Id);
+                var account =  _accountService.First(a => a.id == CurrentAccount.Id);
 
                 if (account == null)
                 {

@@ -53,13 +53,13 @@ export class SignInModalComponent {
           },
           // handle sign-up error
           error: (errMes) => {
-            //console.error(errMes),
-            Swal.fire({
-              title: "Error!",
-              text: errMes.error.value,
-              icon: "error",
-              confirmButtonColor: this.violet,
-            });
+            console.error(errMes),
+              Swal.fire({
+                title: "Error!",
+                text: errMes.error,
+                icon: "error",
+                confirmButtonColor: this.violet,
+              });
           },
         });
       this.closeSignInDialog();
