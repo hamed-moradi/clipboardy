@@ -66,7 +66,6 @@ export class ResetPasswordComponent implements OnInit {
       var currentUrl = this.router.parseUrl(this.router.url);
       const resetPassToken = currentUrl.queryParams["token"];
 
-      console.log(resetPassToken);
       // console.log("resetPassword work!");
       this.resetPasswordService
         .resetPassword(

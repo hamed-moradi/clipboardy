@@ -29,7 +29,6 @@ export class ForgotPasswordModalComponent {
 
   minLenghtMessage = this.messageService.lengthInfoMessage;
   onForgotPassword(ForgotPasswordForm: NgForm) {
-    console.log(ForgotPasswordForm.value.emailInput);
     if (ForgotPasswordForm.valid) {
       this.ForgotPasswordService.forgotPassword(
         ForgotPasswordForm.value.emailInput

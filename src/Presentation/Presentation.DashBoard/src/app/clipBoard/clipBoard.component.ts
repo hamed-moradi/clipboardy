@@ -127,8 +127,6 @@ export class ClipBoardComponent implements OnInit, AfterViewInit {
           window.location.reload();
           this.navbarComponent.onChangeDarkMode = true;
           this.navbarComponent.onChangeThemeColor();
-
-          console.log(this.navbarComponent.onChangeDarkMode);
         } else {
           window.location.reload();
         }
