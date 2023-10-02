@@ -195,8 +195,6 @@ namespace Presentation.WebApi.Controllers
                     return BadRequest(_localizer[DataTransferer.UserNotFound().Message]);
                 }
 
-              
-
                 if (_cryptograph.IsEqual(collection.Password, account.password))
                 {
                     account.password = _cryptograph.RNG(collection.NewPassword);
@@ -204,7 +202,9 @@ namespace Presentation.WebApi.Controllers
                     return Ok(_localizer[DataTransferer.PasswordChanged().Message]);
                 }
                 else
-                return BadRequest(_localizer[DataTransferer.WrongPassword().Message]);            
+                {
+                    return Unauthorized(_localizer[DataTransferer.WrongPassword().Message]);
+                }
             }
             catch (Exception ex)
             {
@@ -373,7 +373,7 @@ namespace Presentation.WebApi.Controllers
 
                 if (emailservice.Code == 200)
                 {
-                    return Ok(CancellationToken.None);
+                    return Ok();
                 }
                 else
                 {
