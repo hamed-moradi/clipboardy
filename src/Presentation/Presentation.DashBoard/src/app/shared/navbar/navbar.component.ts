@@ -1,7 +1,7 @@
 import { Component, OnInit, Renderer2, ElementRef } from "@angular/core";
 import { Router, NavigationEnd } from "@angular/router";
 import { Location } from "@angular/common";
-import { filter, fromEvent, Subscription } from "rxjs";
+import { concatWith, filter, fromEvent, Subscription } from "rxjs";
 
 import { ColorUsedService } from "../../shared/services/color-used.service";
 import { AuthService } from "../services/auth.service";
@@ -9,6 +9,7 @@ import { __values } from "tslib";
 import { MatDialog } from "@angular/material/dialog";
 import { SignInModalComponent } from "../modals/sign-in-modal/sign-in-modal.component";
 import { ChangePasswordModalComponent } from "../modals/change-password-modal/change-password-modal.component";
+import { cssClasses } from "nouislider";
 
 @Component({
   selector: "app-navbar",
@@ -61,94 +62,49 @@ export class NavbarComponent implements OnInit {
       localStorage.setItem("isDarkMode", String(this.onChangeDarkMode)); */
     }
 
-    var navbar: HTMLElement =
-      this.element.nativeElement.children[0].children[0];
+    const navbar = document.querySelector(".navbar") as HTMLElement | null;
 
-    //add p-4 bootstrap calss into container-fluid
-    navbar.classList.add("p-4");
-
-    /*   window.addEventListener('scroll', () => {
+    window.addEventListener("scroll", () => {
       // keep track of previous scroll position
       let prevScrollPos = window.scrollY;
 
-      window.addEventListener('scroll', () => {
+      // console.log("pre " + prevScrollPos);
+      window.addEventListener("scroll", () => {
         // current scroll position
         const currentScrollPos = window.scrollY;
 
+        // console.log("current " + currentScrollPos);
+
         if (prevScrollPos > currentScrollPos) {
           // user has scrolled up
-          navbar.classList.add('show');
+          navbar?.classList.remove("hideNavbar");
+          navbar?.classList.add("showNavbar");
         } else {
           // user has scrolled down
-          navbar.classList.remove('show');
+          navbar?.classList.add("hideNavbar");
         }
 
         // update previous scroll position
         prevScrollPos = currentScrollPos;
       });
     });
- */
 
-    //add headroomNoTop calss into container-fluid
+    //add p-4 calss into container-fluid
     this._router = this.router.events
       .pipe(filter((event) => event instanceof NavigationEnd))
       .subscribe((event) => {
-        this.renderer.listen("window", "scroll", (event) => {
-          let prevScrollPos = window.scrollY;
+        this.renderer.listen("window", "resize", (event) => {
+          const containerFluid = document.querySelector(
+            "#containerFluid"
+          ) as HTMLElement | null;
 
-          const currentScrollPos = window.scrollY;
-
-          if (prevScrollPos > currentScrollPos) {
-            // user has scrolled up
-            navbar.classList.add("show");
+          if (window.innerWidth > 600) {
+            containerFluid?.classList.add("p-4");
           } else {
-            // user has scrolled down
-            navbar.classList.remove("show");
+            containerFluid?.classList.remove("p-4");
           }
-
-          // update previous scroll position
-          prevScrollPos = currentScrollPos;
         });
       });
-
-    /*   //add headroomNoTop calss into container-fluid
-    this._router = this.router.events
-      .pipe(filter((event) => event instanceof NavigationEnd))
-      .subscribe((event) => {
-        this.renderer.listen('window', 'scroll', (event) => {
-          const number = window.scrollY;
-
-          const headroomNoTop = document.querySelector(
-            '.headroomNoTop'
-          ) as HTMLElement | null;
-
-          const containerFluid = document.querySelector(
-            '#containerFluid'
-          ) as HTMLElement | null;
-
-          if (number > 150 || window.scrollY > 150) {
-            // not In top of page
-            navbar.classList.add('headroomNoTop');
-            navbar.classList.remove('p-4');
-
-            if (headroomNoTop) {
-              if (this.onChangeDarkMode) {
-                headroomNoTop.style.backgroundColor = this.violet;
-              }
-            }
-          } else {
-            // top of page
-
-            navbar.classList.remove('headroomNoTop');
-            navbar.classList.add('p-4');
-
-            //Remove backGroundColor from navBar
-            if (containerFluid)
-              containerFluid.style.removeProperty('background-color');
-
-              }
-        });
-      }); */
   }
 
   openSignInDialog() {
