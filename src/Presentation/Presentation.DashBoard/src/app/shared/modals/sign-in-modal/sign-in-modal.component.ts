@@ -65,7 +65,12 @@ export class SignInModalComponent {
       this.closeSignInDialog();
     } else {
       // Display error message and highlight invalid input field
-      alert(this.messageService.fillAllFieldsMessage);
+      Swal.fire({
+        title: "warning!",
+        text: this.messageService.fillAllFieldsMessage,
+        icon: "warning",
+        confirmButtonColor: this.violet,
+      });
     }
   }
 
