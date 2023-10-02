@@ -195,27 +195,16 @@ namespace Presentation.WebApi.Controllers
                     return BadRequest(_localizer[DataTransferer.UserNotFound().Message]);
                 }
 
-                account.password = _cryptograph.RNG(collection.NewPassword);
-                await _accountService.SaveAsync();
-
-                return Ok();
-
-                //if (_cryptograph.IsEqual(collection.Password, account.password))
-                //{
-                //    await _accountService.UpdateAsync(new AccountUpdateSchema
-                //    {
-                //        Id = account.Id.Value,
-                //        Password = _cryptograph.RNG(collection.NewPassword)
-                //    }).ConfigureAwait(false);
-
-                //    return Ok(_localizer[DataTransferer.PasswordChanged().Message]);
-                //}
-                //else
-                //{
-                //    return Unauthorized(_localizer[DataTransferer.WrongPassword().Message]);
-                //}
-
-                //return Ok();
+                if (_cryptograph.IsEqual(collection.Password, account.password))
+                {
+                    account.password = _cryptograph.RNG(collection.NewPassword);
+                    await _accountService.SaveAsync();
+                    return Ok(_localizer[DataTransferer.PasswordChanged().Message]);
+                }
+                else
+                {
+                    return Unauthorized(_localizer[DataTransferer.WrongPassword().Message]);
+                }
             }
             catch (Exception ex)
             {
@@ -384,7 +373,7 @@ namespace Presentation.WebApi.Controllers
 
                 if (emailservice.Code == 200)
                 {
-                    return Ok(CancellationToken.None);
+                    return Ok();
                 }
                 else
                 {
