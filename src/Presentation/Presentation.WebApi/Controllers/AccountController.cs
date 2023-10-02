@@ -188,34 +188,23 @@ namespace Presentation.WebApi.Controllers
                     return BadRequest(_localizer[DataTransferer.PasswordsMissmatch().Message]);
                 }
 
-                var account = await _accountService.FirstAsync(a => a.id == CurrentAccount.Id);
+                var account =  _accountService.First(a => a.id == CurrentAccount.Id);
 
                 if (account == null)
                 {
                     return BadRequest(_localizer[DataTransferer.UserNotFound().Message]);
                 }
 
-                account.password = _cryptograph.RNG(collection.NewPassword);
-                await _accountService.SaveAsync();
+              
 
-                return Ok();
-
-                //if (_cryptograph.IsEqual(collection.Password, account.password))
-                //{
-                //    await _accountService.UpdateAsync(new AccountUpdateSchema
-                //    {
-                //        Id = account.Id.Value,
-                //        Password = _cryptograph.RNG(collection.NewPassword)
-                //    }).ConfigureAwait(false);
-
-                //    return Ok(_localizer[DataTransferer.PasswordChanged().Message]);
-                //}
-                //else
-                //{
-                //    return Unauthorized(_localizer[DataTransferer.WrongPassword().Message]);
-                //}
-
-                //return Ok();
+                if (_cryptograph.IsEqual(collection.Password, account.password))
+                {
+                    account.password = _cryptograph.RNG(collection.NewPassword);
+                    await _accountService.SaveAsync();
+                    return Ok(_localizer[DataTransferer.PasswordChanged().Message]);
+                }
+                else
+                return BadRequest(_localizer[DataTransferer.WrongPassword().Message]);            
             }
             catch (Exception ex)
             {
