@@ -59,6 +59,15 @@ namespace Assets.Utility.Infrastructure
             };
         }
 
+        public SigninViewModel Bearer(ClaimsIdentity claims)
+        {
+            var expiresAt =  DateTime.UtcNow.AddMinutes(_appSetting.ForgotResetPasswordConfig.ExpireDate);
+            return new SigninViewModel
+            {
+                Token = $"Bearer {Create(claims, expiresAt)}",
+            };
+        }
+
         public ClaimsPrincipal Validate(string token)
         {
             token = token.StartsWith("Bearer ") ? token.Remove(0, 7) : token;

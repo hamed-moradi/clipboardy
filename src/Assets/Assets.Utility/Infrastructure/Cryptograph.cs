@@ -46,23 +46,6 @@ namespace Assets.Utility.Infrastructure
             return Convert.ToBase64String(hashBytes);
         }
 
-        public string GenerateRandomPassword(int length)
-        {
-            const string allowedChars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()_+";
-            using (var rng = new RNGCryptoServiceProvider())
-            {
-                byte[] randomBytes = new byte[length];
-                rng.GetBytes(randomBytes);
-                StringBuilder password = new StringBuilder(length);
-
-                foreach (byte b in randomBytes)
-                {
-                    password.Append(allowedChars[b % allowedChars.Length]);
-                }
-                return password.ToString();
-            }
-        }
-
         public bool IsEqual(string sentpass, string dbpass)
         {
             byte[] hashBytes = Convert.FromBase64String(dbpass);

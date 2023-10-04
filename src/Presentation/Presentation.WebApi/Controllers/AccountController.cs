@@ -1,6 +1,7 @@
 ﻿using Assets.Model.Base;
 using Assets.Model.Binding;
 using Assets.Model.Common;
+using Assets.Model.Header;
 using Assets.Model.View;
 using Assets.Utility;
 using Assets.Utility.Extension;
@@ -38,6 +39,7 @@ namespace Presentation.WebApi.Controllers
         private readonly ISMSService _smsService;
         private readonly IMemoryCache _memoryCache;
         private readonly AppSetting _appSetting;
+        private readonly JwtHandler _jwtHandler;
 
 
         public AccountController(
@@ -48,7 +50,8 @@ namespace Presentation.WebApi.Controllers
             IEmailService emailService,
             ISMSService smsService,
             IMemoryCache memoryCache,
-            AppSetting appSetting)
+            AppSetting appSetting,
+            JwtHandler jwtHandler)
         {
 
             _accountService = accountService;
@@ -59,6 +62,7 @@ namespace Presentation.WebApi.Controllers
             _smsService = smsService;
             _memoryCache = memoryCache;
             _appSetting = appSetting;
+            _jwtHandler = jwtHandler;
         }
         #endregion
 
@@ -188,7 +192,7 @@ namespace Presentation.WebApi.Controllers
                     return BadRequest(_localizer[DataTransferer.PasswordsMissmatch().Message]);
                 }
 
-                var account =  _accountService.First(a => a.id == CurrentAccount.Id);
+                var account = _accountService.First(a => a.id == CurrentAccount.Id);
 
                 if (account == null)
                 {
@@ -322,20 +326,6 @@ namespace Presentation.WebApi.Controllers
                 return BadRequest(_localizer[DataTransferer.DefectiveEntry().Message]);
             }
 
-            // generate a random token
-            string token = PasswordUtils.GenerateBase64(length: 64);
-            string hashedToken = PasswordUtils.EncryptWithSha256(token);
-            //DateTime expireDate = DateTime.Now.AddMinutes(10);
-
-            DateTime utcNow = DateTime.UtcNow;
-
-            // Convert UTC time to Iran Standard Time (IRST)
-            TimeZoneInfo iranTimeZone = TimeZoneInfo.FindSystemTimeZoneById("Iran Standard Time");
-            DateTime expireDate = TimeZoneInfo.ConvertTimeFromUtc(utcNow, iranTimeZone);
-
-            // Specify DateTimeKind.Utc
-            expireDate = DateTime.SpecifyKind(expireDate, DateTimeKind.Utc);
-
             try
             {
                 var accountProfile = await _accountProfileService.FirstAsync(x => x.linked_key == forgotResetPasswordBindingModel.AccountKey);
@@ -350,16 +340,21 @@ namespace Presentation.WebApi.Controllers
                     return BadRequest(_localizer[DataTransferer.UserNotFound().Message]);
                 }
 
-                // persist the token in database
-                account.forgotPasswordResetToken = hashedToken;
-                account.expireDateForgotPasswordResetToken = expireDate;
 
+                // Generate Token for forget password Token
+                DateTime now = DateTime.UtcNow.AddMinutes(_appSetting.ForgotResetPasswordConfig.ExpireDate);
+
+                // persist the token in database
+                var token = _jwtHandler.Bearer(new AccountHeaderModel(account.id, 
+                    forgotResetPasswordBindingModel.AccountKey, 
+                    DateTime.UtcNow.AddMinutes(_appSetting.ForgotResetPasswordConfig.ExpireDate))
+                   .ToClaimsIdentity());
 
                 await _accountService.SaveAsync();
 
                 // send the reset URL to the user via email
                 string baseUrl = _appSetting.ForgotResetPasswordConfig.ForgotBaseUrl; // this host can be your front-end
-                string forgotPasswordUrl = $"{baseUrl}/resetPassword?token={account.forgotPasswordResetToken}";
+                string forgotPasswordUrl = $"{baseUrl}/resetPassword?token={token.Token}";
 
                 var emailservice = await _emailService.SendAsync(new EmailModel
                 {
@@ -377,7 +372,7 @@ namespace Presentation.WebApi.Controllers
                 }
                 else
                 {
-                    return BadRequest(_localizer[DataTransferer.InternalServerError().Message]);                    
+                    return BadRequest(_localizer[DataTransferer.InternalServerError().Message]);
                 }
             }
             catch (Exception ex)
@@ -504,33 +499,37 @@ namespace Presentation.WebApi.Controllers
             return Ok();
         }
 
-        [HttpPost , AllowAnonymous , Route("resetPassword")]
+        [HttpPost, Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme), Route("resetPassword")]
         public async Task<IActionResult> ResetPasswordAsync([FromBody] ResetPasswordBindingModel resetPassword)
         {
-            if(string.IsNullOrEmpty(resetPassword.Password) || string.IsNullOrEmpty(resetPassword.ConfirmPassword)
-                 || string.IsNullOrEmpty(resetPassword.resetPassToken)) 
+            if (string.IsNullOrEmpty(resetPassword.Password) || string.IsNullOrEmpty(resetPassword.ConfirmPassword)
+                 || string.IsNullOrEmpty(resetPassword.resetPassToken))
             {
                 return BadRequest(_localizer[DataTransferer.BadRequest().Message]);
             }
 
-            if(resetPassword.Password != resetPassword.ConfirmPassword)
+            if (resetPassword.Password != resetPassword.ConfirmPassword)
             {
                 return BadRequest(_localizer[DataTransferer.PasswordsMissmatch().Message]);
             }
 
-            var account =  await _accountService.FirstAsync(x => x.forgotPasswordResetToken == resetPassword.resetPassToken);
+            var account = await _accountService.FirstAsync(x => x.forgotPasswordResetToken == resetPassword.resetPassToken);
 
-            if(account is null)
+            if (account is null)
             {
                 return BadRequest(_localizer[DataTransferer.UserNotFound().Message]);
             }
-
-         
-
             try
             {
+                var currentAccount = await _accountService.FirstAsync(a => a.id == CurrentAccount.Id);
+
+                if(currentAccount is null)
+                {
+                    return BadRequest(_localizer[DataTransferer.UserNotFound().Message]);
+                }
+
                 account.password = _cryptograph.RNG(resetPassword.Password);
-               await _accountService.SaveAsync();
+                await _accountService.SaveAsync();
                 return Ok();
             }
             catch (Exception ex)
