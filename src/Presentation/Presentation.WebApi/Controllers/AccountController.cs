@@ -7,6 +7,7 @@ using Assets.Utility;
 using Assets.Utility.Extension;
 using Assets.Utility.Infrastructure;
 using Core.Application.Interfaces;
+using Core.Domain._App;
 using Core.Domain.Entities;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -192,7 +193,7 @@ namespace Presentation.WebApi.Controllers
                     return BadRequest(_localizer[DataTransferer.PasswordsMissmatch().Message]);
                 }
 
-                var account = _accountService.First(a => a.id == CurrentAccount.Id);
+                var account = await _accountService.FirstAsync(a => a.id == CurrentAccount.Id);
 
                 if (account == null)
                 {
@@ -344,12 +345,10 @@ namespace Presentation.WebApi.Controllers
                 // Generate Token for forget password Token
                 DateTime now = DateTime.UtcNow.AddMinutes(_appSetting.ForgotResetPasswordConfig.ExpireDate);
 
-                // persist the token in database
-                var token = _jwtHandler.Bearer(new AccountHeaderModel(account.id, 
-                    forgotResetPasswordBindingModel.AccountKey, 
-                    DateTime.UtcNow.AddMinutes(_appSetting.ForgotResetPasswordConfig.ExpireDate))
-                   .ToClaimsIdentity());
-
+                //  Generate token for reset password
+                var token = _jwtHandler.Bearer(new AccountHeaderModel(account.id, forgotResetPasswordBindingModel.AccountKey, DateTime.UtcNow)
+                  .ToClaimsIdentity());
+                   
                 await _accountService.SaveAsync();
 
                 // send the reset URL to the user via email
@@ -512,25 +511,36 @@ namespace Presentation.WebApi.Controllers
             {
                 return BadRequest(_localizer[DataTransferer.PasswordsMissmatch().Message]);
             }
-
-            var account = await _accountService.FirstAsync(x => x.forgotPasswordResetToken == resetPassword.resetPassToken);
-
-            if (account is null)
-            {
-                return BadRequest(_localizer[DataTransferer.UserNotFound().Message]);
-            }
+            
             try
             {
-                var currentAccount = await _accountService.FirstAsync(a => a.id == CurrentAccount.Id);
 
-                if(currentAccount is null)
+                var isExpireTimeValid = DateTime.TryParse(CurrentAccount.LastSignedinAt.ToString(), out var expireDate);
+
+                if (!isExpireTimeValid)
                 {
-                    return BadRequest(_localizer[DataTransferer.UserNotFound().Message]);
+                    return BadRequest(_localizer[DataTransferer.DateTimeNotValid().Message]);
                 }
 
-                account.password = _cryptograph.RNG(resetPassword.Password);
-                await _accountService.SaveAsync();
-                return Ok();
+                if(expireDate >= DateTime.UtcNow)
+                {
+                    var accoundFound = await _accountService.FirstAsync(a => a.id == CurrentAccount.Id);
+
+                    if (accoundFound is null)
+                    {
+                        return BadRequest(_localizer[DataTransferer.UserNotFound().Message]);
+                    }
+
+                    accoundFound.password = _cryptograph.RNG(resetPassword.Password);
+
+                    await _accountService.SaveAsync();
+                    return Ok();
+                }
+                else
+                {
+                    return BadRequest(_localizer[DataTransferer.UnauthorizedAccessToken().Message]);
+                }
+
             }
             catch (Exception ex)
             {

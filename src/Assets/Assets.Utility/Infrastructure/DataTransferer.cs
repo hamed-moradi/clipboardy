@@ -18,9 +18,11 @@ namespace Assets.Utility.Infrastructure {
     public static IServiceResult UnsupportedTimeZone(object data = null) { return new ServiceResult(0, nameof(UnsupportedTimeZone), data); }
     public static IServiceResult AccessDenied(object data = null) { return new ServiceResult(0, nameof(AccessDenied), data); }
     public static IServiceResult UnofficialRequest(object data = null) { return new ServiceResult(0, nameof(UnofficialRequest), data); }
+    public static IServiceResult DateTimeNotValid(object data = null) { return new ServiceResult(0, nameof(DateTimeNotValid), data); }
+    public static IServiceResult UnauthorizedAccessToken(object data = null) { return new ServiceResult(0, nameof(UnauthorizedAccessToken), data); }
     #endregion
 
-    #region authentication
+        #region authentication
     public static IServiceResult AuthenticationFailed(object data = null) { return new ServiceResult(0, nameof(AuthenticationFailed), data); }
     public static IServiceResult TokenNotFound(object data = null) { return new ServiceResult(0, nameof(TokenNotFound), data); }
     public static IServiceResult DeviceIdNotFound(object data = null) { return new ServiceResult(401, nameof(DeviceIdNotFound), data); }
