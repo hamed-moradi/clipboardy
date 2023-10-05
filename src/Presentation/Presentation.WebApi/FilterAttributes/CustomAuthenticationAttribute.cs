@@ -50,8 +50,6 @@ namespace Presentation.WebApi.FilterAttributes
                 throw new Exception(_localizer["Authorization token not found"]);
             }
 
-            // Decode the token
-            string decodedToken = HttpUtility.UrlDecode(token);
             token = token.Replace("Bearer ", string.Empty);
 
             var claims = _jwtHandler.Validate(token);

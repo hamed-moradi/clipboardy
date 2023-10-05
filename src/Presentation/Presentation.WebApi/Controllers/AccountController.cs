@@ -347,7 +347,7 @@ namespace Presentation.WebApi.Controllers
                 DateTime now = DateTime.UtcNow.AddMinutes(_appSetting.ForgotResetPasswordConfig.ExpireDate);
 
                 //  Generate token for reset password
-                var token = _jwtHandler.Bearer(new AccountHeaderModel(account.id, forgotResetPasswordBindingModel.AccountKey, DateTime.UtcNow)
+                var token = _jwtHandler.Bearer(new AccountHeaderModel(account.id, forgotResetPasswordBindingModel.AccountKey, now)
                   .ToClaimsIdentity());
 
                 string baseURL = "http://localhost:4200";
@@ -507,11 +507,11 @@ namespace Presentation.WebApi.Controllers
             return Ok();
         }
 
-        [HttpPost, Route("resetPassword")]
+        [HttpPost, AllowAnonymous , Route("resetPassword")]
         public async Task<IActionResult> ResetPasswordAsync([FromBody] ResetPasswordBindingModel resetPassword)
         {
             if (string.IsNullOrEmpty(resetPassword.Password) || string.IsNullOrEmpty(resetPassword.ConfirmPassword)
-                 || string.IsNullOrEmpty(resetPassword.resetPassToken))
+                 || string.IsNullOrEmpty(resetPassword.Token))
             {
                 return BadRequest(_localizer[DataTransferer.BadRequest().Message]);
             }
@@ -530,12 +530,12 @@ namespace Presentation.WebApi.Controllers
                 string decodedToken = HttpUtility.UrlDecode(tokenWithSpaces);
 
                 // Remove "bearer " prefix if present
-                decodedToken = decodedToken.Replace("bearer ", string.Empty);
+                decodedToken = decodedToken.Replace("Bearer ", string.Empty);
 
                 var claims = _jwtHandler.Validate(decodedToken);
                 var account = claims.ToAccount();
 
-                var isExpireTimeValid = DateTime.TryParse(CurrentAccount.LastSignedinAt.ToString(), out var expireDate);
+                var isExpireTimeValid = DateTime.TryParse(account.LastSignedinAt.ToString(), out var expireDate);
 
                 if (!isExpireTimeValid)
                 {
@@ -544,7 +544,7 @@ namespace Presentation.WebApi.Controllers
 
                 if(expireDate >= DateTime.UtcNow)
                 {
-                    var accoundFound = await _accountService.FirstAsync(a => a.id == CurrentAccount.Id);
+                    var accoundFound = await _accountService.FirstAsync(a => a.id == account.Id);
 
                     if (accoundFound is null)
                     {
