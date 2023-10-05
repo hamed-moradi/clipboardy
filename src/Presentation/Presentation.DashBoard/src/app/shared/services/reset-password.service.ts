@@ -16,7 +16,7 @@ export class ResetPasswordService {
   resetPassword(
     Password: string,
     ConfirmPassword: string,
-    resetPassToken: string
+    Token: string
   ): Observable<{ success: boolean }> {
     //URL
     const baseURL: string = "http://localhost:2020";
@@ -25,7 +25,7 @@ export class ResetPasswordService {
     const body: IUser = {
       Password,
       ConfirmPassword,
-      resetPassToken,
+      Token,
     };
 
     /*    this.authService.login(
