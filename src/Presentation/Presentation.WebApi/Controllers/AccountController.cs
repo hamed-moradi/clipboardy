@@ -508,7 +508,7 @@ namespace Presentation.WebApi.Controllers
         }
 
         [HttpPost, Route("resetPassword")]
-        public async Task<IActionResult> ResetPasswordAsync([FromBody] ResetPasswordBindingModel resetPassword , [FromQuery] string token)
+        public async Task<IActionResult> ResetPasswordAsync([FromBody] ResetPasswordBindingModel resetPassword)
         {
             if (string.IsNullOrEmpty(resetPassword.Password) || string.IsNullOrEmpty(resetPassword.ConfirmPassword)
                  || string.IsNullOrEmpty(resetPassword.resetPassToken))
@@ -524,7 +524,7 @@ namespace Presentation.WebApi.Controllers
             try
             {
                 // Assuming you have a token with %20 in it
-                string tokenWithSpaces = token;
+                string tokenWithSpaces = resetPassword.Token;
 
                 // Decode the token
                 string decodedToken = HttpUtility.UrlDecode(tokenWithSpaces);
@@ -532,7 +532,8 @@ namespace Presentation.WebApi.Controllers
                 // Remove "bearer " prefix if present
                 decodedToken = decodedToken.Replace("bearer ", string.Empty);
 
-
+                var claims = _jwtHandler.Validate(decodedToken);
+                var account = claims.ToAccount();
 
                 var isExpireTimeValid = DateTime.TryParse(CurrentAccount.LastSignedinAt.ToString(), out var expireDate);
 
