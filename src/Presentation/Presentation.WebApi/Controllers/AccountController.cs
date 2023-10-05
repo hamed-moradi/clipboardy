@@ -25,6 +25,7 @@ using System.Net.Mail;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Web;
 using System.Web.Http.Results;
 
 namespace Presentation.WebApi.Controllers
@@ -506,8 +507,8 @@ namespace Presentation.WebApi.Controllers
             return Ok();
         }
 
-        [HttpPost, Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme), Route("resetPassword")]
-        public async Task<IActionResult> ResetPasswordAsync([FromBody] ResetPasswordBindingModel resetPassword)
+        [HttpPost, Route("resetPassword")]
+        public async Task<IActionResult> ResetPasswordAsync([FromBody] ResetPasswordBindingModel resetPassword , [FromQuery] string token)
         {
             if (string.IsNullOrEmpty(resetPassword.Password) || string.IsNullOrEmpty(resetPassword.ConfirmPassword)
                  || string.IsNullOrEmpty(resetPassword.resetPassToken))
@@ -522,6 +523,16 @@ namespace Presentation.WebApi.Controllers
             
             try
             {
+                // Assuming you have a token with %20 in it
+                string tokenWithSpaces = token;
+
+                // Decode the token
+                string decodedToken = HttpUtility.UrlDecode(tokenWithSpaces);
+
+                // Remove "bearer " prefix if present
+                decodedToken = decodedToken.Replace("bearer ", string.Empty);
+
+
 
                 var isExpireTimeValid = DateTime.TryParse(CurrentAccount.LastSignedinAt.ToString(), out var expireDate);
 

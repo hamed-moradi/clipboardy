@@ -59,7 +59,8 @@ namespace Assets.Model.Binding
     {
         public string Password { get; set; }
         public string ConfirmPassword { get; set; }
-        public string resetPassToken { get; set; } 
+        public string resetPassToken { get; set; }
+        public string Token { get; set; }
     }
 
 }
