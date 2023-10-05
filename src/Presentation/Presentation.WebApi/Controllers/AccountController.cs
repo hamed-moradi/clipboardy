@@ -348,12 +348,20 @@ namespace Presentation.WebApi.Controllers
                 //  Generate token for reset password
                 var token = _jwtHandler.Bearer(new AccountHeaderModel(account.id, forgotResetPasswordBindingModel.AccountKey, DateTime.UtcNow)
                   .ToClaimsIdentity());
-                   
-                await _accountService.SaveAsync();
+
+                string baseURL = "http://localhost:4200";
+                string path = "resetPassword";
+                string tokenValue = token.Token;
+
+                // Encode the token value
+                string encodedToken = Uri.EscapeDataString(tokenValue);
+
+                // Construct the final URL
+                string finalURL = $"{baseURL}/{path}?token={encodedToken}";
 
                 // send the reset URL to the user via email
                 string baseUrl = _appSetting.ForgotResetPasswordConfig.ForgotBaseUrl; // this host can be your front-end
-                string forgotPasswordUrl = $"{baseUrl}/resetPassword?token={token.Token}";
+                string forgotPasswordUrl = finalURL;
 
                 var emailservice = await _emailService.SendAsync(new EmailModel
                 {
