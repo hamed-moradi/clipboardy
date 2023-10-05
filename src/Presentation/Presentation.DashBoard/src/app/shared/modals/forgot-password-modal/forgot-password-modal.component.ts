@@ -6,6 +6,7 @@ import { ForgotPasswordService } from "src/app/shared/services/forgot-password.s
 import { ColorUsedService } from "src/app/shared/services/color-used.service";
 import { MessagesService } from "../../services/messages.service";
 import Swal from "sweetalert2";
+import { delay } from "rxjs";
 
 @Component({
   selector: "app-forgot-password-modal",
@@ -27,28 +28,43 @@ export class ForgotPasswordModalComponent {
   violet: string = this.colorUsed.violet;
   blue: string = this.colorUsed.blue;
 
+  isLoading: boolean = false;
+
   minLenghtMessage = this.messageService.lengthInfoMessage;
   onForgotPassword(ForgotPasswordForm: NgForm) {
+    this.isLoading = true;
+    console.log(this.isLoading);
+
     if (ForgotPasswordForm.valid) {
       this.ForgotPasswordService.forgotPassword(
         ForgotPasswordForm.value.emailInput
-      ).subscribe({
-        next: () => {
-          Swal.fire(
-            "An url sent to your email  ",
-            "Please check your email for reset password.",
-            "success"
-          );
-        },
-        error: (ErrMsg) => {
-          Swal.fire({
-            title: "error",
-            text: ErrMsg.error.value,
-            icon: "error",
-            confirmButtonColor: this.violet,
-          });
-        },
-      });
+      )
+        .pipe(delay(8000))
+        .subscribe({
+          next: () => {
+            console.log("Request completed successfully");
+          },
+          error: (ErrMsg) => {
+            this.isLoading = false;
+            console.log(this.isLoading);
+
+            Swal.fire({
+              title: "error",
+              text: ErrMsg.error.value,
+              icon: "error",
+              confirmButtonColor: this.violet,
+            });
+          },
+          complete: () => {
+            this.isLoading = false;
+            console.log(this.isLoading);
+            Swal.fire(
+              "An url sent to your email  ",
+              "Please check your email for reset password.",
+              "success"
+            );
+          },
+        });
       //console.log(ForgotPasswordForm);
       //console.log(ForgotPasswordForm.value);
     } else {

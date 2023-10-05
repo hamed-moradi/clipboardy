@@ -93,6 +93,8 @@ export class SignInModalComponent {
   }
 
   openForgotPasswordDialog() {
-    this.forgotPasswordDialog.open(ForgotPasswordModalComponent);
+    this.forgotPasswordDialog.open(ForgotPasswordModalComponent, {
+      hasBackdrop: true,
+    });
   }
 }

@@ -30,6 +30,8 @@ export class ResetPasswordComponent implements OnInit {
   white: string = this.colorUsed.white;
   black: string = this.colorUsed.black;
 
+  isLoading: boolean = false;
+
   minLenghtMessage = this.messageService.lengthInfoMessage;
 
   ngOnInit(): void {
@@ -74,12 +76,8 @@ export class ResetPasswordComponent implements OnInit {
           String(resetPassToken)
         )
         .subscribe({
-          // handle successful resetPassword response
-          // next: (response) => console.log(response),
-          // handle resetPassword error
-
           next: () => {
-            Swal.fire("Password reset Done!", "", "success");
+            this.isLoading = true;
           },
           error: (errMes) => {
             //console.error(errMes),
@@ -89,6 +87,10 @@ export class ResetPasswordComponent implements OnInit {
               icon: "error",
               confirmButtonColor: this.violet,
             });
+          },
+          complete: () => {
+            this.isLoading = false;
+            Swal.fire("Password reset Done!", "", "success");
           },
         });
     } else {
