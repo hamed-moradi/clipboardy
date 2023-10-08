@@ -2,7 +2,7 @@
   position: fixed;
   min-width: 425px;
   max-width: 450px;
-  min-height: 310px;
+  min-height: 284px;
   max-height: 350px;
   background-color: snow;
   border-radius: 15px;
@@ -17,7 +17,7 @@
     position: fixed;
     min-width: 285px;
     max-width: 350px;
-    min-height: 285px;
+    min-height: 248px;
     max-height: 350px;
     border-radius: 10px !important;
     background-color: snow;
@@ -38,6 +38,9 @@
     margin-left: 0px !important;
     margin-right: 0px !important;
     overflow: hidden !important;
+  }
+  .row {
+    margin-top: 14px !important;
   }
 }
 
@@ -63,7 +66,7 @@
     font-family: sans-serif !important;
   }
   .row {
-    margin-top: 10px !important;
+    margin-top: 18px !important;
   }
   .modal-body {
     margin-left: -12px !important;

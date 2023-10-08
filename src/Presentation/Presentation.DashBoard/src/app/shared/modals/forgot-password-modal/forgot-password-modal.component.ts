@@ -27,6 +27,7 @@ export class ForgotPasswordModalComponent {
   green: string = this.colorUsed.green;
   violet: string = this.colorUsed.violet;
   blue: string = this.colorUsed.blue;
+  white: string = this.colorUsed.white;
 
   isLoading: boolean = false;
 
@@ -38,33 +39,31 @@ export class ForgotPasswordModalComponent {
     if (ForgotPasswordForm.valid) {
       this.ForgotPasswordService.forgotPassword(
         ForgotPasswordForm.value.emailInput
-      )
-        .pipe(delay(8000))
-        .subscribe({
-          next: () => {
-            console.log("Request completed successfully");
-          },
-          error: (ErrMsg) => {
-            this.isLoading = false;
-            console.log(this.isLoading);
+      ).subscribe({
+        next: () => {
+          console.log("Request completed successfully");
+        },
+        error: (ErrMsg) => {
+          this.isLoading = false;
+          console.log(this.isLoading);
 
-            Swal.fire({
-              title: "error",
-              text: ErrMsg.error.value,
-              icon: "error",
-              confirmButtonColor: this.violet,
-            });
-          },
-          complete: () => {
-            this.isLoading = false;
-            console.log(this.isLoading);
-            Swal.fire(
-              "An url sent to your email  ",
-              "Please check your email for reset password.",
-              "success"
-            );
-          },
-        });
+          Swal.fire({
+            title: "error",
+            text: ErrMsg.error.value,
+            icon: "error",
+            confirmButtonColor: this.violet,
+          });
+        },
+        complete: () => {
+          this.isLoading = false;
+          console.log(this.isLoading);
+          Swal.fire(
+            "An url sent to your email  ",
+            "Please check your email for reset password.",
+            "success"
+          );
+        },
+      });
       //console.log(ForgotPasswordForm);
       //console.log(ForgotPasswordForm.value);
     } else {

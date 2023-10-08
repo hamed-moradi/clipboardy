@@ -23,7 +23,8 @@ export class SignInModalComponent {
     private signUpDialog: MatDialog,
     private forgotPasswordDialog: MatDialog,
     private signInDialogRef: MatDialogRef<SignInModalComponent>,
-    private signUpDialogRef: MatDialogRef<SignUpModalComponent>
+    private signUpDialogRef: MatDialogRef<SignUpModalComponent>,
+    private forgotPasswordDialogRef: MatDialogRef<ForgotPasswordModalComponent>
   ) {}
   pink: string = this.colorUsed.pink;
   lightPink: string = this.colorUsed.lightPink;
@@ -31,6 +32,8 @@ export class SignInModalComponent {
   green: string = this.colorUsed.green;
   violet: string = this.colorUsed.violet;
   blue: string = this.colorUsed.blue;
+
+  isDialogOpen: boolean = false;
 
   minLenghtMessage: string = this.messageService.lengthInfoMessage;
   //SignIn Method
@@ -76,6 +79,9 @@ export class SignInModalComponent {
 
   closeSignInDialog() {
     this.signInDialogRef.close(); // Close the dialog
+    this.signInDialogRef.afterClosed().subscribe(() => {
+      this.isDialogOpen = false;
+    });
   }
 
   onEnterPress(event: KeyboardEvent) {
@@ -85,16 +91,26 @@ export class SignInModalComponent {
   }
 
   openSignUpDialog() {
-    this.signUpDialog.open(SignUpModalComponent);
+    this.isDialogOpen = true;
+
+    this.signUpDialog.open(SignUpModalComponent, { hasBackdrop: false });
   }
 
   closeSignUpDialog() {
     this.signUpDialogRef.close(); // Close the dialog
+    this.signUpDialogRef.afterClosed().subscribe(() => {
+      this.isDialogOpen = false;
+    });
   }
 
   openForgotPasswordDialog() {
+    this.isDialogOpen = true;
     this.forgotPasswordDialog.open(ForgotPasswordModalComponent, {
-      hasBackdrop: true,
+      hasBackdrop: false,
+    });
+
+    this.forgotPasswordDialogRef.afterClosed().subscribe(() => {
+      this.isDialogOpen = false;
     });
   }
 }
