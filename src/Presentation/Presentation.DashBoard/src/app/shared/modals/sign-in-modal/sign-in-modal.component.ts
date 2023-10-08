@@ -33,8 +33,6 @@ export class SignInModalComponent {
   violet: string = this.colorUsed.violet;
   blue: string = this.colorUsed.blue;
 
-  isDialogOpen: boolean = false;
-
   minLenghtMessage: string = this.messageService.lengthInfoMessage;
   //SignIn Method
   onSignInForm(SignInuserForm: NgForm) {
@@ -79,9 +77,6 @@ export class SignInModalComponent {
 
   closeSignInDialog() {
     this.signInDialogRef.close(); // Close the dialog
-    this.signInDialogRef.afterClosed().subscribe(() => {
-      this.isDialogOpen = false;
-    });
   }
 
   onEnterPress(event: KeyboardEvent) {
@@ -91,26 +86,16 @@ export class SignInModalComponent {
   }
 
   openSignUpDialog() {
-    this.isDialogOpen = true;
-
     this.signUpDialog.open(SignUpModalComponent, { hasBackdrop: false });
   }
 
   closeSignUpDialog() {
     this.signUpDialogRef.close(); // Close the dialog
-    this.signUpDialogRef.afterClosed().subscribe(() => {
-      this.isDialogOpen = false;
-    });
   }
 
   openForgotPasswordDialog() {
-    this.isDialogOpen = true;
     this.forgotPasswordDialog.open(ForgotPasswordModalComponent, {
       hasBackdrop: false,
-    });
-
-    this.forgotPasswordDialogRef.afterClosed().subscribe(() => {
-      this.isDialogOpen = false;
     });
   }
 }

@@ -67,6 +67,7 @@ export class ForgotPasswordModalComponent {
       //console.log(ForgotPasswordForm);
       //console.log(ForgotPasswordForm.value);
     } else {
+      this.isLoading = false;
       Swal.fire({
         title: "attention!",
         text: this.messageService.fillAllFieldsMessage,
