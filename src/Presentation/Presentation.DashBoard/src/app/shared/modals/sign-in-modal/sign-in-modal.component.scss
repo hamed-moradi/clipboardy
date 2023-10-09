@@ -16,17 +16,6 @@
   border-color: #1ec8a3;
 }
 
-.dialog-overlay {
-  //position: fixed;
-  // top: 0;
-  //left: 0;
-  // width: 100%;
-  // height: 100%;
-  //background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
-  // z-index: 9999; /* Ensure the overlay appears above other content */
-  // pointer-events: visibleStroke; /* Enable pointer events on the overlay */
-}
-
 @media (max-width: 500px) {
   .dialog-signIn {
     margin-top: 55px !important;
