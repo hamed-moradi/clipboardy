@@ -13,10 +13,11 @@ import { NgForm } from "@angular/forms";
 import { Router, NavigationEnd } from "@angular/router";
 import { NgwWowService } from "ngx-wow";
 import { Subscription } from "rxjs";
-import { filter } from "rxjs/operators";
+import { count, filter } from "rxjs/operators";
 import { IClipBoard } from "../clipBoard/IClipBoard";
 import { ColorUsedService } from "../shared/services/color-used.service";
 import { ClipBoardComponent } from "../clipBoard/clipBoard.component";
+import { SignInService } from "../shared/services/sign-in.service";
 
 @Component({
   selector: "app-home",
@@ -35,7 +36,8 @@ export class HomeComponent implements OnInit, OnDestroy {
     private renderer: Renderer2,
     private elementRef: ElementRef,
     private colorUsedService: ColorUsedService,
-    private wowService: NgwWowService
+    private wowService: NgwWowService,
+    private signInService: SignInService
   ) {
     this.router.events
       .pipe(filter((event) => event instanceof NavigationEnd))
@@ -63,9 +65,9 @@ export class HomeComponent implements OnInit, OnDestroy {
 
     this.renderer.listen("window", "scroll", () => {
       const scrollTop =
-        window.pageYOffset ||
         document.documentElement.scrollTop ||
         document.body.scrollTop ||
+        window.scrollY ||
         0;
       const scrollTopButton =
         this.elementRef.nativeElement.querySelector("#scrollTopButton");

@@ -6,9 +6,7 @@ import {
   ElementRef,
   AfterViewInit,
 } from "@angular/core";
-import * as bootstrap from "bootstrap";
 import { fromEvent } from "rxjs";
-import { debounceTime } from "rxjs/operators";
 
 import { ColorUsedService } from "../../shared/services/color-used.service";
 import { MobileViewService } from "src/app/shared/services/mobile-view.service";
@@ -17,6 +15,7 @@ import { AddOrEditClipboardComponent } from "src/app/shared/modals/addOrEditClip
 import { MatDialog } from "@angular/material/dialog";
 import { DataSharingService } from "src/app/shared/services/data-sharing.service";
 import { ClipBoardService } from "src/app/shared/services/clipBoard.service";
+import Swal from "sweetalert2";
 
 @Component({
   selector: "app-clipBoard-item",
@@ -49,6 +48,7 @@ export class ClipBoardItemComponent implements OnInit, AfterViewInit {
   orange: string = this.colorUsedService.orange;
   blue: string = this.colorUsedService.blue;
   green: string = this.colorUsedService.green;
+  gray: string = this.colorUsedService.gray;
 
   isBigContent: boolean = false;
   isEditDialogOpen: boolean = false;
@@ -122,8 +122,9 @@ export class ClipBoardItemComponent implements OnInit, AfterViewInit {
   }
 
   openEditClipBoardDialog() {
-    console.log("open dialog Edit");
+    // console.log("open dialog Edit");
     this.editDialog.open(AddOrEditClipboardComponent, {
+      backdropClass: "true",
       data: {
         content: this.clipBoard.content,
         id: this.clipBoard.id,
@@ -139,18 +140,39 @@ export class ClipBoardItemComponent implements OnInit, AfterViewInit {
   // Delete Clipboard
   onDeleteClipBoard(event: Event) {
     if (event != null) {
-      console.log(this.clipBoard.id);
-      this.clipBoardService.DeleteClipBoard(this.clipBoard.id).subscribe({
-        // handle successful sign-up response
-        next: (response) => {
-          console.log(response),
-            // Reload the page after adding a new clipboard item
-
-            window.location.reload();
-        },
+      Swal.fire({
+        title: "Are you sure?",
+        text: "You won't be able to revert this!",
+        icon: "warning",
+        showCancelButton: true,
+        iconColor: this.orange,
+        confirmButtonColor: this.violet,
+        cancelButtonColor: this.gray,
+        confirmButtonText: "Yes, delete it!",
+      }).then((result) => {
+        if (result.isConfirmed) {
+          this.clipBoardService.DeleteClipBoard(this.clipBoard.id).subscribe({
+            // handle successful sign-up response
+            next: () => {
+              Swal.fire(
+                "Deleted!",
+                "Your file has been deleted.",
+                "success"
+              ).finally(() => window.location.reload());
+            },
+            // handle error
+            error: (errMes) => {
+              console.error(errMes),
+                Swal.fire({
+                  title: "Error!",
+                  text: errMes.error.detail,
+                  icon: "error",
+                  confirmButtonColor: this.violet,
+                });
+            },
+          });
+        }
       });
-    } else {
-      alert("خطا");
     }
   }
 }

@@ -12,7 +12,6 @@ import { IClipBoard } from "src/app/clipBoard/IClipBoard";
 import { fromEvent, map, tap } from "rxjs";
 import { MAT_DIALOG_DATA, MatDialogRef } from "@angular/material/dialog";
 import { MobileViewService } from "../../services/mobile-view.service";
-import { ClipBoardItemComponent } from "src/app/clipBoard/clipBoard-item/clipBoard-item.component";
 import { DataSharingService } from "../../services/data-sharing.service";
 
 @Component({
@@ -32,6 +31,9 @@ export class AddOrEditClipboardComponent implements OnInit {
 
   @ViewChild("AddToClipboardButton")
   AddToClipboardElementRef: ElementRef;
+
+  @ViewChild("EditClipboardButton")
+  EditClipboardElementRef: ElementRef;
 
   editedContentModel = this.data;
 
@@ -66,8 +68,8 @@ export class AddOrEditClipboardComponent implements OnInit {
   }
 
   EditClipBoard(editedContent: NgForm) {
-    console.log(this.editedContentModel.id);
-    console.log(editedContent.value);
+    //console.log(this.editedContentModel.id);
+    //console.log(editedContent.value);
 
     this.clipBoardComponent.onUpdateClipBoard(
       editedContent,
@@ -78,27 +80,40 @@ export class AddOrEditClipboardComponent implements OnInit {
   }
 
   ngAfterViewInit(): void {
-    const AddToClipboardButtonElement =
+    /*  const AddToClipboardButtonElement =
       this.AddToClipboardElementRef.nativeElement;
+
+    const EditClipboardButtonElement =
+      this.EditClipboardElementRef.nativeElement;
 
     if (window.innerWidth < 500) {
       this.mobileViewService.resizeEvent(
         AddToClipboardButtonElement,
         "flex-fill"
       );
-    }
 
-    fromEvent(window, "resize").subscribe(() => {
-      if (window.innerWidth < 500) {
-        this.mobileViewService.resizeEvent(
-          AddToClipboardButtonElement,
-          "flex-fill"
-        );
+      this.mobileViewService.resizeEvent(
+        EditClipboardButtonElement,
+        "flex-fill"
+      );
 
-        this.isBigWidth = false;
-      } else {
-        this.isBigWidth = true;
-      }
-    });
+      fromEvent(window, "resize").subscribe(() => {
+        if (window.innerWidth < 500) {
+          this.mobileViewService.resizeEvent(
+            AddToClipboardButtonElement,
+            "flex-fill"
+          );
+
+          this.mobileViewService.resizeEvent(
+            EditClipboardButtonElement,
+            "flex-fill"
+          );
+
+          this.isBigWidth = false;
+        } else {
+          this.isBigWidth = true;
+        }
+      });
+    } */
   }
 }

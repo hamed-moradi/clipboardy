@@ -1,5 +1,5 @@
 {
-  "name": "clipboard-project",
+  "name": "clipboardy-project",
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
@@ -11,9 +11,7 @@
   "private": true,
   "dependencies": {
     "@angular/animations": "^15.2.9",
-
     "@angular/cdk": "^15.2.9",
-
     "@angular/common": "^15.1.0",
     "@angular/compiler": "^15.1.0",
     "@angular/core": "^15.1.0",
@@ -22,6 +20,7 @@
     "@angular/platform-browser": "^15.1.0",
     "@angular/platform-browser-dynamic": "^15.1.0",
     "@angular/router": "^15.1.0",
+    "@angular/service-worker": "^15.2.9",
     "@ng-bootstrap/ng-bootstrap": "^14.0.1",
     "@popperjs/core": "^2.11.6",
     "animate.css": "^4.1.1",
@@ -36,6 +35,7 @@
     "ngx-wow": "^2.0.1",
     "nouislider": "^15.6.1",
     "rxjs": "~7.5.0",
+    "sweetalert2": "^11.7.27",
     "tslib": "^2.3.0",
     "wowjs": "^1.1.3",
     "zone.js": "~0.11.4"

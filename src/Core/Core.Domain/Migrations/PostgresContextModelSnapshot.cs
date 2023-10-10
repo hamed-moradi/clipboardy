@@ -30,6 +30,12 @@ namespace Core.Domain.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("id"));
 
+                    b.Property<DateTimeOffset>("expireDateForgotPasswordResetToken")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("forgotPasswordResetToken")
+                        .HasColumnType("text");
+
                     b.Property<DateTime>("inserted_at")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("timestamp with time zone")
@@ -73,8 +79,8 @@ namespace Core.Domain.Migrations
 
                     b.Property<string>("device_name")
                         .IsRequired()
-                        .HasMaxLength(128)
-                        .HasColumnType("character varying(128)");
+                        .HasMaxLength(512)
+                        .HasColumnType("character varying(512)");
 
                     b.Property<string>("device_type")
                         .IsRequired()
@@ -330,7 +336,7 @@ namespace Core.Domain.Migrations
                             id = 18,
                             extension = ".ht",
                             mimetype = "text/html",
-                            name = ", .html HyperText Markup Language (HTML)"
+                            name = "HyperText Markup Language (HTML)"
                         },
                         new
                         {
@@ -358,7 +364,7 @@ namespace Core.Domain.Migrations
                             id = 22,
                             extension = ".jpe",
                             mimetype = "image/jpeg",
-                            name = ", .jpg JPEG images"
+                            name = "JPEG images"
                         },
                         new
                         {
@@ -386,14 +392,14 @@ namespace Core.Domain.Migrations
                             id = 26,
                             extension = ".mi",
                             mimetype = "audio/midi",
-                            name = "	Musical Instrument Digital Interface (MIDI)"
+                            name = "Musical Instrument Digital Interface (MIDI)"
                         },
                         new
                         {
                             id = 27,
                             extension = ".midi",
                             mimetype = "audio/x-midi",
-                            name = "	Musical Instrument Digital Interface (MIDI)"
+                            name = "Musical Instrument Digital Interface (MIDI)"
                         },
                         new
                         {
@@ -561,7 +567,7 @@ namespace Core.Domain.Migrations
                             id = 51,
                             extension = ".ti",
                             mimetype = "image/tiff",
-                            name = ", .tiff Tagged Image File Format (TIFF)"
+                            name = "Tagged Image File Format (TIFF)"
                         },
                         new
                         {
@@ -681,6 +687,20 @@ namespace Core.Domain.Migrations
                             extension = ".7z",
                             mimetype = "application/x-7z-compressed",
                             name = "7-zip archive"
+                        },
+                        new
+                        {
+                            id = 69,
+                            extension = ".htm",
+                            mimetype = "text/html",
+                            name = "HyperText Markup Language (HTML)"
+                        },
+                        new
+                        {
+                            id = 70,
+                            extension = ".html",
+                            mimetype = "text/html",
+                            name = "HyperText Markup Language (HTML)"
                         });
                 });
 

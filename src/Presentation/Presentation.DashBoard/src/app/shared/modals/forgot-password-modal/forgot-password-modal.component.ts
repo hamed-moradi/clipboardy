@@ -1,10 +1,12 @@
 import { Component } from "@angular/core";
 import { NgForm } from "@angular/forms";
 import { MatDialogRef } from "@angular/material/dialog";
-import { AuthService } from "src/app/shared/services/auth.service";
+import { ForgotPasswordService } from "src/app/shared/services/forgot-password.service";
+
 import { ColorUsedService } from "src/app/shared/services/color-used.service";
-import { SignUpService } from "src/app/shared/services/sign-up.service";
 import { MessagesService } from "../../services/messages.service";
+import Swal from "sweetalert2";
+import { delay } from "rxjs";
 
 @Component({
   selector: "app-forgot-password-modal",
@@ -14,8 +16,7 @@ import { MessagesService } from "../../services/messages.service";
 export class ForgotPasswordModalComponent {
   constructor(
     private colorUsed: ColorUsedService,
-    private authService: AuthService,
-    private signUpService: SignUpService,
+    private ForgotPasswordService: ForgotPasswordService,
     private messageService: MessagesService,
     private forgotPassworddialogRef: MatDialogRef<ForgotPasswordModalComponent> // Inject MatDialogRef
   ) {}
@@ -26,15 +27,53 @@ export class ForgotPasswordModalComponent {
   green: string = this.colorUsed.green;
   violet: string = this.colorUsed.violet;
   blue: string = this.colorUsed.blue;
+  white: string = this.colorUsed.white;
+
+  isLoading: boolean = false;
 
   minLenghtMessage = this.messageService.lengthInfoMessage;
   onForgotPassword(ForgotPasswordForm: NgForm) {
-    console.log("forgot work!");
+    this.isLoading = true;
+    console.log(this.isLoading);
+
     if (ForgotPasswordForm.valid) {
-      console.log(ForgotPasswordForm);
-      console.log(ForgotPasswordForm.value);
+      this.ForgotPasswordService.forgotPassword(
+        ForgotPasswordForm.value.emailInput
+      ).subscribe({
+        next: () => {
+          console.log("Request completed successfully");
+        },
+        error: (ErrMsg) => {
+          this.isLoading = false;
+          console.log(this.isLoading);
+
+          Swal.fire({
+            title: "error",
+            text: ErrMsg.error.value,
+            icon: "error",
+            confirmButtonColor: this.violet,
+          });
+        },
+        complete: () => {
+          this.isLoading = false;
+          console.log(this.isLoading);
+          Swal.fire(
+            "An url sent to your email  ",
+            "Please check your email for reset password.",
+            "success"
+          );
+        },
+      });
+      //console.log(ForgotPasswordForm);
+      //console.log(ForgotPasswordForm.value);
     } else {
-      alert(this.messageService.fillAllFieldsMessage);
+      this.isLoading = false;
+      Swal.fire({
+        title: "attention!",
+        text: this.messageService.fillAllFieldsMessage,
+        icon: "warning",
+        confirmButtonColor: this.violet,
+      });
     }
   }
 

@@ -1,15 +1,16 @@
-import { Component } from "@angular/core";
-import { NgForm } from "@angular/forms";
-import { MatDialogRef } from "@angular/material/dialog";
-import { AuthService } from "src/app/shared/services/auth.service";
-import { ColorUsedService } from "src/app/shared/services/color-used.service";
-import { SignUpService } from "src/app/shared/services/sign-up.service";
-import { MessagesService } from "../../services/messages.service";
+import { Component } from '@angular/core';
+import { NgForm } from '@angular/forms';
+import { MatDialogRef } from '@angular/material/dialog';
+import { AuthService } from 'src/app/shared/services/auth.service';
+import { ColorUsedService } from 'src/app/shared/services/color-used.service';
+import { SignUpService } from 'src/app/shared/services/sign-up.service';
+import { MessagesService } from '../../services/messages.service';
+import Swal from 'sweetalert2';
 
 @Component({
-  selector: "app-sign-up-modal",
-  templateUrl: "./sign-up-modal.component.html",
-  styleUrls: ["./sign-up-modal.component.scss"],
+  selector: 'app-sign-up-modal',
+  templateUrl: './sign-up-modal.component.html',
+  styleUrls: ['./sign-up-modal.component.scss'],
 })
 export class SignUpModalComponent {
   constructor(
@@ -31,7 +32,7 @@ export class SignUpModalComponent {
   //SignUp Method
   onSignUpForm(SignUpuserForm: NgForm) {
     if (SignUpuserForm.valid) {
-      console.log("signUp work!");
+      // console.log("signUp work!");
       this.signUpService
         .signUp(
           SignUpuserForm.value.usernameInput,
@@ -40,12 +41,32 @@ export class SignUpModalComponent {
         )
         .subscribe({
           // handle successful sign-up response
-          next: (response) => console.log(response),
+          // next: (response) => console.log(response),
           // handle sign-up error
-          error: (e) => console.error(e),
+          next: () => {
+            Swal.fire(
+              'Registeration',
+              'Congratulations, your account has been successfully created.',
+              'success'
+            );
+          },
+          error: (errMes) => {
+            //console.error(errMes),
+            Swal.fire({
+              title: 'Error!',
+              text: errMes.error.value,
+              icon: 'error',
+              confirmButtonColor: this.violet,
+            });
+          },
         });
     } else {
-      alert(this.messageService.fillAllFieldsMessage);
+      Swal.fire({
+        title: 'attention!',
+        text: this.messageService.fillAllFieldsMessage,
+        icon: 'warning',
+        confirmButtonColor: this.violet,
+      });
     }
   }
 

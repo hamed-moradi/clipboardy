@@ -9,10 +9,8 @@ import {
   ElementRef,
   AfterViewInit,
 } from "@angular/core";
-import { DOCUMENT, IMAGE_CONFIG } from "@angular/common";
 import { NgForm } from "@angular/forms";
-import { BehaviorSubject, fromEvent, map, Observable, of, Subject } from "rxjs";
-import { tap, take, takeWhile, switchMap, takeUntil } from "rxjs/operators";
+import { filter, fromEvent, map, takeWhile, tap, timeout } from "rxjs";
 
 import { ClipBoardService } from "../shared/services/clipBoard.service";
 import { IClipBoard } from "./IClipBoard";
@@ -21,7 +19,9 @@ import { MobileViewService } from "../shared/services/mobile-view.service";
 import { MatDialog } from "@angular/material/dialog";
 import { AddOrEditClipboardComponent } from "../shared/modals/addOrEditClipboard-modal/addOrEditClipboard-modal.component";
 import { Router } from "@angular/router";
-import { ErrorModalComponent } from "../shared/modals/error-modal/error-modal.component";
+import { NoopScrollStrategy } from "@angular/cdk/overlay";
+import { NavbarComponent } from "../shared/navbar/navbar.component";
+import Swal from "sweetalert2";
 
 @Component({
   selector: "app-clipBoard",
@@ -40,26 +40,56 @@ export class ClipBoardComponent implements OnInit, AfterViewInit {
     private colorUsedService: ColorUsedService,
     private mobileViewService: MobileViewService,
     public dialog: MatDialog,
-    private errorDialog: MatDialog,
+    private navbarComponent: NavbarComponent,
     private router: Router
-  ) {
-    this.clipBoardService
-      .getClipBoard()
-      .pipe(map((get) => get.list))
-      .subscribe(
-        (getClipBoardResult) => (this.clipBoards = getClipBoardResult)
-      );
-  }
+  ) {}
 
   violet: string = this.colorUsedService.violet;
   pink: string = this.colorUsedService.pink;
   orange: string = this.colorUsedService.orange;
   blue: string = this.colorUsedService.blue;
   green: string = this.colorUsedService.green;
+  white: string = this.colorUsedService.white;
+  black: string = this.colorUsedService.black;
 
   isSearched: boolean = false;
+  isLoading: boolean = false;
 
-  ngOnInit(): void {}
+  totalCount: number | null = null; // Initialize totalCount as null
+  skip: number = 0;
+  take: number = 0;
+
+  ngOnInit(): void {
+    this.onScrollDown();
+
+    // impelement dark Mode if earlier checked darkMode toggler-----------
+    const changeTheme = document.querySelector(
+      ".changetheme"
+    ) as HTMLElement | null;
+
+    const hero = document.querySelector(".hero") as HTMLElement | null;
+
+    //in dark mode
+    if (localStorage.getItem("isDarkMode") == "true") {
+      if (changeTheme) {
+        changeTheme.style.color = this.white;
+      }
+
+      if (hero) {
+        hero.style.backgroundImage = 'url("assets/img/theme/dark-home.jpg")';
+      }
+
+      // in light mode
+    } else {
+      if (changeTheme) {
+        changeTheme.style.color = this.black;
+      }
+
+      if (hero) {
+        hero.style.backgroundImage = 'url("assets/img/theme/home.jpg")';
+      }
+    }
+  }
   ngAfterViewInit(): void {
     if (window.innerWidth < 500) {
       const newButtonClipBoardElement = this.myElementRef.nativeElement;
@@ -74,7 +104,15 @@ export class ClipBoardComponent implements OnInit, AfterViewInit {
   }
 
   openAddToClipBoardDialog() {
-    this.dialog.open(AddOrEditClipboardComponent);
+    const dialogRef = this.dialog.open(AddOrEditClipboardComponent, {
+      backdropClass: "true",
+      scrollStrategy: new NoopScrollStrategy(),
+    });
+
+    /*   dialogRef.updatePosition({
+      right: "500px", // Set right position
+      top: "600px", // Set top position
+    }); */
   }
 
   // Add Clipboard to list
@@ -83,22 +121,24 @@ export class ClipBoardComponent implements OnInit, AfterViewInit {
 
     this.clipBoardService.AddToClipBoard(newContent).subscribe({
       // handle successful sign-up response
-      next: (response) => {
-        console.log(response),
-          // Reload the page after adding a new clipboard item
+      next: () => {
+        // Reload the page after adding a new clipboard item
+        if (localStorage.getItem("isDarkMode") == "true") {
           window.location.reload();
+          this.navbarComponent.onChangeDarkMode = true;
+          this.navbarComponent.onChangeThemeColor();
+        } else {
+          window.location.reload();
+        }
       },
       // handle error
       error: (errMes) => {
         console.error(errMes),
-          console.error(errMes.error.title),
-          // Show error dialog
-          this.errorDialog.open(ErrorModalComponent, {
-            data: {
-              message: "An error occurred during Add content to clipboard.",
-
-              error: errMes.error.title,
-            },
+          Swal.fire({
+            title: "Error!",
+            text: errMes.error.detail,
+            icon: "error",
+            confirmButtonColor: this.violet,
           });
       },
     });
@@ -111,49 +151,20 @@ export class ClipBoardComponent implements OnInit, AfterViewInit {
     this.clipBoardService.UpdateClipBoard(editedContentValue, id).subscribe({
       // handle successful sign-up response
       next: (response) => {
-        console.log(response),
-          // Reload the page after adding a new clipboard item
+        // console.log(response),
+        // Reload the page after adding a new clipboard item
 
-          window.location.reload();
+        window.location.reload();
       },
       // handle error
       error: (errMes) => {
-        console.error(errMes),
-          console.error(errMes.error.title),
-          // Show error dialog
-          this.errorDialog.open(ErrorModalComponent, {
-            data: {
-              message: "An error occurred during Edit content clipboard.",
-
-              error: errMes.error.title,
-            },
-          });
-      },
-    });
-  }
-
-  // Delete Clipboard
-  onDeleteClipBoard(id: number) {
-    this.clipBoardService.DeleteClipBoard(id).subscribe({
-      // handle successful sign-up response
-      next: (response) => {
-        console.log(response),
-          // Reload the page after adding a new clipboard item
-
-          window.location.reload();
-      },
-      // handle error
-      error: (errMes) => {
-        console.error(errMes),
-          console.error(errMes.error.title),
-          // Show error dialog
-          this.errorDialog.open(ErrorModalComponent, {
-            data: {
-              message: "An error occurred during Delete content clipboard.",
-
-              error: errMes.error.title,
-            },
-          });
+        //console.error(errMes),
+        Swal.fire({
+          title: "Error!",
+          text: errMes.error.detail,
+          icon: "error",
+          confirmButtonColor: this.violet,
+        });
       },
     });
   }
@@ -164,6 +175,7 @@ export class ClipBoardComponent implements OnInit, AfterViewInit {
       searchQuery.value.searchQuery === undefined ||
       searchQuery.value.searchQuery === ""
     ) {
+      //console.log(this.clipBoards);
       return this.clipBoards;
     } else {
       var clipBoardFilterd = this.clipBoards.filter((clipBoard: IClipBoard) =>
@@ -176,5 +188,27 @@ export class ClipBoardComponent implements OnInit, AfterViewInit {
     }
   }
 
-  onScroll() {}
+  onScrollDown() {
+    if (!this.isLoading) {
+      this.isLoading = true;
+      if (this.totalCount === null || this.totalCount >= this.take) {
+        this.take += 10;
+        this.clipBoardService
+          .getClipBoard(this.skip, this.take)
+          .pipe(
+            tap((get) => {
+              this.totalCount = get.totalCount;
+            })
+          )
+          .subscribe({
+            next: (res) => {
+              this.clipBoards = res.list;
+              this.isLoading = false; // Move isLoading inside the next callback
+            },
+          });
+      } else {
+        this.isLoading = false; // Set isLoading to false if the condition is not met
+      }
+    }
+  }
 }

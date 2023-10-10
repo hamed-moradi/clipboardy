@@ -1,6 +1,7 @@
-import { Injectable } from '@angular/core';
-import { Router } from '@angular/router';
-import { BehaviorSubject, Observable, from, of, tap } from 'rxjs';
+import { HttpClient } from "@angular/common/http";
+import { Injectable } from "@angular/core";
+import { Router } from "@angular/router";
+import { BehaviorSubject, Observable, from, of, tap } from "rxjs";
 
 @Injectable()
 export class AuthService {
@@ -10,22 +11,23 @@ export class AuthService {
     return this.isLoggedInSubject.asObservable();
   }
 
-  constructor(private router: Router) {
-    const initialLoginStatus = localStorage.getItem('token') !== null;
+  constructor(private router: Router, private httpClient: HttpClient) {
+    const initialLoginStatus =
+      (localStorage.getItem("token") || sessionStorage.getItem("token")) !==
+      null;
     this.isLoggedInSubject = new BehaviorSubject<boolean>(initialLoginStatus);
-    console.log('constructor isLoggedInSubject', this.isLoggedInSubject);
+    // console.log("constructor isLoggedInSubject", this.isLoggedInSubject);
   }
 
   login(token: string | null): Observable<boolean> {
-    console.log('login method called with token:', token);
     // Logic for validating the token and logging the user in
     const isValidToken = this.validateToken(token);
 
+    //console.log("login method called with token:", isValidToken);
     if (isValidToken) {
       // Token is valid, mark the user as logged in
       this.isLoggedInSubject.next(true);
-      this.router.navigate(['/home']);
-
+      this.router.navigate(["/home"]);
       return of(true);
     } else {
       // Token is invalid, mark the user as not logged in
@@ -36,22 +38,26 @@ export class AuthService {
 
   logout(): void {
     this.isLoggedInSubject.next(false);
-    this.router.navigate(['/auth/login']);
-    localStorage.removeItem('token');
-    localStorage.removeItem('expiresAt');
+    this.router.navigate(["/auth/login"]);
+    localStorage.removeItem("token");
+    localStorage.removeItem("expiresAt");
+
+    sessionStorage.removeItem("token");
+    sessionStorage.removeItem("expiresAt");
   }
 
   private validateToken(token: string | null): boolean {
-    console.log('validateToken method called with token:', token);
+    //console.log("validateToken method called with token:", token);
 
     if (!token) {
       return false; // Token is not provided or null
     }
 
-    const expirationDate = new Date(localStorage.getItem('expiresAt')!);
-    const currentDate = new Date();
+    const EpochTimeStampOfcurrentDate = new Date().getTime() / 1000;
+    const JWT = token;
+    const jwtPayload = JSON.parse(window.atob(JWT.split(".")[1]));
 
-    if (currentDate > expirationDate) {
+    if (EpochTimeStampOfcurrentDate > jwtPayload.exp) {
       return false; // Token has expired
     }
 

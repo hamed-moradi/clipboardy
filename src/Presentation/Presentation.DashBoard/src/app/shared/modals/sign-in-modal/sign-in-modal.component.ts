@@ -7,7 +7,7 @@ import { SignInService } from "src/app/shared/services/sign-in.service";
 import { SignUpModalComponent } from "../sign-up-modal/sign-up-modal.component";
 import { ForgotPasswordModalComponent } from "../forgot-password-modal/forgot-password-modal.component";
 import { MessagesService } from "src/app/shared/services/messages.service";
-import { ErrorModalComponent } from "../error-modal/error-modal.component";
+import Swal from "sweetalert2";
 
 @Component({
   selector: "app-sign-in-modal",
@@ -24,7 +24,7 @@ export class SignInModalComponent {
     private forgotPasswordDialog: MatDialog,
     private signInDialogRef: MatDialogRef<SignInModalComponent>,
     private signUpDialogRef: MatDialogRef<SignUpModalComponent>,
-    private errorDialog: MatDialog
+    private forgotPasswordDialogRef: MatDialogRef<ForgotPasswordModalComponent>
   ) {}
   pink: string = this.colorUsed.pink;
   lightPink: string = this.colorUsed.lightPink;
@@ -37,36 +37,41 @@ export class SignInModalComponent {
   //SignIn Method
   onSignInForm(SignInuserForm: NgForm) {
     if (SignInuserForm.form.valid) {
-      console.log(this.authService.isLoggedIn);
+      // console.log(this.authService.isLoggedIn);
       this.signInService
         .signIn(
           SignInuserForm.value.usernameInput,
           SignInuserForm.value.passwordInput,
-          SignInuserForm.value.rememberMe
+          Boolean(SignInuserForm.value.rememberMe)
         )
         .subscribe({
           // handle successful sign-up response
           next: (response) => {
-            console.log(response),
-              this.authService.login(localStorage.getItem("token")!);
+            //console.log(response),
+            this.authService.login(
+              localStorage.getItem("token")! || sessionStorage.getItem("token")!
+            );
           },
           // handle sign-up error
           error: (errMes) => {
             console.error(errMes),
-              console.error(errMes.error.title),
-              // Show error dialog
-              this.errorDialog.open(ErrorModalComponent, {
-                data: {
-                  message: "An error occurred during sign-in.",
-                  error: errMes.error.title,
-                },
+              Swal.fire({
+                title: "Error!",
+                text: errMes.error,
+                icon: "error",
+                confirmButtonColor: this.violet,
               });
           },
         });
       this.closeSignInDialog();
     } else {
       // Display error message and highlight invalid input field
-      alert(this.messageService.fillAllFieldsMessage);
+      Swal.fire({
+        title: "warning!",
+        text: this.messageService.fillAllFieldsMessage,
+        icon: "warning",
+        confirmButtonColor: this.violet,
+      });
     }
   }
 
@@ -81,7 +86,7 @@ export class SignInModalComponent {
   }
 
   openSignUpDialog() {
-    this.signUpDialog.open(SignUpModalComponent);
+    this.signUpDialog.open(SignUpModalComponent, { hasBackdrop: false });
   }
 
   closeSignUpDialog() {
@@ -89,6 +94,8 @@ export class SignInModalComponent {
   }
 
   openForgotPasswordDialog() {
-    this.forgotPasswordDialog.open(ForgotPasswordModalComponent);
+    this.forgotPasswordDialog.open(ForgotPasswordModalComponent, {
+      hasBackdrop: false,
+    });
   }
 }

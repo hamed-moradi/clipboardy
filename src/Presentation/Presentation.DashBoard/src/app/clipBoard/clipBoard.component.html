@@ -55,21 +55,13 @@
     </div>
 
     <!-- Clipboard List Item-->
-    <div>
+    <div class="marginTop-Items" infinite-scroll (scrolled)="onScrollDown()">
       <app-clipBoard-item
         *ngFor="let clipBoardEl of onClipBoardSearchList(searchQuery)"
         [clipBoard]="clipBoardEl"
       >
       </app-clipBoard-item>
+      <app-spinner *ngIf="isLoading"></app-spinner>
     </div>
   </div>
 </section>
-
-<div
-  infiniteScroll
-  [infiniteScrollDistance]="2"
-  [infiniteScrollThrottle]="1000"
-  (scrolled)="onScroll()"
-></div>
-
-<app-spinner *ngIf="!finished"> </app-spinner>
